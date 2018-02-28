@@ -52,16 +52,12 @@ public class EasterHoliday {
             day = u;
         }
 
-        LocalDate easterSunday = LocalDate.of(year, month, day);
-        LocalDate easterMonday = easterSunday.plusDays(1);
-        return easterMonday;
+        return LocalDate.of(year, month, day).plusDays(1);
     }
 
     static LocalDate getEasterFriday(int year) {
 
-        LocalDate easterMonday = getEasterMonday(year);
-
-        LocalDate easterFriday = easterMonday.minusDays(3);
-
-        return easterFriday;
+        return getEasterMonday(year).minusDays(3);
     }
+
+}
