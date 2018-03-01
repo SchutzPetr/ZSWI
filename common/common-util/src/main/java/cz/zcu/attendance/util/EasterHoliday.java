@@ -1,4 +1,4 @@
-package cz.zcu.attendance;
+package cz.zcu.attendance.util;
 
 import java.time.LocalDate;
 import lombok.experimental.UtilityClass;
@@ -6,7 +6,6 @@ import org.jetbrains.annotations.NotNull;
 
 @UtilityClass
 public class EasterHoliday {
-
 
   @NotNull
   public LocalDate getEasterMonday(int year) {
@@ -52,7 +51,7 @@ public class EasterHoliday {
   }
 
   @NotNull
-  static LocalDate getEasterFriday(int year) {
+  public static LocalDate getEasterFriday(int year) {
     return getEasterMonday(year).minusDays(3);
   }
 

@@ -13,7 +13,8 @@
   <packaging>pom</packaging>
   <modules>
     <module>common-persistence</module>
-      <module>common-security</module>
+    <module>common-security</module>
+    <module>common-util</module>
   </modules>
 
 
