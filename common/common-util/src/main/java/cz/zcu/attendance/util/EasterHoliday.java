@@ -50,6 +50,7 @@ public class EasterHoliday {
     return LocalDate.of(year, month, day).plusDays(1);
   }
 
+
   @NotNull
   public static LocalDate getEasterFriday(int year) {
     return getEasterMonday(year).minusDays(3);
