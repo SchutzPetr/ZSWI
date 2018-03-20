@@ -1,0 +1,26 @@
+{
+  "name": "zswiui",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "autosuggest-highlight": "^3.1.1",
+    "classnames": "latest",
+    "material-ui": "^1.0.0-beta.35",
+    "material-ui-icons": "^1.0.0-beta.35",
+    "moment": "^2.21.0",
+    "prop-types": "latest",
+    "react": "^16.2.0",
+    "react-autosuggest": "^9.3.4",
+    "react-big-calendar-like-google": "0.0.3",
+    "react-dom": "^16.2.0",
+    "react-router-dom": "^4.2.2",
+    "react-scripts": "1.1.1",
+    "react-select": "^1.2.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}
