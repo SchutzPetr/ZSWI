@@ -3,6 +3,10 @@
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
       <excludeFolder url="file://$MODULE_DIR$/.tmp" />
+      <excludeFolder url="file://$MODULE_DIR$/model/vendor/composer" />
+      <excludeFolder url="file://$MODULE_DIR$/model/vendor/phpoffice/phpexcel" />
+      <excludeFolder url="file://$MODULE_DIR$/model/vendor/phpoffice/phpspreadsheet" />
+      <excludeFolder url="file://$MODULE_DIR$/model/vendor/psr/simple-cache" />
       <excludeFolder url="file://$MODULE_DIR$/temp" />
       <excludeFolder url="file://$MODULE_DIR$/tmp" />
     </content>
