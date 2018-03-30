@@ -1,11 +1,12 @@
-import React from 'react';
+import React from "react";
 import PropTypes from "prop-types";
 import User from "../entity/User";
 import {IconButton, Input, List, Paper} from "material-ui";
 import UserListItem from "./UserListItem";
-import {withStyles} from 'material-ui/styles';
+import {withStyles} from "material-ui/styles";
 import ExpansionUserFilter from "./ExpansionUserFilter";
-import FilterListIcon from 'material-ui-icons/FilterList';
+import FilterListIcon from "material-ui-icons/FilterList";
+
 import {darken, fade, lighten} from "material-ui/styles/colorManipulator";
 import FilterModal from "./FilterModal";
 
@@ -13,28 +14,28 @@ import FilterModal from "./FilterModal";
 const styles = theme => ({
     root: {
         backgroundColor: theme.palette.background.paper,
-        overflow: 'auto',
-        maxHeight: `calc(100vh - 128px)`
+        overflow: "auto",
+        maxHeight: `calc(100vh - 209px)`
     },
     listSection: {
-        backgroundColor: 'inherit',
+        backgroundColor: "inherit",
     },
     ul: {
-        backgroundColor: 'inherit',
+        backgroundColor: "inherit",
         padding: 0,
     },
     input: {
-        width: 'calc(80% - ' + 2* theme.spacing.unit + 'px)',
+        width: "calc(80% - " + 2* theme.spacing.unit + "px)",
         margin: theme.spacing.unit,
         marginLeft: 0
     },
     filterWrapper: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
         padding: 16,
         borderBottom: `1px solid ${
-            theme.palette.type === 'light'
+            theme.palette.type === "light"
                 ? lighten(fade(theme.palette.divider, 1), 0.88)
                 : darken(fade(theme.palette.divider, 1), 0.8)
             }`
@@ -64,7 +65,7 @@ class UserList extends React.Component {
                         defaultValue=""
                         className={this.props.classes.input}
                         inputProps={{
-                            'aria-label': 'Search',
+                            "aria-label": "Search",
                         }}
                     />
                     <IconButton aria-label="Filter" onClick={this.handleOpen.bind(this)}>

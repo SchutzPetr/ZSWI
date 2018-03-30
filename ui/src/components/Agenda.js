@@ -1,214 +1,87 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import {withStyles} from 'material-ui/styles';
-import Table, {TableBody, TableCell, TableHead, TableRow} from 'material-ui/Table';
-import Paper from 'material-ui/Paper';
+import React from "react";
+import PropTypes from "prop-types";
+import {withStyles} from "material-ui/styles";
+import Table, {TableBody, TableCell, TableHead, TableRow} from "material-ui/Table";
+import {IconButton, Menu, MenuItem, Paper} from "material-ui";
 import moment from "moment";
+import Utils from "./../other/Utils"
+import MoreVert from "material-ui-icons/MoreVert";
+import Fade from "material-ui/es/transitions/Fade";
 
+const rowHeight = 24;
 
 const styles = theme => ({
     root: {
-        maxHeight: `calc(100vh - 112px)`,
-        height: `calc(100vh - 112px)`,
-        overflowX: 'auto',
+        maxHeight: "calc(100vh - 160px)",
+        height: "calc(100vh - 160px)",
+        overflowX: "auto",
     },
     table: {
         minWidth: 700,
     },
+    saturday: {
+        height: rowHeight,
+        backgroundColor: "#dcbd31"
+    },
+    sunday: {
+        height: rowHeight,
+        backgroundColor: "#dc143c"
+    },
+    thuTue: {
+        height: rowHeight,
+        backgroundColor: "#fafafb"
+    },
+    defRow: {
+        height: rowHeight,
+    },
+    tableCell: {
+        borderBottom: "none",
+    },
+    moreVert: {
+        height: 22,
+        width: 22,
+    },
+    menuButton: {
+        height: 24,
+        width: 24,
+    },
+    tableCellMenu: {
+        width: 32,
+    }
 });
-
-const events = [
-    {
-        date: new Date(2018, 2, 1),
-        events: [
-            {
-                title: "EVENT",
-                start: new Date(2018, 2, 1, 8, 0, 0),
-                end: new Date(2018, 2, 1, 12, 0, 0),
-                description: "MORNING",
-                bgColor: '#dc143c',
-            },
-            {
-                title: "EVENT",
-                start: new Date(2018, 2, 1, 12, 30, 0),
-                end: new Date(2018, 2, 1, 16, 30, 0),
-                description: "AFTERNOON",
-                bgColor: '#dc143c',
-            }
-        ]
-    },
-    {
-        date: new Date(2018, 2, 2),
-        events: [
-            {
-                title: "EVENT",
-                start: new Date(2018, 2, 2, 8, 0, 0),
-                end: new Date(2018, 2, 2, 12, 0, 0),
-                description: "MORNING",
-                bgColor: '#dc143c',
-            },
-            {
-                title: "EVENT",
-                start: new Date(2018, 2, 2, 12, 30, 0),
-                end: new Date(2018, 2, 2, 16, 30, 0),
-                description: "AFTERNOON",
-                bgColor: '#dc143c',
-            }
-        ]
-    },
-    {
-        date: new Date(2018, 2, 12),
-        events: [
-            {
-                title: "EVENT",
-                start: new Date(2018, 2, 12, 8, 0, 0),
-                end: new Date(2018, 2, 12, 12, 0, 0),
-                description: "MORNING",
-                bgColor: '#dc143c',
-            },
-            {
-                title: "EVENT",
-                start: new Date(2018, 2, 12, 12, 30, 0),
-                end: new Date(2018, 2, 12, 16, 30, 0),
-                description: "AFTERNOON",
-                bgColor: '#dc143c',
-            }
-        ]
-    },
-    {
-        date: new Date(2018, 2, 13),
-        events: [
-            {
-                title: "EVENT",
-                start: new Date(2018, 2, 13, 8, 0, 0),
-                end: new Date(2018, 2, 13, 12, 0, 0),
-                description: "MORNING",
-                bgColor: '#dc143c',
-            },
-            {
-                title: "EVENT",
-                start: new Date(2018, 2, 13, 12, 30, 0),
-                end: new Date(2018, 2, 13, 16, 30, 0),
-                description: "AFTERNOON",
-                bgColor: '#dc143c',
-            }
-        ]
-    },
-    {
-        date: new Date(2018, 2, 14),
-        events: [
-            {
-                title: "EVENT",
-                start: new Date(2018, 2, 14, 8, 0, 0),
-                end: new Date(2018, 2, 14, 12, 0, 0),
-                description: "MORNING",
-                bgColor: '#dc143c',
-            },
-            {
-                title: "EVENT",
-                start: new Date(2018, 2, 14, 12, 30, 0),
-                end: new Date(2018, 2, 14, 16, 30, 0),
-                description: "AFTERNOON",
-                bgColor: '#dc143c',
-            }
-        ]
-    },
-    {
-        date: new Date(2018, 2, 15),
-        events: [
-            {
-                title: "EVENT",
-                start: new Date(2018, 2, 15, 8, 0, 0),
-                end: new Date(2018, 2, 15, 12, 0, 0),
-                description: "MORNING",
-                bgColor: '#dc143c',
-            },
-            {
-                title: "EVENT",
-                start: new Date(2018, 2, 15, 12, 30, 0),
-                end: new Date(2018, 2, 15, 16, 30, 0),
-                description: "AFTERNOON",
-                bgColor: '#dc143c',
-            }
-        ]
-    },
-    {
-        date: new Date(2018, 2, 16),
-        events: [
-            {
-                title: "EVENT",
-                start: new Date(2018, 2, 16, 8, 0, 0),
-                end: new Date(2018, 2, 16, 12, 0, 0),
-                description: "MORNING",
-                bgColor: '#dc143c',
-            },
-            {
-                title: "EVENT",
-                start: new Date(2018, 2, 16, 12, 30, 0),
-                end: new Date(2018, 2, 16, 16, 30, 0),
-                description: "AFTERNOON",
-                bgColor: '#dc143c',
-            }
-        ]
-    },
-    {
-        date: new Date(2018, 2, 17),
-        events: [
-            {
-                title: "EVENT",
-                start: new Date(2018, 2, 17, 8, 0, 0),
-                end: new Date(2018, 2, 17, 12, 0, 0),
-                description: "MORNING",
-                bgColor: '#dc143c',
-            },
-            {
-                title: "EVENT",
-                start: new Date(2018, 2, 17, 12, 30, 0),
-                end: new Date(2018, 2, 17, 16, 30, 0),
-                description: "AFTERNOON",
-                bgColor: '#dc143c',
-            }
-        ]
-    },
-];
 
 
 class Agenda extends React.Component {
 
+    state = {
+        anchorEl: null,
+    };
 
-    prepare(data = []) {
-        let result = [];
+    getRowBackgroundColor(date){
+        if(date.getDay() === 6){
+            return this.props.classes.saturday;
+        } else if (date.getDay() === 0){
+            return this.props.classes.sunday;
+        } else if (date.getDay() === 2 || date.getDay() === 4){
+            return this.props.classes.thuTue;
+        } else{
+            return this.props.classes.defRow;
+        }
+    }
 
-        data.map((item, index) => {
-            item.events.map((event, index) => {
-                if (index === 0) {
-                    result.push(
-                        <TableRow key={`${index}-${item.date}`}>
-                            <TableCell rowSpan={item.events.length}>{moment(item.date).format("LL")}</TableCell>
-                            <TableCell>{moment(event.start).format("H:mm")}</TableCell>
-                            <TableCell>{moment(event.end).format("H:mm")}</TableCell>
-                            <TableCell>{event.description}</TableCell>
-                        </TableRow>
-                    );
-                }else{
-                    result.push(
-                        <TableRow key={`${index}-${item.date}`}>
-                            <TableCell>{moment(event.start).format("H:mm")}</TableCell>
-                            <TableCell>{moment(event.end).format("H:mm")}</TableCell>
-                            <TableCell>{event.description}</TableCell>
-                        </TableRow>
-                    );
-                }
-            });
-        });
+    handleOpenMenu(event){
+        debugger;
+        this.setState({anchorEl: event.currentTarget});
+    }
 
-        return result;
+    handleCloseMenu(){
+        this.setState({anchorEl: null});
     }
 
     render() {
         const {classes} = this.props;
 
-        let xx = this.prepare(events);
+        let days = Utils.getDaysInMonth(this.props.date.getMonth(), this.props.date.getFullYear()) || [];
 
         return (
             <Paper className={classes.root}>
@@ -218,12 +91,42 @@ class Agenda extends React.Component {
                             <TableCell>Datum</TableCell>
                             <TableCell>Od</TableCell>
                             <TableCell>Do</TableCell>
+                            <TableCell>Od</TableCell>
+                            <TableCell>Do</TableCell>
                             <TableCell>Typ</TableCell>
+                            <TableCell/>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {this.prepare(events)}
+                        {days.map((value, index) => {
+                            return (
+                                <TableRow key={`${index}-${value}`} className={this.getRowBackgroundColor(value)}>
+                                    <TableCell className={classes.tableCell}>{moment(value).format("LL")}</TableCell>
+                                    <TableCell className={classes.tableCell}>{moment(value).hour(8).minute(0).second(0).format("H:mm")}</TableCell>
+                                    <TableCell className={classes.tableCell}>{moment(value).hour(12).minute(0).second(0).format("H:mm")}</TableCell>
+                                    <TableCell className={classes.tableCell}>{moment(value).hour(12).minute(30).second(0).format("H:mm")}</TableCell>
+                                    <TableCell className={classes.tableCell}>{moment(value).hour(16).minute(30).second(0).format("H:mm")}</TableCell>
+                                    <TableCell className={classes.tableCell}>{""}</TableCell>
+                                    <TableCell className={`${classes.tableCell} ${classes.tableCellMenu}`}>
+                                        <IconButton className={classes.menuButton} aria-label="Menu" onClick={this.handleOpenMenu.bind(this)}>
+                                            <MoreVert className={classes.moreVert}/>
+                                    </IconButton></TableCell>
+                                </TableRow>
+
+                            );
+                        })}
                     </TableBody>
+                    <Menu
+                        id="fade-menu"
+                        anchorEl={this.state.anchorEl}
+                        open={Boolean(this.state.anchorEl)}
+                        onClose={this.handleCloseMenu.bind(this)}
+                        transition={Fade}
+                    >
+                        <MenuItem onClick={this.handleCloseMenu.bind(this)}>Profile</MenuItem>
+                        <MenuItem onClick={this.handleCloseMenu.bind(this)}>My account</MenuItem>
+                        <MenuItem onClick={this.handleCloseMenu.bind(this)}>Logout</MenuItem>
+                    </Menu>
                 </Table>
             </Paper>
         );
@@ -232,6 +135,7 @@ class Agenda extends React.Component {
 
 Agenda.propTypes = {
     classes: PropTypes.object.isRequired,
+    date: PropTypes.instanceOf(Date),
 };
 
 export default withStyles(styles)(Agenda);

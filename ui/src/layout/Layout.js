@@ -1,27 +1,28 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import {withStyles} from 'material-ui/styles';
-import classNames from 'classnames';
+import React from "react";
+import PropTypes from "prop-types";
+import {withStyles} from "material-ui/styles";
+import classNames from "classnames";
 
-import MenuIcon from 'material-ui-icons/Menu';
-import moment from 'moment'
-import BigCalendar from 'react-big-calendar-like-google';
-import 'react-big-calendar-like-google/lib/css/react-big-calendar.css';
-import ChevronLeftIcon from 'material-ui-icons/ChevronLeft';
-import {mailFolderListItems, otherMailFolderListItems, userData, events} from './tileData';
+import MenuIcon from "material-ui-icons/Menu";
+import moment from "moment"
+import BigCalendar from "react-big-calendar-like-google";
+import "react-big-calendar-like-google/lib/css/react-big-calendar.css";
+import ChevronLeftIcon from "material-ui-icons/ChevronLeft";
+import {mailFolderListItems, otherMailFolderListItems, userData, events} from "./tileData";
 import {
-    AppBar, Avatar, Divider, Drawer, Grid, Hidden, IconButton, List, ListItem, ListItemText, Paper, Toolbar,
+    AppBar, Avatar, Divider, Drawer, Grid, Hidden, IconButton, List, ListItem, ListItemText, Paper, Tab, Tabs, Toolbar,
     Typography
 } from "material-ui";
 import {Route} from "react-router-dom";
 import ContentAuthenticated from "../authenticated/content/ContentAuthenticated";
 
-import ImageIcon from 'material-ui-icons/Image';
-import WorkIcon from 'material-ui-icons/Work';
-import BeachAccessIcon from 'material-ui-icons/BeachAccess';
+import ImageIcon from "material-ui-icons/Image";
+import WorkIcon from "material-ui-icons/Work";
+import BeachAccessIcon from "material-ui-icons/BeachAccess";
 import User from "../entity/User";
 import UserList from "../components/UserList";
 import Agenda from "../components/Agenda";
+import AgendaTabs from "../components/AgendaTabs";
 
 const drawerWidth = 240;
 
@@ -30,16 +31,16 @@ let allViews = Object.keys(BigCalendar.Views).map(k => BigCalendar.Views[k])
 const styles = theme => ({
     root: {
         flexGrow: 1,
-        height: '100vh',
-        maxHeight: '100vh',
+        height: "100vh",
+        maxHeight: "100vh",
         zIndex: 1,
-        overflow: 'hidden',
-        position: 'relative',
-        display: 'flex',
+        overflow: "hidden",
+        position: "relative",
+        display: "flex",
     },
     appBar: {
         zIndex: theme.zIndex.drawer + 1,
-        transition: theme.transitions.create(['width', 'margin'], {
+        transition: theme.transitions.create(["width", "margin"], {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
         }),
@@ -47,7 +48,7 @@ const styles = theme => ({
     appBarShift: {
         marginLeft: drawerWidth,
         width: `calc(100% - ${drawerWidth}px)`,
-        transition: theme.transitions.create(['width', 'margin'], {
+        transition: theme.transitions.create(["width", "margin"], {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.enteringScreen,
         }),
@@ -57,43 +58,43 @@ const styles = theme => ({
         marginRight: 36,
     },
     hide: {
-        display: 'none',
+        display: "none",
     },
     drawerPaper: {
-        position: 'relative',
+        position: "relative",
         width: drawerWidth,
-        transition: theme.transitions.create('width', {
+        transition: theme.transitions.create("width", {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.enteringScreen,
         }),
     },
     drawerPaperMobile: {
         width: drawerWidth,
-        [theme.breakpoints.up('md')]: {
-            position: 'relative',
+        [theme.breakpoints.up("md")]: {
+            position: "relative",
         },
     },
     drawerPaperClose: {
-        overflowX: 'hidden',
-        transition: theme.transitions.create('width', {
+        overflowX: "hidden",
+        transition: theme.transitions.create("width", {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
         }),
         width: theme.spacing.unit * 7,
-        [theme.breakpoints.up('sm')]: {
+        [theme.breakpoints.up("sm")]: {
             width: theme.spacing.unit * 9,
         },
     },
 
     toolbar: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'flex-end',
-        padding: '0 8px',
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "flex-end",
+        padding: "0 8px",
         ...theme.mixins.toolbar,
     },
     content: {
-        position: 'relative',
+        position: "relative",
         top: 64,
         flexGrow: 1,
         backgroundColor: theme.palette.background.default,
@@ -155,7 +156,7 @@ class Layout extends React.Component {
                 <Hidden mdUp>
                     <Drawer
                         variant="temporary"
-                        anchor={theme.direction === 'rtl' ? 'right' : 'left'}
+                        anchor={theme.direction === "rtl" ? "right" : "left"}
                         open={this.state.open}
                         onClose={this.handleDrawerClose}
                         classes={{
@@ -189,11 +190,11 @@ class Layout extends React.Component {
                 </Hidden>
                 <main className={classes.content}>
                     <Grid container spacing={24}>
-                        <Grid item xs={12} sm={4}>
+                        <Grid item xs={12} sm={3}>
                             <UserList match={{ahoj: "s"}} users={users}/>
                         </Grid>
-                        <Grid item xs={12} sm={8}>
-                            <Agenda/>
+                        <Grid item xs={12} sm={9}>
+                            <AgendaTabs/>
                         </Grid>
                     </Grid>
                 </main>

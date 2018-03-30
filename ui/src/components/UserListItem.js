@@ -1,7 +1,7 @@
-import React from 'react';
+import React from "react";
 import PropTypes from "prop-types";
 import {Avatar, ListItem, ListItemText} from "material-ui";
-import AccountCircle from 'material-ui-icons/AccountCircle';
+import AccountCircle from "material-ui-icons/AccountCircle";
 import User from "../entity/User";
 
 class UserListItem extends React.Component {

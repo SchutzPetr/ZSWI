@@ -1,8 +1,8 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import {withStyles} from 'material-ui/styles';
-import Typography from 'material-ui/Typography';
-import Modal from 'material-ui/Modal';
+import React from "react";
+import PropTypes from "prop-types";
+import {withStyles} from "material-ui/styles";
+import Typography from "material-ui/Typography";
+import Modal from "material-ui/Modal";
 import {
     Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, FormControlLabel,
     FormGroup, FormLabel,
@@ -21,7 +21,7 @@ function getModalStyle() {
 
 const styles = theme => ({
     paper: {
-        position: 'absolute',
+        position: "absolute",
         width: theme.spacing.unit * 50,
         backgroundColor: theme.palette.background.paper,
         boxShadow: theme.shadows[5],
@@ -76,7 +76,7 @@ class FilterModal extends React.Component {
                                 control={
                                     <Switch
                                         checked={this.state.KIV}
-                                        onChange={(event, checked) => this.handleChange('KIV', checked)}
+                                        onChange={(event, checked) => this.handleChange("KIV", checked)}
                                         value="KIV"
                                     />
                                 }
@@ -86,7 +86,7 @@ class FilterModal extends React.Component {
                                 control={
                                     <Switch
                                         checked={this.state.NTIS}
-                                        onChange={(event, checked) => this.handleChange('NTIS', checked)}
+                                        onChange={(event, checked) => this.handleChange("NTIS", checked)}
                                         value="NTIS"
                                     />
                                 }
@@ -96,7 +96,7 @@ class FilterModal extends React.Component {
                                 control={
                                     <Switch
                                         checked={this.state.INACTIVE}
-                                        onChange={(event, checked) => this.handleChange('INACTIVE', checked)}
+                                        onChange={(event, checked) => this.handleChange("INACTIVE", checked)}
                                         value="INACTIVE"
                                     />
                                 }

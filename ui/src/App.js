@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
-import './index.css';
+import React, {Component} from "react";
+import "./index.css";
 import Authentication from "./Authentication";
 import Layout from "./layout/Layout";
-import {MuiThemeProvider, createMuiTheme} from 'material-ui/styles';
+import {MuiThemeProvider, createMuiTheme} from "material-ui/styles";
 
 const theme = createMuiTheme();
 

@@ -1,26 +1,30 @@
 class User {
 
     constructor(){
-        this._givenName = '';
-        this._familyName = '';
-        this._email = '';
+        this._name = "";
+        this._lastName = "";
+        this._email = "";
+        this._honorificPrefix = "";
+        this._honorificSuffix = "";
+        this._authority = "";
+        this._active = true;
+        this._mainWorkStation = "";
     }
 
-
-    get givenName() {
-        return this._givenName;
+    get name() {
+        return this._name;
     }
 
-    set givenName(value) {
-        this._givenName = value;
+    set name(value) {
+        this._name = value;
     }
 
-    get familyName() {
-        return this._familyName;
+    get lastName() {
+        return this._lastName;
     }
 
-    set familyName(value) {
-        this._familyName = value;
+    set lastName(value) {
+        this._lastName = value;
     }
 
     get email() {
@@ -29,6 +33,46 @@ class User {
 
     set email(value) {
         this._email = value;
+    }
+
+    get honorificPrefix() {
+        return this._honorificPrefix;
+    }
+
+    set honorificPrefix(value) {
+        this._honorificPrefix = value;
+    }
+
+    get honorificSuffix() {
+        return this._honorificSuffix;
+    }
+
+    set honorificSuffix(value) {
+        this._honorificSuffix = value;
+    }
+
+    get authority() {
+        return this._authority;
+    }
+
+    set authority(value) {
+        this._authority = value;
+    }
+
+    get active() {
+        return this._active;
+    }
+
+    set active(value) {
+        this._active = value;
+    }
+
+    get mainWorkStation() {
+        return this._mainWorkStation;
+    }
+
+    set mainWorkStation(value) {
+        this._mainWorkStation = value;
     }
 
     toJSON() {
