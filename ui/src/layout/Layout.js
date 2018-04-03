@@ -5,8 +5,6 @@ import classNames from "classnames";
 
 import MenuIcon from "material-ui-icons/Menu";
 import moment from "moment"
-import BigCalendar from "react-big-calendar-like-google";
-import "react-big-calendar-like-google/lib/css/react-big-calendar.css";
 import ChevronLeftIcon from "material-ui-icons/ChevronLeft";
 import {mailFolderListItems, otherMailFolderListItems, userData, events} from "./tileData";
 import {
@@ -25,8 +23,6 @@ import Agenda from "../components/Agenda";
 import AgendaTabs from "../components/AgendaTabs";
 
 const drawerWidth = 240;
-
-let allViews = Object.keys(BigCalendar.Views).map(k => BigCalendar.Views[k])
 
 const styles = theme => ({
     root: {
@@ -98,7 +94,7 @@ const styles = theme => ({
         top: 64,
         flexGrow: 1,
         backgroundColor: theme.palette.background.default,
-        padding: theme.spacing.unit * 3,
+        padding: theme.spacing.unit * 1,
     },
     calendar: {
         height: `calc(100vh - 112px)`,
@@ -189,7 +185,7 @@ class Layout extends React.Component {
                     </Drawer>
                 </Hidden>
                 <main className={classes.content}>
-                    <Grid container spacing={24}>
+                    <Grid container spacing={16}>
                         <Grid item xs={12} sm={3}>
                             <UserList match={{ahoj: "s"}} users={users}/>
                         </Grid>

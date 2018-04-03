@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import {withStyles} from "material-ui/styles";
 import moment from "moment";
-import {Paper, Tab, Tabs} from "material-ui";
+import {Button, Paper, Tab, Tabs} from "material-ui";
 import Agenda from "./Agenda";
 
 
@@ -12,9 +12,20 @@ const styles = theme => ({
         width: "100%",
         backgroundColor: theme.palette.background.paper,
     },
+    tabs: {
+        height: 35,
+        minHeight: 35
+    },
     tab: {
-        width: "8.3%",
-        minWidth: "8.3%"
+        width: "7.5%",
+        minWidth: "7.5%",
+        maxWidth: "7.5%",
+        height: 35
+    },
+    yearButton: {
+        width: "5%",
+        minWidth: "5%",
+        maxWidth: "5%",
     }
 });
 
@@ -27,10 +38,22 @@ class AgendaTabs extends React.Component {
 
     changeMonth(event, value) {
         this.setState({
-            month: value
+            month: value - 1
         });
     }
 
+    changeYear(year) {
+        debugger
+        this.setState({
+            year: year
+        });
+    }
+
+    handleChangeYear = year => event => {
+        this.setState({
+            year: year
+        });
+    };
 
     render() {
         const {classes} = this.props;
@@ -43,7 +66,7 @@ class AgendaTabs extends React.Component {
 
         //return (<Paper className={classes.root}/>)
 
-       return (
+        return (
             <Paper className={classes.root}>
                 {this.state.month === 0 && <Agenda date={new Date(this.state.year, this.state.month)}/>}
                 {this.state.month === 1 && <Agenda date={new Date(this.state.year, this.state.month)}/>}
@@ -57,14 +80,18 @@ class AgendaTabs extends React.Component {
                 {this.state.month === 9 && <Agenda date={new Date(this.state.year, this.state.month)}/>}
                 {this.state.month === 10 && <Agenda date={new Date(this.state.year, this.state.month)}/>}
                 {this.state.month === 11 && <Agenda date={new Date(this.state.year, this.state.month)}/>}
-                <Tabs value={this.state.month}
+                <Tabs className={classes.tabs}
+                      value={this.state.month + 1}
                       onChange={this.changeMonth.bind(this)}
                       scrollable={false}
-                      indicatorColor={"primary"}
-                      textColor={"primary"}>
+                      indicatorColor={"primary"}>
+                    <Button className={classes.yearButton}
+                            onClick={this.handleChangeYear(this.state.year - 1)}>{this.state.year - 1}</Button>
                     {months.map((value, index) => {
                         return <Tab className={classes.tab} label={moment(value).format("MMMM")}/>
                     })}
+                    <Button className={classes.yearButton}
+                            onClick={this.handleChangeYear(this.state.year + 1)}>{this.state.year + 1}</Button>
                 </Tabs>
             </Paper>
         );

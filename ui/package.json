@@ -5,17 +5,18 @@
   "dependencies": {
     "autosuggest-highlight": "^3.1.1",
     "classnames": "latest",
-    "material-ui": "^1.0.0-beta.35",
-    "material-ui-icons": "^1.0.0-beta.35",
+    "material-ui": "^1.0.0-beta.40",
+    "material-ui-icons": "^1.0.0-beta.36",
+    "material-ui-pickers": "^1.0.0-rc.4",
     "moment": "^2.21.0",
     "prop-types": "latest",
     "react": "^16.2.0",
     "react-autosuggest": "^9.3.4",
-    "react-big-calendar-like-google": "0.0.3",
     "react-dom": "^16.2.0",
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.1.1",
-    "react-select": "^1.2.1"
+    "react-select": "^1.2.1",
+    "yarn": "^1.5.1"
   },
   "scripts": {
     "start": "react-scripts start",
