@@ -145,7 +145,7 @@ class Layout extends React.Component {
                             <MenuIcon/>
                         </IconButton>
                         <Typography variant="title" color="inherit" noWrap>
-                            Mini variant drawer
+                            Správce docházky
                         </Typography>
                     </Toolbar>
                 </AppBar>

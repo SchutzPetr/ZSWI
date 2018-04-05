@@ -25,7 +25,7 @@ const styles = theme => ({
         padding: 0,
     },
     input: {
-        width: "calc(80% - " + 2* theme.spacing.unit + "px)",
+        width: "100%",
         margin: theme.spacing.unit,
         marginLeft: 0
     },
@@ -67,10 +67,12 @@ class UserList extends React.Component {
                         inputProps={{
                             "aria-label": "Search",
                         }}
+                        endAdornment={
+                            <IconButton aria-label="Filter" onClick={this.handleOpen.bind(this)}>
+                                <FilterListIcon />
+                            </IconButton>
+                        }
                     />
-                    <IconButton aria-label="Filter" onClick={this.handleOpen.bind(this)}>
-                        <FilterListIcon />
-                    </IconButton>
                 </div>
                 <List className={this.props.classes.root}>
                     {this.props.users.map((value, index) => <UserListItem key={"user-list-item-" + value.email + index}
