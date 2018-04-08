@@ -2,6 +2,7 @@
 //defined('INDEX') OR die('Прямой доступ к странице запрещён!');
 
 include_once("User.php");
+include_once("constant.php");
 
 // MYSQL
 class MyDB
@@ -28,9 +29,269 @@ class MyDB
     }
 
 
-    function generateMonthForAllActiveUsers($month, $year){
+    function generateMonthSheduleForUser($id, $month, $year){
+		$arrayHolodaysInMonth = $this->getAllHolidaysInMonth($month, $year);
+		$arrayVacationsInMonth = $this->getVacationByUserInMonth($id, $month, $year);
+		$time = $this->getTimeTableByUserID($id);
+
+	    $day = FIRST_DAY;
+	    $d = mktime(0, 0, 0, $month, $day, $year);
+	    $lastDayInMonth = date("t", strtotime($d));
+		for($day; $day<$lastDayInMonth; $day++){
+			$d = mktime(0, 0, 0, $month, $day, $year);
+			//is it not a saturday or sunday
+			if( date('w', $d)>0 && date('w', $d)<6){
+				$dayInMonth = date("Y-m-d", $d);
+				//is it not a hollidays
+				if(!$this->isItHollidays($dayInMonth, $arrayHolodaysInMonth)){
+					//is it nor a vacation
+					if(!$this->isItVacationDay($dayInMonth, $arrayVacationsInMonth)){
+						$this->addSheduleByUserID($id, $dayInMonth, 0,0, "",
+							$time[0]["from_1"], $time[0]["to_1"], $time[0]["from_2"], $time[0]["to_2"], $time[0]["from_3"], $time[0]["to_3"]);
+						//TODO Control time 3
+
+					}else{//if is it a vacation
+						//TODO type control
+//						if($arrayVacationsInMonth[$dayInMonth]->type == '0.5'){
+//
+//						}
+						$this->addSheduleByUserID($id, $dayInMonth, 0,1, "",
+							$time[0]["from_1"], $time[0]["to_1"], null, null, $time[0]["from_3"], $time[0]["to_3"]);
+
+					}
+
+				}
+
+			}
+
+		}
+    }
+
+    function addSheduleByUserID($id, $day, $is_nemoc, $is_vacation, $other, $from_1, $to_1, $from_2, $to_2, $from_3, $to_3){
+	    $mysql_pdo_error = false;
+	    $query = 'INSERT INTO shedule (day, is_nemoc, is_vacation, other, from_1, to_1, from_2, to_2, user_id) 
+VALUES (:day, :is_nemoc, :is_vacation, :other, :from_1, :to_1, :from_2, :to_2, :id)';
+	    $sth = $this->conn->prepare($query);
+	    $sth->bindValue(':day', $day);
+	    $sth->bindValue(':is_nemoc', $is_nemoc);
+	    $sth->bindValue(':is_vacation', $is_vacation);
+	    $sth->bindValue(':other', $other);
+	    $sth->bindValue(':from_1', $from_1);
+	    $sth->bindValue(':to_1', $to_1);
+	    $sth->bindValue(':from_2', $from_2);
+	    $sth->bindValue(':to_2', $to_2);
+//	    $sth->bindValue(':from_3', $from_3);
+//	    $sth->bindValue(':to_3', $to_3);
+	    $sth->bindValue(':id', $id);
+	    $sth->execute();//insert to db
+	    $errors = $sth->errorInfo();
+	    if ($errors[0] > 0){
+		    $mysql_pdo_error = true;
+	    }
+	    if ($mysql_pdo_error == false){
+		    //all is ok
+		    return true;
+	    }else{
+		    echo "Eror - PDOStatement::errorInfo(): ";
+		    print_r($errors);
+		    echo "SQL : $query";
+	    }
+
+    }
+
+    function addTimeTableByUserID($id, $from_1, $to_1, $from_2, $to_2){
+	    $mysql_pdo_error = false;
+	    $query = 'INSERT INTO time_table (from_1, to_1, from_2, to_2,  active_from, user_id) 
+VALUES (:from_1, :to_1 ,:from_2, :to_2, :active_from, :id)';
+	    $sth = $this->conn->prepare($query);
+	    $sth->bindValue(':from_1', $from_1);
+	    $sth->bindValue(':to_1', $to_1);
+	    $sth->bindValue(':from_2', $from_2);
+	    $sth->bindValue(':to_2', $to_2);
+//	    $sth->bindValue(':from_3', $from_3);
+//	    $sth->bindValue(':to_3', $to_3);
+	    $sth->bindValue(':active_from', date("Y-m-d"));
+	    $sth->bindValue(':id', $id);
+	    $sth->execute();//insert to db
+	    $errors = $sth->errorInfo();
+	    echo $sth->errorCode() ;
+	    if ($errors[0] > 0){
+		    $mysql_pdo_error = true;
+	    }
+	    if ($mysql_pdo_error == false){
+		    //all is ok
+		    echo "all is ok \n";
+		    return true;
+	    }else{
+		    echo "Eror - PDOStatement::errorInfo(): ";
+		    print_r($errors);
+		    echo "SQL : $query";
+	    }
+    }
+
+    function getTimeTableByUserID($id){
+	    $mysql_pdo_error = false;
+	    $query = "select * from time_table WHERE user_id=:id";
+	    $sth = $this->conn->prepare($query);
+	    $sth->bindValue(':id', $id, PDO::PARAM_INT);
+	    $sth->execute();
+	    $errors = $sth->errorInfo();
+	    if ($errors[0] + 0 > 0){
+		    $mysql_pdo_error = true;
+	    }
+	    if ($mysql_pdo_error == false){
+		    $all = $sth->fetchAll(PDO::FETCH_ASSOC);
+		    return $all;
+	    }
+	    else{
+		    //TODO other error
+		    echo "Eror - PDOStatement::errorInfo(): ";
+		    print_r($errors);
+		    echo "SQL : $query";
+	    }
 
 
+    }
+
+	function isItHollidays($day, $arrayHollidays){
+		if( count($arrayHollidays) > 0){
+			for($i=0; $i<count($arrayHollidays); $i++){
+				if( $arrayHollidays[$i]["day"] == $day){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	function isItVacationDay($day, $arrayVacation){
+    	if(count($arrayVacation)>0){
+			for($i=0; $i<count($arrayVacation); $i++){
+				if($arrayVacation[$i]["day"]==$day){
+					return true;
+				}
+			}
+	    }
+	    return false;
+    }
+
+    function updateUser($user){
+	    $mysql_pdo_error = false;
+	    $query = 'UPDATE user SET name =:users_name, lastname=:users_lastname,
+ 								  honorific_prefix=:users_honorific_prefix,honorific_suffix:=users_honorific_suffix
+ 								  authority=:users_authority, is_active=:users_is_active, main_work_station=:users_main_work_station  
+ 								  where id=:user_id;';
+	    $sth = $this->conn->prepare($query);
+	    $sth->bindValue(':user_id', $user->id);
+	    $sth->bindValue(':users_name', $user->name);
+	    $sth->bindValue(':users_lastname', $user->lastname);
+	    $sth->bindValue(':users_honorific_prefix', $user->honorific_prefix);
+	    $sth->bindValue(':users_honorific_suffix', $user->honorific_suffix);
+	    $sth->bindValue(':users_authority', $user->authority);
+	    $sth->bindValue(':users_is_active', $user->is_active);
+	    $sth->bindValue(':users_main_work_station', $user->main_work_station);
+
+	    $sth->execute();//insert to db
+	    $errors = $sth->errorInfo();
+	    if ($errors[0] + 0 > 0){
+		    $mysql_pdo_error = true;
+	    }
+	    if ($mysql_pdo_error == false){
+		    //all is ok
+		    return true;
+	    }else{
+		    echo "Eror - PDOStatement::errorInfo(): ";
+		    print_r($errors);
+		    echo "SQL : $query";
+	    }
+    }
+
+    function getTotalRateByUserIDinMonth(){
+
+    }
+
+    function addProjectsByUser($id, $ntis, $kiv, $project_1, $project_1_name, $project_2, $project_2_name, $date){
+	    $mysql_pdo_error = false;
+	    $query = 'INSERT INTO users_project (KIV, NTIS, project_1_name, project_1, project_2_name, project_2, active_from, user_id) 
+VALUES (:ntis, :kiv ,:project_1_name, :project_1, :project_2_name, project_2, :active_from, :id)';
+	    $sth = $this->conn->prepare($query);
+	    $sth->bindValue(':ntis', $ntis);
+	    $sth->bindValue(':kiv', $kiv);
+	    $sth->bindValue(':project_1', $project_1);
+	    $sth->bindValue(':project_1_name', $project_1_name);
+	    $sth->bindValue(':project_2', $project_2);
+	    $sth->bindValue(':project_2_name', $project_2_name);
+	    $sth->bindValue(':active_from', date("Y-m-d"), $date);
+	    $sth->bindValue(':id', $id);
+	    $sth->execute();//insert to db
+	    $errors = $sth->errorInfo();
+	    echo $sth->errorCode() ;
+	    if ($errors[0] > 0){
+		    $mysql_pdo_error = true;
+	    }
+	    if ($mysql_pdo_error == false){
+		    //all is ok
+		    echo "all is ok \n";
+		    return true;
+	    }else{
+		    echo "Eror - PDOStatement::errorInfo(): ";
+		    print_r($errors);
+		    echo "SQL : $query";
+	    }
+
+    }
+
+
+    function getProjectsUserInMonth($id, $month, $year){
+	    $mysql_pdo_error = false;
+	    $query = "select *  from users_project WHERE user_id=:id";
+	    $sth = $this->conn->prepare($query);
+	    $sth->bindValue(':id', $id, PDO::PARAM_INT);
+	    $sth->execute();
+	    $errors = $sth->errorInfo();
+	    if ($errors[0] + 0 > 0){
+		    $mysql_pdo_error = true;
+	    }
+	    if ($mysql_pdo_error == false){
+		    $all = $sth->fetchAll(PDO::FETCH_ASSOC);
+		    //TODO will be problem with other rate in one month
+		    return $all;
+	    }
+	    else{
+		    //TODO other error
+		    echo "Eror - PDOStatement::errorInfo(): ";
+		    print_r($errors);
+		    echo "SQL : $query";
+	    }
+
+    }
+
+    function updateTimeTable( $time){
+	    $mysql_pdo_error = false;
+	    $query = 'UPDATE time_table SET from_1 =:from_1, to_1=:to_1,
+ 								  from_2=:from_2,to_2:=to_2, active_from:=active_from
+ 								  where user_id=:user_id;';
+	    $sth = $this->conn->prepare($query);
+	    $sth->bindValue(':user_id', $time->user_id);
+	    $sth->bindValue(':from_1', $time->timeFrom1);
+	    $sth->bindValue(':to_1', $time->timeTo1);
+	    $sth->bindValue(':from_2', $time->timeFrom2);
+	    $sth->bindValue(':active_from', date("Y-m-d h:i:sa"));
+	    $sth->bindValue(':to_2', $time->timeTo2);
+
+	    $sth->execute();//insert to db
+	    $errors = $sth->errorInfo();
+	    if ($errors[0] + 0 > 0){
+		    $mysql_pdo_error = true;
+	    }
+	    if ($mysql_pdo_error == false){
+		    //all is ok
+		    return true;
+	    }else{
+		    echo "Eror - PDOStatement::errorInfo(): ";
+		    print_r($errors);
+		    echo "SQL : $query";
+	    }
     }
 
     function setActiveStatus($setTo, $user_id){
@@ -48,6 +309,54 @@ class MyDB
 		    //all is ok
 		    return true;
 	    }else{
+		    echo "Eror - PDOStatement::errorInfo(): ";
+		    print_r($errors);
+		    echo "SQL : $query";
+	    }
+
+    }
+
+    function getVacationByUserInMonth($id, $month, $year){
+	    $mysql_pdo_error = false;
+	    $query = "select *  from vacation WHERE  MONTH(day) =:month AND YEAR(day) =:year AND user_id=:id";
+	    $sth = $this->conn->prepare($query);
+	    $sth->bindValue(':id', $id, PDO::PARAM_INT);
+	    $sth->bindValue(':month', $month, PDO::PARAM_STR);
+	    $sth->bindValue(':year', $year, PDO::PARAM_STR);
+	    $sth->execute();
+	    $errors = $sth->errorInfo();
+	    if ($errors[0] + 0 > 0){
+		    $mysql_pdo_error = true;
+	    }
+	    if ($mysql_pdo_error == false){
+		    $all = $sth->fetchAll(PDO::FETCH_ASSOC);
+		    return $all;
+	    }
+	    else{
+		    //TODO other error
+		    echo "Eror - PDOStatement::errorInfo(): ";
+		    print_r($errors);
+		    echo "SQL : $query";
+	    }
+
+    }
+
+    function getHoliday($day){
+	    $mysql_pdo_error = false;
+	    $query = "select *  from holidays WHERE  day=:day";
+	    $sth = $this->conn->prepare($query);
+	    $sth->bindValue(':day', $day, PDO::PARAM_STR);
+	    $sth->execute();
+	    $errors = $sth->errorInfo();
+	    if ($errors[0] + 0 > 0){
+		    $mysql_pdo_error = true;
+	    }
+	    if ($mysql_pdo_error == false){
+		    $all = $sth->fetchAll(PDO::FETCH_ASSOC);
+		    return $all[0];
+	    }
+	    else{
+		    //TODO other error
 		    echo "Eror - PDOStatement::errorInfo(): ";
 		    print_r($errors);
 		    echo "SQL : $query";
@@ -157,7 +466,7 @@ class MyDB
     }
 
 
-    function getAllUserFroReportByID($id, $month, $year){
+    function getAllUserForReportByID($id, $month, $year){
 	    $day = 1;
 	    $d = mktime(0, 0, 0, $month, $day, $year);
 
@@ -307,8 +616,35 @@ AND  date >=:day_from AND date <=:day_from";
 
     }
 
-    function addVacationToUser($day, $user_id){
+	/***
+	 * Function don`t have control shedule user, control must be in other file
+	 * @param $day
+	 * @param $type
+	 * @param $user_id
+	 *
+	 * @return bool
+	 */
+    function addVacationToUser($day, $type ,$user_id){
+	    $mysql_pdo_error = false;
+	    $query = 'INSERT INTO vacation (day, type, user_id) VALUES (:day, :type, :user_id)';
+	    $sth = $this->conn->prepare($query);
+	    $sth->bindValue(':day', $day);
+	    $sth->bindValue(':type', $type);
+	    $sth->bindValue(':user_id', $user_id);
 
+	    $sth->execute();//insert to db
+	    $errors = $sth->errorInfo();
+	    if ($errors[0] > 0){
+		    $mysql_pdo_error = true;
+	    }
+	    if ($mysql_pdo_error == false){
+		    //all is ok
+		    return true;
+	    }else{
+		    echo "Eror - PDOStatement::errorInfo(): ";
+		    print_r($errors);
+		    echo "SQL : $query";
+	    }
     }
 
 
