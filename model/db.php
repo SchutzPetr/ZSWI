@@ -530,7 +530,7 @@ VALUES (:ntis, :kiv ,:project_1_name, :project_1, :project_2_name, project_2, :a
 
     }
 
-    function getAttendanceAllActiveUsersByMonthAndYear($month, $year){
+    function getSheduleAllActiveUsersByMonthAndYear($month, $year){
         $mysql_pdo_error = false;
         $query = "select * from user where is_active =1";
         $sth = $this->conn->prepare($query);
@@ -543,7 +543,7 @@ VALUES (:ntis, :kiv ,:project_1_name, :project_1, :project_2_name, project_2, :a
             $allUsers = $sth->fetchAll(PDO::FETCH_ASSOC);
             $all = array();
             foreach ($allUsers as $user){
-                $all[$user] = $this->getAttendanceUserByMonthAndYear($month, $year, $user['id']);
+                $all[$user] = $this->getSheduleUserByMonthAndYear($month, $year, $user['id']);
             }
             return $all;
         }
@@ -555,7 +555,7 @@ VALUES (:ntis, :kiv ,:project_1_name, :project_1, :project_2_name, project_2, :a
         }
     }
 
-    function getAttendanceUserByMonthAndYear($month, $year, $user_id){
+    function getSheduleUserByMonthAndYear($month, $year, $user_id){
         $day = 1;
         $d = mktime(0, 0, 0, $month, $day, $year);
 
@@ -585,6 +585,31 @@ AND  date >=:day_from AND date <=:day_from";
             print_r($errors);
             echo "SQL : $query";
         }
+
+    }
+
+    function getVacationByID($id){
+	    $mysql_pdo_error = false;
+	    $query = "select * from vacation where id=:id";
+	    $sth = $this->conn->prepare($query);
+	    $sth->bindValue(':id', $id, PDO::PARAM_INT);
+
+	    $sth->execute();
+	    $errors = $sth->errorInfo();
+	    if ($errors[0] + 0 > 0){
+		    $mysql_pdo_error = true;
+	    }
+	    if ($mysql_pdo_error == false){
+		    $all = $sth->fetchAll(PDO::FETCH_ASSOC);
+		    return $all[0];
+	    }
+	    else{
+		    //TODO other error
+		    echo "Eror - PDOStatement::errorInfo(): ";
+		    print_r($errors);
+		    echo "SQL : $query";
+	    }
+
 
     }
 
