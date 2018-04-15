@@ -18,9 +18,9 @@ import ImageIcon from "material-ui-icons/Image";
 import WorkIcon from "material-ui-icons/Work";
 import BeachAccessIcon from "material-ui-icons/BeachAccess";
 import User from "../entity/User";
-import UserList from "../components/UserList";
-import Agenda from "../components/Agenda";
-import AgendaTabs from "../components/AgendaTabs";
+import UserList from "../components/user_list/UserList";
+import Agenda from "../components/agenda/Agenda";
+import AgendaTabs from "../components/agenda/AgendaTabs";
 
 const drawerWidth = 240;
 
@@ -185,14 +185,28 @@ class Layout extends React.Component {
                     </Drawer>
                 </Hidden>
                 <main className={classes.content}>
-                    <Grid container spacing={16}>
-                        <Grid item xs={12} sm={3}>
-                            <UserList match={{ahoj: "s"}} users={users}/>
-                        </Grid>
-                        <Grid item xs={12} sm={9}>
-                            <AgendaTabs/>
-                        </Grid>
-                    </Grid>
+                    <Route path={"/agenda"} exact={true}
+                           render={props => (
+                               <Grid container spacing={16}>
+                                   <Grid item xs={12} sm={3}>
+                                       <UserList match={{ahoj: "s"}} users={users}/>
+                                   </Grid>
+                                   <Grid item xs={12} sm={9}>
+                                       <AgendaTabs/>
+                                   </Grid>
+                               </Grid>
+                           )}/>
+                    <Route path={"/share-agenda"} exact={true}
+                           render={props => (
+                               <Grid container spacing={16}>
+                                   <Grid item xs={12} sm={3}>
+                                       <UserList match={{ahoj: "s"}} users={users}/>
+                                   </Grid>
+                                   <Grid item xs={12} sm={9}>
+                                       <AgendaTabs/>
+                                   </Grid>
+                               </Grid>
+                           )}/>
                 </main>
             </div>
         );

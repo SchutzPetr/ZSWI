@@ -2,21 +2,22 @@ import React from "react";
 import PropTypes from "prop-types";
 import {Avatar, IconButton, ListItem, ListItemSecondaryAction, ListItemText} from "material-ui";
 import AccountCircle from "material-ui-icons/AccountCircle";
-import User from "../entity/User";
+import User from "../../entity/User";
 import {MoreVert} from "material-ui-icons";
+import { Link } from 'react-router-dom'
 
 class UserListItem extends React.Component {
 
     render() {
         return (
-            <ListItem button={true}>
+            <ListItem button={true} component={Link} to={`/agenda?user=${this.props.user.givenName}`}>
                 <Avatar>
                     <AccountCircle/>
                 </Avatar>
                 <ListItemText primary={this.props.user.givenName} secondary={this.props.user.email}/>
                 <ListItemSecondaryAction>
                     <IconButton  aria-label="Menu"
-                                 onClick={(event) => {}}>
+                                 onClick={this.props.onOpen}>
                         <MoreVert />
                     </IconButton>
                 </ListItemSecondaryAction>
@@ -26,6 +27,7 @@ class UserListItem extends React.Component {
 }
 UserListItem.propTypes = {
     match: PropTypes.object.isRequired,
+    onOpen: PropTypes.func.isRequired
 
 };
 

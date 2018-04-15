@@ -1,21 +1,23 @@
 import React from "react";
 import PropTypes from "prop-types";
-import User from "../entity/User";
-import {IconButton, Input, List, Paper} from "material-ui";
+import User from "../../entity/User";
+import {IconButton, Input, List, Menu, MenuItem, Paper} from "material-ui";
 import UserListItem from "./UserListItem";
 import {withStyles} from "material-ui/styles";
-import ExpansionUserFilter from "./ExpansionUserFilter";
+import ExpansionUserFilter from "../ExpansionUserFilter";
 import FilterListIcon from "material-ui-icons/FilterList";
 
 import {darken, fade, lighten} from "material-ui/styles/colorManipulator";
 import FilterModal from "./FilterModal";
+import Fade from "material-ui/es/transitions/Fade";
 
 
 const styles = theme => ({
     root: {
         backgroundColor: theme.palette.background.paper,
         overflow: "auto",
-        maxHeight: `calc(100vh - 177px)`
+        maxHeight: `calc(100vh - 171px)`,
+        height: `calc(100vh - 171px)`
     },
     listSection: {
         backgroundColor: "inherit",
@@ -33,7 +35,7 @@ const styles = theme => ({
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        padding: 16,
+        padding: "5px 16px",
         borderBottom: `1px solid ${
             theme.palette.type === "light"
                 ? lighten(fade(theme.palette.divider, 1), 0.88)
@@ -46,6 +48,7 @@ class UserList extends React.Component {
 
     state = {
         open: false,
+        anchorEl: null,
     };
 
     handleOpen = () => {
@@ -54,6 +57,14 @@ class UserList extends React.Component {
 
     handleClose = () => {
         this.setState({ open: false });
+    };
+
+    handleOpenMenu = (event) => {
+        this.setState({anchorEl: event.currentTarget});
+    };
+
+    handleCloseMenu = (event) => {
+        this.setState({anchorEl: null});
     };
 
     render() {
@@ -76,8 +87,19 @@ class UserList extends React.Component {
                 </div>
                 <List className={this.props.classes.root}>
                     {this.props.users.map((value, index) => <UserListItem key={"user-list-item-" + value.email + index}
-                                                                          match={this.props.match} user={value}/>)}
+                                                                          match={this.props.match} user={value} onOpen={this.handleOpenMenu}/>)}
                 </List>
+                <Menu
+                    id="fade-menu"
+                    anchorEl={this.state.anchorEl}
+                    open={Boolean(this.state.anchorEl)}
+                    onClose={this.handleCloseMenu}
+                    transition={Fade}
+                >
+                    <MenuItem onClick={this.handleCloseMenu}>Editovat výkaz</MenuItem>
+                    <MenuItem onClick={this.handleCloseMenu}>My account</MenuItem>
+                    <MenuItem onClick={this.handleCloseMenu}>Logout</MenuItem>
+                </Menu>
             </Paper>
         );
     }
@@ -88,4 +110,4 @@ UserList.propTypes = {
     match: PropTypes.object,
     users: PropTypes.array.isRequired,
 };
-export default withStyles(styles)(UserList);
+export default withStyles(styles, {withTheme: true})(UserList);

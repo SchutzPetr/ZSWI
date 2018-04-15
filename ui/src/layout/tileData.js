@@ -1,7 +1,7 @@
 // This file is shared across the demos.
 
 import React from "react";
-import { ListItem, ListItemIcon, ListItemText } from "material-ui/List";
+import {ListItem, ListItemIcon, ListItemText} from "material-ui/List";
 import InboxIcon from "material-ui-icons/MoveToInbox";
 import DraftsIcon from "material-ui-icons/Drafts";
 import StarIcon from "material-ui-icons/Star";
@@ -14,27 +14,27 @@ export const mailFolderListItems = (
     <div>
         <ListItem button>
             <ListItemIcon>
-                <InboxIcon />
+                <InboxIcon/>
             </ListItemIcon>
-            <ListItemText primary="Inbox" />
+            <ListItemText primary="Inbox"/>
         </ListItem>
         <ListItem button>
             <ListItemIcon>
-                <StarIcon />
+                <StarIcon/>
             </ListItemIcon>
-            <ListItemText primary="Starred" />
+            <ListItemText primary="Starred"/>
         </ListItem>
         <ListItem button>
             <ListItemIcon>
-                <SendIcon />
+                <SendIcon/>
             </ListItemIcon>
-            <ListItemText primary="Send mail" />
+            <ListItemText primary="Send mail"/>
         </ListItem>
         <ListItem button>
             <ListItemIcon>
-                <DraftsIcon />
+                <DraftsIcon/>
             </ListItemIcon>
-            <ListItemText primary="Drafts" />
+            <ListItemText primary="Drafts"/>
         </ListItem>
     </div>
 );
@@ -43,26 +43,63 @@ export const otherMailFolderListItems = (
     <div>
         <ListItem button>
             <ListItemIcon>
-                <MailIcon />
+                <MailIcon/>
             </ListItemIcon>
-            <ListItemText primary="All mail" />
+            <ListItemText primary="All mail"/>
         </ListItem>
         <ListItem button>
             <ListItemIcon>
-                <DeleteIcon />
+                <DeleteIcon/>
             </ListItemIcon>
-            <ListItemText primary="Trash" />
+            <ListItemText primary="Trash"/>
         </ListItem>
         <ListItem button>
             <ListItemIcon>
-                <ReportIcon />
+                <ReportIcon/>
             </ListItemIcon>
-            <ListItemText primary="Spam" />
+            <ListItemText primary="Spam"/>
         </ListItem>
     </div>
 );
 
-export const userData = [{"givenName":"Petr","familyName":"Schutz","email":"schutzp@students.zcu.cz"},{"givenName":"Petr","familyName":"Schutz","email":"schutzp@students.zcu.cz"},{"givenName":"Petr","familyName":"Schutz","email":"schutzp@students.zcu.cz"},{"givenName":"Petr","familyName":"Schutz","email":"schutzp@students.zcu.cz"},{"givenName":"Petr","familyName":"Schutz","email":"schutzp@students.zcu.cz"},{"givenName":"Petr","familyName":"Schutz","email":"schutzp@students.zcu.cz"},{"givenName":"Petr","familyName":"Schutz","email":"schutzp@students.zcu.cz"},{"givenName":"Petr","familyName":"Schutz","email":"schutzp@students.zcu.cz"},{"givenName":"Petr","familyName":"Schutz","email":"schutzp@students.zcu.cz"},{"givenName":"Petr","familyName":"Schutz","email":"schutzp@students.zcu.cz"},{"givenName":"Petr","familyName":"Schutz","email":"schutzp@students.zcu.cz"},{"givenName":"Petr","familyName":"Schutz","email":"schutzp@students.zcu.cz"},{"givenName":"Petr","familyName":"Schutz","email":"schutzp@students.zcu.cz"},{"givenName":"Petr","familyName":"Schutz","email":"schutzp@students.zcu.cz"},{"givenName":"Petr","familyName":"Schutz","email":"schutzp@students.zcu.cz"},{"givenName":"Petr","familyName":"Schutz","email":"schutzp@students.zcu.cz"},{"givenName":"Petr","familyName":"Schutz","email":"schutzp@students.zcu.cz"},{"givenName":"Petr","familyName":"Schutz","email":"schutzp@students.zcu.cz"},{"givenName":"Petr","familyName":"Schutz","email":"schutzp@students.zcu.cz"},{"givenName":"Petr","familyName":"Schutz","email":"schutzp@students.zcu.cz"}];
+export const userData = [
+    {
+        "givenName": "Petr",
+        "familyName": "Schutz",
+        "email": "schutzp@students.zcu.cz"
+    },
+    {
+        "givenName": "Tyler",
+        "familyName": "Chapman",
+        "email": "chapman@students.zcu.cz"
+    },
+    {
+        "givenName": "Petr",
+        "familyName": "Schutz",
+        "email": "schutzp@students.zcu.cz"
+    },
+    {
+        "givenName": "Petr",
+        "familyName": "Schutz",
+        "email": "schutzp@students.zcu.cz"
+    },
+    {
+        "givenName": "Petr",
+        "familyName": "Schutz",
+        "email": "schutzp@students.zcu.cz"
+    },
+    {
+        "givenName": "Petr",
+        "familyName": "Schutz",
+        "email": "schutzp@students.zcu.cz"
+    },
+    {
+        "givenName": "Petr",
+        "familyName": "Schutz",
+        "email": "schutzp@students.zcu.cz"
+    },
+
+];
 
 export const events = [
     {
@@ -386,62 +423,62 @@ export const ee = [
     {
         "title": "Lunch",
         "bgColor": "#cd5c5c",
-        "start":new Date(2015, 3, 12, 12, 0, 0, 0),
+        "start": new Date(2015, 3, 12, 12, 0, 0, 0),
         "end": new Date(2015, 3, 12, 13, 0, 0, 0),
         desc: "Power lunch"
     },
     {
         "title": "Happy Hour",
-        "start":new Date(2015, 3, 12, 12, 0, 0, 0),
+        "start": new Date(2015, 3, 12, 12, 0, 0, 0),
         "end": new Date(2015, 3, 12, 13, 0, 0, 0),
         desc: "Power lunch happy hour"
     },
     {
         "title": "Meeting",
         "bgColor": "#da70d6",
-        "start":new Date(2015, 3, 12,14, 0, 0, 0),
-        "end": new Date(2015, 3, 12,15, 0, 0, 0)
+        "start": new Date(2015, 3, 12, 14, 0, 0, 0),
+        "end": new Date(2015, 3, 12, 15, 0, 0, 0)
     },
     {
         "title": "Happy Hour",
         "bgColor": "#eee8aa",
-        "start":new Date(2015, 3, 17, 17, 0, 0, 0),
+        "start": new Date(2015, 3, 17, 17, 0, 0, 0),
         "end": new Date(2015, 3, 17, 17, 30, 0, 0),
         desc: "Most important meal of the day"
     },
     {
         "title": "Dinner",
         "bgColor": "#98fb98",
-        "start":new Date(2015, 3, 15, 20, 0, 0, 0),
+        "start": new Date(2015, 3, 15, 20, 0, 0, 0),
         "end": new Date(2015, 3, 15, 21, 0, 0, 0)
     },
     {
         "title": "Birthday Party",
         "bgColor": "#afeeee",
-        "start":new Date(2015, 3, 13, 7, 0, 0),
+        "start": new Date(2015, 3, 13, 7, 0, 0),
         "end": new Date(2015, 3, 13, 10, 30, 0)
     },
     {
         "title": "Birthday Party 2",
         "bgColor": "#db7093",
-        "start":new Date(2015, 3, 13, 7, 0, 0),
+        "start": new Date(2015, 3, 13, 7, 0, 0),
         "end": new Date(2015, 3, 13, 10, 30, 0)
     },
     {
         "title": "Birthday Party 3",
         "bgColor": "#cd853f",
-        "start":new Date(2015, 3, 13, 7, 0, 0),
+        "start": new Date(2015, 3, 13, 7, 0, 0),
         "end": new Date(2015, 3, 13, 10, 30, 0)
     },
     {
         "title": "Late Night Event",
         "bgColor": "#b0e0e6",
-        "start":new Date(2015, 3, 17, 19, 30, 0),
+        "start": new Date(2015, 3, 17, 19, 30, 0),
         "end": new Date(2015, 3, 18, 2, 0, 0)
     },
     {
         "title": "Multi-day Event",
-        "start":new Date(2015, 3, 20, 19, 30, 0),
+        "start": new Date(2015, 3, 20, 19, 30, 0),
         "end": new Date(2015, 3, 22, 2, 0, 0)
     }
 ]

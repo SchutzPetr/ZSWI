@@ -23,6 +23,8 @@ import {
 import {TimePicker} from 'material-ui-pickers';
 import ExpandMoreIcon from "material-ui-icons/ExpandMore";
 import CloseIcon from 'material-ui-icons/Close';
+import DayTimeSheet from "../../entity/DayTimeSheet";
+import moment from "moment";
 
 
 function getModalStyle() {
@@ -52,16 +54,26 @@ const styles = theme => ({
 
 class AgendaEditModal extends React.Component {
 
-    state = {
-        expanded: null,
-        snackbar: false,
-        snackbarText: "",
-        selectedDate: new Date(),
-        firstPartFrom: new Date(),
-        firstPartTo: new Date(),
-        secondPartFrom: new Date(),
-        secondPartTo: new Date(),
-    };
+    constructor(props) {
+        super(props);
+
+        this.state = AgendaEditModal.getDerivedStateFromProps(props);
+    }
+
+    static getDerivedStateFromProps(nextProps, prevState){
+        return {
+            expanded: null,
+            snackbar: false,
+            snackbarText: "",
+            date: nextProps.dayTimeSheet == null ? null : nextProps.dayTimeSheet.date,
+            firstPartFrom: nextProps.dayTimeSheet == null ? null : nextProps.dayTimeSheet.firstPartFrom,
+            firstPartTo: nextProps.dayTimeSheet == null ? null : nextProps.dayTimeSheet.firstPartTo,
+            firstPartType: nextProps.dayTimeSheet == null ? null : nextProps.dayTimeSheet.firstPartType,
+            secondPartFrom: nextProps.dayTimeSheet == null ? null : nextProps.dayTimeSheet.secondPartFrom,
+            secondPartTo: nextProps.dayTimeSheet == null ? null : nextProps.dayTimeSheet.secondPartTo,
+            secondPartType: nextProps.dayTimeSheet == null ? null : nextProps.dayTimeSheet.secondPartType,
+        };
+    }
 
     handleChangePanel = panel => (event, expanded) => {
         this.setState({
@@ -77,6 +89,26 @@ class AgendaEditModal extends React.Component {
         this.setState({snackbar: false});
     };
 
+    _handleSave = () =>{
+        this.setState({
+            expanded: null
+        });
+
+        let result = this.props.dayTimeSheet.clone();
+
+        result.date = this.state.date;
+
+        result.firstPartFrom = this.state.firstPartFrom;
+        result.firstPartTo = this.state.firstPartTo;
+        result.firstPartType = this.state.firstPartType;
+
+        result.secondPartFrom = this.state.secondPartFrom;
+        result.secondPartTo = this.state.secondPartTo;
+        result.secondPartType = this.state.secondPartType;
+
+        this.props.handleOnSave(result);
+    };
+
     _handleClose = () => {
         this.setState({
             expanded: null
@@ -87,6 +119,8 @@ class AgendaEditModal extends React.Component {
     _handleFromDateChange = firstPart => (date) => {
         if (firstPart) {
             this.setState(prevState => {
+                date = date.year(prevState.firstPartFrom.year()).month(prevState.firstPartFrom.month()).date(prevState.firstPartFrom.date());
+
                 if (AgendaEditModal.checkDate(date, prevState.firstPartTo)) {
                     return {
                         firstPartFrom: date
@@ -101,6 +135,8 @@ class AgendaEditModal extends React.Component {
             });
         } else {
             this.setState(prevState => {
+                date = date.year(prevState.secondPartFrom.year()).month(prevState.secondPartFrom.month()).date(prevState.secondPartFrom.date());
+
                 if (AgendaEditModal.checkDate(date, prevState.secondPartTo)) {
                     return {
                         secondPartFrom: date
@@ -119,6 +155,8 @@ class AgendaEditModal extends React.Component {
     _handleToDateChange = firstPart => (date) => {
         if (firstPart) {
             this.setState(prevState => {
+                date = date.year(prevState.firstPartTo.year()).month(prevState.firstPartTo.month()).date(prevState.firstPartTo.date());
+
                 if (AgendaEditModal.checkDate(prevState.firstPartFrom, date)) {
                     return {
                         firstPartTo: date
@@ -133,6 +171,8 @@ class AgendaEditModal extends React.Component {
             });
         } else {
             this.setState(prevState => {
+                date = date.year(prevState.secondPartTo.year()).month(prevState.secondPartTo.month()).date(prevState.secondPartTo.date());
+
                 if (AgendaEditModal.checkDate(prevState.secondPartFrom, date)) {
                     return {
                         secondPartTo: date
@@ -174,6 +214,8 @@ class AgendaEditModal extends React.Component {
                             <TimePicker
                                 clearable
                                 ampm={false}
+                                keyboard={true}
+                                mask={[/\d/, /\d/, ':', /\d/, /\d/]}
                                 label="OD"
                                 value={this.state.firstPartFrom}
                                 onChange={this._handleFromDateChange(true)}
@@ -181,6 +223,8 @@ class AgendaEditModal extends React.Component {
                             <TimePicker
                                 clearable
                                 ampm={false}
+                                keyboard={true}
+                                mask={[/\d/, /\d/, ':', /\d/, /\d/]}
                                 label="DO"
                                 value={this.state.firstPartTo}
                                 onChange={this._handleToDateChange(true)}
@@ -196,6 +240,8 @@ class AgendaEditModal extends React.Component {
                             <TimePicker
                                 clearable
                                 ampm={false}
+                                keyboard={true}
+                                mask={[/\d/, /\d/, ':', /\d/, /\d/]}
                                 label="OD"
                                 value={this.state.secondPartFrom}
                                 onChange={this._handleFromDateChange(false)}
@@ -203,6 +249,8 @@ class AgendaEditModal extends React.Component {
                             <TimePicker
                                 clearable
                                 ampm={false}
+                                keyboard={true}
+                                mask={[/\d/, /\d/, ':', /\d/, /\d/]}
                                 label="DO"
                                 value={this.state.secondPartTo}
                                 onChange={this._handleToDateChange(false)}
@@ -223,7 +271,7 @@ class AgendaEditModal extends React.Component {
                     </ExpansionPanel>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={this._handleClose} color="primary">Uložit</Button>
+                    <Button onClick={this._handleSave} color="primary">Uložit</Button>
                 </DialogActions>
                 <Snackbar
                     className={classes.snackbar}
@@ -258,7 +306,9 @@ class AgendaEditModal extends React.Component {
 AgendaEditModal.propTypes = {
     classes: PropTypes.object.isRequired,
     open: PropTypes.bool.isRequired,
+    dayTimeSheet: PropTypes.object.isRequired,
     handleClose: PropTypes.func.isRequired,
+    handleOnSave: PropTypes.func.isRequired
 };
 
-export default withStyles(styles)(AgendaEditModal);
+export default withStyles(styles, {withTheme: true})(AgendaEditModal);

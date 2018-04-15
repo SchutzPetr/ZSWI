@@ -4,10 +4,12 @@ import {withStyles} from "material-ui/styles";
 import Table, {TableBody, TableCell, TableHead, TableRow} from "material-ui/Table";
 import {IconButton, Menu, MenuItem, Paper} from "material-ui";
 import moment from "moment";
-import Utils from "./../other/Utils"
+import Utils from "../../other/Utils"
 import MoreVert from "material-ui-icons/MoreVert";
 import Fade from "material-ui/es/transitions/Fade";
 import AgendaEditModal from "./AgendaEditModal";
+import DayTimeSheet from "../../entity/DayTimeSheet";
+import TimeSheet from "../../entity/TimeSheet";
 
 const rowHeightHeader = 24;
 const rowHeight = 20;
@@ -59,6 +61,12 @@ const styles = theme => ({
         paddingBottom: 2,
         borderBottom: "none",
     },
+    partTableCell: {
+        paddingTop: 2,
+        paddingBottom: 2,
+        borderBottom: "none",
+        textAlign: "center",
+    },
     moreVert: {
         height: 18,
         width: 18,
@@ -92,8 +100,13 @@ class Agenda extends React.Component {
     }
 
     handleCloseEdit() {
-        this.setState({openEdit: false});
+        this.setState({openEdit: false, rowData: null});
     }
+
+    handleOnSaveEdit = (data) =>{
+        this.props.onTimeSheetEdit(data);
+        this.handleCloseEdit();
+    };
 
     getRowBackgroundColor(date) {
         if (date.getDay() === 6) {
@@ -107,18 +120,10 @@ class Agenda extends React.Component {
         }
     }
 
-    handleOpenMenu(event, rowData) {
-        this.setState({anchorEl: event.currentTarget});
-    }
-
-    handleCloseMenu() {
-        this.setState({anchorEl: null});
-    }
-
     render() {
-        const {classes} = this.props;
+        const {classes, timeSheet} = this.props;
 
-        let days = Utils.getDaysInMonth(this.props.date.getMonth(), this.props.date.getFullYear()) || [];
+        let dayTimeSheets = timeSheet.dayTimeSheets;
 
         return (
             <Paper className={classes.root}>
@@ -141,48 +146,71 @@ class Agenda extends React.Component {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {days.map((value, index) => {
-                            const firstPartFrom = moment(value).hour(8).minute(15).second(0);
-                            const firstPartTo = moment(value).hour(12).minute(0).second(0);
-                            const secondPartFrom = moment(value).hour(12).minute(30).second(0);
-                            const secondPartTo = moment(value).hour(16).minute(30).second(0);
+                        {Object.keys(dayTimeSheets).map((value, index) => {
+                            if(dayTimeSheets[value].dayType === "SAT_SUN"){
+                                return (
+                                    <TableRow key={`${index}-${dayTimeSheets[value].date}`} className={this.getRowBackgroundColor(dayTimeSheets[value].date)}>
+                                        <TableCell className={classes.tableCell}>{moment(dayTimeSheets[value].date).format("LL")}</TableCell>
+                                        <TableCell className={classes.tableCell}/>
+                                        <TableCell className={classes.tableCell}/>
+                                        <TableCell className={classes.tableCell}/>
+                                        <TableCell className={classes.tableCell}/>
+                                        <TableCell className={classes.tableCell}/>
+                                        <TableCell className={classes.tableCell}/>
+                                        <TableCell className={classes.tableCell}/>
+                                        <TableCell className={`${classes.tableCell} ${classes.tableCellMenu}`}>
+                                            <IconButton className={classes.menuButton} aria-label="Menu"
+                                                        onClick={(event) => {
+                                                            this.handleOpenEdit(event, dayTimeSheets[value]);
+                                                        }}>
+                                                <MoreVert className={classes.moreVert}/>
+                                            </IconButton></TableCell>
+                                    </TableRow>
+
+                                );
+                            }
+
+                            const firstPartFrom = dayTimeSheets[value].firstPartFrom;
+                            const firstPartTo = dayTimeSheets[value].firstPartTo;
+                            const secondPartFrom = dayTimeSheets[value].secondPartFrom;
+                            const secondPartTo = dayTimeSheets[value].secondPartTo;
 
                             const firstPartDiff = firstPartTo.diff(firstPartFrom, "hours", true);
                             const secondPartDiff = secondPartTo.diff(secondPartFrom, "hours", true);
 
 
                             return (
-                                <TableRow key={`${index}-${value}`} className={this.getRowBackgroundColor(value)}>
-                                    <TableCell className={classes.tableCell}>{moment(value).format("LL")}</TableCell>
+                                <TableRow key={`${index}-${dayTimeSheets[value].date}`} className={this.getRowBackgroundColor(dayTimeSheets[value].date)}>
+                                    <TableCell className={classes.tableCell}>{moment(dayTimeSheets[value].date).format("LL")}</TableCell>
                                     <TableCell
-                                        className={classes.tableCell}>
+                                        className={classes.partTableCell}>
                                         {firstPartFrom.format("H:mm")}
                                     </TableCell>
                                     <TableCell
-                                        className={classes.tableCell}>
+                                        className={classes.partTableCell}>
                                         {firstPartTo.format("H:mm")}
                                     </TableCell>
                                     <TableCell
-                                        className={classes.tableCell}>
+                                        className={classes.partTableCell}>
                                         {firstPartDiff + "h"}
                                     </TableCell>
                                     <TableCell
-                                        className={classes.tableCell}>
+                                        className={classes.partTableCell}>
                                         {secondPartFrom.format("H:mm")}
                                     </TableCell>
                                     <TableCell
-                                        className={classes.tableCell}>
+                                        className={classes.partTableCell}>
                                         {secondPartTo.format("H:mm")}
                                     </TableCell>
                                     <TableCell
-                                        className={classes.tableCell}>
+                                        className={classes.partTableCell}>
                                         {secondPartDiff + "h"}
                                     </TableCell>
                                     <TableCell className={classes.tableCell}>{""}</TableCell>
                                     <TableCell className={`${classes.tableCell} ${classes.tableCellMenu}`}>
                                         <IconButton className={classes.menuButton} aria-label="Menu"
                                                     onClick={(event) => {
-                                                        this.handleOpenEdit(event, value);
+                                                        this.handleOpenEdit(event, dayTimeSheets[value]);
                                                     }}>
                                             <MoreVert className={classes.moreVert}/>
                                         </IconButton></TableCell>
@@ -191,18 +219,7 @@ class Agenda extends React.Component {
                             );
                         })}
                     </TableBody>
-                    <Menu
-                        id="fade-menu"
-                        anchorEl={this.state.anchorEl}
-                        open={Boolean(this.state.anchorEl)}
-                        onClose={this.handleCloseMenu.bind(this)}
-                        transition={Fade}
-                    >
-                        <MenuItem onClick={this.handleCloseMenu.bind(this)}>Editovat výkaz</MenuItem>
-                        <MenuItem onClick={this.handleCloseMenu.bind(this)}>My account</MenuItem>
-                        <MenuItem onClick={this.handleCloseMenu.bind(this)}>Logout</MenuItem>
-                    </Menu>
-                    <AgendaEditModal open={this.state.openEdit} handleClose={this.handleCloseEdit.bind(this)}/>
+                    <AgendaEditModal open={this.state.openEdit} dayTimeSheet={this.state.rowData} handleClose={this.handleCloseEdit.bind(this)} handleOnSave={this.handleOnSaveEdit}/>
                 </Table>
             </Paper>
         );
@@ -211,7 +228,8 @@ class Agenda extends React.Component {
 
 Agenda.propTypes = {
     classes: PropTypes.object.isRequired,
-    date: PropTypes.instanceOf(Date),
+    timeSheet: PropTypes.instanceOf(TimeSheet),
+    onTimeSheetEdit: PropTypes.func.isRequired
 };
 
-export default withStyles(styles)(Agenda);
+export default withStyles(styles, {withTheme: true})(Agenda);

@@ -104,4 +104,4 @@ ExpansionUserFilter.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(ExpansionUserFilter);
+export default withStyles(styles, {withTheme: true})(ExpansionUserFilter);

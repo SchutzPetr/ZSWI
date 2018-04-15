@@ -1,25 +1,84 @@
 class DayTimeSheet {
 
-    constructor(){
-        this._firstPartFrom = null;
-        this._firstPartTo = null;
-        this._secondPartFrom = null;
-        this._secondPartTo = null;
-
-        this._email = "";
-        this._honorificPrefix = "";
-        this._honorificSuffix = "";
-        this._authority = "";
-        this._active = true;
-        this._mainWorkStation = "";
+    constructor(date, dayType, firstPartFrom, firstPartTo, firstPartType, secondPartFrom, secondPartTo, secondPartType){
+        this._date = date;
+        this._dayType = dayType;
+        this._firstPartFrom = firstPartFrom;
+        this._firstPartTo = firstPartTo;
+        this._secondPartFrom = secondPartFrom;
+        this._secondPartTo = secondPartTo;
     }
 
-    toJSON() {
-        return JSON.stringify(this);
+    get date() {
+        return this._date;
+    }
+
+    set date(value) {
+        this._date = value;
+    }
+
+    get dayType() {
+        return this._dayType;
+    }
+
+    set dayType(value) {
+        this._dayType = value;
+    }
+
+    get firstPartFrom() {
+        return this._firstPartFrom;
+    }
+
+    set firstPartFrom(value) {
+        this._firstPartFrom = value;
+    }
+
+    get firstPartTo() {
+        return this._firstPartTo;
+    }
+
+    set firstPartTo(value) {
+        this._firstPartTo = value;
+    }
+
+    get firstPartType() {
+        return this._firstPartType;
+    }
+
+    set firstPartType(value) {
+        this._firstPartType = value;
+    }
+
+    get secondPartFrom() {
+        return this._secondPartFrom;
+    }
+
+    set secondPartFrom(value) {
+        this._secondPartFrom = value;
+    }
+
+    get secondPartTo() {
+        return this._secondPartTo;
+    }
+
+    set secondPartTo(value) {
+        this._secondPartTo = value;
+    }
+
+    get secondPartType() {
+        return this._secondPartType;
+    }
+
+    set secondPartType(value) {
+        this._secondPartType = value;
     }
 
     clone() {
         return Object.assign(new DayTimeSheet(), this);
+    }
+
+    merge(dayTimeSheet){
+        return Object.assign(this, dayTimeSheet);
     }
 
     static map(dayTimeSheet){

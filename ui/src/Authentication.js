@@ -1,7 +1,7 @@
 class Authentication {
 
     constructor(){
-        this._authenticated = false;
+        this._authenticated = true;
     }
 
 
@@ -12,5 +12,4 @@ class Authentication {
 
 const authentication = new Authentication();
 
-export {authentication};
 export default authentication;

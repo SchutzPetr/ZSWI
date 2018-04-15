@@ -120,4 +120,4 @@ FilterModal.propTypes = {
     handleClose: PropTypes.func.isRequired,
 };
 
-export default withStyles(styles)(FilterModal);
+export default withStyles(styles, {withTheme: true})(FilterModal);
