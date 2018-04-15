@@ -21,7 +21,7 @@ class fileworker
 
 
 
-    function generateOneReport($month, $year, $arrayData){
+    function generateReportForOneMonth($month, $year, $arrayData){
 		///https://nicknixer.ru/programmirovanie/sozdanie-excel-dokumenta-na-php-generaciya-xls-fajlov/
 	    $document = new \PHPExcel();
 	    $alphabet = range('A', 'Z');

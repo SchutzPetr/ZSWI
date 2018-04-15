@@ -8,15 +8,19 @@
 header("Content-Type: application/json; charset=UTF-8");
 
 include_once("../model/db.php");
+$dbObject = new DataBase();
+
+if(isset($_GET["getUserByID"])){
+	$obj = json_decode($_GET["updateUser"], false);
+	echo json_encode($dbObject->getUserById($obj));
+}
 
 if(isset($_GET["updateUser"])){
 	$obj = json_decode($_GET["updateUser"], false);
-	$dbObject = new MyDB();
 	$dbObject->updateUser($obj);
 }
 if(isset($_POST["updateTimeTable"])){
 	$obj = json_decode($_GET["updateTimeTable"], false);
-	$dbObject = new MyDB();
 	$dbObject->updateTimeTable($obj);
 }
 

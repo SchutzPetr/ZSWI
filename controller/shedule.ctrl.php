@@ -10,7 +10,7 @@ header("Content-Type: application/json; charset=UTF-8");
 include_once("../model/db.php");
 include_once("../model/Shedule.php");
 
-$dbObject = new MyDB();
+$dbObject = new DataBase();
 
 if(isset($_GET["updateShedule"])){
 	$obj = json_decode($_GET["updateShedule"], false);
