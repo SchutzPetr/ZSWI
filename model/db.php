@@ -234,8 +234,30 @@ VALUES (:day, :is_nemoc, :is_vacation, :other, :from_1, :to_1, :from_2, :to_2, :
 
 	///////////////////////////////////   USER   // ////////////////////////////////////////////////////////////////////////////
 
-	function getUserByLogin($login ){
-		//TODO this
+	function getUserByLogin($login, $pass ){
+		$mysql_pdo_error = false;
+		$query = "select *  from user where orion_login=:login";
+		$sth = $this->conn->prepare($query);
+		$sth->bindValue(':login', $login, PDO::PARAM_STR);
+//		$sth->bindValue(':pass', $pass, PDO::PARAM_STR);
+
+		$sth->execute();
+		$errors = $sth->errorInfo();
+		if ($errors[0] + 0 > 0){
+			$mysql_pdo_error = true;
+		}
+		if ($mysql_pdo_error == false){
+			$all = $sth->fetchAll(PDO::FETCH_ASSOC);
+			$user = new User();
+			$user->fill($all[0]);
+			return $user;
+		}
+		else{
+			//TODO other error
+			echo "Eror - PDOStatement::errorInfo(): ";
+			print_r($errors);
+			echo "SQL : $query";
+		}
 	}
 
 	/***
@@ -401,9 +423,9 @@ VALUES (:ntis, :kiv ,:project_1_name, :project_1, :project_2_name, project_2, :a
 
     }
 
-    function getProjectsUserInMonth($id, $month, $year){
+    function getLastProjectsUserById($id){
 	    $mysql_pdo_error = false;
-	    $query = "select *  from users_project WHERE user_id=:id";
+	    $query = "select *  from users_project WHERE user_id=:id AND active_from IN (SELECT MAX(active_from) from users_project)";
 	    $sth = $this->conn->prepare($query);
 	    $sth->bindValue(':id', $id, PDO::PARAM_INT);
 	    $sth->execute();
@@ -423,6 +445,37 @@ VALUES (:ntis, :kiv ,:project_1_name, :project_1, :project_2_name, project_2, :a
 		    echo "SQL : $query";
 	    }
 
+    }
+
+    function getTypeContract($id){
+	    $array = $this->getLastProjectsUserById($id);
+	    $number = $array[0]->KIV+ $array[0]->NTIS+ $array[0]->project_1+ $array[0]->project_2;
+		return $number;
+    }
+
+    function getProjectsUserInMonth($id, $month, $year){
+	    $mysql_pdo_error = false;
+	    $query = "select *  from users_project WHERE user_id=:id AND MONTH(day) =:month AND YEAR(day) =:year";
+	    $sth = $this->conn->prepare($query);
+	    $sth->bindValue(':id', $id, PDO::PARAM_INT);
+	    $sth->bindValue(':month', $month, PDO::PARAM_INT);
+	    $sth->bindValue(':year', $year, PDO::PARAM_INT);
+	    $sth->execute();
+	    $errors = $sth->errorInfo();
+	    if ($errors[0] + 0 > 0){
+		    $mysql_pdo_error = true;
+	    }
+	    if ($mysql_pdo_error == false){
+		    $all = $sth->fetchAll(PDO::FETCH_ASSOC);
+		    //TODO will be problem with other rate in one month
+		    return $all;
+	    }
+	    else{
+		    //TODO other error
+		    echo "Eror - PDOStatement::errorInfo(): ";
+		    print_r($errors);
+		    echo "SQL : $query";
+	    }
     }
 
     //////////////////////////////////   TIME     //////////////////////////////////////////////////////////////////////////////
@@ -570,6 +623,30 @@ VALUES (:from_1, :to_1 ,:from_2, :to_2, :active_from, :id)';
 	    }
 
     }
+
+	function getVacationByUserInYear($id, $year){
+		$mysql_pdo_error = false;
+		$query = "select *  from vacation WHERE YEAR(day) =:year AND user_id=:id";
+		$sth = $this->conn->prepare($query);
+		$sth->bindValue(':id', $id, PDO::PARAM_INT);
+		$sth->bindValue(':year', $year, PDO::PARAM_STR);
+		$sth->execute();
+		$errors = $sth->errorInfo();
+		if ($errors[0] + 0 > 0){
+			$mysql_pdo_error = true;
+		}
+		if ($mysql_pdo_error == false){
+			$all = $sth->fetchAll(PDO::FETCH_ASSOC);
+			return $all;
+		}
+		else{
+			//TODO other error
+			echo "Eror - PDOStatement::errorInfo(): ";
+			print_r($errors);
+			echo "SQL : $query";
+		}
+	}
+
 
 	function getVacationByID($id){
 		$mysql_pdo_error = false;

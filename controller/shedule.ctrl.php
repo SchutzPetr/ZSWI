@@ -18,7 +18,7 @@ if(isset($_GET["updateShedule"])){
 }
 if(isset($_GET["getSheduleByUserIDMonthAndYear"])){
 	$obj = json_decode($_GET["getSheduleByUserIDMonthAndYear"], false);
-	$array = $dbObject->getSheduleUserByMonthAndYear($obj->month, $obj->year, $obj->user_id);
+	$array = $dbObject->getSheduleUserByMonthAndYear($obj->month, $obj->year, $obj->userId);
 	$objectArray = [];
 	if($array != null){
 		for($i =0; $i<count($array); $i++){

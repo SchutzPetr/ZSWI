@@ -8,4 +8,5 @@
 define("COLOR_KIV","f4eb42");
 define("COLOR_NTIS","value");
 define("FIRST_DAY", 1);
+define("FULLTIME_VACATIONS_DAY", 40);
 
