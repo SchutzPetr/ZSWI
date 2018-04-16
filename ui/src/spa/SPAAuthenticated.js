@@ -15,6 +15,7 @@ import {secretaryMenuItems, otherMailFolderListItems} from "./SPAAuthenticatedMe
 import Home from "../use_cases/uc_home/Home";
 import Notifications from "material-ui-icons/es/Notifications";
 import NotificationPopover from "../components/notification/NotificationPopover";
+import Share from "../use_cases/uc_share/SharePage";
 
 
 class SPAAuthenticated extends React.Component {
@@ -125,9 +126,9 @@ class SPAAuthenticated extends React.Component {
                            render={props => (
                                <AgendaOverview match={props.match}/>
                            )}/>
-                    <Route path={"/share-agenda"} exact={true}
+                    <Route path={"/share"} exact={true}
                            render={props => (
-                               <div></div>
+                               <Share/>
                            )}/>
                 </main>
             </div>

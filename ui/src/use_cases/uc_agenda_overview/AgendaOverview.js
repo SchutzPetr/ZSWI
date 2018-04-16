@@ -6,15 +6,54 @@ import Calls from "../../Calls";
 import LinearProgressCentered from "../../components/LinearProgressCentered";
 import Grid from "material-ui/es/Grid/Grid";
 
+export const userData = [
+    {
+        "givenName": "Petr",
+        "familyName": "Schutz",
+        "email": "schutzp@students.zcu.cz"
+    },
+    {
+        "givenName": "Tyler",
+        "familyName": "Chapman",
+        "email": "chapman@students.zcu.cz"
+    },
+    {
+        "givenName": "Petr",
+        "familyName": "Schutz",
+        "email": "schutzp@students.zcu.cz"
+    },
+    {
+        "givenName": "Petr",
+        "familyName": "Schutz",
+        "email": "schutzp@students.zcu.cz"
+    },
+    {
+        "givenName": "Petr",
+        "familyName": "Schutz",
+        "email": "schutzp@students.zcu.cz"
+    },
+    {
+        "givenName": "Petr",
+        "familyName": "Schutz",
+        "email": "schutzp@students.zcu.cz"
+    },
+    {
+        "givenName": "Petr",
+        "familyName": "Schutz",
+        "email": "schutzp@students.zcu.cz"
+    },
+
+];
+
 class AgendaOverview extends React.Component {
 
     state = {
-        users: [],
-        loadFeedback: "loading"
+        users: userData,
+        loadFeedback: "ready"
     };
 
     componentDidMount(){
-        this._fetchData();
+        //todo: this._fetchData();
     }
 
     _fetchData() {
