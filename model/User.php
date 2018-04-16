@@ -5,19 +5,24 @@
  * Date: 21.03.2018
  * Time: 18:43
  */
+include_once("./constant.php");
 
 class User {
 
 	protected $_nameAndLastName;
 
+	protected $_id;
 	protected $_name;
-	protected $_lastName = "";
-	protected $_email = "";
-	protected $_honorificPrefix = "";
-	protected $_honorificSuffix = "";
-	protected $_authority = "";
-	protected $_active = true;
-	protected $_mainWorkStation = "";
+	protected $_lastName;
+	protected $_email;
+	protected $_honorificPrefix;
+	protected $_honorificSuffix;
+	protected $_authority;
+	protected $_active;
+	protected $_mainWorkStation;
+	protected $_contract;
+	protected $_vacationHourByContract;
+	protected $_vacationHourByYear;
 
 	protected $_arrayDataByMonth;
 	protected $_vacations;
@@ -26,6 +31,7 @@ class User {
 	protected $_diseasesHoursByMoth;
 
 	function __construct() {
+		$this->_id = "";
 		$this->_nameAndLastName = "";
 		$this->_name = "";
 		$this->_lastName = "";
@@ -35,6 +41,11 @@ class User {
 		$this->_authority = "";
 		$this->_active = true;
 		$this->_mainWorkStation = "";
+		$this->_contract = 1;
+		$this->_vacationHourByContract = FULLTIME_VACATIONS_DAY;
+		$this->_vacationHourByYear = 0;
+
+
 		$this->_arrayDataByMonth = [];
 		$this->_vacations = [];
 		$this->_vacationsHoursByMoth = 0;
@@ -42,10 +53,239 @@ class User {
 	}
 
 	function fill($array){
+		$this->_id = $array["id"];
 		$this->setName($array);
 		$this->_authority = $array['authority'];
 		$this->_active = $this->setActive($array['is_active']);
 	}
+
+	/**
+	 * @return string
+	 */
+	public function getId() {
+		return $this->_id;
+	}
+
+	/**
+	 * @param string $id
+	 */
+	public function setId( $id ) {
+		$this->_id = $id;
+	}
+
+
+	/**
+	 * @return string
+	 */
+	public function getNameAndLastName() {
+		return $this->_nameAndLastName;
+	}
+
+	/**
+	 * @param string $nameAndLastName
+	 */
+	public function setNameAndLastName( $nameAndLastName ) {
+		$this->_nameAndLastName = $nameAndLastName;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getLastName() {
+		return $this->_lastName;
+	}
+
+	/**
+	 * @param string $lastName
+	 */
+	public function setLastName( $lastName ) {
+		$this->_lastName = $lastName;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getEmail() {
+		return $this->_email;
+	}
+
+	/**
+	 * @param string $email
+	 */
+	public function setEmail( $email ) {
+		$this->_email = $email;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getHonorificPrefix() {
+		return $this->_honorificPrefix;
+	}
+
+	/**
+	 * @param string $honorificPrefix
+	 */
+	public function setHonorificPrefix( $honorificPrefix ) {
+		$this->_honorificPrefix = $honorificPrefix;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getHonorificSuffix() {
+		return $this->_honorificSuffix;
+	}
+
+	/**
+	 * @param string $honorificSuffix
+	 */
+	public function setHonorificSuffix( $honorificSuffix ) {
+		$this->_honorificSuffix = $honorificSuffix;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getAuthority() {
+		return $this->_authority;
+	}
+
+	/**
+	 * @param string $authority
+	 */
+	public function setAuthority( $authority ) {
+		$this->_authority = $authority;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getMainWorkStation() {
+		return $this->_mainWorkStation;
+	}
+
+	/**
+	 * @param string $mainWorkStation
+	 */
+	public function setMainWorkStation( $mainWorkStation ) {
+		$this->_mainWorkStation = $mainWorkStation;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getContract() {
+		return $this->_contract;
+	}
+
+	/**
+	 * @param int $contract
+	 */
+	public function setContract( $contract ) {
+		$this->_vacationHourByContract = FULLTIME_VACATIONS_DAY*$contract;
+		$this->_contract = $contract;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getVacationHourByContract() {
+		return $this->_vacationHourByContract;
+	}
+
+	/**
+	 * @param int $vacationHourByContract
+	 */
+	public function setVacationHourByContract( $vacationHourByContract ) {
+		$this->_vacationHourByContract = $vacationHourByContract;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getVacationHourByYear() {
+		return $this->_vacationHourByYear;
+	}
+
+	/**
+	 * @param int $vacationHourByYear
+	 */
+	public function setVacationHourByYear( $vacationHourByYear ) {
+		$this->_vacationHourByYear = $vacationHourByYear;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getArrayDataByMonth() {
+		return $this->_arrayDataByMonth;
+	}
+
+	/**
+	 * @param array $arrayDataByMonth
+	 */
+	public function setArrayDataByMonth( $arrayDataByMonth ) {
+		$this->_arrayDataByMonth = $arrayDataByMonth;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getVacations() {
+		return $this->_vacations;
+	}
+
+	/**
+	 * @param array $vacations
+	 */
+	public function setVacations( $vacations ) {
+		$this->_vacations = $vacations;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getHoursByMoth() {
+		return $this->_hoursByMoth;
+	}
+
+	/**
+	 * @param mixed $hoursByMoth
+	 */
+	public function setHoursByMoth( $hoursByMoth ) {
+		$this->_hoursByMoth = $hoursByMoth;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getVacationsHoursByMoth() {
+		return $this->_vacationsHoursByMoth;
+	}
+
+	/**
+	 * @param int $vacationsHoursByMoth
+	 */
+	public function setVacationsHoursByMoth( $vacationsHoursByMoth ) {
+		$this->_vacationsHoursByMoth = $vacationsHoursByMoth;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getDiseasesHoursByMoth() {
+		return $this->_diseasesHoursByMoth;
+	}
+
+	/**
+	 * @param int $diseasesHoursByMoth
+	 */
+	public function setDiseasesHoursByMoth( $diseasesHoursByMoth ) {
+		$this->_diseasesHoursByMoth = $diseasesHoursByMoth;
+	}
+
+
 
 	/***
 	 * @param $is must be number
@@ -164,10 +404,13 @@ class User {
 						"honorificSuffix"=>$this->_honorificSuffix,
 						"authority"=>$this->_authority,
 						"active"=>$this->_active,
-						"mainWorkStation"=>$this->_mainWorkStation
+						"mainWorkStation"=>$this->_mainWorkStation,
+						"contract"=>$this->_contract,
+						"vacationHourByContract"=>$this->_vacationHourByContract,
+						"vacationHourByYear"=>$this->_vacationHourByYear
 			);
-		$myJSON = json_encode((array)$object);
-		echo $myJSON;
+//		$myJSON = json_encode((array)$object);
+		return $object;
 	}
 
 }

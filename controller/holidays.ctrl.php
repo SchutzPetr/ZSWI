@@ -10,8 +10,8 @@ header("Content-Type: application/json; charset=UTF-8");
 include_once("../model/db.php");
 $dbObject = new DataBase();
 
-if(isset($_GET["addHolidays"])){
-	$obj = json_decode($_GET["addHolidays"], false);
+if(isset($_GET["holidays/add/"])){
+	$obj = json_decode($_GET["holidays/add/"], false);
 	//if some holiday exist
 	if(!$dbObject->getHoliday($obj->day)){
 		$dbObject->addHolidays($obj->day, $obj->name_holidays);
@@ -19,12 +19,12 @@ if(isset($_GET["addHolidays"])){
 		//TODO return error
 	}
 }
-if(isset($_GET["deleteHolidays"])){
-	$obj = json_decode($_GET["deleteHolidays"], false);
+if(isset($_GET["holidays/delete/id"])){
+	$obj = json_decode($_GET["holidays/delete/id"], false);
 	$dbObject->deleteHolidaysByDay($obj);
 }
-if(isset($_GET["updateHolidays"])){
-	$obj = json_decode($_GET["updateHolidays"], false);
+if(isset($_GET["holidays/update/"])){
+	$obj = json_decode($_GET["holidays/update/"], false);
 	$dbObject = new DataBase();
 	$dbObject->updateHollidays($obj);
 }

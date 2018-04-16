@@ -12,8 +12,8 @@ include_once("../model/constant.php");
 
 $dbObject = new DataBase();
 
-if(isset($_GET["getNumberOfVacationsDayInYear"])){
-	$obj = json_decode($_GET["getVacationsDay"], false);
+if(isset($_GET["vacation/userid"])){
+	$obj = json_decode($_GET["vacation/userid"], false);
 	$array = $dbObject->getVacationByUserInYear($obj->userId, $obj->year);
 	$howManyDays = 0;
 	for($i=0; $i<count($array); $i++){
@@ -22,8 +22,8 @@ if(isset($_GET["getNumberOfVacationsDayInYear"])){
 	echo json_encode($howManyDays);
 }
 
-if(isset($_GET["getRemainingNumberOfVacationsDayInYear"])){
-	$obj = json_decode($_GET["getRemainingNumberOfVacationsDayInYear"], false);
+if(isset($_GET["vacation/getByUserIdAndYear/"])){
+	$obj = json_decode($_GET["vacation/getByUserIdAndYear/"], false);
 	$array = $dbObject->getVacationByUserInYear($obj->userId, $obj->year);
 	$howManyDays = 0;
 	for($i=0; $i<count($array); $i++){
@@ -33,15 +33,15 @@ if(isset($_GET["getRemainingNumberOfVacationsDayInYear"])){
 	echo json_encode($number*FULLTIME_VACATIONS_DAY - $howManyDays);
 }
 
-if(isset($_GET["addVacation"])){
-	$obj = json_decode($_GET["addVacation"], false);
+if(isset($_GET["vacation/add/id"])){
+	$obj = json_decode($_GET["vacation/add"], false);
 	$dbObject->addVacationToUser($obj->day, $obj->type ,$obj->userId);
 
 }
-if(isset($_GET["deleteVacation"])){
-	$obj = json_decode($_GET["deleteVacation"], false);
+if(isset($_GET["vacation/delete/id"])){
+	$obj = json_decode($_GET["vacation/delete/id"], false);
 	$dbObject->deleteVacationByID($obj);
 }
-if(isset($_GET["setVacation"])){
-	$obj = json_decode($_GET["setVacation"], false);
+if(isset($_GET["vacation/update/id"])){
+	$obj = json_decode($_GET["vacation/update/id"], false);
 }

@@ -176,6 +176,28 @@ VALUES (:day, :is_nemoc, :is_vacation, :other, :from_1, :to_1, :from_2, :to_2, :
 
 	}
 
+	function getSheduleById($id){
+		$mysql_pdo_error = false;
+		$query = "select *  from shedule WHERE  id=:id";
+		$sth = $this->conn->prepare($query);
+		$sth->bindValue(':id', $id, PDO::PARAM_INT);
+		$sth->execute();
+		$errors = $sth->errorInfo();
+		if ($errors[0] + 0 > 0){
+			$mysql_pdo_error = true;
+		}
+		if ($mysql_pdo_error == false){
+			$all = $sth->fetchAll(PDO::FETCH_ASSOC);
+			return $all;
+		}
+		else{
+			//TODO other error
+			echo "Eror - PDOStatement::errorInfo(): ";
+			print_r($errors);
+			echo "SQL : $query";
+		}
+	}
+
 
 	function updateSheduleById($id, $day, $is_nemoc, $is_vacation, $other, $from_1, $to_1, $from_2, $to_2, $from_3, $to_3){
 		$mysql_pdo_error = false;
@@ -248,9 +270,9 @@ VALUES (:day, :is_nemoc, :is_vacation, :other, :from_1, :to_1, :from_2, :to_2, :
 		}
 		if ($mysql_pdo_error == false){
 			$all = $sth->fetchAll(PDO::FETCH_ASSOC);
-			$user = new User();
-			$user->fill($all[0]);
-			return $user;
+//			$user = new User();
+//			$user->fill($all[0]);
+			return $all;
 		}
 		else{
 			//TODO other error
@@ -622,6 +644,17 @@ VALUES (:from_1, :to_1 ,:from_2, :to_2, :active_from, :id)';
 		    echo "SQL : $query";
 	    }
 
+    }
+
+    function getVacationHourInYear($id, $year){
+		$number = 0;
+//		$contractNumber = $this->getTypeContract($id);
+		$array = $this->getVacationByUserInYear($id, $year);
+		for($i =0; $i<count($array); $i++){
+			$number =+$array[$i]["type"];
+		}
+
+		return $number;
     }
 
 	function getVacationByUserInYear($id, $year){

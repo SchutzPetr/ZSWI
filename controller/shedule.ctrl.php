@@ -12,12 +12,8 @@ include_once("../model/Shedule.php");
 
 $dbObject = new DataBase();
 
-if(isset($_GET["updateShedule"])){
-	$obj = json_decode($_GET["updateShedule"], false);
-	$dbObject->updateUser($obj);
-}
-if(isset($_GET["getSheduleByUserIDMonthAndYear"])){
-	$obj = json_decode($_GET["getSheduleByUserIDMonthAndYear"], false);
+if(isset($_GET["shedule/generate/"])){
+	$obj = json_decode($_GET["shedule/generate/"], false);
 	$array = $dbObject->getSheduleUserByMonthAndYear($obj->month, $obj->year, $obj->userId);
 	$objectArray = [];
 	if($array != null){
@@ -47,16 +43,23 @@ if(isset($_GET["getSheduleByUserIDMonthAndYear"])){
 	}
 	echo json_encode($objectArray);
 }
-if(isset($_POST["generateSheduleForOneUser"])){
-	$obj = json_decode($_GET["generateShedule"], false);
-	$dbObject->updateTimeTable($obj);
+if(isset($_POST["shedule/get/id"])){
+	$obj = json_decode($_GET["shedule/get/id"], false);
+	$dbObject->getSheduleById($obj);
 }
-if(isset($_POST["generateSheduleForAllActiveUser"])){
-	$obj = json_decode($_GET["generateShedule"], false);
-	$dbObject->updateTimeTable($obj);
+if(isset($_POST["shedule/getByUserIdAndMonth"])){
+	$obj = json_decode($_GET["getByUserIdAndMonth"], false);
+	$dbObject->getSheduleUserByMonthAndYear($obj->month, $obj->year, $obj->user_id);
 }
-if(isset($_POST["deleteShedule"])){
-	$obj = json_decode($_GET["deleteShedule"], false);
-	$dbObject->updateTimeTable($obj);
+if(isset($_GET["shedule/update/id"])){
+	$obj = json_decode($_GET["shedule/update/id"], false);
+	$dbObject->updateSheduleById($obj->id, $obj->day, $obj->is_nemoc, $obj->is_vacation, $obj->other, $obj->from_1, $obj->to_1,
+		$obj->from_2, $obj->to_2, $obj->from_3, $obj->to_3);
 }
+
+if(isset($_POST["shedule/delete/id"])){
+	$obj = json_decode($_GET["shedule/delete/id"], false);
+	$dbObject->deleteSheduleById($obj);
+}
+
 
