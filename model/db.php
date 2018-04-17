@@ -262,7 +262,6 @@ VALUES (:day, :is_nemoc, :is_vacation, :other, :from_1, :to_1, :from_2, :to_2, :
 		$sth = $this->conn->prepare($query);
 		$sth->bindValue(':login', $login, PDO::PARAM_STR);
 //		$sth->bindValue(':pass', $pass, PDO::PARAM_STR);
-
 		$sth->execute();
 		$errors = $sth->errorInfo();
 		if ($errors[0] + 0 > 0){
@@ -272,7 +271,7 @@ VALUES (:day, :is_nemoc, :is_vacation, :other, :from_1, :to_1, :from_2, :to_2, :
 			$all = $sth->fetchAll(PDO::FETCH_ASSOC);
 //			$user = new User();
 //			$user->fill($all[0]);
-			return $all;
+			return $all[0];
 		}
 		else{
 			//TODO other error
@@ -458,7 +457,7 @@ VALUES (:ntis, :kiv ,:project_1_name, :project_1, :project_2_name, project_2, :a
 	    if ($mysql_pdo_error == false){
 		    $all = $sth->fetchAll(PDO::FETCH_ASSOC);
 		    //TODO will be problem with other rate in one month
-		    return $all;
+		    return $all[0];
 	    }
 	    else{
 		    //TODO other error
@@ -471,7 +470,7 @@ VALUES (:ntis, :kiv ,:project_1_name, :project_1, :project_2_name, project_2, :a
 
     function getTypeContract($id){
 	    $array = $this->getLastProjectsUserById($id);
-	    $number = $array[0]->KIV+ $array[0]->NTIS+ $array[0]->project_1+ $array[0]->project_2;
+	    $number = $array["KIV"]+ $array["NTIS"]+ $array["project_1"]+ $array["project_2"];
 		return $number;
     }
 

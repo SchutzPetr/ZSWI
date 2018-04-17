@@ -5,7 +5,7 @@
  * Date: 21.03.2018
  * Time: 18:43
  */
-include_once("./constant.php");
+include_once("constant.php");
 
 class User {
 
@@ -298,7 +298,7 @@ class User {
 	}
 
 	function setName($array){
-            echo '<pre>'; print_r($array); echo '</pre>';
+//            echo '<pre>'; print_r($array); echo '</pre>';
 		if($array!= null){
 			$string = '';
 			if($array['honorific_prefix']){
