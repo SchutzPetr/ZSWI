@@ -39,7 +39,7 @@ NotificationPopover.propTypes = {
     classes: PropTypes.object.isRequired,
     open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
-    buttonRef: PropTypes.any.isRequired
+    buttonRef: PropTypes.any
 };
 
 export default withStyles(Styles, {withTheme: true})(NotificationPopover);

@@ -27,7 +27,7 @@ class SPANotAuthenticated extends React.Component {
                 <main className={classes.content}>
                     <Route path={"/login"} exact={true}
                            render={props => (
-                               <LoginPage match={props.match}/>
+                               <LoginPage match={props.match} history={props.history}/>
                            )}/>
                 </main>
             </div>

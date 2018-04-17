@@ -306,7 +306,7 @@ class AgendaEditModal extends React.Component {
 AgendaEditModal.propTypes = {
     classes: PropTypes.object.isRequired,
     open: PropTypes.bool.isRequired,
-    dayTimeSheet: PropTypes.object.isRequired,
+    dayTimeSheet: PropTypes.object,
     handleClose: PropTypes.func.isRequired,
     handleOnSave: PropTypes.func.isRequired
 };

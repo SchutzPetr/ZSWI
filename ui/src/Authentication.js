@@ -1,12 +1,22 @@
 class Authentication {
 
-    constructor(){
-        this._authenticated = true;
+    constructor(user){
+        this._user = user;
     }
 
     isAuthenticated() {
-        return this._authenticated;
+        return this._user != null;
     }
+
+    get user() {
+        return this._user;
+    }
+
+    set user(value) {
+        this._user = value;
+    }
+
+
 }
 
 const authentication = new Authentication();

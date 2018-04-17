@@ -64,7 +64,7 @@ class SharePage extends React.Component {
 
 SharePage.propTypes = {
     classes: PropTypes.object.isRequired,
-    match: PropTypes.object.isRequired
+    match: PropTypes.object
 
 };
 

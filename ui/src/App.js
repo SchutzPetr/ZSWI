@@ -1,6 +1,7 @@
-import React, {Component} from "react";
+import React from "react";
 import "./index.css";
 import Authentication from "./Authentication";
+import Observer from "./Observer";
 import SPAAuthenticated from "./spa/SPAAuthenticated";
 import {MuiThemeProvider, createMuiTheme} from "material-ui/styles";
 import moment from 'moment';
@@ -11,7 +12,7 @@ import SPANotAuthenticated from "./spa/SPANotAuthenticated";
 
 const theme = createMuiTheme();
 
-class App extends Component {
+class App extends React.Component {
 
     constructor(props){
         super(props);
@@ -21,6 +22,16 @@ class App extends Component {
         axios.defaults.baseURL = "localhost";
         axios.defaults.headers.post['Content-Type'] = 'application/json';
     }
+
+    componentDidMount(){
+        Observer.registerListener("AuthenticationChangeEvent", ()=>{
+            this.setState({authenticated: Authentication.isAuthenticated()});
+        });
+    }
+
+    state = {
+        authenticated: Authentication.isAuthenticated()
+    };
 
     render() {
         return (

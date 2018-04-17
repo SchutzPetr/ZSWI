@@ -16,6 +16,7 @@ import {
 } from "material-ui";
 import AccountCircle from "material-ui-icons/es/AccountCircle";
 import Forward from "material-ui-icons/es/Forward";
+import UserMultipleSelect from "../autocomplete/UserMultipleSelect";
 
 class Share extends React.Component {
 
@@ -24,6 +25,7 @@ class Share extends React.Component {
             <Card className={this.props.classes.root}>
                 <CardHeader title="Sdílet"/>
                 <CardContent>
+                    <UserMultipleSelect/>
                 </CardContent>
             </Card>
         )

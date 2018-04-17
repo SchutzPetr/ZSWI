@@ -28,7 +28,7 @@ class Calls {
     }
     
     static login(dataIn){
-        Calls._post("login", dataIn);
+        Calls._get("login", dataIn);
     }
 
     static getUsers(dataIn){

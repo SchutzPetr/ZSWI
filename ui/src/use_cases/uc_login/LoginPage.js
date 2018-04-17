@@ -7,6 +7,9 @@ import Grid from "material-ui/es/Grid/Grid";
 import Login from "../../components/login/Login";
 import withStyles from "material-ui/es/styles/withStyles";
 import Styles from "./style/LoginPageStyle";
+import Authentication from "./../../Authentication";
+import Observer from "./../../Observer";
+import User from "../../entity/User";
 
 class LoginPage extends React.Component {
 
@@ -20,7 +23,8 @@ class LoginPage extends React.Component {
         Calls.login({
             data: dataIn,
             done: (data) => {
-                this.setState({loadFeedback: "ready"});
+                Authentication.user = User.map(data.data);
+                this.setState({loadFeedback: "ready"}, () => {this.props.history.push("/")});
             },
             fail: (data) => {
                 this.setState({loadFeedback: "error"});
@@ -52,7 +56,8 @@ class LoginPage extends React.Component {
 
 LoginPage.propTypes = {
     classes: PropTypes.object.isRequired,
-    match: PropTypes.object.isRequired
+    match: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired
 
 };
 
