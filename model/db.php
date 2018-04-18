@@ -105,6 +105,14 @@ VALUES (:day, :is_nemoc, :is_vacation, :other, :from_1, :to_1, :from_2, :to_2, :
 
 	}
 
+
+	/***
+	 * @param $id
+	 * @param $month
+	 * @param $year
+	 *
+	 * @return array new generated shedule
+	 */
 	function generateMonthSheduleForUser($id, $month, $year){
 		$arrayHolodaysInMonth = $this->getAllHolidaysInMonth($month, $year);
 		$arrayVacationsInMonth = $this->getVacationByUserInMonth($id, $month, $year);
@@ -140,6 +148,8 @@ VALUES (:day, :is_nemoc, :is_vacation, :other, :from_1, :to_1, :from_2, :to_2, :
 				}
 			}
 		}
+
+		return $this->getSheduleUserByMonthAndYear($month, $year, $id);
     }
 
 	function getSheduleUserByMonthAndYear($month, $year, $user_id){
@@ -376,40 +386,40 @@ VALUES (:day, :is_nemoc, :is_vacation, :other, :from_1, :to_1, :from_2, :to_2, :
 	    }
     }
 
-	//TODO pereprover
-	function getAllSheduleInMonthByUserID($id, $month, $year){
-		$day = 1;
-		$d = mktime(0, 0, 0, $month, $day, $year);
-
-		$dayFrom = date("Y-m-d", $d);
-		$dayTo = date("Y-m-d", strtotime($d));
-		$user = $this->getUserById($id);
-
-		$mysql_pdo_error = false;
-		$query = "select * from shedule where user_id=:user_id AND  day >=:day_from AND day <=:day_from";
-		$sth = $this->conn->prepare($query);
-		$sth->bindValue(':user_id', $id, PDO::PARAM_INT);
-		$sth->bindValue(':day_from', $dayFrom, PDO::PARAM_STR);
-		$sth->bindValue(':day_to', $dayTo, PDO::PARAM_STR);
-
-		$sth->execute();
-		$errors = $sth->errorInfo();
-		if ($errors[0] + 0 > 0){
-			$mysql_pdo_error = true;
-		}
-		if ($mysql_pdo_error == false){
-			$all = $sth->fetchAll(PDO::FETCH_ASSOC);
-			echo '<pre>'; print_r($all); echo '</pre>';
-			$user->addMonthData($all);
-			return $user;
-		}
-		else{
-			//TODO other error
-			echo "Eror - PDOStatement::errorInfo(): ";
-			print_r($errors);
-			echo "SQL : $query";
-		}
-	}
+//	//TODO pereprover
+//	function getAllSheduleInMonthByUserID($id, $month, $year){
+//		$day = 1;
+//		$d = mktime(0, 0, 0, $month, $day, $year);
+//
+//		$dayFrom = date("Y-m-d", $d);
+//		$dayTo = date("Y-m-d", strtotime($d));
+//		$user = $this->getUserById($id);
+//
+//		$mysql_pdo_error = false;
+//		$query = "select * from shedule where user_id=:user_id AND  day >=:day_from AND day <=:day_from";
+//		$sth = $this->conn->prepare($query);
+//		$sth->bindValue(':user_id', $id, PDO::PARAM_INT);
+//		$sth->bindValue(':day_from', $dayFrom, PDO::PARAM_STR);
+//		$sth->bindValue(':day_to', $dayTo, PDO::PARAM_STR);
+//
+//		$sth->execute();
+//		$errors = $sth->errorInfo();
+//		if ($errors[0] + 0 > 0){
+//			$mysql_pdo_error = true;
+//		}
+//		if ($mysql_pdo_error == false){
+//			$all = $sth->fetchAll(PDO::FETCH_ASSOC);
+//			echo '<pre>'; print_r($all); echo '</pre>';
+//			$user->addMonthData($all);
+//			return $user;
+//		}
+//		else{
+//			//TODO other error
+//			echo "Eror - PDOStatement::errorInfo(): ";
+//			print_r($errors);
+//			echo "SQL : $query";
+//		}
+//	}
 
     ///////////////////////////////////   PROJECTS  ////////////////////////////////////////////////////////////////////////////
 

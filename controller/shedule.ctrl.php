@@ -13,8 +13,13 @@ include_once("../model/Shedule.php");
 $dbObject = new DataBase();
 
 if(isset($_GET["/shedule/generate"])){
-	$obj = json_decode($_GET["/shedule/generate/"], false);
+	$obj = json_decode($_GET["/shedule/generate"], false);
+	echo '<pre>'; print_r($obj); echo '</pre>';
+
 	$array = $dbObject->getSheduleUserByMonthAndYear($obj->month, $obj->year, $obj->userId);
+	if(count($array) == 0){
+		$array = $dbObject->generateMonthSheduleForUser($obj->userId, $obj->month, $obj->year);
+	}
 	$objectArray = [];
 	if($array != null){
 		for($i =0; $i<count($array); $i++){
@@ -38,7 +43,7 @@ if(isset($_GET["/shedule/generate"])){
 				$shedule->setThirdPartFrom($array[$i]['from_3']);
 				$shedule->setThirdPartFrom($array[$i]['to_3']);
 			}
-			$objectArray[$i] = $shedule;
+			$objectArray[$i] = $shedule->getDataToForJSON();
 		}
 	}
 	echo json_encode($objectArray);

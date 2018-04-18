@@ -8,41 +8,70 @@
 
 class Shedule {
 
-	protected $_id;
-	protected $_userId;
-	protected $_date;
-	protected $_dayType;
-	protected $_firstPartFrom;
-	protected $_firstPartTo;
-	protected $_secondPartFrom;
-	protected $_secondPartTo;
-	protected $_thirdPartFrom;
-	protected $_thirdPartTo;
+	protected $id;
+	protected $userId;
+	protected $date;
+	protected $dayType;
+	protected $firstPartFrom;
+	protected $firstPartTo;
+	protected $secondPartFrom;
+	protected $secondPartTo;
+	protected $thirdPartFrom;
+	protected $thirdPartTo;
 
 	function __construct() {
-		$this->_id="";
-		$this->_userId="";
-		$this->_date="";
-		$this->_firstPartFrom="";
-		$this->_firstPartTo="";
-		$this->_secondPartFrom="";
-		$this->_secondPartTo="";
-		$this->_thirdPartFrom="";
-		$this->_thirdPartTo="";
+		$this->id="";
+		$this->userId="";
+		$this->date="";
+		$this->firstPartFrom="";
+		$this->firstPartTo="";
+		$this->secondPartFrom="";
+		$this->secondPartTo="";
+		$this->thirdPartFrom="";
+		$this->thirdPartTo="";
+	}
+
+
+	public function __toString() {
+		$array = array("id" =>$this->id,
+			"userId" => $this->userId,
+			"date" => $this->date,
+			"firstPartFrom"=> $this->firstPartFrom,
+			"firstPartTo" =>$this->firstPartTo,
+			"secondPartFrom" =>$this->secondPartFrom,
+			"secondPartTo" => $this->secondPartTo,
+			"thirdPartFrom" => $this->thirdPartFrom,
+			"thirdPartTo" => $this->thirdPartTo
+		);
+		return json_encode($array);
+	}
+
+	function getDataToForJSON(){
+		$array = array("id" =>$this->id,
+		               "userId" => $this->userId,
+		               "date" => $this->date,
+		               "firstPartFrom"=> $this->firstPartFrom,
+		               "firstPartTo" =>$this->firstPartTo,
+		               "secondPartFrom" =>$this->secondPartFrom,
+		               "secondPartTo" => $this->secondPartTo,
+		               "thirdPartFrom" => $this->thirdPartFrom,
+		               "thirdPartTo" => $this->thirdPartTo
+		);
+		return $array;
 	}
 
 	/**
 	 * @return mixed
 	 */
 	public function getDayType() {
-		return $this->_dayType;
+		return $this->dayType;
 	}
 
 	/**
 	 * @param mixed $dayType
 	 */
 	public function setDayType( $dayType ) {
-		$this->_dayType = $dayType;
+		$this->dayType = $dayType;
 	}
 
 
@@ -50,126 +79,126 @@ class Shedule {
 	 * @return string
 	 */
 	public function getId() {
-		return $this->_id;
+		return $this->id;
 	}
 
 	/**
 	 * @param string $id
 	 */
 	public function setId( $id ) {
-		$this->_id = $id;
+		$this->id = $id;
 	}
 
 	/**
 	 * @return string
 	 */
 	public function getUserId() {
-		return $this->_userId;
+		return $this->userId;
 	}
 
 	/**
 	 * @param string $userId
 	 */
 	public function setUserId( $userId ) {
-		$this->_userId = $userId;
+		$this->userId = $userId;
 	}
 
 	/**
 	 * @return string
 	 */
 	public function getDate() {
-		return $this->_date;
+		return $this->date;
 	}
 
 	/**
 	 * @param string $date
 	 */
 	public function setDate( $date ) {
-		$this->_date = $date;
+		$this->date = $date;
 	}
 
 	/**
 	 * @return string
 	 */
 	public function getFirstPartFrom() {
-		return $this->_firstPartFrom;
+		return $this->firstPartFrom;
 	}
 
 	/**
 	 * @param string $firstPartFrom
 	 */
 	public function setFirstPartFrom( $firstPartFrom ) {
-		$this->_firstPartFrom = $firstPartFrom;
+		$this->firstPartFrom = $firstPartFrom;
 	}
 
 	/**
 	 * @return string
 	 */
 	public function getFirstPartTo() {
-		return $this->_firstPartTo;
+		return $this->firstPartTo;
 	}
 
 	/**
 	 * @param string $firstPartTo
 	 */
 	public function setFirstPartTo( $firstPartTo ) {
-		$this->_firstPartTo = $firstPartTo;
+		$this->firstPartTo = $firstPartTo;
 	}
 
 	/**
 	 * @return string
 	 */
 	public function getSecondPartFrom() {
-		return $this->_secondPartFrom;
+		return $this->secondPartFrom;
 	}
 
 	/**
 	 * @param string $secondPartFrom
 	 */
 	public function setSecondPartFrom( $secondPartFrom ) {
-		$this->_secondPartFrom = $secondPartFrom;
+		$this->secondPartFrom = $secondPartFrom;
 	}
 
 	/**
 	 * @return string
 	 */
 	public function getSecondPartTo() {
-		return $this->_secondPartTo;
+		return $this->secondPartTo;
 	}
 
 	/**
 	 * @param string $secondPartTo
 	 */
 	public function setSecondPartTo( $secondPartTo ) {
-		$this->_secondPartTo = $secondPartTo;
+		$this->secondPartTo = $secondPartTo;
 	}
 
 	/**
 	 * @return string
 	 */
 	public function getThirdPartFrom() {
-		return $this->_thirdPartFrom;
+		return $this->thirdPartFrom;
 	}
 
 	/**
 	 * @param string $thirdPartFrom
 	 */
 	public function setThirdPartFrom( $thirdPartFrom ) {
-		$this->_thirdPartFrom = $thirdPartFrom;
+		$this->thirdPartFrom = $thirdPartFrom;
 	}
 
 	/**
 	 * @return string
 	 */
 	public function getThirdPartTo() {
-		return $this->_thirdPartTo;
+		return $this->thirdPartTo;
 	}
 
 	/**
 	 * @param string $thirdPartTo
 	 */
 	public function setThirdPartTo( $thirdPartTo ) {
-		$this->_thirdPartTo = $thirdPartTo;
+		$this->thirdPartTo = $thirdPartTo;
 	}
 
 
