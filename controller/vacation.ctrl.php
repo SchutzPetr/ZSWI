@@ -12,7 +12,7 @@ include_once("../model/constant.php");
 
 $dbObject = new DataBase();
 
-if(isset($_GET["/vacation/userid"])){
+if(isset($_GET["/vacation/getByUserId"])){
 	$obj = json_decode($_GET["/vacation/userid"], false);
 	$array = $dbObject->getVacationByUserInYear($obj->userId, $obj->year);
 	$howManyDays = 0;
@@ -35,13 +35,23 @@ if(isset($_GET["/vacation/getByUserIdAndYear"])){
 
 if(isset($_GET["/vacation/add"])){
 	$obj = json_decode($_GET["/vacation/add"], false);
-	$dbObject->addVacationToUser($obj->day, $obj->type ,$obj->userId);
-
+	$array = $dbObject->addVacationToUser($obj->day, $obj->type ,$obj->userId);
+	echo json_encode($array[0]);
 }
 if(isset($_GET["/vacation/delete/id"])){
 	$obj = json_decode($_GET["/vacation/delete/id"], false);
-	$dbObject->deleteVacationByID($obj);
+	$array = $dbObject->getVacationByID($obj->id);
+	$shedule = $dbObject->getSheduleByDay($array["day"]);
+	$time_table = $dbObject->getTimeTableByUserID($shedule["user_id"]);
+
+	if($dbObject->deleteVacationByID($obj)){
+		$dbObject->updateSheduleById($shedule["id"], $shedule["day"], $shedule["is_nemoc"],
+			0, $shedule["other"], $time_table["from_1"], $time_table["to_1"], $time_table["from_2"],
+			$time_table["to_2"], "", "");
+		echo json_encode(true);
+	}
 }
 if(isset($_GET["/vacation/update/id"])){
 	$obj = json_decode($_GET["/vacation/update/id"], false);
+	$dbObject->updateHollidays($obj);
 }

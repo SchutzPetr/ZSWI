@@ -14,16 +14,22 @@ if(isset($_GET["/holidays/add"])){
 	$obj = json_decode($_GET["/holidays/add"], false);
 	//if some holiday exist
 	if(!$dbObject->getHoliday($obj->day)){
-		$dbObject->addHolidays($obj->day, $obj->name_holidays);
+		if($dbObject->addHolidays($obj->day, $obj->name_holidays)){
+			echo json_encode($dbObject->getHoliday($obj->day));
+		}
 	}else{
 		//TODO return error
 	}
 }
 if(isset($_GET["/holidays/delete/id"])){
 	$obj = json_decode($_GET["/holidays/delete/id"], false);
-	$dbObject->deleteHolidaysByDay($obj);
+	if($dbObject->deleteHolidaysByDay($obj)){
+		echo json_encode(true);
+	}
 }
 if(isset($_GET["/holidays/update"])){
 	$obj = json_decode($_GET["/holidays/update"], false);
-	$dbObject->updateHollidays($obj);
+	if($dbObject->updateHollidays($obj)){
+		echo json_encode($dbObject->getHoliday($obj->day));
+	}
 }

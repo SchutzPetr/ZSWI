@@ -10,6 +10,35 @@ header("Content-Type: application/json; charset=UTF-8");
 include_once("../model/db.php");
 include_once("../model/Shedule.php");
 
+function fillShedule($array){
+	$shedule = new Shedule();
+	$dbObject = new DataBase();
+
+	if(count($array)!=0){
+		$shedule->setId($array['id']);
+		$shedule->setUserId($array['user_id']);
+		$shedule->setDate($array['day']);
+		if($array['is_nemoc'] == 0){
+			$shedule->setDayType("nemoc");
+		}else{
+			if($array['is_vacation'] == 0){
+				$shedule->setDayType($array['other']);
+			}else{
+				$typeVacation = $dbObject->getVacationByID($array['is_vacation'])['type'];
+				$shedule->setDayType($typeVacation);
+			}
+			$shedule->setFirstPartFrom($array['from_1']);
+			$shedule->setFirstPartTo($array['to_1']);
+			$shedule->setSecondPartFrom($array['from_2']);
+			$shedule->setSecondPartTo($array['to_2']);
+			$shedule->setThirdPartFrom($array['from_3']);
+			$shedule->setThirdPartFrom($array['to_3']);
+		}
+	}
+	return $shedule;
+}
+
+
 $dbObject = new DataBase();
 
 if(isset($_GET["/shedule/generate"])){
@@ -23,26 +52,7 @@ if(isset($_GET["/shedule/generate"])){
 	$objectArray = [];
 	if($array != null){
 		for($i =0; $i<count($array); $i++){
-			$shedule = new Shedule();
-			$shedule->setId($array[$i]['id']);
-			$shedule->setUserId($array[$i]['user_id']);
-			$shedule->setDate($array[$i]['day']);
-			if($array[$i]['is_nemoc'] == 0){
-				$shedule->setDayType("nemoc");
-			}else{
-				if($array[$i]['is_vacation'] == 0){
-					$shedule->setDayType($array[$i]['other']);
-				}else{
-					$typeVacation = $dbObject->getVacationByID($array[$i]['is_vacation'])['type'];
-					$shedule->setDayType($typeVacation);
-				}
-				$shedule->setFirstPartFrom($array[$i]['from_1']);
-				$shedule->setFirstPartTo($array[$i]['to_1']);
-				$shedule->setSecondPartFrom($array[$i]['from_2']);
-				$shedule->setSecondPartTo($array[$i]['to_2']);
-				$shedule->setThirdPartFrom($array[$i]['from_3']);
-				$shedule->setThirdPartFrom($array[$i]['to_3']);
-			}
+			$shedule = fillShedule($array[$i]);
 			$objectArray[$i] = $shedule->getDataToForJSON();
 		}
 	}
@@ -50,11 +60,25 @@ if(isset($_GET["/shedule/generate"])){
 }
 if(isset($_POST["/shedule/get/id"])){
 	$obj = json_decode($_GET["shedule/get/id"], false);
-	$dbObject->getSheduleById($obj);
+	$array = $dbObject->getSheduleById($obj->id);
+	$shedule = fillShedule($array);
+	echo json_encode($shedule->getDataToForJSON());
 }
 if(isset($_POST["/shedule/getByUserIdAndMonth"])){
 	$obj = json_decode($_GET["getByUserIdAndMonth"], false);
-	$dbObject->getSheduleUserByMonthAndYear($obj->month, $obj->year, $obj->user_id);
+	$array = $dbObject->getSheduleUserByMonthAndYear($obj->month, $obj->year, $obj->user_id);
+	if(count($array) == 0){
+		$array = $dbObject->generateMonthSheduleForUser($obj->userId, $obj->month, $obj->year);
+	}
+	$objectArray = [];
+	if($array != null){
+		for($i =0; $i<count($array); $i++){
+			$shedule = fillShedule($array[$i]);
+			$objectArray[$i] = $shedule->getDataToForJSON();
+		}
+	}
+	echo json_encode($objectArray);
+
 }
 if(isset($_GET["/shedule/update/id"])){
 	$obj = json_decode($_GET["/shedule/update/id"], false);
@@ -64,7 +88,9 @@ if(isset($_GET["/shedule/update/id"])){
 
 if(isset($_POST["/shedule/delete/id"])){
 	$obj = json_decode($_GET["/shedule/delete/id"], false);
-	$dbObject->deleteSheduleById($obj);
+	if($dbObject->deleteSheduleById($obj)){
+		echo json_encode(true);
+	}
 }
 
 

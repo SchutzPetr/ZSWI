@@ -198,7 +198,7 @@ VALUES (:day, :is_nemoc, :is_vacation, :other, :from_1, :to_1, :from_2, :to_2, :
 		}
 		if ($mysql_pdo_error == false){
 			$all = $sth->fetchAll(PDO::FETCH_ASSOC);
-			return $all;
+			return $all[0];
 		}
 		else{
 			//TODO other error
@@ -206,6 +206,29 @@ VALUES (:day, :is_nemoc, :is_vacation, :other, :from_1, :to_1, :from_2, :to_2, :
 			print_r($errors);
 			echo "SQL : $query";
 		}
+	}
+
+	function getSheduleByDay($day){
+		$mysql_pdo_error = false;
+		$query = "select *  from shedule WHERE  day=:day";
+		$sth = $this->conn->prepare($query);
+		$sth->bindValue(':day', $day);
+		$sth->execute();
+		$errors = $sth->errorInfo();
+		if ($errors[0] + 0 > 0){
+			$mysql_pdo_error = true;
+		}
+		if ($mysql_pdo_error == false){
+			$all = $sth->fetchAll(PDO::FETCH_ASSOC);
+			return $all[0];
+		}
+		else{
+			//TODO other error
+			echo "Eror - PDOStatement::errorInfo(): ";
+			print_r($errors);
+			echo "SQL : $query";
+		}
+
 	}
 
 
@@ -266,6 +289,12 @@ VALUES (:day, :is_nemoc, :is_vacation, :other, :from_1, :to_1, :from_2, :to_2, :
 
 	///////////////////////////////////   USER   // ////////////////////////////////////////////////////////////////////////////
 
+	/***
+	 * @param $login
+	 * @param $pass
+	 *
+	 * @return array[0]
+	 */
 	function getUserByLogin($login, $pass ){
 		$mysql_pdo_error = false;
 		$query = "select *  from user where orion_login=:login";
@@ -279,8 +308,6 @@ VALUES (:day, :is_nemoc, :is_vacation, :other, :from_1, :to_1, :from_2, :to_2, :
 		}
 		if ($mysql_pdo_error == false){
 			$all = $sth->fetchAll(PDO::FETCH_ASSOC);
-//			$user = new User();
-//			$user->fill($all[0]);
 			return $all[0];
 		}
 		else{
@@ -325,10 +352,10 @@ VALUES (:day, :is_nemoc, :is_vacation, :other, :from_1, :to_1, :from_2, :to_2, :
 	}
 
 	/***
-	 * return object User
+	 *
 	 * @param $id
 	 *
-	 * @return User
+	 * @return array[0]
 	 */
 	function getUserById($id){
 		$mysql_pdo_error = false;
@@ -342,9 +369,7 @@ VALUES (:day, :is_nemoc, :is_vacation, :other, :from_1, :to_1, :from_2, :to_2, :
 		}
 		if ($mysql_pdo_error == false){
 			$all = $sth->fetchAll(PDO::FETCH_ASSOC);
-			$user = new User();
-			$user->fill($all[0]);
-			return $user;
+			return $all[0];
 		}
 		else{
 			//TODO other error
@@ -666,6 +691,13 @@ VALUES (:from_1, :to_1 ,:from_2, :to_2, :active_from, :id)';
 		return $number;
     }
 
+	/***
+	 * get all vacation user in year
+	 * @param $id
+	 * @param $year
+	 *
+	 * @return array
+	 */
 	function getVacationByUserInYear($id, $year){
 		$mysql_pdo_error = false;
 		$query = "select *  from vacation WHERE YEAR(day) =:year AND user_id=:id";
