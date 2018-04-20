@@ -44,10 +44,10 @@ $dbObject = new DataBase();
 
 if(isset($_GET["/shedule/generate"])){
 	$obj = json_decode($_GET["/shedule/generate"], false);
-	echo '<pre>'; print_r($obj); echo '</pre>';
+//	echo '<pre>'; print_r($obj); echo '</pre>';
 
 	$array = $dbObject->getSheduleUserByMonthAndYear($obj->month, $obj->year, $obj->userId);
-	if(!empty($array)){
+	if(empty($array)){
 		$array = $dbObject->generateMonthSheduleForUser($obj->userId, $obj->month, $obj->year);
 	}
 	$objectArray = [];
@@ -71,7 +71,7 @@ if(isset($_GET["/shedule/getByUserIdAndMonth"])){
 	echo '<pre>'; print_r($obj); echo '</pre>';
 
 
-	$array = $dbObject->getSheduleUserByMonthAndYear($obj->month, $obj->year, $obj->user_id);
+	$array = $dbObject->getSheduleUserByMonthAndYear($obj->month, $obj->year, $obj->userId);
 	if(count($array) == 0){
 		$array = $dbObject->generateMonthSheduleForUser($obj->userId, $obj->month, $obj->year);
 	}

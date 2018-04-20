@@ -41,7 +41,7 @@ if(isset($_GET["/user/login"])){
 	echo json_encode($dbObject->getTypeContract($obj));
 } else if(isset($_GET["/user/getById"])){
 	$obj = json_decode($_GET["getUserByID"], false);
-	$array = $dbObject->getUserById($obj);
+	$array = $dbObject->getUserById($obj->id);
 	$user = fillUser($array);
 	echo json_encode($user->getDataUserToJS());
 

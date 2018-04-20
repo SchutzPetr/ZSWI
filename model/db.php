@@ -117,8 +117,9 @@ VALUES (:day, :is_nemoc, :is_vacation, :other, :from_1, :to_1, :from_2, :to_2, :
 		$arrayHolodaysInMonth = $this->getAllHolidaysInMonth($month, $year);
 		$arrayVacationsInMonth = $this->getVacationByUserInMonth($id, $month, $year);
 		$time = $this->getTimeTableByUserID($id);
+//		echo '<pre>'; print_r($time); echo '</pre>';
 
-	    $day = FIRST_DAY;
+		$day = FIRST_DAY;
 	    $d = mktime(0, 0, 0, $month, $day, $year);
 	    $lastDayInMonth = date("t", strtotime($d));
 		for($day; $day<$lastDayInMonth; $day++){
@@ -132,7 +133,7 @@ VALUES (:day, :is_nemoc, :is_vacation, :other, :from_1, :to_1, :from_2, :to_2, :
 						//is it not a vacation
 						if(!$this->isItVacationDay($dayInMonth, $arrayVacationsInMonth)){
 							$this->addSheduleByUserID($id, $dayInMonth, 0,0, "",
-								$time[0]["from_1"], $time[0]["to_1"], $time[0]["from_2"], $time[0]["to_2"], $time[0]["from_3"], $time[0]["to_3"]);
+								$time["from_1"], $time["to_1"], $time["from_2"], $time["to_2"], $time["from_3"], $time["to_3"]);
 							//TODO Control time 3
 
 						}else{//if is it a vacation
@@ -153,19 +154,12 @@ VALUES (:day, :is_nemoc, :is_vacation, :other, :from_1, :to_1, :from_2, :to_2, :
     }
 
 	function getSheduleUserByMonthAndYear($month, $year, $user_id){
-//		$day = 1;
-//		$d = mktime(0, 0, 0, $month, $day, $year);
-//
-//		$dayFrom = date("d.m.Y", $d);
-//		$dayTo = date("d.m.Y", strtotime($d));
-
 		$mysql_pdo_error = false;
 		$query = "select *  from shedule WHERE  MONTH(day) =:month AND YEAR(day) =:year AND user_id=:user_id";
 		$sth = $this->conn->prepare($query);
 		$sth->bindValue(':user_id', $user_id, PDO::PARAM_INT);
 		$sth->bindValue(':month', $month, PDO::PARAM_INT);
 		$sth->bindValue(':year', $year, PDO::PARAM_INT);
-
 //		$sth->bindValue(':day_from', $dayFrom, PDO::PARAM_STR);
 //		$sth->bindValue(':day_to', $dayTo, PDO::PARAM_STR);
 		$sth->execute();
@@ -579,10 +573,7 @@ VALUES (:from_1, :to_1 ,:from_2, :to_2, :active_from, :id)';
 		}
 		if ($mysql_pdo_error == false){
 			$all = $sth->fetchAll(PDO::FETCH_ASSOC);
-			echo '<pre>'; print_r($all); echo '</pre>';
-
-			if(count($all)>=0){
-				$all = array();
+			if(empty($all)){
 				return $all;
 			}
 			return $all[0];

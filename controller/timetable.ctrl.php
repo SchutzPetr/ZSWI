@@ -18,7 +18,7 @@ if(isset($_GET["/timetable/update/id"])){
 	$obj = json_decode($_GET["/timetable/add"], false);
 	$array = $dbObject->getTimeTableByUserID($obj->userId);
 	if(empty($array)){
-		$dbObject->addTimeTableByUserID($obj->userId, $obj->from_1, $obj->to_1, $obj->from_2, $obj->to_2);
+		$dbObject->addTimeTableByUserID($obj->userId, $obj->from1, $obj->to1, $obj->from2, $obj->to2);
 	}else{
 		$dbObject->updateTimeTable($obj);
 	}
