@@ -11,10 +11,10 @@ include_once("../model/db.php");
 
 $dbObject = new DataBase();
 
-if(isset($_POST["/timetable/update/id"])){
+if(isset($_GET["/timetable/update/id"])){
 	$obj = json_decode($_GET["/timetable/update/id"], false);
 	$dbObject->updateTimeTable($obj);
-}else if(isset($_POST["/timetable/add"])){
+}else if(isset($_GET["/timetable/add"])){
 	$obj = json_decode($_GET["/timetable/add"], false);
 	$array = $dbObject->getTimeTableByUserID($obj->userId);
 	if(empty($array)){

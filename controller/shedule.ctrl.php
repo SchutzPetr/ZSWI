@@ -59,7 +59,7 @@ if(isset($_GET["/shedule/generate"])){
 	}
 	echo json_encode($objectArray);
 }
-if(isset($_POST["/shedule/get/id"])){
+if(isset($_GET["/shedule/get/id"])){
 	$obj = json_decode($_GET["shedule/get/id"], false);
 
 	$array = $dbObject->getSheduleById($obj->id);
@@ -91,7 +91,7 @@ if(isset($_GET["/shedule/update/id"])){
 		$obj->from_2, $obj->to_2, $obj->from_3, $obj->to_3);
 }
 
-if(isset($_POST["/shedule/delete/id"])){
+if(isset($_GET["/shedule/delete/id"])){
 	$obj = json_decode($_GET["/shedule/delete/id"], false);
 	if($dbObject->deleteSheduleById($obj)){
 		echo json_encode(true);
