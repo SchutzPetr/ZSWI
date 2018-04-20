@@ -16,13 +16,14 @@ const styles = theme => ({
         backgroundColor: theme.palette.background.paper,
     },
     tabs: {
+        width: "90%",
         height: 35,
         minHeight: 35
     },
     tab: {
-        width: "7.5%",
-        minWidth: "7.5%",
-        maxWidth: "7.5%",
+        width: "8.333333333333333%",
+        minWidth: "8.333333333333333%",
+        maxWidth: "8.333333333333333%",
         height: 35
     },
     yearButton: {
@@ -43,6 +44,9 @@ const styles = theme => ({
         left: "50%",
         transform: "translateX(-50%) translateY(-50%)",
         width: "80%"
+    },
+    bottom:{
+        display: "flex"
     }
 });
 
@@ -118,8 +122,8 @@ class AgendaTabs extends React.Component {
                       onChange={this.changeNTIS.bind(this)}
                       scrollable={false}
                       indicatorColor={"primary"}>
-                    <Tab className={classes.tab} label={"FAV"}/>
-                    <Tab className={classes.tab} label={"NTIS"}/>
+                    <Tab key={"TAB-FAV"} className={classes.tab} label={"FAV"}/>
+                    <Tab key={"TAB-NTIS"} className={classes.tab} label={"NTIS"}/>
                 </Tabs>
             )
         }else{
@@ -155,22 +159,26 @@ class AgendaTabs extends React.Component {
                 {timeSheet == null ?
                     <Paper className={classes.loadingPaper}><LinearProgress className={classes.loading}/></Paper> :
                     <Agenda timeSheet={timeSheet} onTimeSheetEdit={this.handleTimeSheetEdit.bind(this)}/>}
-                <Tabs classes={{root: classes.tabs, indicator: classes.indicator}}
-                      value={this.state.month + 1}
-                      onChange={this.changeMonth.bind(this)}
-                      scrollable={false}
-                      indicatorColor={"primary"}>
+                <div className={classes.bottom}>
                     <Button className={classes.yearButton}
                             disabled={timeSheet == null}
                             onClick={this.handleChangeYear(this.state.year - 1)}>{this.state.year - 1}</Button>
-                    {months.map((value, index) => {
-                        return <Tab className={classes.tab} disabled={timeSheet == null}
-                                    label={moment(value).format("MMMM")}/>
-                    })}
+                    <Tabs classes={{root: classes.tabs, indicator: classes.indicator}}
+                          value={this.state.month + 1}
+                          onChange={this.changeMonth.bind(this)}
+                          scrollable={false}
+                          indicatorColor={"primary"}>
+                        {months.map((value, index) => {
+                            return <Tab key={`TAB-Agenda-${moment(value).format("MMMM")}`}
+                                        className={classes.tab}
+                                        disabled={timeSheet == null}
+                                        label={moment(value).format("MMMM")}/>
+                        })}
+                    </Tabs>
                     <Button className={classes.yearButton}
                             disabled={timeSheet == null}
                             onClick={this.handleChangeYear(this.state.year + 1)}>{this.state.year + 1}</Button>
-                </Tabs>
+                </div>
             </Paper>
         );
     }
