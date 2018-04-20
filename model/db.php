@@ -579,7 +579,13 @@ VALUES (:from_1, :to_1 ,:from_2, :to_2, :active_from, :id)';
 		}
 		if ($mysql_pdo_error == false){
 			$all = $sth->fetchAll(PDO::FETCH_ASSOC);
-			return $all;
+			echo '<pre>'; print_r($all); echo '</pre>';
+
+			if(count($all)>=0){
+				$all = array();
+				return $all;
+			}
+			return $all[0];
 		}
 		else{
 			//TODO other error

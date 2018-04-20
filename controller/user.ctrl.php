@@ -13,7 +13,7 @@ function fillUser($array){
 	$dbObject = new DataBase();
 
 	$user = new User();
-	if($array!= null){
+	if(!empty($array)){
 		$user->fill($array);
 		$user->setContract($dbObject->getTypeContract($user->getId()));
 		$user->setVacationHourByYear($dbObject->getVacationHourInYear($user->getId(), date("Y")));
@@ -49,9 +49,6 @@ if(isset($_GET["/user/login"])){
 	$obj = json_decode($_GET["/user/update/id"], false);
 	$dbObject->updateUser($obj);
 
-} else if(isset($_POST["/timetable/update/id"])){
-	$obj = json_decode($_GET["/timetable/update/id"], false);
-	$dbObject->updateTimeTable($obj);
 }
 
 
