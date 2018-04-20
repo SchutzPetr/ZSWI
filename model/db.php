@@ -733,7 +733,6 @@ VALUES (:from_1, :to_1 ,:from_2, :to_2, :active_from, :id)';
 		$query = "select * from vacation where id=:id";
 		$sth = $this->conn->prepare($query);
 		$sth->bindValue(':id', $id, PDO::PARAM_INT);
-
 		$sth->execute();
 		$errors = $sth->errorInfo();
 		if ($errors[0] + 0 > 0){
@@ -749,9 +748,32 @@ VALUES (:from_1, :to_1 ,:from_2, :to_2, :active_from, :id)';
 			print_r($errors);
 			echo "SQL : $query";
 		}
-
-
 	}
+
+	function getVacationByDay($day){
+		$mysql_pdo_error = false;
+		$query = "select * from vacation where day=:days";
+		$sth = $this->conn->prepare($query);
+		$sth->bindValue(':days', $day);
+		$sth->execute();
+		$errors = $sth->errorInfo();
+		if ($errors[0] + 0 > 0){
+			$mysql_pdo_error = true;
+		}
+		if ($mysql_pdo_error == false){
+			$all = $sth->fetchAll(PDO::FETCH_ASSOC);
+			if(empty($all)) return $all;
+			return $all[0];
+		}
+		else{
+			//TODO other error
+			echo "Eror - PDOStatement::errorInfo(): ";
+			print_r($errors);
+			echo "SQL : $query";
+		}
+	}
+
+
 
 	/***
 	 * TODO generate shedule when delete vacation day

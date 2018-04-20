@@ -25,7 +25,7 @@ function fillShedule($array){
 			if($array['is_vacation'] === 0){
 				$shedule->setDayType($array['other']);
 			}else{
-				$typeVacation = $dbObject->getVacationByID($array['is_vacation'])['type'];
+				$typeVacation = $dbObject->getVacationByDay($array['day']);
 				$shedule->setDayType($typeVacation);
 			}
 			$shedule->setFirstPartFrom($array['from_1']);
@@ -61,12 +61,16 @@ if(isset($_GET["/shedule/generate"])){
 }
 if(isset($_POST["/shedule/get/id"])){
 	$obj = json_decode($_GET["shedule/get/id"], false);
+
 	$array = $dbObject->getSheduleById($obj->id);
 	$shedule = fillShedule($array);
 	echo json_encode($shedule->getDataToForJSON());
 }
-if(isset($_POST["/shedule/getByUserIdAndMonth"])){
-	$obj = json_decode($_GET["getByUserIdAndMonth"], false);
+if(isset($_GET["/shedule/getByUserIdAndMonth"])){
+	$obj = json_decode($_GET["/shedule/getByUserIdAndMonth"], false);
+	echo '<pre>'; print_r($obj); echo '</pre>';
+
+
 	$array = $dbObject->getSheduleUserByMonthAndYear($obj->month, $obj->year, $obj->user_id);
 	if(count($array) == 0){
 		$array = $dbObject->generateMonthSheduleForUser($obj->userId, $obj->month, $obj->year);
