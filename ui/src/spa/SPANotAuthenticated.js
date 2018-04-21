@@ -9,6 +9,10 @@ import LoginPage from "../use_cases/uc_login/LoginPage";
 
 class SPANotAuthenticated extends React.Component {
 
+    componentDidMount(){
+        this.props.history.push("/");
+    }
+
     render() {
         const { classes } = this.props;
         return (
@@ -38,6 +42,8 @@ class SPANotAuthenticated extends React.Component {
 SPANotAuthenticated.propTypes = {
     classes: PropTypes.object.isRequired,
     theme: PropTypes.object.isRequired,
+    match: PropTypes.any.isRequired,
+    history: PropTypes.any.isRequired
 };
 
 export default withStyles(Styles, {withTheme: true})(SPANotAuthenticated);

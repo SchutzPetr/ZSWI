@@ -2,7 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import {withStyles} from "material-ui/styles";
 import Styles from "./style/NotificationPopoverStyle";
-import {Paper, Popover, Typography} from "material-ui";
+import {List, Paper, Popover, Typography} from "material-ui";
+import NotificationItem from "./NotificationItem";
 
 class NotificationPopover extends React.Component {
 
@@ -27,7 +28,22 @@ class NotificationPopover extends React.Component {
                         <Typography className={this.props.classes.typography}>Oznámení</Typography>
                     </div>
                     <div className={this.props.classes.content}>
-
+                        <List>
+                            <NotificationItem title={"test"} description={"sss"} onClick={()=>{}} onDelete={()=>{}} link={"http://localhost:3000/holiday"}/>
+                            <NotificationItem title={"test"} description={"sss"} onClick={()=>{}} onDelete={()=>{}}/>
+                            <NotificationItem title={"test"} description={"sss"} onClick={()=>{}} onDelete={()=>{}}/>
+                            <NotificationItem title={"test"} description={"sss"} onClick={()=>{}} onDelete={()=>{}}/>
+                            <NotificationItem title={"test"} description={"sss"} onClick={()=>{}} onDelete={()=>{}}/>
+                            <NotificationItem title={"test"} description={"sss"} onClick={()=>{}} onDelete={()=>{}}/>
+                            <NotificationItem title={"test"} description={"sss"} onClick={()=>{}} onDelete={()=>{}}/>
+                            <NotificationItem title={"test"} description={"sss"} onClick={()=>{}} onDelete={()=>{}}/>
+                            <NotificationItem title={"test"} description={"sss"} onClick={()=>{}} onDelete={()=>{}}/>
+                            <NotificationItem title={"test"} description={"sss"} onClick={()=>{}} onDelete={()=>{}}/>
+                            <NotificationItem title={"test"} description={"sss"} onClick={()=>{}} onDelete={()=>{}}/>
+                            <NotificationItem title={"test"} description={"sss"} onClick={()=>{}} onDelete={()=>{}}/>
+                            <NotificationItem title={"test"} description={"sss"} onClick={()=>{}} onDelete={()=>{}}/>
+                            <NotificationItem title={"test"} description={"sss"} onClick={()=>{}} onDelete={()=>{}}/>
+                        </List>
                     </div>
                 </div>
             </Popover>

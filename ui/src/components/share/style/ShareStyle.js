@@ -4,6 +4,18 @@ const Styles = theme => ({
         maxHeight: `calc(100vh - 64px - ${theme.spacing.unit * 2}px)`,
         height: `calc(100vh - 64px - ${theme.spacing.unit * 2}px)`
     },
+    shareCardContent: {
+        display: "flex",
+        alignItems: "center",
+        flexDirection: "column"
+    },
+    shareIcon: {
+        marginRight: 15
+    },
+    shareButton: {
+        marginTop: 50,
+        width: "70%"
+    },
     accountCircle: {
         color: "rgba(0, 0, 0, 0.54)",
         padding: `${theme.spacing.unit}px ${theme.spacing.unit * 2}px`,
@@ -13,7 +25,7 @@ const Styles = theme => ({
         display: "flex",
         alignItems: "center",
     },
-    tableCellCenterJustifi:{
+    tableCellCenterJustifi: {
         display: "flex",
         alignItems: "center",
         justifyContent: "center"

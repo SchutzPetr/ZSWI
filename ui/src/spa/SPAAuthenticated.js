@@ -139,6 +139,8 @@ class SPAAuthenticated extends React.Component {
 SPAAuthenticated.propTypes = {
     classes: PropTypes.object.isRequired,
     theme: PropTypes.object.isRequired,
+    match: PropTypes.any.isRequired,
+    history: PropTypes.any.isRequired
 };
 
 export default withStyles(Styles, {withTheme: true})(SPAAuthenticated);

@@ -75,8 +75,8 @@ class User {
         this._mainWorkStation = value;
     }
 
-    toJSON() {
-        return JSON.stringify(this);
+    get displayFullName(){
+        return `${this._honorificPrefix} ${this._name} ${this._lastName} ${this._honorificSuffix}`;
     }
 
     clone() {

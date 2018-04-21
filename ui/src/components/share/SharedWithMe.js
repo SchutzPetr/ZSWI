@@ -42,7 +42,7 @@ class SharedWithMe extends React.Component {
                                 <TableCell>
                                     <div className={this.props.classes.tableCellCenterJustifi}>
                                         <IconButton aria-label="Menu"
-                                                    oonClick={() => {
+                                                    onClick={() => {
                                                     }}>
                                             <Delete/>
                                         </IconButton></div>

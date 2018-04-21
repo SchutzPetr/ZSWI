@@ -9,6 +9,8 @@ import UserDetail from "../../components/user_detail/UserDetail";
 import Styles from "./style/HomeStyle";
 import withStyles from "material-ui/es/styles/withStyles";
 import UserProject from "../../components/user_projects/UserProject";
+import Authentication from "./../../Authentication";
+
 
 class Home extends React.Component {
 
@@ -42,7 +44,7 @@ class Home extends React.Component {
             return (
                 <Grid container spacing={16}>
                     <Grid item xs={12} sm={3}>
-                        <UserDetail/>
+                        <UserDetail user={Authentication.user}/>
                         <div className={this.props.classes.divider}/>
                         <UserProject/>
                     </Grid>

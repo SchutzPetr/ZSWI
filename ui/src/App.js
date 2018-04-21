@@ -9,6 +9,7 @@ import MomentUtils from 'material-ui-pickers/utils/moment-utils';
 import {MuiPickersUtilsProvider} from "material-ui-pickers";
 import axios from 'axios';
 import SPANotAuthenticated from "./spa/SPANotAuthenticated";
+import {Route} from "react-router-dom";
 
 const theme = createMuiTheme();
 
@@ -41,7 +42,27 @@ class App extends React.Component {
                     moment={moment}
                     locale="cs"
                 >
-                    {Authentication.isAuthenticated() ? <SPAAuthenticated/> : <SPANotAuthenticated/>}
+                    <Route path={"*"} exact={true}
+                           render={props => (
+                               Authentication.isAuthenticated() ? <SPAAuthenticated match={props.match} history={props.history}/> : <SPAAuthenticated match={props.match} history={props.history}/>
+                           )}/>
+                </MuiPickersUtilsProvider>
+            </MuiThemeProvider>
+        );
+    }
+
+    render2() {
+        return (
+            <MuiThemeProvider theme={theme}>
+                <MuiPickersUtilsProvider
+                    utils={MomentUtils}
+                    moment={moment}
+                    locale="cs"
+                >
+                    <Route path={"*"} exact={true}
+                           render={props => (
+                               Authentication.isAuthenticated() ? <SPAAuthenticated match={props.match} history={props.history}/> : <SPANotAuthenticated match={props.match} history={props.history}/>
+                           )}/>
                 </MuiPickersUtilsProvider>
             </MuiThemeProvider>
         );

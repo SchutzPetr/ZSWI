@@ -1,9 +1,9 @@
 const ITEM_HEIGHT = 48;
 
-const styles = theme => ({
+const Styles = theme => ({
     root: {
         flexGrow: 1,
-        height: 250,
+        width: "100%"
     },
     chip: {
         margin: theme.spacing.unit / 4,
@@ -107,3 +107,5 @@ const styles = theme => ({
         },
     },
 });
+
+export default Styles;

@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import {withStyles} from "material-ui/styles";
 import Styles from "./style/ShareStyle";
 import {
+    Button,
     Card,
     CardContent,
     CardHeader,
@@ -16,16 +17,35 @@ import {
 } from "material-ui";
 import AccountCircle from "material-ui-icons/es/AccountCircle";
 import Forward from "material-ui-icons/es/Forward";
+import ShareIcon from "material-ui-icons/es/Share";
 import UserMultipleSelect from "../autocomplete/UserMultipleSelect";
 
 class Share extends React.Component {
 
+    state = {
+      selectedUsers: null
+    };
+
+    handleShare = event => {
+
+    };
+
+    onSelectedUserChange = value => {
+        this.setState({
+            selectedUsers: value,
+        });
+    };
+
     render() {
         return (
             <Card className={this.props.classes.root}>
-                <CardHeader title="Sdílet"/>
-                <CardContent>
-                    <UserMultipleSelect/>
+                <CardHeader title="Nastavení sdílení"/>
+                <CardContent className={this.props.classes.shareCardContent}>
+                    <UserMultipleSelect onSelect={this.onSelectedUserChange} values={this.state.selectedUsers}/>
+                    <Button className={this.props.classes.shareButton} variant="raised" onClick={this.handleShare}>
+                        <ShareIcon className={this.props.classes.shareIcon}/>
+                        Sdílet
+                    </Button>
                 </CardContent>
             </Card>
         )
