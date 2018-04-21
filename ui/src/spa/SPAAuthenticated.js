@@ -16,6 +16,7 @@ import Home from "../use_cases/uc_home/Home";
 import Notifications from "material-ui-icons/es/Notifications";
 import NotificationPopover from "../components/notification/NotificationPopover";
 import Share from "../use_cases/uc_share/SharePage";
+import UserHolidayPage from "../use_cases/uc_user_holiday/UserHolidayPage";
 
 
 class SPAAuthenticated extends React.Component {
@@ -129,6 +130,10 @@ class SPAAuthenticated extends React.Component {
                     <Route path={"/share"} exact={true}
                            render={props => (
                                <Share/>
+                           )}/>
+                    <Route path={"/holiday"} exact={true}
+                           render={props => (
+                               <UserHolidayPage/>
                            )}/>
                 </main>
             </div>
