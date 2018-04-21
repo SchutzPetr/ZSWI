@@ -281,6 +281,131 @@ VALUES (:day, :is_nemoc, :is_vacation, :other, :from_1, :to_1, :from_2, :to_2, :
 
 	}
 
+
+	///////////////////////////////////   SHARING   // ////////////////////////////////////////////////////////////////////////////
+
+	function addSharingByUserID($id, $sharing_to){
+		$mysql_pdo_error = false;
+		$query = 'INSERT INTO share_timesheet (sharing_user, share_to)
+VALUES (:sharing_user, :share_to)';
+		$sth = $this->conn->prepare($query);
+		$sth->bindValue(':sharing_user', $id);
+		$sth->bindValue(':share_to', $sharing_to);
+		$sth->execute();//insert to db
+		$errors = $sth->errorInfo();
+		if ($errors[0] > 0){
+			$mysql_pdo_error = true;
+		}
+		if ($mysql_pdo_error == false){
+			//all is ok
+			return true;
+		}else{
+			echo "Eror - PDOStatement::errorInfo(): ";
+			print_r($errors);
+			echo "SQL : $query";
+		}
+
+	}
+
+	function getAllSharingByUserId($id){
+		$mysql_pdo_error = false;
+		$query = "select *  from share_timesheet WHERE  sharing_user=:sharing_user";
+		$sth = $this->conn->prepare($query);
+		$sth->bindValue(':sharing_user', $id, PDO::PARAM_INT);
+		$sth->execute();
+		$errors = $sth->errorInfo();
+		if ($errors[0] + 0 > 0){
+			$mysql_pdo_error = true;
+		}
+		if ($mysql_pdo_error == false){
+			$all = $sth->fetchAll(PDO::FETCH_ASSOC);
+			return $all;
+		}
+		else{
+			//TODO other error
+			echo "Eror - PDOStatement::errorInfo(): ";
+			print_r($errors);
+			echo "SQL : $query";
+		}
+
+	}
+
+	
+	function getSharing($id, $sharing_to){
+		$mysql_pdo_error = false;
+		$query = "select *  from share_timesheet WHERE  sharing_user:sharing_user AND share_to=:share_to";
+		$sth = $this->conn->prepare($query);
+		$sth->bindValue(':sharing_user', $id, PDO::PARAM_INT);
+		$sth->bindValue(':share_to', $sharing_to);
+
+		$sth->execute();
+		$errors = $sth->errorInfo();
+		if ($errors[0] + 0 > 0){
+			$mysql_pdo_error = true;
+		}
+		if ($mysql_pdo_error == false){
+			$all = $sth->fetchAll(PDO::FETCH_ASSOC);
+			return $all;
+		}
+		else{
+			//TODO other error
+			echo "Eror - PDOStatement::errorInfo(): ";
+			print_r($errors);
+			echo "SQL : $query";
+		}
+
+
+	}
+
+
+	function getSharingListByID($id){
+		$mysql_pdo_error = false;
+		$query = "select *  from share_timesheet WHERE  share_to=:share_to";
+		$sth = $this->conn->prepare($query);
+		$sth->bindValue(':share_to', $id, PDO::PARAM_INT);
+		$sth->execute();
+		$errors = $sth->errorInfo();
+		if ($errors[0] + 0 > 0){
+			$mysql_pdo_error = true;
+		}
+		if ($mysql_pdo_error == false){
+			$all = $sth->fetchAll(PDO::FETCH_ASSOC);
+			return $all;
+		}
+		else{
+			//TODO other error
+			echo "Eror - PDOStatement::errorInfo(): ";
+			print_r($errors);
+			echo "SQL : $query";
+		}
+
+
+	}
+
+	function deleteSharingById($id, $sharing_to){
+		$mysql_pdo_error = false;
+		$query = 'DELETE FROM share_timesheet WHERE where sharing_user=:sharing_user AND share_to=:share_to';
+		$sth = $this->conn->prepare($query);
+		$sth->bindValue(':sharing_user', $id);
+		$sth->bindValue(':share_to', $sharing_to);
+
+		$sth->execute();//insert to db
+		$errors = $sth->errorInfo();
+		if ($errors[0] + 0 > 0){
+			$mysql_pdo_error = true;
+		}
+		if ($mysql_pdo_error == false){
+			//all is ok
+			return true;
+		}else{
+			echo "Eror - PDOStatement::errorInfo(): ";
+			print_r($errors);
+			echo "SQL : $query";
+		}
+
+	}
+
+
 	///////////////////////////////////   USER   // ////////////////////////////////////////////////////////////////////////////
 
 	/***
