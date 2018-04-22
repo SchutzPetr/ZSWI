@@ -67,15 +67,6 @@ const Styles = theme => ({
         padding: "0 8px",
         ...theme.mixins.toolbar,
     },
-    content: {
-        position: "relative",
-        top: 64,
-        flexGrow: 1,
-        backgroundColor: theme.palette.background.default,
-        padding: theme.spacing.unit * 1,
-        height: "calc(100vh - " + ((theme.spacing.unit * 2) + 64) + "px)",
-        maxHeight: "calc(100vh - " + ((theme.spacing.unit * 2) + 64) + "px)",
-    },
     calendar: {
         height: "calc(100vh - 112px)",
         maxHeight: "calc(100vh - 112px)",
@@ -83,7 +74,7 @@ const Styles = theme => ({
     listItem: {
         maxHeight: 48
     },
-    notifiButton:{
+    notifiButton: {
         margin: "0px 48px"
     }
 });

@@ -3,54 +3,14 @@ import PropTypes from "prop-types";
 import Calls from "../../Calls";
 import LinearProgressCentered from "../../components/LinearProgressCentered";
 import Grid from "material-ui/es/Grid/Grid";
-import Styles from "./style/ManageHolidayPageStyle";
+import Styles from "./style/ProjectOverviewPageStyle";
 import withStyles from "material-ui/es/styles/withStyles";
-import HolidayTable from "../../components/holiday_table/HolidayTable";
-import UserList from "../../components/user_list/UserList";
+import ProjectOverviewTable from "../../components/project_overview/ProjectOverviewTable";
 
-export const userData = [
-    {
-        "givenName": "Petr",
-        "familyName": "Schutz",
-        "email": "schutzp@students.zcu.cz"
-    },
-    {
-        "givenName": "Tyler",
-        "familyName": "Chapman",
-        "email": "chapman@students.zcu.cz"
-    },
-    {
-        "givenName": "Petr",
-        "familyName": "Schutz",
-        "email": "schutzp@students.zcu.cz"
-    },
-    {
-        "givenName": "Petr",
-        "familyName": "Schutz",
-        "email": "schutzp@students.zcu.cz"
-    },
-    {
-        "givenName": "Petr",
-        "familyName": "Schutz",
-        "email": "schutzp@students.zcu.cz"
-    },
-    {
-        "givenName": "Petr",
-        "familyName": "Schutz",
-        "email": "schutzp@students.zcu.cz"
-    },
-    {
-        "givenName": "Petr",
-        "familyName": "Schutz",
-        "email": "schutzp@students.zcu.cz"
-    },
-
-];
-
-class ManageHolidayPage extends React.Component {
+class ProjectOverviewPage extends React.Component {
 
     state = {
-        users: userData,
+        users: [],
         loadFeedback: "ready"
     };
 
@@ -81,11 +41,8 @@ class ManageHolidayPage extends React.Component {
                       alignItems={"center"}
                       direction={"row"}
                       justify={"center"}>
-                    <Grid item={true} xs={12} sm={3}>
-                        <UserList match={this.props.match} users={this.state.users}/>
-                    </Grid>
-                    <Grid item={true} xs={12} sm={9}>
-                        <HolidayTable fullHeight={true}/>
+                    <Grid className={this.props.classes.secondGrid} item xs={12} sm={12}>
+                        <ProjectOverviewTable/>
                     </Grid>
                 </Grid>
             );
@@ -103,10 +60,10 @@ class ManageHolidayPage extends React.Component {
     }
 }
 
-ManageHolidayPage.propTypes = {
+ProjectOverviewPage.propTypes = {
     classes: PropTypes.object.isRequired,
     match: PropTypes.object
 
 };
 
-export default withStyles(Styles, {withTheme: true})(ManageHolidayPage);
+export default withStyles(Styles, {withTheme: true})(ProjectOverviewPage);

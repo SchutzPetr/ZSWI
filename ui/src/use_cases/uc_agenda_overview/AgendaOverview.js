@@ -5,6 +5,8 @@ import AgendaTabs from "../../components/agenda/AgendaTabs";
 import Calls from "../../Calls";
 import LinearProgressCentered from "../../components/LinearProgressCentered";
 import Grid from "material-ui/es/Grid/Grid";
+import Styles from "../uc_home/style/HomeStyle";
+import withStyles from "material-ui/es/styles/withStyles";
 
 export const userData = [
     {
@@ -52,7 +54,7 @@ class AgendaOverview extends React.Component {
         loadFeedback: "ready"
     };
 
-    componentDidMount(){
+    componentDidMount() {
         //todo: this._fetchData();
     }
 
@@ -69,31 +71,37 @@ class AgendaOverview extends React.Component {
         })
     }
 
-    render() {
-
-        if(this.state.loadFeedback === "loading"){
+    _getContend() {
+        if (this.state.loadFeedback === "loading") {
             return <LinearProgressCentered paper={false}/>
-        }else if(this.state.loadFeedback === "ready"){
+        } else if (this.state.loadFeedback === "ready") {
             return (
-                <Grid container spacing={16}>
-                    <Grid item xs={12} sm={3}>
+                <Grid className={this.props.classes.mainGrid} container={true} spacing={16}>
+                    <Grid item={true} xs={12} sm={3}>
                         <UserList match={this.props.match} users={this.state.users}/>
                     </Grid>
-                    <Grid item xs={12} sm={9}>
+                    <Grid item={true} xs={12} sm={9}>
                         <AgendaTabs/>
                     </Grid>
                 </Grid>
             );
-        }else {
+        } else {
             return <LinearProgressCentered paper={false}/>
         }
+    }
+
+    render() {
+        return (
+            <main className={this.props.classes.mainContainer}>
+                {this._getContend()}
+            </main>
+        );
     }
 }
 
 AgendaOverview.propTypes = {
+    classes: PropTypes.object.isRequired,
     match: PropTypes.object.isRequired
 };
 
-
-export default AgendaOverview;
-export {AgendaOverview};
+export default withStyles(Styles, {withTheme: true})(AgendaOverview);

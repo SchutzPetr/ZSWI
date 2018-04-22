@@ -8,7 +8,6 @@ import Login from "../../components/login/Login";
 import withStyles from "material-ui/es/styles/withStyles";
 import Styles from "./style/LoginPageStyle";
 import Authentication from "./../../Authentication";
-import Observer from "./../../Observer";
 import User from "../../entity/User";
 
 class LoginPage extends React.Component {
@@ -24,7 +23,9 @@ class LoginPage extends React.Component {
             data: dataIn,
             done: (data) => {
                 Authentication.user = User.map(data.data);
-                this.setState({loadFeedback: "ready"}, () => {this.props.history.push("/")});
+                this.setState({loadFeedback: "ready"}, () => {
+                    this.props.history.push("/")
+                });
             },
             fail: (data) => {
                 this.setState({loadFeedback: "error"});
@@ -32,14 +33,13 @@ class LoginPage extends React.Component {
         });
     };
 
-    render() {
-
-        if(this.state.loadFeedback === "loading"){
+    _getContend() {
+        if (this.state.loadFeedback === "loading") {
             return <LinearProgressCentered paper={false}/>
-        }else if(this.state.loadFeedback === "ready"){
+        } else if (this.state.loadFeedback === "ready") {
             return (
-                <Grid className={this.props.classes.rootGrid}
-                    container spacing={16}
+                <Grid className={this.props.classes.mainGrid}
+                      container spacing={16}
                       alignItems={"center"}
                       direction={"row"}
                       justify={"center"}>
@@ -48,9 +48,17 @@ class LoginPage extends React.Component {
                     </Grid>
                 </Grid>
             );
-        }else {
+        } else {
             return <LinearProgressCentered paper={false}/>
         }
+    }
+
+    render() {
+        return (
+            <main className={this.props.classes.mainContainer}>
+                {this._getContend()}
+            </main>
+        );
     }
 }
 

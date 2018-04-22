@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {Route} from "react-router-dom";
+import {Route, Switch} from "react-router-dom";
 import {withStyles} from "material-ui/styles";
 import classNames from "classnames";
 
@@ -18,6 +18,7 @@ import NotificationPopover from "../components/notification/NotificationPopover"
 import Share from "../use_cases/uc_share/SharePage";
 import UserHolidayPage from "../use_cases/uc_user_holiday/UserHolidayPage";
 import ManageHolidayPage from "../use_cases/uc_manage_holidays/ManageHolidayPage";
+import ProjectOverviewPage from "../use_cases/uc_project_overview/ProjectOverviewPage";
 
 
 class SPAAuthenticated extends React.Component {
@@ -119,7 +120,7 @@ class SPAAuthenticated extends React.Component {
                         <List>{secretaryMenuItems(classes)}</List>
                     </Drawer>
                 </Hidden>
-                <main className={classes.content}>
+                <Switch>
                     <Route path={"/"} exact={true}
                            render={props => (
                                <Home match={props.match}/>
@@ -140,7 +141,11 @@ class SPAAuthenticated extends React.Component {
                            render={props => (
                                <ManageHolidayPage match={props.match}/>
                            )}/>
-                </main>
+                    <Route path={"/project-overview"} exact={true}
+                           render={props => (
+                               <ProjectOverviewPage match={props.match}/>
+                           )}/>
+                </Switch>
             </div>
         );
     }

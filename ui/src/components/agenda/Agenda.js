@@ -16,8 +16,8 @@ const rowHeight = 20;
 
 const styles = theme => ({
     root: {
-        maxHeight: "calc(100vh - 115px)",
-        height: "calc(100vh - 115px)",
+        maxHeight: "calc(100vh - 116px)",
+        height: "calc(100vh - 116px)",
         overflowX: "auto",
     },
     table: {

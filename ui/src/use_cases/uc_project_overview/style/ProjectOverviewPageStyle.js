@@ -4,16 +4,22 @@ const Styles = theme => ({
     mainContainer: {
         ...SharedStyles(theme).mainContainer,
     },
-    mainGrid:{
-        padding: theme.spacing.unit * 1,
-    },
     divider: {
         height: 8,
     },
     paper: {
         width: "100%",
-        maxHeight: `calc(100vh - 64px - ${theme.spacing.unit * 2}px)`,
-        height: `calc(100vh - 64px - ${theme.spacing.unit * 2}px)`
+        height: "100%"
+    },
+    mainGrid: {
+        overflow: "auto",
+        maxHeight: `calc(100vh - 80px)`,
+        height: `calc(100vh - 80px)`,
+        padding: theme.spacing.unit * 1,
+    },
+    secondGrid: {
+        height: "100%",
+        margin: 0
     }
 });
 

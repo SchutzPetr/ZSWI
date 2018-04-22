@@ -5,7 +5,6 @@ import LinearProgressCentered from "../../components/LinearProgressCentered";
 import Grid from "material-ui/es/Grid/Grid";
 import Styles from "./style/UserHolidayPageStyle";
 import withStyles from "material-ui/es/styles/withStyles";
-import {Paper} from "material-ui";
 import HolidayTable from "../../components/holiday_table/HolidayTable";
 
 class UserHolidayPage extends React.Component {
@@ -15,7 +14,7 @@ class UserHolidayPage extends React.Component {
         loadFeedback: "ready"
     };
 
-    componentDidMount(){
+    componentDidMount() {
         //this._fetchData();
     }
 
@@ -32,13 +31,12 @@ class UserHolidayPage extends React.Component {
         })
     }
 
-    render() {
-
-        if(this.state.loadFeedback === "loading"){
+    _getContend() {
+        if (this.state.loadFeedback === "loading") {
             return <LinearProgressCentered paper={false}/>
-        }else if(this.state.loadFeedback === "ready"){
+        } else if (this.state.loadFeedback === "ready") {
             return (
-                <Grid className={this.props.classes.rootGrid}
+                <Grid className={this.props.classes.mainGrid}
                       container spacing={16}
                       alignItems={"center"}
                       direction={"row"}
@@ -48,9 +46,17 @@ class UserHolidayPage extends React.Component {
                     </Grid>
                 </Grid>
             );
-        }else {
+        } else {
             return <LinearProgressCentered paper={false}/>
         }
+    }
+
+    render() {
+        return (
+            <main className={this.props.classes.mainContainer}>
+                {this._getContend()}
+            </main>
+        );
     }
 }
 

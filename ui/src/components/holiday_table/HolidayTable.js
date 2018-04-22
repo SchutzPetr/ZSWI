@@ -7,6 +7,7 @@ import Checkbox from 'material-ui/Checkbox';
 import Styles from "./style/HolidayTableStyle";
 import EnhancedTableToolbar from "./components/EnhancedTableToolbar";
 import EnhancedTableHead from "./components/EnhancedTableHead";
+import HolidayCreateModal from "../holiday_create_modal/HolidayCreateModal";
 
 let counter = 0;
 
@@ -41,6 +42,7 @@ class HolidayTable extends React.Component {
             ].sort((a, b) => (a.calories < b.calories ? -1 : 1)),
             page: 0,
             rowsPerPage: 5,
+            holidayCreateModal: false
         };
     }
 

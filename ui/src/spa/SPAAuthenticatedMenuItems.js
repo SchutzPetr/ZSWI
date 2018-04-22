@@ -52,6 +52,12 @@ export let secretaryMenuItems = (classes) => {
                 </ListItemIcon>
                 <ListItemText primary="Správa dovolené"/>
             </ListItem>
+            <ListItem className={classes.listItem} button={true} component={Link} to={"/project-overview"}>
+                <ListItemIcon>
+                    <ViewAgenda/>
+                </ListItemIcon>
+                <ListItemText primary="project-overview"/>
+            </ListItem>
             <ListItem className={classes.listItem} button={true} component={Link} to={"/accounts"}>
                 <ListItemIcon>
                     <SupervisorAccount/>

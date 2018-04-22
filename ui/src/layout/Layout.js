@@ -187,22 +187,22 @@ class Layout extends React.Component {
                 <main className={classes.content}>
                     <Route path={"/agenda"} exact={true}
                            render={props => (
-                               <Grid container spacing={16}>
-                                   <Grid item xs={12} sm={3}>
+                               <Grid className={this.props.classes.mainGrid} container={true} spacing={16}>
+                                   <Grid item={true} xs={12} sm={3}>
                                        <UserList match={{ahoj: "s"}} users={users}/>
                                    </Grid>
-                                   <Grid item xs={12} sm={9}>
+                                   <Grid item={true} xs={12} sm={9}>
                                        <AgendaTabs/>
                                    </Grid>
                                </Grid>
                            )}/>
                     <Route path={"/share-agenda"} exact={true}
                            render={props => (
-                               <Grid container spacing={16}>
-                                   <Grid item xs={12} sm={3}>
+                               <Grid className={this.props.classes.mainGrid} container={true} spacing={16}>
+                                   <Grid item={true} xs={12} sm={3}>
                                        <UserList match={{ahoj: "s"}} users={users}/>
                                    </Grid>
-                                   <Grid item xs={12} sm={9}>
+                                   <Grid item={true} xs={12} sm={9}>
                                        <AgendaTabs/>
                                    </Grid>
                                </Grid>

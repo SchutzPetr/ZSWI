@@ -6,8 +6,25 @@ import {IconButton, Toolbar, Tooltip, Typography} from "material-ui";
 import Styles from "./../style/EnhancedTableToolbarStyle";
 import DeleteIcon from "material-ui-icons/es/Delete";
 import AddIcon from "material-ui-icons/es/Add";
+import HolidayCreateModal from "../../holiday_create_modal/HolidayCreateModal";
 
 class EnhancedTableToolbar extends React.Component {
+
+    state = {
+        holidayCreateModal: false
+    };
+
+    handleCloseHolidayCreateModal = () => {
+        this.setState({holidayCreateModal: false});
+    };
+
+    handleSaveHolidayCreateModal = values => {
+        this.handleCloseHolidayCreateModal();
+    };
+
+    handleOpenHolidayCreateModal = () => {
+        this.setState({holidayCreateModal: true});
+    };
 
     render() {
         const {numSelected, classes} = this.props;
@@ -37,12 +54,13 @@ class EnhancedTableToolbar extends React.Component {
                         </Tooltip>
                     ) : (
                         <Tooltip title="Filter list">
-                            <IconButton aria-label="Filter list">
+                            <IconButton aria-label={"Přidat dovolenou"} onClick={this.handleOpenHolidayCreateModal}>
                                 <AddIcon/>
                             </IconButton>
                         </Tooltip>
                     )}
                 </div>
+                <HolidayCreateModal open={this.state.holidayCreateModal} onClose={this.handleCloseHolidayCreateModal} onSave={this.handleSaveHolidayCreateModal}/>
             </Toolbar>
         )
     }

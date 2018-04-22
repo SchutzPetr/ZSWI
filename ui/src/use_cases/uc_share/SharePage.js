@@ -1,15 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
-import UserList from "../../components/user_list/UserList";
-import AgendaTabs from "../../components/agenda/AgendaTabs";
 import Calls from "../../Calls";
 import LinearProgressCentered from "../../components/LinearProgressCentered";
 import Grid from "material-ui/es/Grid/Grid";
-import UserDetail from "../../components/user_detail/UserDetail";
 import Styles from "./style/SharePageStyle";
 import withStyles from "material-ui/es/styles/withStyles";
-import UserProject from "../../components/user_projects/UserProject";
-import {Paper} from "material-ui";
 import SharedWithMe from "../../components/share/SharedWithMe";
 import SharedWithOthers from "../../components/share/SharedWithOthers";
 import Share from "../../components/share/Share";
@@ -21,7 +16,7 @@ class SharePage extends React.Component {
         loadFeedback: "ready"
     };
 
-    componentDidMount(){
+    componentDidMount() {
         //this._fetchData();
     }
 
@@ -38,27 +33,34 @@ class SharePage extends React.Component {
         })
     }
 
-    render() {
-
-        if(this.state.loadFeedback === "loading"){
+    _getContend() {
+        if (this.state.loadFeedback === "loading") {
             return <LinearProgressCentered paper={false}/>
-        }else if(this.state.loadFeedback === "ready"){
+        } else if (this.state.loadFeedback === "ready") {
             return (
-                <Grid container spacing={16}>
-                    <Grid item xs={12} sm={4}>
+                <Grid className={this.props.classes.mainGrid} container={true} spacing={16}>
+                    <Grid item={true} xs={12} sm={4}>
                         <SharedWithMe/>
                     </Grid>
-                    <Grid item xs={12} sm={4}>
+                    <Grid item={true} xs={12} sm={4}>
                         <SharedWithOthers/>
                     </Grid>
-                    <Grid item xs={12} sm={4}>
+                    <Grid item={true} xs={12} sm={4}>
                         <Share/>
                     </Grid>
                 </Grid>
             );
-        }else {
+        } else {
             return <LinearProgressCentered paper={false}/>
         }
+    }
+
+    render() {
+        return (
+            <main className={this.props.classes.mainContainer}>
+                {this._getContend()}
+            </main>
+        );
     }
 }
 

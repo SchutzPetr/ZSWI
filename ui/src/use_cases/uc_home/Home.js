@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import UserList from "../../components/user_list/UserList";
 import AgendaTabs from "../../components/agenda/AgendaTabs";
 import Calls from "../../Calls";
 import LinearProgressCentered from "../../components/LinearProgressCentered";
@@ -19,7 +18,7 @@ class Home extends React.Component {
         loadFeedback: "ready"
     };
 
-    componentDidMount(){
+    componentDidMount() {
         //this._fetchData();
     }
 
@@ -36,26 +35,33 @@ class Home extends React.Component {
         })
     }
 
-    render() {
-
-        if(this.state.loadFeedback === "loading"){
+    _getContend() {
+        if (this.state.loadFeedback === "loading") {
             return <LinearProgressCentered paper={false}/>
-        }else if(this.state.loadFeedback === "ready"){
+        } else if (this.state.loadFeedback === "ready") {
             return (
-                <Grid container spacing={16}>
-                    <Grid item xs={12} sm={3}>
+                <Grid className={this.props.classes.mainGrid} container={true} spacing={16}>
+                    <Grid item={true} xs={12} sm={3}>
                         <UserDetail user={Authentication.user}/>
                         <div className={this.props.classes.divider}/>
                         <UserProject/>
                     </Grid>
-                    <Grid item xs={12} sm={9}>
+                    <Grid item={true} xs={12} sm={9}>
                         <AgendaTabs/>
                     </Grid>
                 </Grid>
             );
-        }else {
+        } else {
             return <LinearProgressCentered paper={false}/>
         }
+    }
+
+    render() {
+        return (
+            <main className={this.props.classes.mainContainer}>
+                {this._getContend()}
+            </main>
+        );
     }
 }
 
