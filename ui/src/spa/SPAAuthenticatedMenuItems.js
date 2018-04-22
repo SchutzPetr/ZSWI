@@ -16,6 +16,7 @@ import Divider from "material-ui/es/Divider/Divider";
 import Share from "material-ui-icons/es/Share";
 import EventBusy from "material-ui-icons/es/EventBusy";
 import Settings from "material-ui-icons/es/Settings";
+import SupervisorAccount from "material-ui-icons/es/SupervisorAccount";
 
 
 export let secretaryMenuItems = (classes) => {
@@ -45,13 +46,19 @@ export let secretaryMenuItems = (classes) => {
                 </ListItemIcon>
                 <ListItemText primary="Výkazy"/>
             </ListItem>
-            <ListItem className={classes.listItem} button={true}>
+            <ListItem className={classes.listItem} button={true} component={Link} to={"/manage-holidays"}>
                 <ListItemIcon>
                     <EventBusy/>
                 </ListItemIcon>
                 <ListItemText primary="Správa dovolené"/>
             </ListItem>
-            <ListItem className={classes.listItem} button={true}>
+            <ListItem className={classes.listItem} button={true} component={Link} to={"/accounts"}>
+                <ListItemIcon>
+                    <SupervisorAccount/>
+                </ListItemIcon>
+                <ListItemText primary="Správa uživatelů"/>
+            </ListItem>
+            <ListItem className={classes.listItem} button={true} component={Link} to={"/settings"}>
                 <ListItemIcon>
                     <Settings/>
                 </ListItemIcon>

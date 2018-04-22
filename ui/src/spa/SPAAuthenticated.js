@@ -17,6 +17,7 @@ import Notifications from "material-ui-icons/es/Notifications";
 import NotificationPopover from "../components/notification/NotificationPopover";
 import Share from "../use_cases/uc_share/SharePage";
 import UserHolidayPage from "../use_cases/uc_user_holiday/UserHolidayPage";
+import ManageHolidayPage from "../use_cases/uc_manage_holidays/ManageHolidayPage";
 
 
 class SPAAuthenticated extends React.Component {
@@ -134,6 +135,10 @@ class SPAAuthenticated extends React.Component {
                     <Route path={"/holiday"} exact={true}
                            render={props => (
                                <UserHolidayPage/>
+                           )}/>
+                    <Route path={"/manage-holidays"} exact={true}
+                           render={props => (
+                               <ManageHolidayPage match={props.match}/>
                            )}/>
                 </main>
             </div>

@@ -105,7 +105,7 @@ class HolidayTable extends React.Component {
         const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 
         return (
-            <Paper className={classes.root}>
+            <Paper className={this.props.fullHeight ? classes.fullHeightRoot : classes.root}>
                 <EnhancedTableToolbar numSelected={selected.length}/>
                 <div className={classes.tableWrapper}>
                     <Table className={classes.table}>
@@ -170,5 +170,6 @@ class HolidayTable extends React.Component {
 
 HolidayTable.propTypes = {
     classes: PropTypes.object,
+    fullHeight: PropTypes.bool
 };
 export default withStyles(Styles, {withTheme: true})(HolidayTable);
