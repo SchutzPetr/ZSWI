@@ -1,37 +1,36 @@
 import React from "react";
 import PropTypes from "prop-types";
-
 import Calls from "../../Calls";
 import LinearProgressCentered from "../../components/LinearProgressCentered";
 import Grid from "material-ui/es/Grid/Grid";
-import Login from "../../components/login/Login";
+import Styles from "./style/UserManagementPageStyle";
 import withStyles from "material-ui/es/styles/withStyles";
-import Styles from "./style/LoginPageStyle";
-import Authentication from "./../../Authentication";
-import User from "../../entity/User";
+import HolidayTable from "../../components/holiday_table/HolidayTable";
+import UserCreateModal from "../../components/user_create_modal/UserCreateModal";
 
-class LoginPage extends React.Component {
+class UserManagementPage extends React.Component {
 
     state = {
         users: [],
         loadFeedback: "ready"
     };
 
-    onLogin = (dataIn, event) => {
-        this.setState({loadFeedback: "loading"});
-        Calls.login({
-            data: dataIn,
+    componentDidMount() {
+        //this._fetchData();
+    }
+
+    _fetchData() {
+        Calls.getUsers({
+            data: {},
             done: (data) => {
-                Authentication.user = User.map(data.data);
-                this.setState({loadFeedback: "ready"}, () => {
-                    this.props.history.push("/")
-                });
+                this.setState({users: data, loadFeedback: "ready"});
             },
             fail: (data) => {
                 this.setState({loadFeedback: "error"});
+                //todo: error throw
             }
-        });
-    };
+        })
+    }
 
     _getContend() {
         if (this.state.loadFeedback === "loading") {
@@ -39,13 +38,12 @@ class LoginPage extends React.Component {
         } else if (this.state.loadFeedback === "ready") {
             return (
                 <Grid className={this.props.classes.mainGrid}
-                      container={true}
-                      spacing={16}
+                      container={true} spacing={16}
                       alignItems={"center"}
                       direction={"row"}
                       justify={"center"}>
-                    <Grid className={this.props.classes.secondGrid} item xs={12} sm={3}>
-                        <Login onLogin={this.onLogin}/>
+                    <Grid className={this.props.classes.secondGrid} item={true} xs={12} sm={8}>
+                        <UserCreateModal/>
                     </Grid>
                 </Grid>
             );
@@ -63,11 +61,10 @@ class LoginPage extends React.Component {
     }
 }
 
-LoginPage.propTypes = {
+UserManagementPage.propTypes = {
     classes: PropTypes.object.isRequired,
-    match: PropTypes.object.isRequired,
-    history: PropTypes.object.isRequired
+    match: PropTypes.object
 
 };
 
-export default withStyles(Styles, {withTheme: true})(LoginPage);
+export default withStyles(Styles, {withTheme: true})(UserManagementPage);

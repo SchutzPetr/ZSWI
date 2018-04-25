@@ -6,9 +6,18 @@ class User {
         this._email = "";
         this._honorificPrefix = "";
         this._honorificSuffix = "";
-        this._authority = "";
+        this._orion = "";
+        this._authority = "USER";
         this._active = true;
         this._mainWorkStation = "";
+    }
+
+    get orion() {
+        return this._orion;
+    }
+
+    set orion(value) {
+        this._orion = value;
     }
 
     get name() {

@@ -41,14 +41,14 @@ class EnhancedTableToolbar extends React.Component {
                             {numSelected} selected
                         </Typography>
                     ) : (
-                        <Typography variant="title">Nutrition</Typography>
+                        <Typography variant="title">Dovolená</Typography>
                     )}
                 </div>
                 <div className={classes.spacer}/>
                 <div className={classes.actions}>
                     {numSelected > 0 ? (
                         <Tooltip title="Delete">
-                            <IconButton aria-label="Delete">
+                            <IconButton aria-label="Delete" onClick={this.onDeleteSelected}>
                                 <DeleteIcon/>
                             </IconButton>
                         </Tooltip>
@@ -69,5 +69,6 @@ class EnhancedTableToolbar extends React.Component {
 EnhancedTableToolbar.propTypes = {
     classes: PropTypes.object,
     numSelected: PropTypes.number.isRequired,
+    onDeleteSelected: PropTypes.func.isRequired
 };
 export default withStyles(Styles, {withTheme: true})(EnhancedTableToolbar);

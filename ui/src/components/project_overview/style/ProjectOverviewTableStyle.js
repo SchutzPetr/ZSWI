@@ -1,8 +1,7 @@
 const Styles = theme => ({
     root: {
-        width: '100%',
-        height: "100%",
         margin: theme.spacing.unit,
+        display: "inline-block"
     },
     fullHeightRoot:{
         overflow: "auto",

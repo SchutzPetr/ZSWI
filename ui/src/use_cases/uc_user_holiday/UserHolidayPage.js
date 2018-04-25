@@ -37,11 +37,11 @@ class UserHolidayPage extends React.Component {
         } else if (this.state.loadFeedback === "ready") {
             return (
                 <Grid className={this.props.classes.mainGrid}
-                      container spacing={16}
+                      container={true} spacing={16}
                       alignItems={"center"}
                       direction={"row"}
                       justify={"center"}>
-                    <Grid className={this.props.classes.secondGrid} item xs={12} sm={8}>
+                    <Grid className={this.props.classes.secondGrid} item={true} xs={12} sm={8}>
                         <HolidayTable/>
                     </Grid>
                 </Grid>

@@ -15,8 +15,21 @@ class ProjectOverviewTable extends React.Component {
     handleSelectOpen = () => {
     };
 
+    _getRow = () => {
+        let rows = [];
+        for (let i = 0; i < 50; i++) {
+            rows.push(
+                <TableRow style={{height: 49}}>
+                    <TableCell>{`Zaměstnanec${i}`}</TableCell>
+                    <TableCell colSpan={24}/>
+                </TableRow>
+            );
+        }
+        return rows;
+    };
+
     _tableHeader = () => {
-        let headerColumns = [];
+        let headerColumns = [<TableCell>{`Zaměstnanec`}</TableCell>];
         for (let i = 0; i < 12; i++) {
             headerColumns.push(<TableCell>{moment().month(i).format("MMMM")}</TableCell>);
         }
@@ -39,9 +52,7 @@ class ProjectOverviewTable extends React.Component {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        <TableRow style={{height: 49 * 5}}>
-                            <TableCell colSpan={12}/>
-                        </TableRow>
+                        {this._getRow()}
                     </TableBody>
                 </Table>
             </Paper>

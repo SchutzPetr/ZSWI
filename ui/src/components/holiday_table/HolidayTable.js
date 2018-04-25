@@ -7,15 +7,10 @@ import Checkbox from 'material-ui/Checkbox';
 import Styles from "./style/HolidayTableStyle";
 import EnhancedTableToolbar from "./components/EnhancedTableToolbar";
 import EnhancedTableHead from "./components/EnhancedTableHead";
-import HolidayCreateModal from "../holiday_create_modal/HolidayCreateModal";
-
-let counter = 0;
-
-function createData(name, calories, fat, carbs, protein) {
-    counter += 1;
-    return {id: counter, name, calories, fat, carbs, protein};
-}
-
+import HolidayRowRecord from "../../entity/HolidayRowRecord";
+import moment from "moment/moment";
+import {IconButton, Tooltip} from "material-ui";
+import EditIcon from "material-ui-icons/es/Edit";
 
 class HolidayTable extends React.Component {
     constructor(props, context) {
@@ -25,23 +20,8 @@ class HolidayTable extends React.Component {
             order: 'asc',
             orderBy: 'calories',
             selected: [],
-            data: [
-                createData('Cupcake', 305, 3.7, 67, 4.3),
-                createData('Donut', 452, 25.0, 51, 4.9),
-                createData('Eclair', 262, 16.0, 24, 6.0),
-                createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-                createData('Gingerbread', 356, 16.0, 49, 3.9),
-                createData('Honeycomb', 408, 3.2, 87, 6.5),
-                createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-                createData('Jelly Bean', 375, 0.0, 94, 0.0),
-                createData('KitKat', 518, 26.0, 65, 7.0),
-                createData('Lollipop', 392, 0.2, 98, 0.0),
-                createData('Marshmallow', 318, 0, 81, 2.0),
-                createData('Nougat', 360, 19.0, 9, 37.0),
-                createData('Oreo', 437, 18.0, 63, 4.0),
-            ].sort((a, b) => (a.calories < b.calories ? -1 : 1)),
             page: 0,
-            rowsPerPage: 5,
+            rowsPerPage: props.rowsPerPage || 5,
             holidayCreateModal: false
         };
     }
@@ -62,34 +42,6 @@ class HolidayTable extends React.Component {
         this.setState({data, order, orderBy});
     };
 
-    handleSelectAllClick = (event, checked) => {
-        if (checked) {
-            this.setState({selected: this.state.data.map(n => n.id)});
-            return;
-        }
-        this.setState({selected: []});
-    };
-
-    handleClick = (event, id) => {
-        const {selected} = this.state;
-        const selectedIndex = selected.indexOf(id);
-        let newSelected = [];
-
-        if (selectedIndex === -1) {
-            newSelected = newSelected.concat(selected, id);
-        } else if (selectedIndex === 0) {
-            newSelected = newSelected.concat(selected.slice(1));
-        } else if (selectedIndex === selected.length - 1) {
-            newSelected = newSelected.concat(selected.slice(0, -1));
-        } else if (selectedIndex > 0) {
-            newSelected = newSelected.concat(
-                selected.slice(0, selectedIndex),
-                selected.slice(selectedIndex + 1),
-            );
-        }
-
-        this.setState({selected: newSelected});
-    };
 
     handleChangePage = (event, page) => {
         this.setState({page});
@@ -99,52 +51,68 @@ class HolidayTable extends React.Component {
         this.setState({rowsPerPage: event.target.value});
     };
 
-    isSelected = id => this.state.selected.indexOf(id) !== -1;
+    onSelectChange = (event, item, value) => {
+        this.props.onSelectChange(item, value);
+    };
+
+    onSelectAllChange = (value) => {
+        this.props.onSelectAllChange(value);
+    };
+
+    onDeleteSelected = () => {
+
+    };
 
     render() {
         const {classes} = this.props;
-        const {data, order, orderBy, selected, rowsPerPage, page} = this.state;
-        const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
+        const {rowsPerPage, page} = this.state;
+        const emptyRows = rowsPerPage - Math.min(rowsPerPage, this.props.data.length - page * rowsPerPage);
+
+        const numSelected = this.props.data.filter(value => value.isSelected).length;
 
         return (
             <Paper className={this.props.fullHeight ? classes.fullHeightRoot : classes.root}>
-                <EnhancedTableToolbar numSelected={selected.length}/>
+                <EnhancedTableToolbar numSelected={numSelected}
+                                      onDeleteSelected={this.onDeleteSelected}/>
                 <div className={classes.tableWrapper}>
                     <Table className={classes.table}>
                         <EnhancedTableHead
-                            numSelected={selected.length}
-                            order={order}
-                            orderBy={orderBy}
-                            onSelectAllClick={this.handleSelectAllClick}
-                            onRequestSort={this.handleRequestSort}
-                            rowCount={data.length}
+                            numSelected={numSelected}
+                            onSelectAllChange={this.onSelectAllChange}
+                            rowCount={this.props.data.length}
                         />
                         <TableBody>
-                            {data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
-                                const isSelected = this.isSelected(n.id);
+                            {this.props.data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(values => {
                                 return (
                                     <TableRow
-                                        hover
-                                        onClick={event => this.handleClick(event, n.id)}
-                                        role="checkbox"
-                                        aria-checked={isSelected}
+                                        hover={true}
+                                        role={"checkbox"}
+                                        aria-checked={values.isSelected}
                                         tabIndex={-1}
-                                        key={n.id}
-                                        selected={isSelected}
+                                        key={`holiday_row_${values.id}`}
+                                        selected={values.isSelected}
                                     >
-                                        <TableCell padding="checkbox">
-                                            <Checkbox checked={isSelected}/>
+                                        <TableCell padding={"checkbox"}
+                                                   onClick={event => this.onSelectChange(event, values, !values.isSelected)}>
+                                            <Checkbox checked={values.isSelected}/>
                                         </TableCell>
-                                        <TableCell padding="none">{n.name}</TableCell>
-                                        <TableCell numeric>{n.calories}</TableCell>
-                                        <TableCell numeric>{n.fat}</TableCell>
-                                        <TableCell numeric>{n.carbs}</TableCell>
-                                        <TableCell numeric>{n.protein}</TableCell>
+                                        <TableCell
+                                            onClick={event => this.onSelectChange(event, values, !values.isSelected)}
+                                            padding="none">{moment(values.date).format("LL")}</TableCell>
+                                        <TableCell
+                                            onClick={event => this.onSelectChange(event, values, !values.isSelected)}>{values.type}</TableCell>
+                                        <TableCell>
+                                            <Tooltip title="Editace">
+                                                <IconButton aria-label="Editace">
+                                                    <EditIcon/>
+                                                </IconButton>
+                                            </Tooltip>
+                                        </TableCell>
                                     </TableRow>
                                 );
                             })}
                             {emptyRows > 0 && (
-                                <TableRow style={{height: 49 * emptyRows}}>
+                                <TableRow style={{height: 57 * emptyRows}}>
                                     <TableCell colSpan={6}/>
                                 </TableRow>
                             )}
@@ -152,16 +120,13 @@ class HolidayTable extends React.Component {
                     </Table>
                 </div>
                 <TablePagination
-                    component="div"
-                    count={data.length}
+                    component={"div"}
+                    count={this.props.data.length}
                     rowsPerPage={rowsPerPage}
                     page={page}
-                    backIconButtonProps={{
-                        'aria-label': 'Previous Page',
-                    }}
-                    nextIconButtonProps={{
-                        'aria-label': 'Next Page',
-                    }}
+                    rowsPerPageOptions={this.props.rowsPerPageOptions}
+                    backIconButtonProps={{'aria-label': 'Previous Page'}}
+                    nextIconButtonProps={{'aria-label': 'Next Page'}}
                     onChangePage={this.handleChangePage}
                     onChangeRowsPerPage={this.handleChangeRowsPerPage}
                 />
@@ -172,6 +137,15 @@ class HolidayTable extends React.Component {
 
 HolidayTable.propTypes = {
     classes: PropTypes.object,
-    fullHeight: PropTypes.bool
+    fullHeight: PropTypes.bool,
+    rowsPerPage: PropTypes.number,
+    onSelectChange: PropTypes.func.isRequired,
+    onSelectAllChange: PropTypes.func.isRequired,
+    onDeleteSelected: PropTypes.func.isRequired,
+    data: PropTypes.arrayOf(HolidayRowRecord).isRequired,
+    rowsPerPageOptions: PropTypes.array,
+};
+HolidayTable.defaultProps = {
+    rowsPerPageOptions: [5, 10, 25]
 };
 export default withStyles(Styles, {withTheme: true})(HolidayTable);

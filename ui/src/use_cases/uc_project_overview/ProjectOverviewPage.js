@@ -36,15 +36,7 @@ class ProjectOverviewPage extends React.Component {
             return <LinearProgressCentered paper={false}/>
         } else if (this.state.loadFeedback === "ready") {
             return (
-                <Grid className={this.props.classes.mainGrid}
-                      container spacing={16}
-                      alignItems={"center"}
-                      direction={"row"}
-                      justify={"center"}>
-                    <Grid className={this.props.classes.secondGrid} item xs={12} sm={12}>
-                        <ProjectOverviewTable/>
-                    </Grid>
-                </Grid>
+                <ProjectOverviewTable/>
             );
         } else {
             return <LinearProgressCentered paper={false}/>

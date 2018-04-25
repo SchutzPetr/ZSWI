@@ -7,6 +7,9 @@ const Styles = theme => ({
         overflow: "auto",
         maxHeight: `calc(100vh - 80px)`,
         height: `calc(100vh - 80px)`,
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center"
     },
     table: {
         minWidth: 1020,

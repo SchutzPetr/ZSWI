@@ -7,6 +7,7 @@ import Styles from "./style/ManageHolidayPageStyle";
 import withStyles from "material-ui/es/styles/withStyles";
 import HolidayTable from "../../components/holiday_table/HolidayTable";
 import UserList from "../../components/user_list/UserList";
+import HolidayRowRecord from "../../entity/HolidayRowRecord";
 
 export const userData = [
     {
@@ -47,11 +48,21 @@ export const userData = [
 
 ];
 
+function createData() {
+    let data = [];
+    for (let i = 0; i < 25; i++) {
+        data.push(new HolidayRowRecord(i, 1, new Date(), "ALL_DAY", false))
+    }
+
+    return data;
+}
+
 class ManageHolidayPage extends React.Component {
 
     state = {
         users: userData,
-        loadFeedback: "ready"
+        loadFeedback: "ready",
+        data: createData(),
     };
 
     componentDidMount() {
@@ -71,13 +82,34 @@ class ManageHolidayPage extends React.Component {
         })
     }
 
+    onSelectChange = (item, value) => {
+        this.setState((prevState) => {
+            let data = prevState.data;
+            data.find(x => x.id === item.id).isSelected = value;
+            return {
+                data: data
+            }
+        });
+    };
+
+    onSelectAllChange = (value)=>{
+        this.setState((prevState) => {
+            let data = prevState.data;
+            data.forEach(x => {x.isSelected = value});
+            return {
+                data: data
+            }
+        });
+    };
+
     _getContend() {
         if (this.state.loadFeedback === "loading") {
             return <LinearProgressCentered paper={false}/>
         } else if (this.state.loadFeedback === "ready") {
             return (
                 <Grid className={this.props.classes.mainGrid}
-                      container spacing={16}
+                      container={true}
+                      spacing={16}
                       alignItems={"center"}
                       direction={"row"}
                       justify={"center"}>
@@ -85,7 +117,12 @@ class ManageHolidayPage extends React.Component {
                         <UserList match={this.props.match} users={this.state.users}/>
                     </Grid>
                     <Grid item={true} xs={12} sm={9}>
-                        <HolidayTable fullHeight={true}/>
+                        <HolidayTable fullHeight={true}
+                                      data={this.state.data}
+                                      rowsPerPage={11}
+                                      rowsPerPageOptions={[]}
+                                      onSelectChange={this.onSelectChange}
+                                      onSelectAllChange={this.onSelectAllChange}/>
                     </Grid>
                 </Grid>
             );
