@@ -1,15 +1,15 @@
 class User {
 
     constructor(){
-        this._name = "";
-        this._lastName = "";
-        this._email = "";
-        this._honorificPrefix = "";
-        this._honorificSuffix = "";
-        this._orion = "";
+        this._name = "NAME";
+        this._lastName = "LASTNAME";
+        this._email = "EMAIL";
+        this._honorificPrefix = "HonorificPrefix";
+        this._honorificSuffix = "HonorificSuffix";
+        this._orion = "ORION";
         this._authority = "USER";
         this._active = true;
-        this._mainWorkStation = "";
+        this._mainWorkStation = "KIV";
     }
 
     get orion() {
