@@ -5,14 +5,17 @@ import LinearProgressCentered from "../../components/LinearProgressCentered";
 import Grid from "material-ui/es/Grid/Grid";
 import Styles from "./style/UserManagementPageStyle";
 import withStyles from "material-ui/es/styles/withStyles";
-import HolidayTable from "../../components/holiday_table/HolidayTable";
 import UserCreateModal from "../../components/user_create_modal/UserCreateModal";
+import {Button} from "material-ui";
+import UserTable from "../../components/user_table/UserTable";
+import User from "../../entity/User";
 
 class UserManagementPage extends React.Component {
 
     state = {
         users: [],
-        loadFeedback: "ready"
+        loadFeedback: "ready",
+        modalOpen: false,
     };
 
     componentDidMount() {
@@ -32,6 +35,18 @@ class UserManagementPage extends React.Component {
         })
     }
 
+    handleOnClose = () => {
+        this.setState({modalOpen: false})
+    };
+
+    handleOnSave = () => {
+        this.handleOnClose();
+    };
+
+    handleClickOpen = () => {
+        this.setState({modalOpen: true})
+    };
+
     _getContend() {
         if (this.state.loadFeedback === "loading") {
             return <LinearProgressCentered paper={false}/>
@@ -43,7 +58,10 @@ class UserManagementPage extends React.Component {
                       direction={"row"}
                       justify={"center"}>
                     <Grid className={this.props.classes.secondGrid} item={true} xs={12} sm={8}>
-                        <UserCreateModal/>
+                        <Button onClick={this.handleClickOpen}>Open select dialog</Button>
+                        <UserTable users={[new User()]}/>
+                        <UserCreateModal open={this.state.modalOpen} onSave={this.handleOnSave}
+                                         onClose={this.handleOnClose} userToEdit={null}/>
                     </Grid>
                 </Grid>
             );
