@@ -11,10 +11,24 @@ include_once("../model/db.php");
 
 $dbObject = new DataBase();
 
+/***
+ * zmeni polozku timetable v db
+ *
+ */
 if(isset($_GET["/timetable/update/id"])){
 	$obj = json_decode($_GET["/timetable/update/id"], false);
 	$dbObject->updateTimeTable($obj);
-}else if(isset($_GET["/timetable/add"])){
+}
+/***
+ * prida novy timetable
+ * ocekava na objekt s userId,
+ * from1 (cas ve formatu 08:00:00), to1 (cas ve formatu 08:00:00),
+ * from2 (cas ve formatu 08:00:00), to2 (cas ve formatu 08:00:00)
+ *
+ * jestli timetable jiz existuje - zmeni ho.
+ *
+ */
+else if(isset($_GET["/timetable/add"])){
 	$obj = json_decode($_GET["/timetable/add"], false);
 	$array = $dbObject->getTimeTableByUserID($obj->userId);
 	if(empty($array)){

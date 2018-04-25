@@ -330,14 +330,13 @@ VALUES (:sharing_user, :share_to)';
 
 	}
 
-	
+
 	function getSharing($id, $sharing_to){
 		$mysql_pdo_error = false;
 		$query = "select *  from share_timesheet WHERE  sharing_user:sharing_user AND share_to=:share_to";
 		$sth = $this->conn->prepare($query);
 		$sth->bindValue(':sharing_user', $id, PDO::PARAM_INT);
-		$sth->bindValue(':share_to', $sharing_to);
-
+		$sth->bindValue(':share_to', $sharing_to, PDO::PARAM_INT);
 		$sth->execute();
 		$errors = $sth->errorInfo();
 		if ($errors[0] + 0 > 0){
@@ -382,12 +381,12 @@ VALUES (:sharing_user, :share_to)';
 
 	}
 
-	function deleteSharingById($id, $sharing_to){
+	function deleteSharing($sharing_user, $sharing_to){
 		$mysql_pdo_error = false;
-		$query = 'DELETE FROM share_timesheet WHERE where sharing_user=:sharing_user AND share_to=:share_to';
+		$query = 'DELETE FROM share_timesheet WHERE sharing_user=:sharing_user AND share_to=:share_to';
 		$sth = $this->conn->prepare($query);
-		$sth->bindValue(':sharing_user', $id);
-		$sth->bindValue(':share_to', $sharing_to);
+		$sth->bindValue(':sharing_user', $sharing_user, PDO::PARAM_INT);
+		$sth->bindValue(':share_to', $sharing_to, PDO::PARAM_INT);
 
 		$sth->execute();//insert to db
 		$errors = $sth->errorInfo();
@@ -419,7 +418,6 @@ VALUES (:sharing_user, :share_to)';
 		$query = "select *  from user where orion_login=:login";
 		$sth = $this->conn->prepare($query);
 		$sth->bindValue(':login', $login, PDO::PARAM_STR);
-//		$sth->bindValue(':pass', $pass, PDO::PARAM_STR);
 		$sth->execute();
 		$errors = $sth->errorInfo();
 		if ($errors[0] + 0 > 0){
@@ -427,6 +425,7 @@ VALUES (:sharing_user, :share_to)';
 		}
 		if ($mysql_pdo_error == false){
 			$all = $sth->fetchAll(PDO::FETCH_ASSOC);
+			if(empty($all)) return $all;
 			return $all[0];
 		}
 		else{
@@ -530,6 +529,35 @@ VALUES (:sharing_user, :share_to)';
 	    }
     }
 
+
+    function addNewUser($orion_login, $name, $lastname, $honorific_prefix, $honorific_suffix, $authority, $main_work_station){
+	    $mysql_pdo_error = false;
+	    $query = 'INSERT INTO user ( orion_login, name, lastname, honorific_prefix, honorific_suffix, authority, is_active, main_work_station) 
+VALUES (:orion_login, :name ,:lastname, :honorific_prefix, :honorific_suffix, :authority, :is_active, :main_work_station)';
+	    $sth = $this->conn->prepare($query);
+	    $sth->bindValue(':orion_login', $orion_login);
+	    $sth->bindValue(':name', $name);
+	    $sth->bindValue(':lastname', $lastname);
+	    $sth->bindValue(':honorific_prefix', $honorific_prefix);
+	    $sth->bindValue(':honorific_suffix', $honorific_suffix);
+	    $sth->bindValue(':authority', $authority);
+	    $sth->bindValue(':is_active', 1);
+	    $sth->bindValue(':main_work_station', $main_work_station);
+	    $sth->execute();//insert to db
+	    $errors = $sth->errorInfo();
+	    echo $sth->errorCode() ;
+	    if ($errors[0] > 0){
+		    $mysql_pdo_error = true;
+	    }
+	    if ($mysql_pdo_error == false){
+		    return true;
+	    }else{
+		    echo "Eror - PDOStatement::errorInfo(): ";
+		    print_r($errors);
+		    echo "SQL : $query";
+	    }
+    }
+
 //	//TODO pereprover
 //	function getAllSheduleInMonthByUserID($id, $month, $year){
 //		$day = 1;
@@ -567,42 +595,112 @@ VALUES (:sharing_user, :share_to)';
 
     ///////////////////////////////////   PROJECTS  ////////////////////////////////////////////////////////////////////////////
 
-    function addProjectsByUser($user_id, $ntis, $kiv, $project_1, $project_1_name, $project_2, $project_2_name, $date){
-	    $mysql_pdo_error = false;
-	    $query = 'INSERT INTO users_project (KIV, NTIS, project_1_name, project_1, project_2_name, project_2, active_from, user_id) 
-VALUES (:ntis, :kiv ,:project_1_name, :project_1, :project_2_name, project_2, :active_from, :id)';
-	    $sth = $this->conn->prepare($query);
-	    $sth->bindValue(':ntis', $ntis);
-	    $sth->bindValue(':kiv', $kiv);
-	    $sth->bindValue(':project_1', $project_1);
-	    $sth->bindValue(':project_1_name', $project_1_name);
-	    $sth->bindValue(':project_2', $project_2);
-	    $sth->bindValue(':project_2_name', $project_2_name);
-	    $sth->bindValue(':active_from', date("Y-m-d"), $date);
-	    $sth->bindValue(':id', $user_id);
-	    $sth->execute();//insert to db
-	    $errors = $sth->errorInfo();
-	    echo $sth->errorCode() ;
-	    if ($errors[0] > 0){
-		    $mysql_pdo_error = true;
-	    }
-	    if ($mysql_pdo_error == false){
-		    //all is ok
-		    echo "all is ok \n";
-		    return true;
-	    }else{
-		    echo "Eror - PDOStatement::errorInfo(): ";
-		    print_r($errors);
-		    echo "SQL : $query";
-	    }
+	function addNewProject($project_name, $project_name_short, $description){
+		$mysql_pdo_error = false;
+		$query = 'INSERT INTO project ( project_name, project_name_short, description) 
+VALUES (:project_name, :project_name_short ,:description)';
+		$sth = $this->conn->prepare($query);
+		$sth->bindValue(':project_name', $project_name);
+		$sth->bindValue(':project_name_short', $project_name_short);
+		$sth->bindValue(':description', $description);
+		$sth->execute();//insert to db
+		$errors = $sth->errorInfo();
+		echo $sth->errorCode() ;
+		if ($errors[0] > 0){
+			$mysql_pdo_error = true;
+		}
+		if ($mysql_pdo_error == false){
+			return true;
+		}else{
+			echo "Eror - PDOStatement::errorInfo(): ";
+			print_r($errors);
+			echo "SQL : $query";
+		}
 
-    }
+	}
 
-    function getLastProjectsUserById($id){
+	function addNewEmployment($id_contract, $id_project, $percent, $active_from){
+		if($active_from==null) $active_from = date("Y-m-d");
+		$mysql_pdo_error = false;
+		$query = 'INSERT INTO employment ( user_contract_id, project_id, percent, active_from) 
+VALUES (:user_contract_id, :project_id ,:percent, :active_from)';
+		$sth = $this->conn->prepare($query);
+		$sth->bindValue(':user_contract_id', $id_contract);
+		$sth->bindValue(':project_id', $id_project);
+		$sth->bindValue(':percent', $percent);
+		$sth->bindValue(':active_from', $active_from);
+		$sth->execute();//insert to db
+		$errors = $sth->errorInfo();
+		echo $sth->errorCode() ;
+		if ($errors[0] > 0){
+			$mysql_pdo_error = true;
+		}
+		if ($mysql_pdo_error == false){
+			return true;
+		}else{
+			echo "Eror - PDOStatement::errorInfo(): ";
+			print_r($errors);
+			echo "SQL : $query";
+		}
+
+
+	}
+
+	function addNewContract($user_id, $ntis, $kiv, $date ){
+		if($date == null) $date = date("Y-m-d");
+		$mysql_pdo_error = false;
+		$query = 'INSERT INTO user_contract (KIV, NTIS, active_from, user_id) 
+VALUES (:ntis, :kiv , :active_from, :id)';
+		$sth = $this->conn->prepare($query);
+		$sth->bindValue(':ntis', $ntis);
+		$sth->bindValue(':kiv', $kiv);
+		$sth->bindValue(':active_from', $date);
+		$sth->bindValue(':id', $user_id);
+		$sth->execute();//insert to db
+		$errors = $sth->errorInfo();
+		echo $sth->errorCode() ;
+		if ($errors[0] > 0){
+			$mysql_pdo_error = true;
+		}
+		if ($mysql_pdo_error == false){
+			return true;
+		}else{
+			echo "Eror - PDOStatement::errorInfo(): ";
+			print_r($errors);
+			echo "SQL : $query";
+		}
+
+	}
+
+	function getProjectById($id){
+		$mysql_pdo_error = false;
+		$query = "select *  from project WHERE id=:id";
+		$sth = $this->conn->prepare($query);
+		$sth->bindValue(':id', $id, PDO::PARAM_INT);
+		$sth->execute();
+		$errors = $sth->errorInfo();
+		if ($errors[0] + 0 > 0){
+			$mysql_pdo_error = true;
+		}
+		if ($mysql_pdo_error == false){
+			$all = $sth->fetchAll(PDO::FETCH_ASSOC);
+			if(empty($all)) return $all;
+			return $all[0];
+		}
+		else{
+			//TODO other error
+			echo "Eror - PDOStatement::errorInfo(): ";
+			print_r($errors);
+			echo "SQL : $query";
+		}
+
+	}
+
+    function getAllActiveEmployment($user_contract_id){
 	    $mysql_pdo_error = false;
-	    $query = "select *  from users_project WHERE user_id=:id AND active_from IN (SELECT MAX(active_from) from users_project)";
+	    $query = "select *  from employment WHERE user_contract_id=:id AND active_to IS NULL";
 	    $sth = $this->conn->prepare($query);
-	    $sth->bindValue(':id', $id, PDO::PARAM_INT);
+	    $sth->bindValue(':id', $user_contract_id, PDO::PARAM_INT);
 	    $sth->execute();
 	    $errors = $sth->errorInfo();
 	    if ($errors[0] + 0 > 0){
@@ -610,39 +708,6 @@ VALUES (:ntis, :kiv ,:project_1_name, :project_1, :project_2_name, project_2, :a
 	    }
 	    if ($mysql_pdo_error == false){
 		    $all = $sth->fetchAll(PDO::FETCH_ASSOC);
-		    //TODO will be problem with other rate in one month
-		    return $all[0];
-	    }
-	    else{
-		    //TODO other error
-		    echo "Eror - PDOStatement::errorInfo(): ";
-		    print_r($errors);
-		    echo "SQL : $query";
-	    }
-
-    }
-
-    function getTypeContract($id){
-	    $array = $this->getLastProjectsUserById($id);
-	    $number = $array["KIV"]+ $array["NTIS"]+ $array["project_1"]+ $array["project_2"];
-		return $number;
-    }
-
-    function getProjectsUserInMonth($id, $month, $year){
-	    $mysql_pdo_error = false;
-	    $query = "select *  from users_project WHERE user_id=:id AND MONTH(day) =:month AND YEAR(day) =:year";
-	    $sth = $this->conn->prepare($query);
-	    $sth->bindValue(':id', $id, PDO::PARAM_INT);
-	    $sth->bindValue(':month', $month, PDO::PARAM_INT);
-	    $sth->bindValue(':year', $year, PDO::PARAM_INT);
-	    $sth->execute();
-	    $errors = $sth->errorInfo();
-	    if ($errors[0] + 0 > 0){
-		    $mysql_pdo_error = true;
-	    }
-	    if ($mysql_pdo_error == false){
-		    $all = $sth->fetchAll(PDO::FETCH_ASSOC);
-		    //TODO will be problem with other rate in one month
 		    return $all;
 	    }
 	    else{
@@ -652,6 +717,182 @@ VALUES (:ntis, :kiv ,:project_1_name, :project_1, :project_2_name, project_2, :a
 		    echo "SQL : $query";
 	    }
     }
+
+    function getUserContractById($id){
+	    $mysql_pdo_error = false;
+	    $query = "select *  from user_contract WHERE id=:id";
+	    $sth = $this->conn->prepare($query);
+	    $sth->bindValue(':id', $id, PDO::PARAM_INT);
+	    $sth->execute();
+	    $errors = $sth->errorInfo();
+	    if ($errors[0] + 0 > 0){
+		    $mysql_pdo_error = true;
+	    }
+	    if ($mysql_pdo_error == false){
+		    $all = $sth->fetchAll(PDO::FETCH_ASSOC);
+		    if(empty($all)) return $all;
+		    return $all[0];
+	    }
+	    else{
+		    //TODO other error
+		    echo "Eror - PDOStatement::errorInfo(): ";
+		    print_r($errors);
+		    echo "SQL : $query";
+	    }
+    }
+
+    function getAllUserContractsByUserID($id){
+	    $mysql_pdo_error = false;
+	    $query = "select *  from user_contract WHERE user_id=:id";
+	    $sth = $this->conn->prepare($query);
+	    $sth->bindValue(':id', $id, PDO::PARAM_INT);
+	    $sth->execute();
+	    $errors = $sth->errorInfo();
+	    if ($errors[0] + 0 > 0){
+		    $mysql_pdo_error = true;
+	    }
+	    if ($mysql_pdo_error == false){
+		    $all = $sth->fetchAll(PDO::FETCH_ASSOC);
+		    return $all;
+	    }
+	    else{
+		    //TODO other error
+		    echo "Eror - PDOStatement::errorInfo(): ";
+		    print_r($errors);
+		    echo "SQL : $query";
+	    }
+    }
+
+    function getLastUserContract($id){
+	    $mysql_pdo_error = false;
+	    $query = "select *  from user_contract WHERE user_id=:id AND active_from IN (SELECT MAX(active_from) from user_contract)";
+	    $sth = $this->conn->prepare($query);
+	    $sth->bindValue(':id', $id, PDO::PARAM_INT);
+	    $sth->execute();
+	    $errors = $sth->errorInfo();
+	    if ($errors[0] + 0 > 0){
+		    $mysql_pdo_error = true;
+	    }
+	    if ($mysql_pdo_error == false){
+		    $all = $sth->fetchAll(PDO::FETCH_ASSOC);
+		    if(empty($all)) return $all;
+		    return $all[0];
+	    }
+	    else{
+		    echo "Eror - PDOStatement::errorInfo(): ";
+		    print_r($errors);
+		    echo "SQL : $query";
+	    }
+    }
+
+    function getTypeContractByUserID($id){
+	    $arrayContract = $this->getLastUserContract($id);
+	    $number = $arrayContract["KIV"]+ $arrayContract["NTIS"];
+	    $arrayProject = $this->getAllActiveEmployment($arrayContract["id"]);
+	    if(!empty($arrayProject)){
+		    foreach ($arrayProject as $employment){
+			    $number+= $employment["percent"];
+		    }
+	    }
+		return $number;
+    }
+
+    function updateProject($id, $project_name, $project_name_short, $description){
+	    $mysql_pdo_error = false;
+	    $query = 'UPDATE project SET project_name =:project_name, to_1=:to_1,
+ 								  project_name_short=:project_name_short,description:=description
+ 								  where id=:id;';
+	    $sth = $this->conn->prepare($query);
+	    $sth->bindValue(':id', $id);
+	    $sth->bindValue(':project_name', $project_name);
+	    $sth->bindValue(':project_name_short', $project_name_short);
+	    $sth->bindValue(':description', $description);
+
+	    $sth->execute();//insert to db
+	    $errors = $sth->errorInfo();
+	    if ($errors[0] + 0 > 0){
+		    $mysql_pdo_error = true;
+	    }
+	    if ($mysql_pdo_error == false){
+		    //all is ok
+		    return true;
+	    }else{
+		    echo "Eror - PDOStatement::errorInfo(): ";
+		    print_r($errors);
+		    echo "SQL : $query";
+	    }
+
+    }
+
+    function closeContract($id, $date){
+	    if($date == null) $date = date("Y-m-d");
+	    $mysql_pdo_error = false;
+	    $query = 'UPDATE user_contract SET active_to =:active_to
+ 								  where id=:id;';
+	    $sth = $this->conn->prepare($query);
+	    $sth->bindValue(':id', $id);
+	    $sth->bindValue(':active_to', $date);
+	    $sth->execute();//insert to db
+	    $errors = $sth->errorInfo();
+	    if ($errors[0] + 0 > 0){
+		    $mysql_pdo_error = true;
+	    }
+	    if ($mysql_pdo_error == false){
+		    return true;
+	    }else{
+		    echo "Eror - PDOStatement::errorInfo(): ";
+		    print_r($errors);
+		    echo "SQL : $query";
+	    }
+    }
+
+    function closeEmployment($id, $date){
+	    if($date == null) $date = date("Y-m-d");
+	    $mysql_pdo_error = false;
+	    $query = 'UPDATE employment SET active_to =:active_to
+ 								  where id=:id;';
+	    $sth = $this->conn->prepare($query);
+	    $sth->bindValue(':id', $id);
+	    $sth->bindValue(':active_to', $date);
+	    $sth->execute();//insert to db
+	    $errors = $sth->errorInfo();
+	    if ($errors[0] + 0 > 0){
+		    $mysql_pdo_error = true;
+	    }
+	    if ($mysql_pdo_error == false){
+		    return true;
+	    }else{
+		    echo "Eror - PDOStatement::errorInfo(): ";
+		    print_r($errors);
+		    echo "SQL : $query";
+	    }
+
+    }
+
+//    function getProjectsUserInMonth($id, $month, $year){
+//	    $mysql_pdo_error = false;
+//	    $query = "select *  from users_project WHERE user_id=:id AND MONTH(day) =:month AND YEAR(day) =:year";
+//	    $sth = $this->conn->prepare($query);
+//	    $sth->bindValue(':id', $id, PDO::PARAM_INT);
+//	    $sth->bindValue(':month', $month, PDO::PARAM_INT);
+//	    $sth->bindValue(':year', $year, PDO::PARAM_INT);
+//	    $sth->execute();
+//	    $errors = $sth->errorInfo();
+//	    if ($errors[0] + 0 > 0){
+//		    $mysql_pdo_error = true;
+//	    }
+//	    if ($mysql_pdo_error == false){
+//		    $all = $sth->fetchAll(PDO::FETCH_ASSOC);
+//		    //TODO will be problem with other rate in one month
+//		    return $all;
+//	    }
+//	    else{
+//		    //TODO other error
+//		    echo "Eror - PDOStatement::errorInfo(): ";
+//		    print_r($errors);
+//		    echo "SQL : $query";
+//	    }
+//    }
 
     //////////////////////////////////   TIME     //////////////////////////////////////////////////////////////////////////////
 
@@ -716,18 +957,18 @@ VALUES (:from_1, :to_1 ,:from_2, :to_2, :active_from, :id)';
 	 *
 	 * @return bool
 	 */
-    function updateTimeTable($time){
+    function updateTimeTable($user_id, $timeFrom1, $timeTo1, $timeFrom2, $timeTo2){
 	    $mysql_pdo_error = false;
 	    $query = 'UPDATE time_table SET from_1 =:from_1, to_1=:to_1,
  								  from_2=:from_2,to_2:=to_2, active_from:=active_from
  								  where user_id=:user_id;';
 	    $sth = $this->conn->prepare($query);
-	    $sth->bindValue(':user_id', $time->user_id);
-	    $sth->bindValue(':from_1', $time->timeFrom1);
-	    $sth->bindValue(':to_1', $time->timeTo1);
-	    $sth->bindValue(':from_2', $time->timeFrom2);
+	    $sth->bindValue(':user_id', $user_id);
+	    $sth->bindValue(':from_1', $timeFrom1);
+	    $sth->bindValue(':to_1', $timeTo1);
+	    $sth->bindValue(':from_2', $timeFrom2);
 	    $sth->bindValue(':active_from', date("Y-m-d h:i:sa"));
-	    $sth->bindValue(':to_2', $time->timeTo2);
+	    $sth->bindValue(':to_2', $timeTo2);
 
 	    $sth->execute();//insert to db
 	    $errors = $sth->errorInfo();
@@ -1014,14 +1255,14 @@ VALUES (:from_1, :to_1 ,:from_2, :to_2, :active_from, :id)';
         }
     }
 
-	function updateHollidays($data){
+	function updateHollidays($day, $name, $id){
 		$mysql_pdo_error = false;
 		$query = 'UPDATE hollidays SET day =:day, name=:name
  								  where id=:id;';
 		$sth = $this->conn->prepare($query);
-		$sth->bindValue(':day', $data->day);
-		$sth->bindValue(':name', $data->name);
-		$sth->bindValue(':id', $data->id);
+		$sth->bindValue(':day', $day);
+		$sth->bindValue(':name', $name);
+		$sth->bindValue(':id', $id);
 		$sth->execute();//insert to db
 		$errors = $sth->errorInfo();
 		if ($errors[0] + 0 > 0){

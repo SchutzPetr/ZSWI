@@ -21,6 +21,11 @@ function fillUser($array){
 
 $dbObject = new DataBase();
 
+/****
+ * prida novy share_timesheet
+ * ocekava na objekt s userId (user from), shareTo (id user to)
+ * prijda jenom jiz takovy share_timesheet neexistuje
+ */
 if(isset($_GET["/share/add"])){
 	$obj = json_decode($_GET["/share/add"], false);
 	$array = $dbObject->getSharing($obj->userId, $obj->shareTo);
@@ -30,18 +35,44 @@ if(isset($_GET["/share/add"])){
 		}
 	}
 
-}else if(isset($_GET["/share/remove"])){
+}
+/***
+ * smaze share_timesheet z db
+ * ocekava na objekt s userId (user from), shareTo (id user to)
+ */
+else if(isset($_GET["/share/remove"])){
 	$obj = json_decode($_GET["/share/remove"], false);
-	if($dbObject->deleteSharingById($obj->userId, $obj->shareTo)){
+	if($dbObject->deleteSharing($obj->userId, $obj->shareTo)){
 		echo json_encode(true);
 	}
 
-}else if(isset($_GET["/share/getSharing"])){ ///co vrátí seznam uživatelů, kterým daný uživatel sdílí
-	$obj = json_decode($_GET["/share/getSharing"], false);
+}
+/***
+ * vrati objecty share_timesheet
+ * ocekava na objekt s userId (user from)
+ */
+
+else if(isset($_GET["/share/getSharingTo"])){ ///co vrátí seznam uživatelů, kterým daný uživatel sdílí
+	$obj = json_decode($_GET["/share/getSharingTo"], false);
 	$array = $dbObject->getAllSharingByUserId($obj->userId);
 	$arrayUser = [];
-	echo '<pre>'; print_r($array); echo '</pre>';
-
+	if(!empty($array)){
+		for($i = 0; $i<count($array); $i++){
+			$arrayUser = $dbObject->getUserById($array[$i]['share_to']);
+			$user = fillUser($arrayUser);
+			$arrayUser[$i] = $user->getDataUserToJS();
+		}
+	}
+	echo json_encode($arrayUser);
+}
+/***
+ * vrati objecty share_timesheet
+ * ocekava na objekt s userId (user to)
+ */
+else if(isset($_GET["/share/getSharing"])){
+	$obj = json_decode($_GET["/share/getSharing"], false);
+	$array = $dbObject->getSharingListByID($obj->userId);
+	$arrayUser = [];
 	if(!empty($array)){
 		for($i = 0; $i<count($array); $i++){
 			$arrayUser = $dbObject->getUserById($array[$i]['share_to']);

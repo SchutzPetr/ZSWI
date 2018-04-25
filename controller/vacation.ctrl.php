@@ -51,7 +51,4 @@ if(isset($_GET["/vacation/delete/id"])){
 		echo json_encode(true);
 	}
 }
-if(isset($_GET["/vacation/update/id"])){
-	$obj = json_decode($_GET["/vacation/update/id"], false);
-	$dbObject->updateHollidays($obj);
-}
+
