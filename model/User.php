@@ -320,21 +320,19 @@ class User {
 
 	function addMonthData($array){
 		print "addMonthData \n";
-//		echo '<pre>'; print_r($array); echo '</pre>';
 		for($i =0; $i<count($array); $i++){
 			$date=date_create($array[$i]['day']);
 
 			$this->_arrayDataByMonth[$i]['day'] = date_format($date,"d.m.Y");
-			echo date('N', $date);
-			$this->_arrayDataByMonth[$i]['day_type'] = (int) date('N', $date);
+			$this->_arrayDataByMonth[$i]['day_of_week'] = $date->format('N');
 
 			if($array[$i]['from_1']!=null && $array[$i]['to_1']!=null){
 				$this->_arrayDataByMonth[$i]['from_1'] = $array[$i]['from_1'];
 				$this->_arrayDataByMonth[$i]['to_1'] = $array[$i]['to_1'];
 
-				$time1 = strtotime($array[$i]['from_1']);
-				$time2 = strtotime($array[$i]['to_1']);
-				$hours = ($time1 - $time2)/60;
+				$time1 = $array[$i]['from_1'];
+				$time2 = $array[$i]['to_1'];
+				$hours = number_format(($time2 - $time1),2);
 				$this->_arrayDataByMonth[$i]['hours_1'] = $hours;
 				$this->_hoursByMoth+=$hours;
 
@@ -343,9 +341,9 @@ class User {
 				$this->_arrayDataByMonth[$i]['pause_from_1'] = $array[$i]['to_1'];
 				$this->_arrayDataByMonth[$i]['pause_to_1'] = $array[$i]['from_2'];
 
-				$time1 = strtotime($array[$i]['to_1']);
-				$time2 = strtotime($array[$i]['from_2']);
-				$hours = ($time1 - $time2)/60;
+				$time1 = $array[$i]['to_1'];
+				$time2 = $array[$i]['from_2'];
+				$hours = number_format(($time2 - $time1),2);
 				$this->_arrayDataByMonth[$i]['pause_hours_1'] = $hours;
 				$this->_hoursByMoth+=$hours;
 
@@ -355,33 +353,34 @@ class User {
 				$this->_arrayDataByMonth[$i]['from_2'] = $array[$i]['from_2'];
 				$this->_arrayDataByMonth[$i]['to_2'] = $array[$i]['to_2'];
 
-				$time1 = strtotime($array[$i]['from_2']);
-				$time2 = strtotime($array[$i]['to_2']);
-				$hours = ($time1 - $time2)/60;
+				$time1 = $array[$i]['from_2'];
+				$time2 = $array[$i]['to_2'];
+				$hours = number_format(($time2 - $time1),2);
 				$this->_arrayDataByMonth[$i]['hours_2'] = $hours;
 				$this->_hoursByMoth+=$hours;
 
 			}
 
-			if($array[$i]['from_2']!=null && $array[$i]['to_2']!=null) {
-				$this->arrayDataByMonth[$i]['from_3'] = $array[$i]['from_3'];
-				$this->arrayDataByMonth[$i]['to_3'] = $array[$i]['to_3'];
+			if($array[$i]['from_3']!=null && $array[$i]['to_3']!=null) {
+				$this->_arrayDataByMonth[$i]['from_3'] = $array[$i]['from_3'];
+				$this->_arrayDataByMonth[$i]['to_3'] = $array[$i]['to_3'];
 
-				$time1 = strtotime($array[$i]['from_3']);
-				$time2 = strtotime($array[$i]['to_3']);
-				$hours = ($time1 - $time2)/60;
+				$time1 = $array[$i]['from_3'];
+				$time2 = $array[$i]['to_3'];
+				$hours = number_format(($time2 - $time1),2);
+
 				$this->_arrayDataByMonth[$i]['hours_3'] = $hours;
 				$this->_hoursByMoth+=$hours;
 			}
-
-			if($array[$i]['is_nemoc']==1){
+			$this->_arrayDataByMonth[$i]['note1'] = '';
+			if($array[$i]['is_nemoc']>0){
 				$this->_arrayDataByMonth[$i]['note1'] = "nemoc";
 				$this->_diseasesHoursByMoth+=8;///!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			}
-			if($array[$i]['is_vacation']==1){
+			if($array[$i]['is_vacation']>0){
 				$this->_arrayDataByMonth[$i]['note1'] = "dovolená";
 			}
-
+			$this->_arrayDataByMonth[$i]['note2'] = '';
 			$this->_arrayDataByMonth[$i]['note2'] = $array[$i]['other'];
 
 		}
@@ -389,7 +388,7 @@ class User {
 	}
 
 	function getMonthData(){
-		return $this->arrayDataByMonth;
+		return $this->_arrayDataByMonth;
 	}
 
 	function printDataUser(){

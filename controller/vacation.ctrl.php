@@ -9,27 +9,31 @@ header("Content-Type: application/json; charset=UTF-8");
 
 include_once("../model/db.php");
 include_once("../model/constant.php");
+include_once("notification.ctrl.php");
+
+function getAllVacationInYear($userId, $year){
+	$dbObject = new DataBase();
+	$array = $dbObject->getVacationByUserInYear($userId, $year);
+	$howManyDays = 0;
+	for($i=0; $i<count($array); $i++){
+		$howManyDays =+ $array[$i]->type;
+	}
+	return $howManyDays;
+}
 
 $dbObject = new DataBase();
 
 if(isset($_GET["/vacation/getByUserId"])){
 	$obj = json_decode($_GET["/vacation/userid"], false);
-	$array = $dbObject->getVacationByUserInYear($obj->userId, $obj->year);
-	$howManyDays = 0;
-	for($i=0; $i<count($array); $i++){
-		$howManyDays =+ $array[$i]->type;
-	}
+	$howManyDays = getAllVacationInYear($obj->userId, $obj->year);
+
 	echo json_encode($howManyDays);
 }
 
 if(isset($_GET["/vacation/getByUserIdAndYear"])){
 	$obj = json_decode($_GET["/vacation/getByUserIdAndYear"], false);
-	$array = $dbObject->getVacationByUserInYear($obj->userId, $obj->year);
-	$howManyDays = 0;
-	for($i=0; $i<count($array); $i++){
-		$howManyDays =+ $array[$i]->type;
-	}
-	$number = $dbObject->getTypeContract($obj->userId);
+	$howManyDays = getAllVacationInYear($obj->userId, $obj->year);
+	$number = $dbObject->getTypeContractByUserID($obj->userId);
 	echo json_encode($number*FULLTIME_VACATIONS_DAY - $howManyDays);
 }
 

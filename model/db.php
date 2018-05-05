@@ -133,7 +133,7 @@ VALUES (:day, :is_nemoc, :is_vacation, :other, :from_1, :to_1, :from_2, :to_2, :
 						//is it not a vacation
 						if(!$this->isItVacationDay($dayInMonth, $arrayVacationsInMonth)){
 							$this->addSheduleByUserID($id, $dayInMonth, 0,0, "",
-								$time["from_1"], $time["to_1"], $time["from_2"], $time["to_2"], $time["from_3"], $time["to_3"]);
+								$time["from_1"], $time["to_1"], $time["from_2"], $time["to_2"], null, null);
 							//TODO Control time 3
 
 						}else{//if is it a vacation
@@ -142,7 +142,7 @@ VALUES (:day, :is_nemoc, :is_vacation, :other, :from_1, :to_1, :from_2, :to_2, :
 //
 //						}
 							$this->addSheduleByUserID($id, $dayInMonth, 0,1, "",
-								$time[0]["from_1"], $time[0]["to_1"], null, null, $time[0]["from_3"], $time[0]["to_3"]);
+								$time[0]["from_1"], $time[0]["to_1"], null, null, null, null);
 
 						}
 					}
@@ -160,8 +160,6 @@ VALUES (:day, :is_nemoc, :is_vacation, :other, :from_1, :to_1, :from_2, :to_2, :
 		$sth->bindValue(':user_id', $user_id, PDO::PARAM_INT);
 		$sth->bindValue(':month', $month, PDO::PARAM_INT);
 		$sth->bindValue(':year', $year, PDO::PARAM_INT);
-//		$sth->bindValue(':day_from', $dayFrom, PDO::PARAM_STR);
-//		$sth->bindValue(':day_to', $dayTo, PDO::PARAM_STR);
 		$sth->execute();
 		$errors = $sth->errorInfo();
 		if ($errors[0] + 0 > 0){
@@ -192,6 +190,7 @@ VALUES (:day, :is_nemoc, :is_vacation, :other, :from_1, :to_1, :from_2, :to_2, :
 		}
 		if ($mysql_pdo_error == false){
 			$all = $sth->fetchAll(PDO::FETCH_ASSOC);
+			if(empty($all)) return $all;
 			return $all[0];
 		}
 		else{
@@ -214,6 +213,7 @@ VALUES (:day, :is_nemoc, :is_vacation, :other, :from_1, :to_1, :from_2, :to_2, :
 		}
 		if ($mysql_pdo_error == false){
 			$all = $sth->fetchAll(PDO::FETCH_ASSOC);
+			if(empty($all)) return $all;
 			return $all[0];
 		}
 		else{
@@ -487,6 +487,7 @@ VALUES (:sharing_user, :share_to)';
 		}
 		if ($mysql_pdo_error == false){
 			$all = $sth->fetchAll(PDO::FETCH_ASSOC);
+			if(empty($all)) return $all;
 			return $all[0];
 		}
 		else{
@@ -1097,6 +1098,7 @@ VALUES (:from_1, :to_1 ,:from_2, :to_2, :active_from, :id)';
 		}
 		if ($mysql_pdo_error == false){
 			$all = $sth->fetchAll(PDO::FETCH_ASSOC);
+			if(empty($all)) return $all;
 			return $all[0];
 		}
 		else{
@@ -1158,6 +1160,93 @@ VALUES (:from_1, :to_1 ,:from_2, :to_2, :active_from, :id)';
 		}
 	}
 
+	//////////////////////////////////////////////////   NOTIFICATION    ////////////////////////////////////////////
+	function addNotification($title, $description,$link){
+		$mysql_pdo_error = false;
+		$query = 'INSERT INTO notification (title, description, link, notification.read) VALUES (:title, :description, :link, :read)';
+		$sth = $this->conn->prepare($query);
+		$sth->bindValue(':title', $title);
+		$sth->bindValue(':description', $description);
+		$sth->bindValue(':link', $link);
+		$sth->bindValue(':read', 0);
+		$sth->execute();//insert to db
+		$errors = $sth->errorInfo();
+		if ($errors[0] > 0){
+			$mysql_pdo_error = true;
+		}
+		if ($mysql_pdo_error == false){
+			return true;
+		}else{
+			echo "Eror - PDOStatement::errorInfo(): ";
+			print_r($errors);
+			echo "SQL : $query";
+		}
+	}
+
+	function closeNotification($id){
+		$mysql_pdo_error = false;
+		$query = 'UPDATE notification SET notification.read =1  where id=:id;';
+		$sth = $this->conn->prepare($query);
+		$sth->bindValue(':id', $id, PDO::PARAM_INT);
+		$sth->execute();//insert to db
+		$errors = $sth->errorInfo();
+		if ($errors[0] + 0 > 0){
+			$mysql_pdo_error = true;
+		}
+		if ($mysql_pdo_error == false){
+			return true;
+		}else{
+			echo "Eror - PDOStatement::errorInfo(): ";
+			print_r($errors);
+			echo "SQL : $query";
+		}
+	}
+
+	function getAllNotification(){
+		$mysql_pdo_error = false;
+		$query = "select *  from notification";
+		$sth = $this->conn->prepare($query);
+		$sth->execute();
+		$errors = $sth->errorInfo();
+		if ($errors[0] + 0 > 0){
+			$mysql_pdo_error = true;
+		}
+		if ($mysql_pdo_error == false){
+			$all = $sth->fetchAll(PDO::FETCH_ASSOC);
+			return $all;
+		}
+		else{
+			//TODO other error
+			echo "Eror - PDOStatement::errorInfo(): ";
+			print_r($errors);
+			echo "SQL : $query";
+		}
+
+
+	}
+
+	function getAllOpenNotification(){
+		$mysql_pdo_error = false;
+		$query = "select *  from notification WHERE  notification.read=0";
+		$sth = $this->conn->prepare($query);
+		$sth->execute();
+		$errors = $sth->errorInfo();
+		if ($errors[0] + 0 > 0){
+			$mysql_pdo_error = true;
+		}
+		if ($mysql_pdo_error == false){
+			$all = $sth->fetchAll(PDO::FETCH_ASSOC);
+			return $all;
+		}
+		else{
+			//TODO other error
+			echo "Eror - PDOStatement::errorInfo(): ";
+			print_r($errors);
+			echo "SQL : $query";
+		}
+
+	}
+
 
 	//////////////////////////////////////////////////   HOLIDAYS    ////////////////////////////////////////////
 
@@ -1201,6 +1290,7 @@ VALUES (:from_1, :to_1 ,:from_2, :to_2, :active_from, :id)';
 	    }
 	    if ($mysql_pdo_error == false){
 		    $all = $sth->fetchAll(PDO::FETCH_ASSOC);
+		    if(empty($all)) return $all;
 		    return $all[0];
 	    }
 	    else{
@@ -1278,11 +1368,6 @@ VALUES (:from_1, :to_1 ,:from_2, :to_2, :active_from, :id)';
 		}
 
 	}
-
-
-
-
-
 
 
 	/***

@@ -21,7 +21,7 @@ class fileworker
 
 
 
-    function generateReportForOneMonth($month, $year, $arrayData){
+    function generateReportForOneMonth($month, $year, $arrayUsers){
 		///https://nicknixer.ru/programmirovanie/sozdanie-excel-dokumenta-na-php-generaciya-xls-fajlov/
 	    $document = new \PHPExcel();
 	    $alphabet = range('A', 'Z');
@@ -30,12 +30,12 @@ class fileworker
 	    $d = mktime(0, 0, 0, $month, $day, $year);
 
 	    $lastDayInMonth = date("t", strtotime($d));
+	    echo '<pre>'; print_r($arrayUsers); echo '</pre>';
 
-	    for($index = 0; $index < count($arrayData); $index++) {
-		    //////TODO for cycle by users in array
+	    for($index = 0; $index < count($arrayUsers); $index++) {
 		    $document->createSheet();
 		    $sheet = $document->setActiveSheetIndex($index);
-		    $sheet->setTitle($arrayData[$index]->nameAndLastName);/// set this
+		    $sheet->setTitle($arrayUsers[$index]->nameAndLastName);/// set this
 		    $columnPosition = 0;
 		    $startLine = 1;
 
@@ -44,7 +44,7 @@ class fileworker
 		    // Объединяем ячейки "A1:E1"
 		    $document->getActiveSheet()->mergeCellsByColumnAndRow($columnPosition, $startLine, array_search('E', $alphabet), $startLine);
 		    // Вставляем заголовок в "F1"
-		    $sheet->setCellValueByColumnAndRow(array_search('F', $alphabet), $startLine, $arrayData[$index]->nameAndLastName);//$user_data['name']
+		    $sheet->setCellValueByColumnAndRow(array_search('F', $alphabet), $startLine, $arrayUsers[$index]->nameAndLastName);//$user_data['name']
 		    // Объединяем ячейки "F1:K1"
 		    $document->getActiveSheet()->mergeCellsByColumnAndRow(array_search('F', $alphabet), $startLine, array_search('K', $alphabet), $startLine);
 		    // Вставляем заголовок в "L1"
@@ -96,16 +96,28 @@ class fileworker
 			    $sheet->setCellValueByColumnAndRow($i+2, $startLine, 'T');
 		    }
 
-		    for($day = 1; $day<=$lastDayInMonth; $day++){
-			    $sheet->setCellValueByColumnAndRow(array_search('A', $alphabet), $startLine+$day, date("d.m.Y", $d));
+		    for($day = 1; $day<$lastDayInMonth; $day++){
 			    $d = mktime(0, 0, 0, $month, $day, $year);
-		    }
+			    $sheet->setCellValueByColumnAndRow(array_search('A', $alphabet), $startLine+$day, date("d.m.Y", $d));
+				$arrayForOneLine = $this->getLine(date("d.m.Y", $d), $arrayUsers[$index]->getArrayDataByMonth());
+				if($arrayForOneLine != null) {
+//					echo '<pre>'; print_r($arrayForOneLine); echo '</pre>';
+					$sheet->setCellValueByColumnAndRow(array_search('B', $alphabet), $startLine+$day, $arrayForOneLine['day']);
+					$sheet->setCellValueByColumnAndRow(array_search('C', $alphabet), $startLine+$day, $arrayForOneLine['day_of_week']);
+			        $sheet->setCellValueByColumnAndRow(array_search('D', $alphabet), $startLine+$day, $arrayForOneLine['from_1']);
+			        $sheet->setCellValueByColumnAndRow(array_search('E', $alphabet), $startLine+$day, $arrayForOneLine['to_1']);
+			        $sheet->setCellValueByColumnAndRow(array_search('F', $alphabet), $startLine+$day, $arrayForOneLine['hours_1']);
+			        $sheet->setCellValueByColumnAndRow(array_search('G', $alphabet), $startLine+$day, $arrayForOneLine['pause_from_1']);
+			        $sheet->setCellValueByColumnAndRow(array_search('H', $alphabet), $startLine+$day, $arrayForOneLine['pause_to_1']);
+			        $sheet->setCellValueByColumnAndRow(array_search('I', $alphabet), $startLine+$day, $arrayForOneLine['pause_hours_1']);
+			        $sheet->setCellValueByColumnAndRow(array_search('J', $alphabet), $startLine+$day, $arrayForOneLine['from_2']);
+			        $sheet->setCellValueByColumnAndRow(array_search('K', $alphabet), $startLine+$day, $arrayForOneLine['to_2']);
+			        $sheet->setCellValueByColumnAndRow(array_search('L', $alphabet), $startLine+$day, $arrayForOneLine['hours_2']);
+			        $sheet->setCellValueByColumnAndRow(array_search('Q', $alphabet), $startLine+$day, $arrayForOneLine['note1']);
+			        $sheet->setCellValueByColumnAndRow(array_search('R', $alphabet), $startLine+$day, $arrayForOneLine['note2']);
+				}
 
-//		    if($arrayData != null){
-//			    foreach ($arrayData as $item){
-//				    $item["day_of_month"];
-//			    }
-//		    }
+		    }
 
 		    $sheet->setCellValueByColumnAndRow(array_search('A', $alphabet), 36, "Evidence ostatních skutečností o náhradních a placených dobách je vedena standardním způsobem");
 		    $startLine = 38;
@@ -158,7 +170,17 @@ class fileworker
 
     }
 
-
+	function getLine($day, $arrayShedule){
+//    	echo $day;
+    	for($i=0; $i<count($arrayShedule); $i++){
+    		$d = date("d.m.Y", strtotime($arrayShedule[$i]['day']));
+//    		echo  date('y-m-d', strtotime($arrayShedule[$i]['day']))." ". date('y-m-d', strtotime($day))." || ";
+    		if($day == $d){
+				return $arrayShedule[$i];
+		    }
+	    }
+	    return null;
+	}
 
 
 
