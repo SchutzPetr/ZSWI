@@ -450,18 +450,9 @@ VALUES (:sharing_user, :share_to)';
 		}
 		if ($mysql_pdo_error == false){
 			$all = $sth->fetchAll(PDO::FETCH_ASSOC);
-			$users = [];
-			for ($i = 0; $i<count($all); $i++){
-				$user = new User();
-				$user->fill($all[$i]);
-				$users[$i] = $user;
-			}
-//            echo '<pre>'; print_r($all); echo '</pre>';
-//            print_r(json_encode($all));
-			return $users;
+			return $all;
 		}
 		else{
-			//TODO other error
 			echo "Eror - PDOStatement::errorInfo(): ";
 			print_r($errors);
 			echo "SQL : $query";

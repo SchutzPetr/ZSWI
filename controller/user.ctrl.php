@@ -83,6 +83,14 @@ if(isset($_GET["/user/login"])){
 		echo '<pre>'; print_r($dbObject->getTypeContractByUserID($array["id"])); echo '</pre>';
 	}
 
+}else if(isset($_GET["/user/getAllUsers"])){
+	$array = $dbObject->getAllUsersForAdmin();
+	$userArray = [];
+	for($i = 0; $i<count($array); $i++){
+		$user = fillUser($array[$i]);
+		$userArray[$i] = $user->getDataUserToJS();
+	}
+	echo json_encode($userArray);
 }
 
 
