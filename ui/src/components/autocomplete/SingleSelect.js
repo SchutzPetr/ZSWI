@@ -11,47 +11,8 @@ import ClearIcon from 'material-ui-icons/es/Clear';
 import Chip from 'material-ui/Chip';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
-import Styles from "./style/ProjectSelectStyle";
-
-const suggestions = [
-    {label: 'Afghanistan'},
-    {label: 'Aland Islands'},
-    {label: 'Albania'},
-    {label: 'Algeria'},
-    {label: 'American Samoa'},
-    {label: 'Andorra'},
-    {label: 'Angola'},
-    {label: 'Anguilla'},
-    {label: 'Antarctica'},
-    {label: 'Antigua and Barbuda'},
-    {label: 'Argentina'},
-    {label: 'Armenia'},
-    {label: 'Aruba'},
-    {label: 'Australia'},
-    {label: 'Austria'},
-    {label: 'Azerbaijan'},
-    {label: 'Bahamas'},
-    {label: 'Bahrain'},
-    {label: 'Bangladesh'},
-    {label: 'Barbados'},
-    {label: 'Belarus'},
-    {label: 'Belgium'},
-    {label: 'Belize'},
-    {label: 'Benin'},
-    {label: 'Bermuda'},
-    {label: 'Bhutan'},
-    {label: 'Bolivia, Plurinational State of'},
-    {label: 'Bonaire, Sint Eustatius and Saba'},
-    {label: 'Bosnia and Herzegovina'},
-    {label: 'Botswana'},
-    {label: 'Bouvet Island'},
-    {label: 'Brazil'},
-    {label: 'British Indian Ocean Territory'},
-    {label: 'Brunei Darussalam'},
-].map(suggestion => ({
-    value: suggestion.label,
-    label: suggestion.label,
-}));
+import Styles from "./style/SingleSelectStyle";
+import Suggestion from "./entity/Suggestion";
 
 class Option extends React.Component {
     handleClick = event => {
@@ -116,7 +77,7 @@ function SelectWrapped(props) {
     );
 }
 
-class ProjectSelect extends React.Component {
+class SingleSelect extends React.Component {
 
     handleChange = value => {
         this.props.onSelect(value);
@@ -128,9 +89,9 @@ class ProjectSelect extends React.Component {
         return (
             <div className={classes.root}>
                 <Input
-                    fullWidth
+                    fullWidth={true}
                     inputComponent={SelectWrapped}
-                    value={this.props.single}
+                    value={this.props.value ? this.props.value.value : null}
                     onChange={this.handleChange}
                     placeholder={"Vyberte projekt:"}
                     id={"react-select-single"}
@@ -138,8 +99,8 @@ class ProjectSelect extends React.Component {
                         classes,
                         name: "react-select-single",
                         instanceId: "react-select-single",
-                        simpleValue: true,
-                        options: suggestions,
+                        simpleValue: this.props.simpleValue,
+                        options: this.props.suggestions,
                     }}
                 />
             </div>
@@ -147,10 +108,16 @@ class ProjectSelect extends React.Component {
     }
 }
 
-ProjectSelect.propTypes = {
+SingleSelect.propTypes = {
     classes: PropTypes.object.isRequired,
-    values: PropTypes.string,
-    onSelect: PropTypes.func.isRequired
+    value: PropTypes.instanceOf(Suggestion).isRequired,
+    suggestions: PropTypes.arrayOf(Suggestion).isRequired,
+    onSelect: PropTypes.func.isRequired,
+    simpleValue: PropTypes.bool
 };
 
-export default withStyles(Styles, {withTheme: true})(ProjectSelect);
+SingleSelect.defaultProps = {
+    simpleValue: false
+};
+
+export default withStyles(Styles, {withTheme: true})(SingleSelect);

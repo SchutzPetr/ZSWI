@@ -7,42 +7,61 @@ import Styles from "./style/ProjectOverviewPageStyle";
 import withStyles from "material-ui/es/styles/withStyles";
 import UserTableProjectAssignment from "../../components/user_table_project_assignment/UserTableProjectAssignment";
 import ProjectOverview from "../../components/project_overview/ProjectOverview";
+import Project from "../../entity/Project";
 
 class ProjectOverviewPage extends React.Component {
 
     state = {
-        users: [],
-        loadFeedback: "ready"
+        selectedProject: null,
+        projects: [],
+        loadFeedback: "loading",
     };
 
     componentDidMount() {
-        //this._fetchData();
+        this._fetchData();
     }
 
     _fetchData() {
-        Calls.getUsers({
+        Calls.getProjects({
             data: {},
             done: (data) => {
-                this.setState({users: data, loadFeedback: "ready"});
+                this.setState({projects: Project.map(data.data), loadFeedback: "ready"});
             },
             fail: (data) => {
                 this.setState({loadFeedback: "error"});
                 //todo: error throw
             }
-        })
+        });
     }
+
+    handleChangeProject = (value) => {
+        this.setState({selectedProject: value ? value.data : null});
+    };
+
+    handleSaveOrEditProjectDone = () => {
+        this._fetchData();
+    };
 
     _getContend() {
         if (this.state.loadFeedback === "loading") {
             return <LinearProgressCentered paper={false}/>
         } else if (this.state.loadFeedback === "ready") {
             return (
-                <Grid className={this.props.classes.mainGrid} container={true} spacing={16}>
+                <Grid className={this.props.classes.mainGrid}
+                      xs={12}
+                      container={true} spacing={16}
+                      alignItems={"center"}
+                      direction={"row"}
+                      justify={"center"}>
                     <Grid item={true} xs={12} sm={3}>
-                        <ProjectOverview/>
+                        <ProjectOverview projects={this.state.projects}
+                                         project={this.state.selectedProject}
+                                         onChangeProject={this.handleChangeProject}
+                                         onSaveOrEditProjectDone={this.handleSaveOrEditProjectDone}/>
                     </Grid>
-                    <Grid item={true} xs={12} sm={9}>
-                        <UserTableProjectAssignment/>
+                    <Grid item={true} xs={12} sm={8}>
+                        <UserTableProjectAssignment project={this.state.selectedProject} users={[]} onEditClick={() => {
+                        }}/>
                     </Grid>
                 </Grid>
             );

@@ -9,6 +9,7 @@ import EnhancedTableHead from "./components/EnhancedUserTableProjectAssignmentHe
 import {IconButton, Tooltip} from "material-ui";
 import EditIcon from "material-ui-icons/es/Edit";
 import User from "../../entity/User";
+import Project from "../../entity/Project";
 
 class UserTableProjectAssignment extends React.Component {
 
@@ -34,9 +35,17 @@ class UserTableProjectAssignment extends React.Component {
         const {rowsPerPage, page} = this.state;
         const emptyRows = rowsPerPage - Math.min(rowsPerPage, this.props.users.length - page * rowsPerPage);
 
+        if(!this.props.project){
+            return(
+                <Paper className={classes.empty}>
+
+                </Paper>
+            );
+        }
+
         return (
             <Paper className={this.props.fullHeight ? classes.fullHeightRoot : classes.root}>
-                <EnhancedTableToolbar onEditClick={this.props.onEditClick}/>
+                <EnhancedTableToolbar project={this.props.project} onAddClick={this.props.onEditClick}/>
                 <div className={classes.tableWrapper}>
                     <Table className={classes.table}>
                         <EnhancedTableHead rowCount={this.props.users.length}/>
@@ -85,6 +94,7 @@ UserTableProjectAssignment.propTypes = {
     classes: PropTypes.object,
     onEditClick: PropTypes.func.isRequired,
     users: PropTypes.arrayOf(User).isRequired,
+    project: PropTypes.instanceOf(Project).isRequired,
     fullHeight: PropTypes.bool,
     rowsPerPage: PropTypes.number,
     rowsPerPageOptions: PropTypes.array,

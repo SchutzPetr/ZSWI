@@ -42,9 +42,21 @@ class Calls {
     static getUsers(dataIn){
         Calls._get("getUsers", dataIn);
     }
+
+    static getProjects(dataIn){
+        Calls._get("getProjects", dataIn);
+    }
     
     static getUser(dataIn){
         Calls._get("getUser", dataIn);
+    }
+
+    static editProject(dataIn) {
+
+    }
+
+    static createProject(dataIn) {
+        Calls._get("addProject", dataIn)
     }
 }
 

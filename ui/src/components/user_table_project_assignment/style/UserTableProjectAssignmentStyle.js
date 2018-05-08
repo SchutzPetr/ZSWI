@@ -3,6 +3,10 @@ const Styles = theme => ({
         width: '100%',
         margin: theme.spacing.unit,
     },
+    empty:{
+        maxHeight: 462,// - (8 * theme.spacing.unit),
+        height: 462,// - (8 * theme.spacing.unit),
+    },
     fullHeightRoot:{
         overflow: "auto",
         maxHeight: `calc(100vh - 80px)`,
