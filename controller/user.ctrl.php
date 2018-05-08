@@ -5,6 +5,7 @@
  * Date: 03.04.2018
  * Time: 18:32
  */
+header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 include_once("../model/db.php");
 
@@ -105,7 +106,7 @@ else if(isset($_GET["/user/update/id"])){
  * percent (vytvori prvni contract)
  */
 else if(isset($_GET["/user/addNewUser"])){
-	$obj = json_decode(urldecode($_GET["/user/addNewUser"], false));
+	$obj = json_decode(urldecode($_GET["/user/addNewUser"]), false);
 	echo $obj->orionLogin;
 	$userArray = $dbObject->getUserByLogin($obj->orionLogin, "");
 	if(empty($userArray)){

@@ -35,17 +35,6 @@ else if(isset($_GET["/contract/addNewContract"])){
 		return true;
 	}
 }
-/****
- * prida novy project do db
- * ocekava objekt z projectName (nazev projekta), projectNameShort (zkraceny nazev projekta),
- *  description (popis projekta)
- */
-else if(isset($_GET["/contract/addNewProject"])){
-	$obj = json_decode($_GET["/contract/addNewProject"], false);
-	if($dbObject->addNewProject($obj->projectName, $obj->projectNameShort, $obj->description)){
-		return true;
-	}
-}
 /***
  * prida novy employment do db
  * ocekava objekt z userContractId, projectId, percent (double cislo zamestnani na projektu),
