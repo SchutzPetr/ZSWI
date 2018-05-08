@@ -642,7 +642,7 @@ VALUES (:user_contract_id, :project_id ,:percent, :active_from)';
 		if($date == null) $date = date("Y-m-d");
 		$mysql_pdo_error = false;
 		$query = 'INSERT INTO user_contract (KIV, NTIS, active_from, user_id) 
-VALUES (:ntis, :kiv , :active_from, :id)';
+VALUES ( :kiv, :ntis , :active_from, :id)';
 		$sth = $this->conn->prepare($query);
 		$sth->bindValue(':ntis', $ntis);
 		$sth->bindValue(':kiv', $kiv);
