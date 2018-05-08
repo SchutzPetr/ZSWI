@@ -3,7 +3,7 @@ const Styles = theme => ({
         margin: theme.spacing.unit,
         display: "inline-block"
     },
-    fullHeightRoot:{
+    fullHeightRoot: {
         overflow: "auto",
         maxHeight: `calc(100vh - 80px)`,
         height: `calc(100vh - 80px)`,
@@ -14,15 +14,25 @@ const Styles = theme => ({
     tableWrapper: {
         overflowX: 'auto',
     },
-    flex:{
+    tableHeader:{
+      height: 100
+    },
+    flex: {
         display: "flex",
         flexDirection: "row",
         justifyContent: "space-between",
         padding: theme.spacing.unit
     },
-    formControl:{
+    formControl: {
         minWidth: 200,
-    }
+    },
+    vertical: {
+        transform: "rotate(-90deg)",
+        webkitTransform: "rotate(-90deg)", /* Safari/Chrome */
+        mozTransform: "rotate(-90deg)", /* Firefox */
+        oTransform: "rotate(-90deg)", /* Opera */
+        msTransform: "rotate(-90deg)",
+}
 });
 
 export default Styles;

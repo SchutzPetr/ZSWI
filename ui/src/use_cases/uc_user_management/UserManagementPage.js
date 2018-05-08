@@ -14,19 +14,20 @@ class UserManagementPage extends React.Component {
 
     state = {
         users: [],
-        loadFeedback: "ready",
+        loadFeedback: "loading",
         modalOpen: false,
+        modalData: null
     };
 
     componentDidMount() {
-        //this._fetchData();
+        this._fetchData();
     }
 
     _fetchData() {
         Calls.getUsers({
             data: {},
             done: (data) => {
-                this.setState({users: data, loadFeedback: "ready"});
+                this.setState({users: User.map(data.data), loadFeedback: "ready"});
             },
             fail: (data) => {
                 this.setState({loadFeedback: "error"});
@@ -35,16 +36,20 @@ class UserManagementPage extends React.Component {
         })
     }
 
-    handleOnClose = () => {
-        this.setState({modalOpen: false})
+    handleOpenEdit = modalData => event => {
+        this.setState({
+            modalOpen: true,
+            modalData: modalData
+        });
     };
 
-    handleOnSave = () => {
-        this.handleOnClose();
+    handleCloseEdit = () => {
+        this.setState({modalOpen: false, modalData: null});
     };
 
-    handleClickOpen = () => {
-        this.setState({modalOpen: true})
+    handleOnSaveEditDone = (modalData) => {
+        this.setState({loadFeedback: "loading", modalOpen: false, modalData: null});
+        this._fetchData();
     };
 
     _getContend() {
@@ -58,10 +63,9 @@ class UserManagementPage extends React.Component {
                       direction={"row"}
                       justify={"center"}>
                     <Grid className={this.props.classes.secondGrid} item={true} xs={12} sm={8}>
-                        <Button onClick={this.handleClickOpen}>Open select dialog</Button>
-                        <UserTable users={[new User()]}/>
-                        <UserCreateModal open={this.state.modalOpen} onSave={this.handleOnSave}
-                                         onClose={this.handleOnClose} userToEdit={null}/>
+                        <UserTable users={this.state.users} onEditClick={this.handleOpenEdit}/>
+                        <UserCreateModal open={this.state.modalOpen} onSaveDone={this.handleOnSaveEditDone}
+                                         onClose={this.handleCloseEdit} userToEdit={this.state.modalData}/>
                     </Grid>
                 </Grid>
             );

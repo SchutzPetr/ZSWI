@@ -19,6 +19,7 @@ import Share from "../use_cases/uc_share/SharePage";
 import UserHolidayPage from "../use_cases/uc_user_holiday/UserHolidayPage";
 import ManageHolidayPage from "../use_cases/uc_manage_holidays/ManageHolidayPage";
 import ProjectOverviewPage from "../use_cases/uc_project_overview/ProjectOverviewPage";
+import OverviewOfWorkSchedulesPage from "../use_cases/uc_overview_of_work_schedules/OverviewOfWorkSchedulesPage";
 import UserManagementPage from "../use_cases/uc_user_management/UserManagementPage";
 
 
@@ -145,6 +146,10 @@ class SPAAuthenticated extends React.Component {
                     <Route path={"/project-overview"} exact={true}
                            render={props => (
                                <ProjectOverviewPage match={props.match}/>
+                           )}/>
+                    <Route path={"/overview-of-work-schedules"} exact={true}
+                           render={props => (
+                               <OverviewOfWorkSchedulesPage match={props.match}/>
                            )}/>
                     <Route path={"/accounts"} exact={true}
                            render={props => (
