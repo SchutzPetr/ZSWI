@@ -14,6 +14,10 @@ const Client = {
                 return axios.get(USER_API + "?/user/getAllUsers");
             case "getUser":
                 return axios.get(USER_API + "?/user/getById", {params: data});
+            case "createUser":
+                return axios.post(USER_API + "?/user/addNewUser=" + data.toJSON());
+            case "updateUser":
+                return axios.post(USER_API + "?/user/update/id=" + data.toJSON());
             case "getProjects":
                 return axios.get(PROJECT_API + "?/project/getAll=");
             case "addProject":
