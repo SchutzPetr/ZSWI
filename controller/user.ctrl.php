@@ -110,7 +110,7 @@ else if(isset($_GET["/user/addNewUser"])){
 	echo $obj->orionLogin;
 	$userArray = $dbObject->getUserByLogin($obj->orionLogin, "");
 	if(empty($userArray)){
-		if($dbObject->addNewUser($obj->orionLogin, $obj->name, $obj->lastName,
+		if($dbObject->addNewUser($obj->orion, $obj->name, $obj->lastName,
 			$obj->honorificPrefix, $obj->honorificSuffix, $obj->authority, $obj->mainWorkStation)) {
 			$array = $dbObject->getUserByLogin( $obj->orionLogin, "123" );
 			if(!empty($array)){
@@ -138,19 +138,20 @@ else if(isset($_GET["/user/addNewUser"])){
  * Vrati vse objekty user z db
  */
 else if(isset($_GET["/user/getAllUsers"])){
-	$array = $dbObject->getAllUsersForAdmin();
-	if(!empty($array)){
-		$userArray = [];
-		for($i = 0; $i<count($array); $i++){
-			$user = fillUser($array[$i]);
-			$userArray[$i] = $user->getDataUserToJS();
-		}
-		echo json_encode($userArray);
-	}else{
-		header('HTTP/1.1 500 Internal Server Booboo');
-		header('Content-Type: application/json; charset=UTF-8');
-		die(json_encode(array('message' => 'ERROR', 'code' => 1337)));
-	}
+    try {
+        $array = $dbObject->getAllUsersForAdmin();
+        $userArray = [];
+        for($i = 0; $i<count($array); $i++){
+            $user = fillUser($array[$i]);
+            $userArray[$i] = $user->getDataUserToJS();
+        }
+        echo json_encode($userArray);
+    }catch (Exception $e) {
+        header('HTTP/1.1 500 Internal Server Booboo');
+        header('Content-Type: application/json; charset=UTF-8');
+        die(json_encode(array('message' => 'ERROR', 'code' => 1337)));
+        //echo 'Caught exception: ',  $e->getMessage(), "\n";
+    }
 }
 
 
