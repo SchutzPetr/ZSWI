@@ -13,11 +13,12 @@ $dbObject = new DataBase();
 
 /***
  * zmeni polozku timetable v db
- *
+ * from1 (cas ve formatu 08:00:00), to1 (cas ve formatu 08:00:00),
+ * from2 (cas ve formatu 08:00:00), to2 (cas ve formatu 08:00:00)
  */
 if(isset($_GET["/timetable/update/id"])){
 	$obj = json_decode($_GET["/timetable/update/id"], false);
-	$dbObject->updateTimeTable($obj);
+	$dbObject->updateTimeTable($obj->userId, $obj->from1, $obj->to1, $obj->from2, $obj->to2);
 }
 /***
  * prida novy timetable
@@ -34,7 +35,7 @@ else if(isset($_GET["/timetable/add"])){
 	if(empty($array)){
 		$dbObject->addTimeTableByUserID($obj->userId, $obj->from1, $obj->to1, $obj->from2, $obj->to2);
 	}else{
-		$dbObject->updateTimeTable($obj);
+		$dbObject->updateTimeTable($obj->userId, $obj->from1, $obj->to1, $obj->from2, $obj->to2);
 	}
 	$array = $dbObject->getTimeTableByUserID($obj->userId);
 	echo json_encode($array);

@@ -33,6 +33,10 @@ if(isset($_GET["/share/add"])){
 		if($dbObject->addSharingByUserID($obj->userId, $obj->shareTo)){
 			echo json_encode(true);
 		}
+	}else{
+		header('HTTP/1.1 500 Internal Server Booboo');
+		header('Content-Type: application/json; charset=UTF-8');
+		die(json_encode(array('message' => 'ERROR', 'code' => 1337)));
 	}
 
 }
@@ -44,6 +48,10 @@ else if(isset($_GET["/share/remove"])){
 	$obj = json_decode($_GET["/share/remove"], false);
 	if($dbObject->deleteSharing($obj->userId, $obj->shareTo)){
 		echo json_encode(true);
+	}else{
+		header('HTTP/1.1 500 Internal Server Booboo');
+		header('Content-Type: application/json; charset=UTF-8');
+		die(json_encode(array('message' => 'ERROR', 'code' => 1337)));
 	}
 
 }
@@ -55,15 +63,23 @@ else if(isset($_GET["/share/remove"])){
 else if(isset($_GET["/share/getSharingTo"])){ ///co vrátí seznam uživatelů, kterým daný uživatel sdílí
 	$obj = json_decode($_GET["/share/getSharingTo"], false);
 	$array = $dbObject->getAllSharingByUserId($obj->userId);
-	$arrayUser = [];
-	if(!empty($array)){
-		for($i = 0; $i<count($array); $i++){
-			$arrayUser = $dbObject->getUserById($array[$i]['share_to']);
-			$user = fillUser($arrayUser);
-			$arrayUser[$i] = $user->getDataUserToJS();
+	if(!empty($array)) {
+		$arrayUser = [];
+		if(!empty($array)){
+			for($i = 0; $i<count($array); $i++){
+				$arrayUser = $dbObject->getUserById($array[$i]['share_to']);
+				$user = fillUser($arrayUser);
+				$arrayUser[$i] = $user->getDataUserToJS();
+			}
 		}
+		echo json_encode($arrayUser);
+
+	}else{
+		header('HTTP/1.1 500 Internal Server Booboo');
+		header('Content-Type: application/json; charset=UTF-8');
+		die(json_encode(array('message' => 'ERROR', 'code' => 1337)));
+
 	}
-	echo json_encode($arrayUser);
 }
 /***
  * vrati objecty share_timesheet
@@ -72,13 +88,19 @@ else if(isset($_GET["/share/getSharingTo"])){ ///co vrátí seznam uživatelů, 
 else if(isset($_GET["/share/getSharing"])){
 	$obj = json_decode($_GET["/share/getSharing"], false);
 	$array = $dbObject->getSharingListByID($obj->userId);
-	$arrayUser = [];
 	if(!empty($array)){
-		for($i = 0; $i<count($array); $i++){
-			$arrayUser = $dbObject->getUserById($array[$i]['share_to']);
-			$user = fillUser($arrayUser);
-			$arrayUser[$i] = $user->getDataUserToJS();
+		$arrayUser = [];
+		if(!empty($array)){
+			for($i = 0; $i<count($array); $i++){
+				$arrayUser = $dbObject->getUserById($array[$i]['share_to']);
+				$user = fillUser($arrayUser);
+				$arrayUser[$i] = $user->getDataUserToJS();
+			}
 		}
+		echo json_encode($arrayUser);
+	}else{
+		header('HTTP/1.1 500 Internal Server Booboo');
+		header('Content-Type: application/json; charset=UTF-8');
+		die(json_encode(array('message' => 'ERROR', 'code' => 1337)));
 	}
-	echo json_encode($arrayUser);
 }

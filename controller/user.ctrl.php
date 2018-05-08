@@ -105,7 +105,7 @@ else if(isset($_GET["/user/update/id"])){
  * percent (vytvori prvni contract)
  */
 else if(isset($_GET["/user/addNewUser"])){
-	$obj = json_decode($_GET["/user/addNewUser"], false);
+	$obj = json_decode(urldecode($_GET["/user/addNewUser"], false));
 	echo $obj->orionLogin;
 	$userArray = $dbObject->getUserByLogin($obj->orionLogin, "");
 	if(empty($userArray)){

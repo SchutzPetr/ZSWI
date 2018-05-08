@@ -396,7 +396,8 @@ class User {
 	}
 
 	function getDataUserToJS(){
-		$object = array("name"=>$this->_name,
+		$object = array("id"=>$this->_id,
+						"name"=>$this->_name,
 						"lastName"=>$this->_lastName,
 						"email"=>$this->_email,
 						"honorificPrefix"=>$this->_honorificPrefix,

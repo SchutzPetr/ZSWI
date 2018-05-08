@@ -664,6 +664,26 @@ VALUES ( :kiv, :ntis , :active_from, :id)';
 
 	}
 
+	function getAllProject(){
+		$mysql_pdo_error = false;
+		$query = "select *  from project ";
+		$sth = $this->conn->prepare($query);
+		$sth->execute();
+		$errors = $sth->errorInfo();
+		if ($errors[0] + 0 > 0){
+			$mysql_pdo_error = true;
+		}
+		if ($mysql_pdo_error == false){
+			$all = $sth->fetchAll(PDO::FETCH_ASSOC);
+			return $all;
+		}
+		else{
+			echo "Eror - PDOStatement::errorInfo(): ";
+			print_r($errors);
+			echo "SQL : $query";
+		}
+	}
+
 	function getProjectById($id){
 		$mysql_pdo_error = false;
 		$query = "select *  from project WHERE id=:id";
