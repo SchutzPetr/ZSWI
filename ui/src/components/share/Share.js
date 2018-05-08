@@ -19,7 +19,7 @@ import AccountCircle from "material-ui-icons/es/AccountCircle";
 import Forward from "material-ui-icons/es/Forward";
 import ShareIcon from "material-ui-icons/es/Share";
 import UserMultipleSelect from "../autocomplete/UserMultipleSelect";
-import ProjectSelect from "../autocomplete/ProjectSelect";
+import ProjectSelect from "../autocomplete/SingleSelect";
 
 class Share extends React.Component {
 

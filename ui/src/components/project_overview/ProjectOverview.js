@@ -3,7 +3,13 @@ import PropTypes from "prop-types";
 
 import Styles from "./style/ProjectOverviewStyle"
 import {withStyles} from "material-ui/styles/index";
-import {Paper} from "material-ui";
+import {IconButton, Paper, Tooltip, Typography} from "material-ui";
+import ProjectSelect from "../autocomplete/SingleSelect";
+import Project from "../../entity/Project";
+import Suggestion from "../autocomplete/entity/Suggestion";
+import AddIcon from "material-ui-icons/es/Add";
+import EditIcon from "material-ui-icons/es/Edit";
+import ProjectCreateModal from "../project_create_modal/ProjectCreateModal"
 
 class ProjectOverview extends React.Component {
 
@@ -13,27 +19,76 @@ class ProjectOverview extends React.Component {
         showPassword: false,
     };
 
-    handleChange = prop => event => {
-        this.setState({[prop]: event.target.value});
+    static mapProjectToSuggestion(project) {
+        if (!project) {
+            return null;
+        }
+        return new Suggestion(project.id, project.name, project)
+    }
+
+    static mapProjectsToSuggestion(projects) {
+        return projects.map(value => this.mapProjectToSuggestion(value));
+    }
+
+    handleOpenEdit = modalData => event => {
+        this.setState({
+            modalOpen: true,
+            modalData: modalData
+        });
     };
 
-    handleMouseDownPassword = event => {
-        event.preventDefault();
+    handleCloseEdit = () => {
+        this.setState({modalOpen: false, modalData: null});
     };
 
-    handleClickShowPassword = () => {
-        this.setState({showPassword: !this.state.showPassword});
-    };
-
-    handleLogin = event => {
-        this.props.onLogin({login: this.state.login, password: this.state.password}, event);
+    handleSaveOrEditProjectDone = (project) => {
+        this.handleCloseEdit();
+        this.props.onSaveOrEditProjectDone(project);
     };
 
     render() {
         const {classes} = this.props;
         return (
             <Paper className={classes.root}>
-
+                <div className={classes.toolbar}>
+                    <div>
+                        <Typography variant="title">Projekt</Typography>
+                    </div>
+                    <div className={classes.actions}>
+                        <Tooltip title={"Přidat nový projekt"}>
+                            <IconButton aria-label={"Přidat nový projekt"} onClick={this.handleOpenEdit(null)}>
+                                <AddIcon/>
+                            </IconButton>
+                        </Tooltip>
+                        {this.props.project !== null ?
+                            <Tooltip title={"Editovat vybraný projekt"}>
+                                <IconButton aria-label={"Editovat vybraný projekt"}
+                                            onClick={this.handleOpenEdit(this.props.project)}>
+                                    <EditIcon/>
+                                </IconButton>
+                            </Tooltip>
+                            : null}
+                    </div>
+                </div>
+                <div>
+                    <div className={classes.projectSelect}>
+                        <ProjectSelect value={ProjectOverview.mapProjectToSuggestion(this.props.project)}
+                                       suggestions={ProjectOverview.mapProjectsToSuggestion(this.props.projects)}
+                                       onSelect={this.props.onChangeProject}/>
+                    </div>
+                    {this.props.project ?
+                        <div className={classes.projectDetail}>
+                            <Typography className={classes.text}
+                                        variant={"title"}>{`Název: ${this.props.project.name}`}</Typography>
+                            <Typography className={classes.text}
+                                        variant={"title"}>{`Zkratka: ${this.props.project.shortName}`}</Typography>
+                            <Typography className={classes.text} variant={"title"}>{"Popis: "}</Typography>
+                            <Typography className={classes.textScroll}>{this.props.project.description}</Typography>
+                        </div>
+                        : null}
+                </div>
+                <ProjectCreateModal open={this.state.modalOpen} projectToEdit={this.state.modalData}
+                                    onSaveDone={this.handleSaveOrEditProjectDone} onClose={this.handleCloseEdit}/>
             </Paper>
         );
     }
@@ -42,7 +97,10 @@ class ProjectOverview extends React.Component {
 ProjectOverview.propTypes = {
     classes: PropTypes.object.isRequired,
     theme: PropTypes.object.isRequired,
-    onLogin: PropTypes.func.isRequired
+    project: PropTypes.instanceOf(Project).isRequired,
+    projects: PropTypes.arrayOf(Project).isRequired,
+    onChangeProject: PropTypes.func.isRequired,
+    onSaveOrEditProjectDone: PropTypes.func.isRequired,
 };
 
 export default withStyles(Styles, {withTheme: true})(ProjectOverview);

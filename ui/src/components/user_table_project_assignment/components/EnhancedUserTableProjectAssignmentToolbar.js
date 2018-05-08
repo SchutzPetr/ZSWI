@@ -4,6 +4,7 @@ import {withStyles} from 'material-ui/styles';
 import {IconButton, Toolbar, Tooltip, Typography} from "material-ui";
 import Styles from "../style/EnhancedUserTableProjectAssignmentToolbarStyle";
 import AddIcon from "material-ui-icons/es/Add";
+import Project from "../../../entity/Project";
 
 class EnhancedUserTableProjectAssignmentToolbar extends React.Component {
 
@@ -12,12 +13,12 @@ class EnhancedUserTableProjectAssignmentToolbar extends React.Component {
             <Toolbar
                 className={this.props.classes.root}>
                 <div className={this.props.classes.title}>
-                    <Typography variant="title">Správa uživatelů</Typography>
+                    <Typography variant="title">{`Uživatelé pracující na projektu: ${this.props.project.name}`}</Typography>
                 </div>
                 <div className={this.props.classes.spacer}/>
                 <div className={this.props.classes.actions}>
-                    <Tooltip title={"Přidat dovolenou"}>
-                        <IconButton aria-label={"Přidat dovolenou"} onClick={this.props.onEditClick(null)}>
+                    <Tooltip title={"Přidat uživatele"}>
+                        <IconButton aria-label={"Přidat uživatele"} onClick={this.props.onAddClick(null)}>
                             <AddIcon/>
                         </IconButton>
                     </Tooltip>
@@ -29,6 +30,7 @@ class EnhancedUserTableProjectAssignmentToolbar extends React.Component {
 
 EnhancedUserTableProjectAssignmentToolbar.propTypes = {
     classes: PropTypes.object,
-    onEditClick: PropTypes.func.isRequired
+    onAddClick: PropTypes.func.isRequired,
+    project: PropTypes.instanceOf(Project),
 };
 export default withStyles(Styles, {withTheme: true})(EnhancedUserTableProjectAssignmentToolbar);
