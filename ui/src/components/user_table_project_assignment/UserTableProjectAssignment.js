@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import {withStyles} from 'material-ui/styles';
 import Table, {TableBody, TableCell, TablePagination, TableRow,} from 'material-ui/Table';
 import Paper from 'material-ui/Paper';
-import Styles from "./style/UserTableStyle";
-import EnhancedTableToolbar from "./components/EnhancedUserTableToolbar";
-import EnhancedTableHead from "./components/EnhancedUserTableHead";
+import Styles from "./style/UserTableProjectAssignmentStyle";
+import EnhancedTableToolbar from "./components/EnhancedUserTableProjectAssignmentToolbar";
+import EnhancedTableHead from "./components/EnhancedUserTableProjectAssignmentHead";
 import {IconButton, Tooltip} from "material-ui";
 import EditIcon from "material-ui-icons/es/Edit";
 import User from "../../entity/User";
 
-class UserTable extends React.Component {
+class UserTableProjectAssignment extends React.Component {
 
     constructor(props, context) {
         super(props, context);
@@ -81,7 +81,7 @@ class UserTable extends React.Component {
     }
 }
 
-UserTable.propTypes = {
+UserTableProjectAssignment.propTypes = {
     classes: PropTypes.object,
     onEditClick: PropTypes.func.isRequired,
     users: PropTypes.arrayOf(User).isRequired,
@@ -89,7 +89,7 @@ UserTable.propTypes = {
     rowsPerPage: PropTypes.number,
     rowsPerPageOptions: PropTypes.array,
 };
-UserTable.defaultProps = {
+UserTableProjectAssignment.defaultProps = {
     rowsPerPageOptions: [5, 10, 25]
 };
-export default withStyles(Styles, {withTheme: true})(UserTable);
+export default withStyles(Styles, {withTheme: true})(UserTableProjectAssignment);

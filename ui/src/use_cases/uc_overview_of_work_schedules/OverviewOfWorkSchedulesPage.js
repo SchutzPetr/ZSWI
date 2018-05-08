@@ -3,12 +3,11 @@ import PropTypes from "prop-types";
 import Calls from "../../Calls";
 import LinearProgressCentered from "../../components/LinearProgressCentered";
 import Grid from "material-ui/es/Grid/Grid";
-import Styles from "./style/ProjectOverviewPageStyle";
+import Styles from "./style/OverviewOfWorkSchedulesPageStyle";
 import withStyles from "material-ui/es/styles/withStyles";
-import UserTableProjectAssignment from "../../components/user_table_project_assignment/UserTableProjectAssignment";
-import ProjectOverview from "../../components/project_overview/ProjectOverview";
+import OverviewOfWorkSchedules from "../../components/overview_of_work_schedules/OverviewOfWorkSchedules";
 
-class ProjectOverviewPage extends React.Component {
+class OverviewOfWorkSchedulesPage extends React.Component {
 
     state = {
         users: [],
@@ -37,14 +36,7 @@ class ProjectOverviewPage extends React.Component {
             return <LinearProgressCentered paper={false}/>
         } else if (this.state.loadFeedback === "ready") {
             return (
-                <Grid className={this.props.classes.mainGrid} container={true} spacing={16}>
-                    <Grid item={true} xs={12} sm={3}>
-                        <ProjectOverview/>
-                    </Grid>
-                    <Grid item={true} xs={12} sm={9}>
-                        <UserTableProjectAssignment/>
-                    </Grid>
-                </Grid>
+                <OverviewOfWorkSchedules/>
             );
         } else {
             return <LinearProgressCentered paper={false}/>
@@ -60,10 +52,10 @@ class ProjectOverviewPage extends React.Component {
     }
 }
 
-ProjectOverviewPage.propTypes = {
+OverviewOfWorkSchedulesPage.propTypes = {
     classes: PropTypes.object.isRequired,
     match: PropTypes.object
 
 };
 
-export default withStyles(Styles, {withTheme: true})(ProjectOverviewPage);
+export default withStyles(Styles, {withTheme: true})(OverviewOfWorkSchedulesPage);

@@ -17,6 +17,7 @@ import Share from "material-ui-icons/es/Share";
 import EventBusy from "material-ui-icons/es/EventBusy";
 import Settings from "material-ui-icons/es/Settings";
 import SupervisorAccount from "material-ui-icons/es/SupervisorAccount";
+import Work from "material-ui-icons/es/Work";
 
 
 export let secretaryMenuItems = (classes) => {
@@ -54,9 +55,15 @@ export let secretaryMenuItems = (classes) => {
             </ListItem>
             <ListItem className={classes.listItem} button={true} component={Link} to={"/project-overview"}>
                 <ListItemIcon>
+                    <Work/>
+                </ListItemIcon>
+                <ListItemText primary="Správa projektů"/>
+            </ListItem>
+            <ListItem className={classes.listItem} button={true} component={Link} to={"/overview-of-work-schedules"}>
+                <ListItemIcon>
                     <ViewAgenda/>
                 </ListItemIcon>
-                <ListItemText primary="project-overview"/>
+                <ListItemText primary="Přehled úvazků"/>
             </ListItem>
             <ListItem className={classes.listItem} button={true} component={Link} to={"/accounts"}>
                 <ListItemIcon>

@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from 'material-ui/styles';
-import Styles from "./style/ProjectOverviewTableStyle";
+import Styles from "./style/OverviewOfWorkSchedulesStyle";
 import {Paper, Table, TableBody, TableCell, TableHead, TableRow} from "material-ui";
 import moment from "moment";
 
-class ProjectOverviewTable extends React.Component {
+class OverviewOfWorkSchedules extends React.Component {
     state = {};
 
     handleChange = event => {
@@ -31,11 +31,11 @@ class ProjectOverviewTable extends React.Component {
     _tableHeader = () => {
         let headerColumns = [<TableCell>{`Zaměstnanec`}</TableCell>];
         for (let i = 0; i < 12; i++) {
-            headerColumns.push(<TableCell>{moment().month(i).format("MMMM")}</TableCell>);
+            headerColumns.push(<TableCell><p className={this.props.classes.vertical}>{moment().month(i).format("MMMM")}</p></TableCell>);
         }
 
         for (let i = 0; i < 12; i++) {
-            headerColumns.push(<TableCell>{`Projekt${i}`}</TableCell>);
+            headerColumns.push(<TableCell><p className={this.props.classes.vertical}>{`Projekt${i}`}</p></TableCell>);
         }
         //headerColumns.map(value => value);
         return headerColumns;
@@ -60,7 +60,7 @@ class ProjectOverviewTable extends React.Component {
     }
 }
 
-ProjectOverviewTable.propTypes = {
+OverviewOfWorkSchedules.propTypes = {
     classes: PropTypes.object,
     open: PropTypes.bool,
     onClose: PropTypes.func.isRequired,
@@ -69,4 +69,4 @@ ProjectOverviewTable.propTypes = {
     minDate: PropTypes.bool,
 };
 
-export default withStyles(Styles, {withTheme: true})(ProjectOverviewTable);
+export default withStyles(Styles, {withTheme: true})(OverviewOfWorkSchedules);

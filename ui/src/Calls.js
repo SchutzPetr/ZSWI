@@ -31,6 +31,14 @@ class Calls {
         Calls._get("login", dataIn);
     }
 
+    static createUser(dataIn){
+        Calls._post("createUser", dataIn);
+    }
+
+    static editUser(dataIn){
+        Calls._post("editUser", dataIn);
+    }
+
     static getUsers(dataIn){
         Calls._get("getUsers", dataIn);
     }

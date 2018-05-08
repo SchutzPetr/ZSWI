@@ -19,11 +19,13 @@ import AccountCircle from "material-ui-icons/es/AccountCircle";
 import Forward from "material-ui-icons/es/Forward";
 import ShareIcon from "material-ui-icons/es/Share";
 import UserMultipleSelect from "../autocomplete/UserMultipleSelect";
+import ProjectSelect from "../autocomplete/ProjectSelect";
 
 class Share extends React.Component {
 
     state = {
-      selectedUsers: null
+      selectedUsers: null,
+        selectedUsers2: null
     };
 
     handleShare = event => {
@@ -36,12 +38,19 @@ class Share extends React.Component {
         });
     };
 
+    onSelectedUserChange2 = value => {
+        this.setState({
+            selectedUsers2: value,
+        });
+    };
+
     render() {
         return (
             <Card className={this.props.classes.root}>
                 <CardHeader title="Nastavení sdílení"/>
                 <CardContent className={this.props.classes.shareCardContent}>
                     <UserMultipleSelect onSelect={this.onSelectedUserChange} values={this.state.selectedUsers}/>
+                    <ProjectSelect onSelect={this.onSelectedUserChange2} values={this.state.selectedUsers2}/>
                     <Button className={this.props.classes.shareButton} variant="raised" onClick={this.handleShare}>
                         <ShareIcon className={this.props.classes.shareIcon}/>
                         Sdílet

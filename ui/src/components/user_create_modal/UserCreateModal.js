@@ -3,32 +3,10 @@ import PropTypes from 'prop-types';
 import Button from 'material-ui/Button';
 import {withStyles} from 'material-ui/styles';
 import Dialog, {DialogActions, DialogContent, DialogTitle} from 'material-ui/Dialog';
-import {FormControl, InputLabel, MenuItem, Select, TextField} from "material-ui";
+import {FormControl, FormControlLabel, FormGroup, InputLabel, MenuItem, Select, Switch, TextField} from "material-ui";
 import User from "./../../entity/User";
-
-const styles = theme => ({
-    container: {
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        //flexWrap: 'wrap',
-    },
-    formRow: {
-        display: "flex",
-        flexWrap: "wrap",
-        margin: theme.spacing.unit,
-    },
-    textField: {
-        margin: theme.spacing.unit,
-    },
-    formControl: {
-        margin: theme.spacing.unit,
-        minWidth: 120,
-    },
-    select: {
-        minWidth: 182
-    }
-});
+import Calls from "../../Calls";
+import Styles from "./style/UserCreateModalStyle";
 
 class UserCreateModal extends React.Component {
 
@@ -40,16 +18,55 @@ class UserCreateModal extends React.Component {
 
     static getDerivedStateFromProps(nextProps, prevState) {
         return {
-            user: nextProps.userToEdit || new User()
+            user: nextProps.userToEdit || new User(),
+            loadFeedback: "ready",
         };
     }
 
     handleSave = () => {
-        this.props.onSave(this.state.user);
+        this.setState({loadFeedback: "loading"});
+        const fail = (data) => {
+            this.setState({loadFeedback: "error"});
+        };
+        if (this.props.user) {
+            Calls.createUser({
+                data: this.state.user,
+                done: (data) => {
+                    this.props.onSaveDone();
+                },
+                fail: fail
+            });
+        } else {
+            Calls.createUser({
+                data: this.state.user,
+                done: (data) => {
+                    this.props.onSaveDone();
+                },
+                fail: fail
+            });
+        }
+    };
+
+    handleChangeUserSwitch = event => {
+        const value = event.target.value;
+        const checked = event.target.checked;
+        this.setState((prevState) => {
+            let user = prevState.user;
+            user[value] = checked;
+
+            return {
+                user: user
+            }
+        });
     };
 
     handleChangeUser = name => event => {
         const value = event.target.value;
+        if (name === "timeJob") {
+            if (value < 0 || value > 1) {
+                return;
+            }
+        }
         this.setState((prevState) => {
             let user = prevState.user;
             user[name] = value;
@@ -71,7 +88,7 @@ class UserCreateModal extends React.Component {
                 open={this.props.open}
                 onClose={this.handleClose}
             >
-                <DialogTitle>Fill the form</DialogTitle>
+                <DialogTitle>{this.props.userToEdit ? "Editace uživatele" : "Vytvoření uživatele"}</DialogTitle>
                 <DialogContent>
                     <form className={classes.container}>
                         <div className={classes.formRow}>
@@ -150,7 +167,29 @@ class UserCreateModal extends React.Component {
                                     <MenuItem value={"NTIS"}>NTIS</MenuItem>
                                 </Select>
                             </FormControl>
+                            <TextField
+                                required={true}
+                                id={"orion"}
+                                label={"Velikost úvazku"}
+                                margin={"normal"}
+                                type="number"
+                                className={classes.textField}
+                                value={this.state.user.timeJob}
+                                onChange={this.handleChangeUser("timeJob")}
+                            />
                         </div>
+                        <FormGroup row={true}>
+                            <FormControlLabel
+                                control={
+                                    <Switch
+                                        checked={this.state.user.active}
+                                        onChange={this.handleChangeUserSwitch}
+                                        value={"active"}
+                                    />
+                                }
+                                label="Secondary"
+                            />
+                        </FormGroup>
                     </form>
                 </DialogContent>
                 <DialogActions>
@@ -169,9 +208,9 @@ class UserCreateModal extends React.Component {
 UserCreateModal.propTypes = {
     classes: PropTypes.object.isRequired,
     open: PropTypes.bool.isRequired,
-    onClose: PropTypes.bool.isRequired,
-    onSave: PropTypes.bool.isRequired,
+    onClose: PropTypes.func.isRequired,
+    onSaveDone: PropTypes.func.isRequired,
     userToEdit: PropTypes.instanceOf(User)
 };
 
-export default withStyles(styles)(UserCreateModal);
+export default withStyles(Styles)(UserCreateModal);
