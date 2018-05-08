@@ -23,7 +23,13 @@ $dbObject = new DataBase();
 if(isset($_GET["/notification/getAllActive"])){
 	$obj = json_decode($_GET["/notification/getAllActive"], false);
 	$array = $dbObject->getAllOpenNotification();
-	echo json_encode($array);
+	if(!empty($array)){
+		echo json_encode($array);
+	}else{
+		header('HTTP/1.1 500 Internal Server Booboo');
+		header('Content-Type: application/json; charset=UTF-8');
+		die(json_encode(array('message' => 'ERROR', 'code' => 1337)));
+	}
 }
 
 /****
@@ -32,7 +38,13 @@ if(isset($_GET["/notification/getAllActive"])){
  */
 if(isset($_GET["/notification/setNotification"])){
 	$obj = json_decode($_GET["/notification/setNotification"], false);
-	$array = $dbObject->closeNotification($obj->id);
+	if($dbObject->closeNotification($obj->id)){
+		echo json_encode(true);
+	}else{
+		header('HTTP/1.1 500 Internal Server Booboo');
+		header('Content-Type: application/json; charset=UTF-8');
+		die(json_encode(array('message' => 'ERROR', 'code' => 1337)));
+	}
 }
 
 /****
@@ -42,5 +54,11 @@ if(isset($_GET["/notification/setNotification"])){
 if(isset($_GET["/notification/getAllActive"])){
 	$obj = json_decode($_GET["/notification/getAllActive"], false);
 	$array = $dbObject->getAllNotification();
-	echo json_encode($array);
+	if(!empty($array)){
+		echo json_encode($array);
+	}else{
+		header('HTTP/1.1 500 Internal Server Booboo');
+		header('Content-Type: application/json; charset=UTF-8');
+		die(json_encode(array('message' => 'ERROR', 'code' => 1337)));
+	}
 }

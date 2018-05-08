@@ -23,7 +23,9 @@ if(isset($_GET["/holidays/add"])){
 			echo json_encode($dbObject->getHolidayByDay($obj->day));
 		}
 	}else{
-		//TODO return error
+		header('HTTP/1.1 500 Internal Server Booboo');
+		header('Content-Type: application/json; charset=UTF-8');
+		die(json_encode(array('message' => 'ERROR', 'code' => 1337)));
 	}
 }
 /****
@@ -34,6 +36,10 @@ if(isset($_GET["/holidays/delete/id"])){
 	$obj = json_decode($_GET["/holidays/delete/id"], false);
 	if($dbObject->deleteHolidaysByDay($obj->day)){
 		echo json_encode(true);
+	}else{
+		header('HTTP/1.1 500 Internal Server Booboo');
+		header('Content-Type: application/json; charset=UTF-8');
+		die(json_encode(array('message' => 'ERROR', 'code' => 1337)));
 	}
 }
 /****
@@ -44,5 +50,9 @@ if(isset($_GET["/holidays/update"])){
 	$obj = json_decode($_GET["/holidays/update"], false);
 	if($dbObject->updateHollidays($obj->day, $obj->name, $obj->id)){
 		echo json_encode($dbObject->getHolidayByDay($obj->day));
+	}else{
+		header('HTTP/1.1 500 Internal Server Booboo');
+		header('Content-Type: application/json; charset=UTF-8');
+		die(json_encode(array('message' => 'ERROR', 'code' => 1337)));
 	}
 }
