@@ -52,6 +52,16 @@ else if(isset($_GET["/project/addNewProject"])){
     }
 }
 /***
+ * zmeni polozku Project
+ * ocekava na id (project id),  projectName (nazev projekta), projectNameShort (zkraceny nazev projekta), description
+ */
+else if(isset($_GET["/project/updateProject"])){
+    $obj = json_decode(urldecode($_GET["/contract/updateProject"]), false);
+    if($dbObject->updateProject($obj->id, $obj->projectName, $obj->projectNameShort, $obj->description)){
+        return true;
+    }
+}
+/***
  * Vrati vse projecty v db
  */
 if(isset($_GET["/project/getAll"])){

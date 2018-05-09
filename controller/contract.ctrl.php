@@ -73,13 +73,3 @@ else if(isset($_GET["/contract/closeEmployment"])){
 		return true;
 	}
 }
-/***
- * zmeni polozku Project
- * ocekava na id (project id),  projectName (nazev projekta), projectNameShort (zkraceny nazev projekta), description
- */
-else if(isset($_GET["/contract/updateProject"])){
-	$obj = json_decode($_GET["/contract/updateProject"], false);
-	if($dbObject->updateProject($obj->id, $obj->projectName, $obj->projectNameShort, $obj->description)){
-		return true;
-	}
-}
