@@ -57,6 +57,7 @@ class User {
 		$this->setName($array);
 		$this->_authority = $array['authority'];
 		$this->_active = $this->setActive($array['is_active']);
+		$this->_mainWorkStation = $array["main_work_station"];
 	}
 
 	/**
@@ -313,7 +314,10 @@ class User {
 				$string  .= $array['lastname'] . " ";
 				$this->_lastName= $array['lastname'];
 			}
-			if($array['honorific_suffix']) $string  .= $array['honorific_suffix'];
+			if($array['honorific_suffix']){
+                $string  .= $array['honorific_suffix'];
+                $this->_honorificSuffix=$array['honorific_prefix'];
+            }
 			$this->nameAndLastName=$string;
 		}
 	}
