@@ -232,7 +232,7 @@ VALUES (:day, :is_nemoc, :is_vacation, :other, :from_1, :to_1, :from_2, :to_2, :
     {
         $mysql_pdo_error = false;
         $query = 'UPDATE shedule SET day =:day, is_nemoc=:is_nemoc,
- 								  is_vacation=:is_vacation, other:=other
+ 								  is_vacation=:is_vacation, other=:other,
  								  from_1=:from_1, to_1=:to_1, from_2=:from_2 , to_2=:to_2
  								  where id=:user_id;';
         $sth = $this->conn->prepare($query);
@@ -266,7 +266,7 @@ VALUES (:day, :is_nemoc, :is_vacation, :other, :from_1, :to_1, :from_2, :to_2, :
     function deleteSheduleById($id)
     {
         $mysql_pdo_error = false;
-        $query = 'DELETE FROM shedule WHERE where id=:id';
+        $query = 'DELETE FROM shedule WHERE id=:id';
         $sth = $this->conn->prepare($query);
         $sth->bindValue(':id', $id, PDO::PARAM_INT);
         $sth->execute();//insert to db
@@ -824,7 +824,7 @@ VALUES ( :kiv, :ntis , :active_from, :id)';
     {
         $mysql_pdo_error = false;
         $query = 'UPDATE project SET project_name =:project_name, to_1=:to_1,
- 								  project_name_short=:project_name_short,description:=description
+ 								  project_name_short=:project_name_short,description=:description
  								  where id=:id;';
         $sth = $this->conn->prepare($query);
         $sth->bindValue(':id', $id);
@@ -988,7 +988,7 @@ VALUES (:from_1, :to_1 ,:from_2, :to_2, :active_from, :id)';
     {
         $mysql_pdo_error = false;
         $query = 'UPDATE time_table SET from_1 =:from_1, to_1=:to_1,
- 								  from_2=:from_2,to_2:=to_2, active_from:=active_from
+ 								  from_2=:from_2,to_2=:to_2, active_from=:active_from
  								  where user_id=:user_id;';
         $sth = $this->conn->prepare($query);
         $sth->bindValue(':user_id', $user_id);
@@ -1171,7 +1171,7 @@ VALUES (:from_1, :to_1 ,:from_2, :to_2, :active_from, :id)';
     function deleteVacationByID($id)
     {
         $mysql_pdo_error = false;
-        $query = 'DELETE FROM vacation WHERE where id=:id';
+        $query = 'DELETE FROM vacation WHERE id=:id';
         $sth = $this->conn->prepare($query);
         $sth->bindValue(':id', $id, PDO::PARAM_INT);
         $sth->execute();//insert to db
