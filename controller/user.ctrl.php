@@ -85,11 +85,12 @@ else if (isset($_GET["/user/getById"])) {
     }
 } /***
  * Udela update usera v db
- * ceka na objekt s id, name, lastname, honorific_prefix, honorific_suffix, authority, is_active, main_work_station
+ * ceka na objekt s id, name, lastName, honorificPrefix, honorificSuffix, authority, isActive ( 0 or 1), mainWorkStation
  */
 else if (isset($_GET["/user/update/id"])) {
     $obj = json_decode(urldecode($_GET["/user/update/id"]), false);
-    if ($dbObject->updateUser($obj)) {
+    if ($dbObject->updateUser($obj->id, $obj->name, $obj->lastName, $obj->honorificPrefix,
+	    $obj->honorificSuffix, $obj->authority, $obj->isActive, $obj->mainWorkStation)) {
         echo json_encode(true);
     } else {
         header('HTTP/1.1 500 Internal Server Booboo');
@@ -103,15 +104,15 @@ else if (isset($_GET["/user/update/id"])) {
  */
 else if (isset($_GET["/user/addNewUser"])) {
     $obj = json_decode(urldecode($_GET["/user/addNewUser"]), false);
-    echo $obj->orionLogin;
+//    echo $obj->orionLogin;
     $userArray = $dbObject->getUserByLogin($obj->orion, "");
     if (empty($userArray)) {
         if ($dbObject->addNewUser($obj->orion, $obj->name, $obj->lastName,
             $obj->honorificPrefix, $obj->honorificSuffix, $obj->authority, $obj->mainWorkStation)) {
             $array = $dbObject->getUserByLogin($obj->orion, "123");
             if (!empty($array)) {
-                echo $obj->mainWorkStation;
-                echo(strcmp($obj->mainWorkStation, 'KIV') == 0);
+//                echo $obj->mainWorkStation;
+//                echo(strcmp($obj->mainWorkStation, 'KIV') == 0);
                 if (strcmp($obj->mainWorkStation, 'KIV') == 0) {
                     if ($dbObject->addNewContract($array["id"], 0, $obj->timeJob, null)) {
                         echo json_encode(true);

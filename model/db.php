@@ -496,22 +496,21 @@ VALUES (:sharing_user, :share_to)';
 
     }
 
-    function updateUser($user)
-    {
+    function updateUser($id, $name, $lastname, $honorific_prefix, $honorific_suffix, $authority, $is_active, $main_work_station) {
         $mysql_pdo_error = false;
         $query = 'UPDATE user SET name =:users_name, lastname=:users_lastname,
- 								  honorific_prefix=:users_honorific_prefix,honorific_suffix:=users_honorific_suffix
+ 								  honorific_prefix=:users_honorific_prefix,honorific_suffix=:users_honorific_suffix,
  								  authority=:users_authority, is_active=:users_is_active, main_work_station=:users_main_work_station  
  								  where id=:user_id;';
         $sth = $this->conn->prepare($query);
-        $sth->bindValue(':user_id', $user->id);
-        $sth->bindValue(':users_name', $user->name);
-        $sth->bindValue(':users_lastname', $user->lastname);
-        $sth->bindValue(':users_honorific_prefix', $user->honorific_prefix);
-        $sth->bindValue(':users_honorific_suffix', $user->honorific_suffix);
-        $sth->bindValue(':users_authority', $user->authority);
-        $sth->bindValue(':users_is_active', $user->is_active);
-        $sth->bindValue(':users_main_work_station', $user->main_work_station);
+        $sth->bindValue(':user_id', $id);
+        $sth->bindValue(':users_name', $name);
+        $sth->bindValue(':users_lastname', $lastname);
+        $sth->bindValue(':users_honorific_prefix', $honorific_prefix);
+        $sth->bindValue(':users_honorific_suffix', $honorific_suffix);
+        $sth->bindValue(':users_authority', $authority);
+        $sth->bindValue(':users_is_active', $is_active);
+        $sth->bindValue(':users_main_work_station', $main_work_station);
 
         $sth->execute();//insert to db
         $errors = $sth->errorInfo();
