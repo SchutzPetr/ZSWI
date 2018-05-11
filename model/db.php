@@ -75,6 +75,7 @@ VALUES (:day, :is_nemoc, :is_vacation, :other, :from_1, :to_1, :from_2, :to_2, :
             echo "Eror - PDOStatement::errorInfo(): ";
             print_r($errors);
             echo "SQL : $query";
+	        return false;
         }
 
     }
@@ -98,10 +99,10 @@ VALUES (:day, :is_nemoc, :is_vacation, :other, :from_1, :to_1, :from_2, :to_2, :
             }
             return false;
         } else {
-            //TODO other error
             echo "Eror - PDOStatement::errorInfo(): ";
             print_r($errors);
             echo "SQL : $query";
+	        return false;
         }
 
     }
@@ -259,6 +260,7 @@ VALUES (:day, :is_nemoc, :is_vacation, :other, :from_1, :to_1, :from_2, :to_2, :
             echo "Eror - PDOStatement::errorInfo(): ";
             print_r($errors);
             echo "SQL : $query";
+	        return false;
         }
 
     }
@@ -281,6 +283,7 @@ VALUES (:day, :is_nemoc, :is_vacation, :other, :from_1, :to_1, :from_2, :to_2, :
             echo "Eror - PDOStatement::errorInfo(): ";
             print_r($errors);
             echo "SQL : $query";
+	        return false;
         }
 
     }
@@ -308,6 +311,7 @@ VALUES (:sharing_user, :share_to)';
             echo "Eror - PDOStatement::errorInfo(): ";
             print_r($errors);
             echo "SQL : $query";
+	        return false;
         }
 
     }
@@ -406,6 +410,7 @@ VALUES (:sharing_user, :share_to)';
             echo "Eror - PDOStatement::errorInfo(): ";
             print_r($errors);
             echo "SQL : $query";
+	        return false;
         }
 
     }
@@ -524,6 +529,7 @@ VALUES (:sharing_user, :share_to)';
             echo "Eror - PDOStatement::errorInfo(): ";
             print_r($errors);
             echo "SQL : $query";
+	        return false;
         }
     }
 
@@ -554,6 +560,7 @@ VALUES (:orion_login, :name ,:lastname, :honorific_prefix, :honorific_suffix, :a
             echo "Eror - PDOStatement::errorInfo(): ";
             print_r($errors);
             echo "SQL : $query";
+	        return false;
         }
     }
 
@@ -615,6 +622,7 @@ VALUES (:project_name, :project_name_short ,:description)';
             echo "Eror - PDOStatement::errorInfo(): ";
             print_r($errors);
             echo "SQL : $query";
+	        return false;
         }
 
     }
@@ -642,9 +650,8 @@ VALUES (:user_contract_id, :project_id ,:percent, :active_from)';
             echo "Eror - PDOStatement::errorInfo(): ";
             print_r($errors);
             echo "SQL : $query";
+	        return false;
         }
-
-
     }
 
     function addNewContract($user_id, $ntis, $kiv, $date)
@@ -670,8 +677,8 @@ VALUES ( :kiv, :ntis , :active_from, :id)';
             echo "Eror - PDOStatement::errorInfo(): ";
             print_r($errors);
             echo "SQL : $query";
+	        return false;
         }
-
     }
 
     function getAllProject()
@@ -810,13 +817,16 @@ VALUES ( :kiv, :ntis , :active_from, :id)';
     function getTypeContractByUserID($id)
     {
         $arrayContract = $this->getLastUserContract($id);
-        $number = $arrayContract["KIV"] + $arrayContract["NTIS"];
-        $arrayProject = $this->getAllActiveEmployment($arrayContract["id"]);
-        if (!empty($arrayProject)) {
-            foreach ($arrayProject as $employment) {
-                $number += $employment["percent"];
-            }
-        }
+	    $number = 0;
+	    if(!empty($arrayContract)){
+		    $number = $arrayContract["KIV"] + $arrayContract["NTIS"];
+		    $arrayProject = $this->getAllActiveEmployment($arrayContract["id"]);
+		    if (!empty($arrayProject)) {
+			    foreach ($arrayProject as $employment) {
+				    $number += $employment["percent"];
+			    }
+		    }
+	    }
         return $number;
     }
 
@@ -844,6 +854,7 @@ VALUES ( :kiv, :ntis , :active_from, :id)';
             echo "Eror - PDOStatement::errorInfo(): ";
             print_r($errors);
             echo "SQL : $query";
+	        return false;
         }
 
     }
@@ -868,6 +879,7 @@ VALUES ( :kiv, :ntis , :active_from, :id)';
             echo "Eror - PDOStatement::errorInfo(): ";
             print_r($errors);
             echo "SQL : $query";
+	        return false;
         }
     }
 
@@ -891,6 +903,7 @@ VALUES ( :kiv, :ntis , :active_from, :id)';
             echo "Eror - PDOStatement::errorInfo(): ";
             print_r($errors);
             echo "SQL : $query";
+	        return false;
         }
 
     }
@@ -951,6 +964,7 @@ VALUES (:from_1, :to_1 ,:from_2, :to_2, :active_from, :id)';
             echo "Eror - PDOStatement::errorInfo(): ";
             print_r($errors);
             echo "SQL : $query";
+	        return false;
         }
     }
 
@@ -1010,6 +1024,7 @@ VALUES (:from_1, :to_1 ,:from_2, :to_2, :active_from, :id)';
             echo "Eror - PDOStatement::errorInfo(): ";
             print_r($errors);
             echo "SQL : $query";
+	        return false;
         }
     }
 
@@ -1044,6 +1059,7 @@ VALUES (:from_1, :to_1 ,:from_2, :to_2, :active_from, :id)';
             echo "Eror - PDOStatement::errorInfo(): ";
             print_r($errors);
             echo "SQL : $query";
+	        return false;
         }
     }
 
@@ -1186,6 +1202,7 @@ VALUES (:from_1, :to_1 ,:from_2, :to_2, :active_from, :id)';
             echo "Eror - PDOStatement::errorInfo(): ";
             print_r($errors);
             echo "SQL : $query";
+	        return false;
         }
     }
 
@@ -1210,6 +1227,7 @@ VALUES (:from_1, :to_1 ,:from_2, :to_2, :active_from, :id)';
             echo "Eror - PDOStatement::errorInfo(): ";
             print_r($errors);
             echo "SQL : $query";
+            return false;
         }
     }
 
@@ -1230,6 +1248,7 @@ VALUES (:from_1, :to_1 ,:from_2, :to_2, :active_from, :id)';
             echo "Eror - PDOStatement::errorInfo(): ";
             print_r($errors);
             echo "SQL : $query";
+	        return false;
         }
     }
 
@@ -1306,6 +1325,7 @@ VALUES (:from_1, :to_1 ,:from_2, :to_2, :active_from, :id)';
             echo "Eror - PDOStatement::errorInfo(): ";
             print_r($errors);
             echo "SQL : $query";
+	        return false;
         }
 
     }
@@ -1375,6 +1395,7 @@ VALUES (:from_1, :to_1 ,:from_2, :to_2, :active_from, :id)';
             echo "Eror - PDOStatement::errorInfo(): ";
             print_r($errors);
             echo "SQL : $query";
+	        return false;
         }
     }
 
@@ -1399,6 +1420,7 @@ VALUES (:from_1, :to_1 ,:from_2, :to_2, :active_from, :id)';
             echo "Eror - PDOStatement::errorInfo(): ";
             print_r($errors);
             echo "SQL : $query";
+	        return false;
         }
 
     }
