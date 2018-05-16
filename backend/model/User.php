@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: Petr Schutz
@@ -171,7 +172,42 @@ class User extends BaseModel
     /**
      * @return string
      */
-    public function displayFullName(){
+    public function displayFullName()
+    {
         return trim($this->honorificPrefix . " " . $this->name . " " . $this->lastName . " " . $this->honorificSuffix);
+    }
+
+    static function findById($id)
+    {
+        $query = "SELECT * FROM user WHERE id = :id;";
+        $preparedQuery = Database::getConnection()->prepare($query);
+        $preparedQuery->bindValue(":id", $id);
+        //todo: get user from Db by given id
+    }
+
+    static function findAll($id)
+    {
+        $query = "SELECT * FROM user;";
+        $preparedQuery = Database::getConnection()->prepare($query);
+        //todo: get all user from Db
+    }
+
+    /**
+     * @param User $user
+     */
+    static function save($user)
+    {
+        $query = "insert into user (id, orion_login, name, last_name, honorific_prefix, honorific_suffix, authority, is_active, main_work_station) value (:id, :orionLogin, :name, :lastName, :honorificPrefix, :honorificSuffix, :authority, :isActive, :mainWorkStation) on duplicate key update orion_login = :orionLogin, name = :name,last_name = :lastName,honorific_prefix = :honorificPrefix, honorific_suffix = :honorificSuffix, authority = :authority, is_active = :isActive, main_work_station = :mainWorkStation;";
+        $preparedQuery = Database::getConnection()->prepare($query);
+        $preparedQuery->bindValue(":orionLogin", $user->getOrion());
+        $preparedQuery->bindValue(":name", $user->getName());
+        $preparedQuery->bindValue(":lastName", $user->getLastName());
+        $preparedQuery->bindValue(":honorificPrefix", $user->getHonorificPrefix());
+        $preparedQuery->bindValue(":honorificSuffix", $user->getHonorificSuffix());
+        $preparedQuery->bindValue(":authority", $user->getAuthority());
+        $preparedQuery->bindValue(":isActive", $user->isActive());
+        $preparedQuery->bindValue(":mainWorkStation", $user->getMainWorkStation());
+
+        //todo: insert or update
     }
 }
