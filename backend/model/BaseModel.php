@@ -2,13 +2,19 @@
 
 /**
  * Created by PhpStorm.
- * User: schut
+ * User: Petr Schutz
  * Date: 11.05.2018
  * Time: 21:58
  */
 
 abstract class BaseModel
 {
+
+    /**
+     * @var int
+     */
+    private $id = -1;
+
     /**
      * Magicka metoda, vola se, kdyz se pristupuje na nedostupnou metodu tridy
      * http://php.net/manual/en/language.oop5.magic.php
@@ -52,5 +58,13 @@ abstract class BaseModel
         foreach ($values as $key => $value) {
             $this->$key = $value;
         }
+    }
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 }

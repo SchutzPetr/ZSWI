@@ -1,17 +1,12 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: schut
+ * User: Petr Schutz
  * Date: 11.05.2018
  * Time: 21:57
  */
 class User extends BaseModel
 {
-
-    /**
-     * @var int
-     */
-    private $id = -1;
     /**
      * @var string
      */
@@ -44,22 +39,6 @@ class User extends BaseModel
      * @var string
      */
     private $mainWorkStation = "";
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param int $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
 
     /**
      * @return string
