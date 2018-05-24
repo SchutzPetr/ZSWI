@@ -8,8 +8,8 @@
 
 class UserContract extends BaseModel
 {
-    private $workStation;
-    private $obligation;
-    private $activeFrom;
-    private $activeTo;
+    private $workStation = "";
+    private $obligation = "";
+    private $activeFrom = "";
+    private $activeTo = "";
 }
