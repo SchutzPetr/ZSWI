@@ -192,6 +192,10 @@ class User extends BaseModel
         self::setMainWorkStation($row["main_work_station"]);
     }
 
+    /**
+     * @param $id
+     * @return User
+     */
     static function findById($id)
     {
         $query = "SELECT * FROM user WHERE id = :id;";
@@ -206,11 +210,23 @@ class User extends BaseModel
         return $instance;
     }
 
-    static function findAll($id)
+    /**
+     * @return array
+     */
+    static function findAll()
     {
         $query = "SELECT * FROM user;";
         $preparedQuery = Database::getConnection()->prepare($query);
-        //todo: get all user from Db
+        $preparedQuery->execute();
+        $result = $preparedQuery->fetchAll();
+
+        foreach ($result as $var) {
+            $instance = new self();
+            $instance->fill($var);
+            $arrayOfAttendances[] = $instance;
+
+        }
+        return $arrayOfAttendances;
     }
 
     /**
