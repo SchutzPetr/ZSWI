@@ -8,8 +8,8 @@
 
 class Notification extends BaseModel
 {
-    private $title;
-    private $description;
-    private $link;
-    private $read;
+    private $title = "";
+    private $description = "";
+    private $link = "";
+    private $read = "";
 }

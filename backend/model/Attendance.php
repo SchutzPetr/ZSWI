@@ -8,9 +8,9 @@
 
 class Attendance extends BaseModel
 {
-    private $activeFrom;
-    private $firstPartFrom;
-    private $firstPartTo;
-    private $secondPartFrom;
-    private $secondPartTo;
+    private $activeFrom = "";
+    private $firstPartFrom = "";
+    private $firstPartTo = "";
+    private $secondPartFrom = "";
+    private $secondPartTo = "";
 }
