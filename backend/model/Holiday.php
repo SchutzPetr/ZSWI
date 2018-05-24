@@ -60,5 +60,50 @@ class Holiday extends BaseModel
         $this->type = $type;
     }
 
+    /**
+     * @param $row
+     */
+    private function fill($row)
+    {
+        self::setUserId($row["user_id"]);
+        self::setDate($row["date"]);
+        self::setType($row["type"]);
+    }
 
+    /**
+     * @param $id
+     * @return Holiday
+     */
+    static function findById($id)
+    {
+        $query = "SELECT * FROM user_vacation WHERE id = :id;";
+        $preparedQuery = Database::getConnection()->prepare($query);
+        $preparedQuery->bindValue(":id", $id);
+        $preparedQuery->execute();
+        $result = $preparedQuery->fetch();
+
+        $instance = new self();
+        $instance->fill($result);
+
+        return $instance;
+    }
+
+    /**
+     * @return array
+     */
+    static function findAll()
+    {
+        $query = "SELECT * FROM user_vacation;";
+        $preparedQuery = Database::getConnection()->prepare($query);
+        $preparedQuery->execute();
+        $result = $preparedQuery->fetchAll();
+
+        foreach ($result as $var) {
+            $instance = new self();
+            $instance->fill($var);
+            $arrayOfUservacations[] = $instance;
+
+        }
+        return $arrayOfUservacations;
+    }
 }
