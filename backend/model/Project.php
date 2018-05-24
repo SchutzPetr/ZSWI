@@ -68,4 +68,51 @@ class Project extends BaseModel
     {
         $this->description = $description;
     }
+
+    /**
+     * @param $row
+     */
+    private function fill($row)
+    {
+        self::setProjectName($row["project_name"]);
+        self::setProjectNameShort($row["project_name_short"]);
+        self::setDescription($row["description"]);
+    }
+
+    /**
+     * @param $id
+     * @return Project
+     */
+    static function findById($id)
+    {
+        $query = "SELECT * FROM project WHERE id = :id;";
+        $preparedQuery = Database::getConnection()->prepare($query);
+        $preparedQuery->bindValue(":id", $id);
+        $preparedQuery->execute();
+        $result = $preparedQuery->fetch();
+
+        $instance = new self();
+        $instance->fill($result);
+
+        return $instance;
+    }
+
+    /**
+     * @return array
+     */
+    static function findAll()
+    {
+        $query = "SELECT * FROM project;";
+        $preparedQuery = Database::getConnection()->prepare($query);
+        $preparedQuery->execute();
+        $result = $preparedQuery->fetchAll();
+
+        foreach ($result as $var) {
+            $instance = new self();
+            $instance->fill($var);
+            $arrayOfProjects[] = $instance;
+
+        }
+        return $arrayOfProjects;
+    }
 }
