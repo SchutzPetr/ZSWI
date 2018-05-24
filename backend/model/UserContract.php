@@ -6,7 +6,7 @@
  * Time: 11:27
  */
 
-class UserContract
+class UserContract extends BaseModel
 {
     private $workStation;
     private $obligation;
