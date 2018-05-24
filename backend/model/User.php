@@ -177,12 +177,33 @@ class User extends BaseModel
         return trim($this->honorificPrefix . " " . $this->name . " " . $this->lastName . " " . $this->honorificSuffix);
     }
 
+    /**
+     * @param $row
+     */
+    private function fill($row)
+    {
+        self::setName($row["name"]);
+        self::setLastName($row["last_name"]);
+        self::setHonorificPrefix($row["honorific_prefix"]);
+        self::setHonorificSuffix($row["honorific_suffix"]);
+        self::setOrion($row["orion_login"]);
+        self::setAuthority($row["authority"]);
+        self::setActive($row["is_active"]);
+        self::setMainWorkStation($row["main_work_station"]);
+    }
+
     static function findById($id)
     {
         $query = "SELECT * FROM user WHERE id = :id;";
         $preparedQuery = Database::getConnection()->prepare($query);
         $preparedQuery->bindValue(":id", $id);
-        //todo: get user from Db by given id
+        $preparedQuery->execute();
+        $result = $preparedQuery->fetch();
+
+        $instance = new self();
+        $instance->fill($result);
+
+        return $instance;
     }
 
     static function findAll($id)
