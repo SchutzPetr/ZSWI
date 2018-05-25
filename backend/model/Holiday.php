@@ -9,7 +9,7 @@
 class Holiday extends BaseModel
 {
     private $userId = -1;
-    private $date = "";
+    private $day = "";
     private $type = "";
 
     /**
@@ -31,17 +31,17 @@ class Holiday extends BaseModel
     /**
      * @return string
      */
-    public function getDate()
+    public function getDay()
     {
-        return $this->date;
+        return $this->day;
     }
 
     /**
-     * @param string $date
+     * @param string $day
      */
-    public function setDate($date)
+    public function setDay($day)
     {
-        $this->date = $date;
+        $this->day = $day;
     }
 
     /**
@@ -66,7 +66,7 @@ class Holiday extends BaseModel
     private function fill($row)
     {
         self::setUserId($row["user_id"]);
-        self::setDate($row["date"]);
+        self::setDate($row["day"]);
         self::setType($row["type"]);
     }
 
