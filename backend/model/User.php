@@ -182,6 +182,7 @@ class User extends BaseModel
      */
     private function fill($row)
     {
+        self::setId($row["id"]);
         self::setName($row["name"]);
         self::setLastName($row["last_name"]);
         self::setHonorificPrefix($row["honorific_prefix"]);
@@ -236,6 +237,7 @@ class User extends BaseModel
     {
         $query = "insert into user (id, orion_login, name, last_name, honorific_prefix, honorific_suffix, authority, is_active, main_work_station) value (:id, :orionLogin, :name, :lastName, :honorificPrefix, :honorificSuffix, :authority, :isActive, :mainWorkStation) on duplicate key update orion_login = :orionLogin, name = :name,last_name = :lastName,honorific_prefix = :honorificPrefix, honorific_suffix = :honorificSuffix, authority = :authority, is_active = :isActive, main_work_station = :mainWorkStation;";
         $preparedQuery = Database::getConnection()->prepare($query);
+        $preparedQuery->bindValue(":id", $user->getId() == -1 ? null : $user->getId());
         $preparedQuery->bindValue(":orionLogin", $user->getOrion());
         $preparedQuery->bindValue(":name", $user->getName());
         $preparedQuery->bindValue(":lastName", $user->getLastName());
@@ -245,6 +247,6 @@ class User extends BaseModel
         $preparedQuery->bindValue(":isActive", $user->isActive());
         $preparedQuery->bindValue(":mainWorkStation", $user->getMainWorkStation());
 
-        //todo: insert or update
+        $preparedQuery->execute();
     }
 }
