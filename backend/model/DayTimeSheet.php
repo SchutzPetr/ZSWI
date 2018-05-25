@@ -118,8 +118,8 @@ class DayTimeSheet extends BaseModel
     {
         self::setDate($row["date"]);
         self::setDayType($row["day_type"]);
-        self::setFirstPartFrom($row("first_part_from"));
-        self::setFirstPartTo($row("first_part_to"));
+        self::setFirstPartFrom($row["first_part_from"]);
+        self::setFirstPartTo($row["first_part_to"]);
         self::setSecondPartFrom($row["second_part_from"]);
         self::setSecondPartTo($row["second_part_to"]);
     }
