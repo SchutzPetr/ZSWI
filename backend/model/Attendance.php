@@ -99,6 +99,7 @@ class Attendance extends BaseModel
      */
     private function fill($row)
     {
+        self::setId($row["id"]);
         self::setActiveFrom($row["active_from"]);
         self::setFirstPartFrom($row["first_part_from"]);
         self::setFirstPartTo($row["first_part_to"]);

@@ -97,6 +97,7 @@ class Notification extends BaseModel
      */
     private function fill($row)
     {
+        self::setId($row["id"]);
         self::setTitle($row["title"]);
         self::setDescription($row["description"]);
         self::setLink($row["link"]);
