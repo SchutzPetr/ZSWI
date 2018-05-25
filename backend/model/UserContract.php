@@ -77,5 +77,54 @@ class UserContract extends BaseModel
         $this->activeTo = $activeTo;
     }
 
+    /**
+     * @param $row
+     */
+    private function fill($row)
+    {
+        self::setWorkStation($row["work_station"]);
+        self::setObligation($row["obligation"]);
+        self::setActiveFrom($row["active_from"]);
+        self::setActiveTo($row["active_to"]);
+
+    }
+
+    /**
+     * @param $id
+     * @return UserContract
+     */
+    static function findById($id)
+    {
+        $query = "SELECT * FROM user_contract WHERE id = :id;";
+        $preparedQuery = Database::getConnection()->prepare($query);
+        $preparedQuery->bindValue(":id", $id);
+        $preparedQuery->execute();
+        $result = $preparedQuery->fetch();
+
+        $instance = new self();
+        $instance->fill($result);
+
+        return $instance;
+    }
+
+    /**
+     * @return array
+     */
+    static function findAll()
+    {
+        $query = "SELECT * FROM user_contract;";
+        $preparedQuery = Database::getConnection()->prepare($query);
+        $preparedQuery->execute();
+        $result = $preparedQuery->fetchAll();
+
+        foreach ($result as $var) {
+            $instance = new self();
+            $instance->fill($var);
+            $arrayOfUserContracts[] = $instance;
+
+        }
+        return $arrayOfUserContracts;
+    }
+
 
 }
