@@ -8,7 +8,7 @@
 
 class UserHoliday extends BaseModel
 {
-    private $userId = -1;   //Nastavit cizí klíč, pokud je zde -1 je porušena integrita databáze.
+    private $userId = -1;   //TODO: Nastavit cizí klíč, pokud je zde -1 je porušena integrita databáze.
     private $day = "";
     private $type = "";
 
