@@ -65,7 +65,7 @@ class UserHoliday extends BaseModel
      */
     private function fill($row)
     {
-        self::setUserId($row["user_id"]);
+        self::setId($row["id"]);
         self::setDate($row["day"]);
         self::setType($row["type"]);
     }
