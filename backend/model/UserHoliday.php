@@ -6,7 +6,7 @@
  * Time: 23:17
  */
 
-class Holiday extends BaseModel
+class UserHoliday extends BaseModel
 {
     private $userId = -1;
     private $day = "";
@@ -72,7 +72,7 @@ class Holiday extends BaseModel
 
     /**
      * @param $id
-     * @return Holiday
+     * @return UserHoliday
      */
     static function findById($id)
     {
