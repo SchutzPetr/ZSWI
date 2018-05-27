@@ -195,7 +195,9 @@ class User extends BaseModel
 
     /**
      * @param $id
-     * @return User
+     * @return User     Nalezený user
+     *
+     * Funcke, která nalezne uživatele podle vstupního ID.
      */
     static function findById($id)
     {
@@ -213,6 +215,8 @@ class User extends BaseModel
 
     /**
      * @return array
+     *
+     * Funkce, která nalezne všechny uživatele a vrátí je jako jedno pole.
      */
     static function findAll()
     {
@@ -232,6 +236,9 @@ class User extends BaseModel
 
     /**
      * @param User $user
+     *
+     * Funkce, která založí nového uživatele. Pokud však existuje uživatel se stejným id,
+     * tak dojde k updatu.
      */
     static function save($user)
     {
