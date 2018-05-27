@@ -112,14 +112,14 @@ class UserHoliday extends BaseModel
      * @param $holiday
      *
      */
-    static function save($holiday)
+    static function save($userHoliday)
     {
         $query = "insert into user_holiday (id, user_id, day, type) value (:id, :user_id, :day, :type) on duplicate key update user_id = :user_id, day = :day, type = :type;";
         $preparedQuery = Database::getConnection()->prepare($query);
-        $preparedQuery->bindValue(":id", $holiday->getId() == -1 ? null : $holiday->getId());
-        $preparedQuery->bindValue(":user_id", $holiday->getUserId());
-        $preparedQuery->bindValue(":day", $holiday->getDay());
-        $preparedQuery->bindValue(":type", $holiday->getType());
+        $preparedQuery->bindValue(":id", $userHoliday->getId() == -1 ? null : $userHoliday->getId());
+        $preparedQuery->bindValue(":user_id", $userHoliday->getUserId());
+        $preparedQuery->bindValue(":day", $userHoliday->getDay());
+        $preparedQuery->bindValue(":type", $userHoliday->getType());
 
         $preparedQuery->execute();
     }

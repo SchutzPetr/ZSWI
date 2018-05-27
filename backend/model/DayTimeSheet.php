@@ -8,12 +8,30 @@
 
 class DayTimeSheet extends BaseModel
 {
+    private $userId = -1;           //TODO Nastavit cizí klíč, pokud je zde -1 je porušena integrita databáze.
     private $date = "";
     private $dayType = "";
     private $firstPartFrom = "";
     private $firstPartTo = "";
     private $secondPartFrom = "";
     private $secondPartTo = "";
+
+
+    /**
+     * @return int
+     */
+    public function getUserId()
+    {
+        return $this->userId;
+    }
+
+    /**
+     * @param int $userId
+     */
+    public function setUserId($userId)
+    {
+        $this->userId = $userId;
+    }
 
     /**
      * @return string
@@ -116,6 +134,8 @@ class DayTimeSheet extends BaseModel
      */
     private function fill($row)
     {
+        self::setUserId($row["user_id"]);
+        self::setId($row["id"]);
         self::setDate($row["date"]);
         self::setDayType($row["day_type"]);
         self::setFirstPartFrom($row["first_part_from"]);
@@ -159,5 +179,22 @@ class DayTimeSheet extends BaseModel
 
         }
         return $arrayOfDayTimeSheets;
+    }
+
+    static function save($dayTimeSheet)
+    {
+        $query = "insert into day_time_sheet (id, user_id, date, first_part_from, first_part_to, second_part_from, second_part_to, day_type) value (:id, :user_id, :date, :first_part_from, :first_part_to, :second_part_from, :second_part_to, :day_type) on duplicate key update user_id = :user_id, date = :date, first_part_from = :first_part_from, first_part_to = :first_part_to, second_part_from = :second_part_from, second_part_to = :second_part_to, day_type = :day_type;";
+        $preparedQuery = Database::getConnection()->prepare($query);
+        $preparedQuery->bindValue(":id", $dayTimeSheet->getId() == -1 ? null : $dayTimeSheet->getId());
+        $preparedQuery->bindValue(":user_id", $dayTimeSheet->getUserId());
+        $preparedQuery->bindValue(":date", $dayTimeSheet->getDate());
+        $preparedQuery->bindValue(":first_part_from", $dayTimeSheet->getFirstPartFrom());
+        $preparedQuery->bindValue(":first_part_to", $dayTimeSheet->getFirstPartTo());
+        $preparedQuery->bindValue(":second_part_from", $dayTimeSheet->getSecondPartFrom());
+        $preparedQuery->bindValue(":second_part_to", $dayTimeSheet->getSecondPartTo());
+        $preparedQuery->bindValue(":day_type", $dayTimeSheet->getDayType());
+        echo $dayTimeSheet->getDayType();
+
+        $preparedQuery->execute();
     }
 }
