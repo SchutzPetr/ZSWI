@@ -8,7 +8,7 @@
 
 class UserHoliday extends BaseModel
 {
-    private $userId = -1;
+    private $userId = -1;   //Nastavit cizí klíč, pokud je zde -1 je porušena integrita databáze.
     private $day = "";
     private $type = "";
 
@@ -66,6 +66,7 @@ class UserHoliday extends BaseModel
     private function fill($row)
     {
         self::setId($row["id"]);
+        //self::setUserId($row["user_id"]);
         self::setDate($row["day"]);
         self::setType($row["type"]);
     }
@@ -76,7 +77,7 @@ class UserHoliday extends BaseModel
      */
     static function findById($id)
     {
-        $query = "SELECT * FROM user_holiday WHERE id = :id;";
+        $query = "SELECT * FROM user_vacation WHERE id = :id;";
         $preparedQuery = Database::getConnection()->prepare($query);
         $preparedQuery->bindValue(":id", $id);
         $preparedQuery->execute();
@@ -93,7 +94,7 @@ class UserHoliday extends BaseModel
      */
     static function findAll()
     {
-        $query = "SELECT * FROM user_holiday;";
+        $query = "SELECT * FROM user_vacation;";
         $preparedQuery = Database::getConnection()->prepare($query);
         $preparedQuery->execute();
         $result = $preparedQuery->fetchAll();
@@ -105,5 +106,21 @@ class UserHoliday extends BaseModel
 
         }
         return $arrayOfUservacations;
+    }
+
+    /**
+     * @param $holiday
+     *
+     */
+    static function save($holiday)
+    {
+        $query = "insert into user_vacation (id, user_id, day, type) value (:id, :user_id, :day, :type) on duplicate key update user_id = :user_id, day = :day, type = :type;";
+        $preparedQuery = Database::getConnection()->prepare($query);
+        $preparedQuery->bindValue(":id", $holiday->getId() == -1 ? null : $holiday->getId());
+        $preparedQuery->bindValue(":user_id", $holiday->getUserId());
+        $preparedQuery->bindValue(":day", $holiday->getDay());
+        $preparedQuery->bindValue(":type", $holiday->getType());
+
+        $preparedQuery->execute();
     }
 }
