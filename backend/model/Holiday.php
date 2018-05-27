@@ -76,7 +76,7 @@ class Holiday extends BaseModel
      */
     static function findById($id)
     {
-        $query = "SELECT * FROM user_vacation WHERE id = :id;";
+        $query = "SELECT * FROM user_holiday WHERE id = :id;";
         $preparedQuery = Database::getConnection()->prepare($query);
         $preparedQuery->bindValue(":id", $id);
         $preparedQuery->execute();
@@ -93,7 +93,7 @@ class Holiday extends BaseModel
      */
     static function findAll()
     {
-        $query = "SELECT * FROM user_vacation;";
+        $query = "SELECT * FROM user_holiday;";
         $preparedQuery = Database::getConnection()->prepare($query);
         $preparedQuery->execute();
         $result = $preparedQuery->fetchAll();
