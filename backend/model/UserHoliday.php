@@ -77,7 +77,7 @@ class UserHoliday extends BaseModel
      */
     static function findById($id)
     {
-        $query = "SELECT * FROM user_vacation WHERE id = :id;";
+        $query = "SELECT * FROM user_holiday WHERE id = :id;";
         $preparedQuery = Database::getConnection()->prepare($query);
         $preparedQuery->bindValue(":id", $id);
         $preparedQuery->execute();
@@ -94,7 +94,7 @@ class UserHoliday extends BaseModel
      */
     static function findAll()
     {
-        $query = "SELECT * FROM user_vacation;";
+        $query = "SELECT * FROM user_holiday;";
         $preparedQuery = Database::getConnection()->prepare($query);
         $preparedQuery->execute();
         $result = $preparedQuery->fetchAll();
@@ -114,7 +114,7 @@ class UserHoliday extends BaseModel
      */
     static function save($holiday)
     {
-        $query = "insert into user_vacation (id, user_id, day, type) value (:id, :user_id, :day, :type) on duplicate key update user_id = :user_id, day = :day, type = :type;";
+        $query = "insert into user_holiday (id, user_id, day, type) value (:id, :user_id, :day, :type) on duplicate key update user_id = :user_id, day = :day, type = :type;";
         $preparedQuery = Database::getConnection()->prepare($query);
         $preparedQuery->bindValue(":id", $holiday->getId() == -1 ? null : $holiday->getId());
         $preparedQuery->bindValue(":user_id", $holiday->getUserId());
