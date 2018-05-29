@@ -26,7 +26,7 @@ class Database
         try {
             self::$conn = new PDO("mysql:host=" . self::$host . ";dbname=" . self::$db_name . ";port=" . self::$port, self::$username, self::$password);
             self::$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            self::$conn->exec("SELECT 1;");
+            //self::$conn->exec("SELECT 1;"); s tímto nefunguje!
         } catch (PDOException $exception) {
             echo "Connection error: " . $exception->getMessage();
         }
