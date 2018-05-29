@@ -6,12 +6,47 @@
  * Time: 11:27
  */
 
+include_once ('../database/Database.php');
+include_once ('BaseModel.php');
+
 class UserContract extends BaseModel
 {
+    /**
+     * @var int
+     */
+    private $user_id = -1;
+    /**
+     * @var string
+     */
     private $workStation = "";
+    /**
+     * @var double
+     */
     private $obligation = "";
+    /**
+     * @var string
+     */
     private $activeFrom = "";
+    /**
+     * @var string
+     */
     private $activeTo = "";
+
+    /**
+     * @return int
+     */
+    public function getUserId()
+    {
+        return $this->user_id;
+    }
+
+    /**
+     * @param int $user_id
+     */
+    public function setUserId($user_id)
+    {
+        $this->user_id = $user_id;
+    }
 
     /**
      * @return string
@@ -30,7 +65,7 @@ class UserContract extends BaseModel
     }
 
     /**
-     * @return string
+     * @return double
      */
     public function getObligation()
     {
@@ -38,7 +73,7 @@ class UserContract extends BaseModel
     }
 
     /**
-     * @param string $obligation
+     * @param double $obligation
      */
     public function setObligation($obligation)
     {
@@ -91,7 +126,7 @@ class UserContract extends BaseModel
     }
 
     /**
-     * @param $id
+     * @param int $id
      * @return UserContract
      */
     static function findById($id)
@@ -118,6 +153,8 @@ class UserContract extends BaseModel
         $preparedQuery->execute();
         $result = $preparedQuery->fetchAll();
 
+        $arrayOfUserContracts = array();
+
         foreach ($result as $var) {
             $instance = new self();
             $instance->fill($var);
@@ -125,6 +162,18 @@ class UserContract extends BaseModel
 
         }
         return $arrayOfUserContracts;
+    }
+
+    static function save($userContract){
+        $query = "insert into user_contract (id, work_station, obligation, active_from, active_to) value (:id, :work_station, :obligation, :active_from, :active_to) on duplicate key update work_station = :work_station, obligation = :obligation, active_from = :active_from, active_to = :active_to;";
+        $preparedQuery = Database::getConnection()->prepare($query);
+        $preparedQuery->bindValue(":id", $userContract->getId() == -1 ? null : $userContract->getId());
+        $preparedQuery->bindValue(":work_station", $userContract->getWorkStation());
+        $preparedQuery->bindValue(":obligation", $userContract->getObligation());
+        $preparedQuery->bindValue(":active_from", $userContract->getActiveFrom());
+        $preparedQuery->bindValue(":active_to", $userContract->getActiveTo());
+
+        $preparedQuery->execute();
     }
 
 
