@@ -6,6 +6,9 @@
  * Time: 11:32
  */
 
+include_once ('../database/Database.php');
+include_once ('BaseModel.php');
+
 class Notification extends BaseModel
 {
     /**
@@ -24,12 +27,12 @@ class Notification extends BaseModel
     private $link = "";
 
     /**
-     * @var string
+     * @var int
      */
-    private $read = "";
+    private $shown = "";
 
     /**
-     * @param $title
+     * @param string $title
      */
     public function setTitle($title)
     {
@@ -37,7 +40,7 @@ class Notification extends BaseModel
     }
 
     /**
-     * @param $description
+     * @param string $description
      */
     public function setDescription($description)
     {
@@ -45,7 +48,7 @@ class Notification extends BaseModel
     }
 
     /**
-     * @param $link
+     * @param string $link
      */
     public function setLink($link)
     {
@@ -53,11 +56,11 @@ class Notification extends BaseModel
     }
 
     /**
-     * @param $read
+     * @param int $shown
      */
-    public function setRead($read)
+    public function setShown($shown)
     {
-        $this->read = $read;
+        $this->shown = $shown;
     }
 
     /**
@@ -87,9 +90,9 @@ class Notification extends BaseModel
     /**
      * @return string
      */
-    public function getRead()
+    public function getShown()
     {
-        return $this->read;
+        return $this->shown;
     }
 
     /**
@@ -101,11 +104,11 @@ class Notification extends BaseModel
         self::setTitle($row["title"]);
         self::setDescription($row["description"]);
         self::setLink($row["link"]);
-        self::setRead($row["read"]);
+        self::setShown($row["shown"]);
     }
 
     /**
-     * @param $id
+     * @param int $id
      * @return Notification
      */
     static function findById($id)
@@ -132,6 +135,8 @@ class Notification extends BaseModel
         $preparedQuery->execute();
         $result = $preparedQuery->fetchAll();
 
+        $arrayOfNotifications = array();
+
         foreach ($result as $var) {
             $instance = new self();
             $instance->fill($var);
@@ -139,6 +144,19 @@ class Notification extends BaseModel
 
         }
         return $arrayOfNotifications;
+    }
+
+    static function save($notification)
+    {
+        $query = "insert into notification (id, title, description, link, shown) value (:id, :title, :description, :link, :shown) on duplicate key update title = :title, description = :description, link = :link, shown = :shown;";
+        $preparedQuery = Database::getConnection()->prepare($query);
+        $preparedQuery->bindValue(":id", $notification->getId() == -1 ? null : $notification->getId());
+        $preparedQuery->bindValue(":title", $notification->getTitle());
+        $preparedQuery->bindValue(":description", $notification->getDescription());
+        $preparedQuery->bindValue(":link", $notification->getLink());
+        $preparedQuery->bindValue(":shown", $notification->getShown());
+
+        $preparedQuery->execute();
     }
 
 }
