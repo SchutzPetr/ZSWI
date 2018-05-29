@@ -118,6 +118,7 @@ class UserContract extends BaseModel
     private function fill($row)
     {
         self::setId($row["id"]);
+        self::setUserId($row["user_id"]);
         self::setWorkStation($row["work_station"]);
         self::setObligation($row["obligation"]);
         self::setActiveFrom($row["active_from"]);
