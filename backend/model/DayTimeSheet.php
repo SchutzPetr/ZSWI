@@ -16,7 +16,7 @@ class DayTimeSheet extends BaseModel
      */
     private $userId = -1;
     /**
-     * @var string
+     * @var DateTime
      */
     private $date = "";
     /**
@@ -24,19 +24,19 @@ class DayTimeSheet extends BaseModel
      */
     private $dayType = "";
     /**
-     * @var string
+     * @var DateTime
      */
     private $firstPartFrom = "";
     /**
-     * @var string
+     * @var DateTime
      */
     private $firstPartTo = "";
     /**
-     * @var string
+     * @var DateTime
      */
     private $secondPartFrom = "";
     /**
-     * @var string
+     * @var DateTime
      */
     private $secondPartTo = "";
 
@@ -58,7 +58,7 @@ class DayTimeSheet extends BaseModel
     }
 
     /**
-     * @return string
+     * @return DateTime
      */
     public function getDate()
     {
@@ -66,7 +66,7 @@ class DayTimeSheet extends BaseModel
     }
 
     /**
-     * @param string $date
+     * @param DateTime $date
      */
     public function setDate($date)
     {
@@ -90,7 +90,7 @@ class DayTimeSheet extends BaseModel
     }
 
     /**
-     * @return string
+     * @return DateTime
      */
     public function getFirstPartFrom()
     {
@@ -98,7 +98,7 @@ class DayTimeSheet extends BaseModel
     }
 
     /**
-     * @param string $firstPartFrom
+     * @param DateTime $firstPartFrom
      */
     public function setFirstPartFrom($firstPartFrom)
     {
@@ -106,7 +106,7 @@ class DayTimeSheet extends BaseModel
     }
 
     /**
-     * @return string
+     * @return DateTime
      */
     public function getFirstPartTo()
     {
@@ -114,7 +114,7 @@ class DayTimeSheet extends BaseModel
     }
 
     /**
-     * @param string $firstPartTo
+     * @param DateTime $firstPartTo
      */
     public function setFirstPartTo($firstPartTo)
     {
@@ -122,7 +122,7 @@ class DayTimeSheet extends BaseModel
     }
 
     /**
-     * @return string
+     * @return DateTime
      */
     public function getSecondPartFrom()
     {
@@ -130,7 +130,7 @@ class DayTimeSheet extends BaseModel
     }
 
     /**
-     * @param string $secondPartFrom
+     * @param DateTime $secondPartFrom
      */
     public function setSecondPartFrom($secondPartFrom)
     {
@@ -138,7 +138,7 @@ class DayTimeSheet extends BaseModel
     }
 
     /**
-     * @return string
+     * @return DateTime
      */
     public function getSecondPartTo()
     {
@@ -146,7 +146,7 @@ class DayTimeSheet extends BaseModel
     }
 
     /**
-     * @param string $secondPartTo
+     * @param DateTime $secondPartTo
      */
     public function setSecondPartTo($secondPartTo)
     {
