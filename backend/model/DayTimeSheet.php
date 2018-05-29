@@ -8,12 +8,33 @@
 
 class DayTimeSheet extends BaseModel
 {
-    private $userId = -1;           //TODO Nastavit cizí klíč, pokud je zde -1 je porušena integrita databáze.
+    /**
+     * @var int
+     */
+    private $userId = -1;
+    /**
+     * @var string
+     */
     private $date = "";
+    /**
+     * @var string
+     */
     private $dayType = "";
+    /**
+     * @var string
+     */
     private $firstPartFrom = "";
+    /**
+     * @var string
+     */
     private $firstPartTo = "";
+    /**
+     * @var string
+     */
     private $secondPartFrom = "";
+    /**
+     * @var string
+     */
     private $secondPartTo = "";
 
 
@@ -145,7 +166,7 @@ class DayTimeSheet extends BaseModel
     }
 
     /**
-     * @param $id
+     * @param int $id
      * @return DayTimeSheet
      */
     static function findById($id)
@@ -172,6 +193,8 @@ class DayTimeSheet extends BaseModel
         $preparedQuery->execute();
         $result = $preparedQuery->fetchAll();
 
+        $arrayOfDayTimeSheets = array();
+
         foreach ($result as $var) {
             $instance = new self();
             $instance->fill($var);
@@ -181,6 +204,9 @@ class DayTimeSheet extends BaseModel
         return $arrayOfDayTimeSheets;
     }
 
+    /**
+     * @param DayTimeSheet $dayTimeSheet
+     */
     static function save($dayTimeSheet)
     {
         $query = "insert into day_time_sheet (id, user_id, date, first_part_from, first_part_to, second_part_from, second_part_to, day_type) value (:id, :user_id, :date, :first_part_from, :first_part_to, :second_part_from, :second_part_to, :day_type) on duplicate key update user_id = :user_id, date = :date, first_part_from = :first_part_from, first_part_to = :first_part_to, second_part_from = :second_part_from, second_part_to = :second_part_to, day_type = :day_type;";
