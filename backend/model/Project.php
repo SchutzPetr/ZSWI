@@ -6,6 +6,9 @@
  * Time: 23:17
  */
 
+include_once ('../database/Database.php');
+include_once ('BaseModel.php');
+
 class Project extends BaseModel
 {
     /**
@@ -74,6 +77,7 @@ class Project extends BaseModel
      */
     private function fill($row)
     {
+        self::setId($row["id"]);
         self::setProjectName($row["project_name"]);
         self::setProjectNameShort($row["project_name_short"]);
         self::setDescription($row["description"]);
@@ -107,6 +111,8 @@ class Project extends BaseModel
         $preparedQuery->execute();
         $result = $preparedQuery->fetchAll();
 
+        $arrayOfProjects = array();
+
         foreach ($result as $var) {
             $instance = new self();
             $instance->fill($var);
@@ -114,5 +120,20 @@ class Project extends BaseModel
 
         }
         return $arrayOfProjects;
+    }
+
+    /**
+     * @param Project $project
+     */
+    static function save($project)
+    {
+        $query = "insert into project (id, project_name, project_name_short, description) value (:id, :project_name, :project_name_short, :description) on duplicate key update project_name = :project_name, project_name_short = :project_name_short, description = :description;";
+        $preparedQuery = Database::getConnection()->prepare($query);
+        $preparedQuery->bindValue(":id", $project->getId() == -1 ? null : $project->getId());
+        $preparedQuery->bindValue(":project_name", $project->getProjectName());
+        $preparedQuery->bindValue(":project_name_short", $project->getProjectNameShort());
+        $preparedQuery->bindValue(":description", $project->getDescription());
+
+        $preparedQuery->execute();
     }
 }
