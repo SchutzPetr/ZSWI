@@ -6,6 +6,10 @@
  * Date: 11.05.2018
  * Time: 21:57
  */
+
+include_once ('../database/Database.php');
+include_once ('BaseModel.php');
+
 class User extends BaseModel
 {
     /**
@@ -27,7 +31,7 @@ class User extends BaseModel
     /**
      * @var string
      */
-    private $orion = "";
+    private $orionLogin = "";
     /**
      * @var string
      */
@@ -108,17 +112,17 @@ class User extends BaseModel
     /**
      * @return string
      */
-    public function getOrion()
+    public function getOrionLogin()
     {
-        return $this->orion;
+        return $this->orionLogin;
     }
 
     /**
-     * @param string $orion
+     * @param string $orionLogin
      */
-    public function setOrion($orion)
+    public function setOrionLogin($orionLogin)
     {
-        $this->orion = $orion;
+        $this->orionLogin = $orionLogin;
     }
 
     /**
@@ -178,7 +182,7 @@ class User extends BaseModel
     }
 
     /**
-     * @param $row
+     * @param string $row
      */
     private function fill($row)
     {
@@ -187,17 +191,15 @@ class User extends BaseModel
         self::setLastName($row["last_name"]);
         self::setHonorificPrefix($row["honorific_prefix"]);
         self::setHonorificSuffix($row["honorific_suffix"]);
-        self::setOrion($row["orion_login"]);
+        self::setOrionLogin($row["orion_login"]);
         self::setAuthority($row["authority"]);
         self::setActive($row["is_active"]);
         self::setMainWorkStation($row["main_work_station"]);
     }
 
     /**
-     * @param $id
-     * @return User     Nalezený user
-     *
-     * Funcke, která nalezne uživatele podle vstupního ID.
+     * @param int $id
+     * @return User
      */
     static function findById($id)
     {
@@ -225,13 +227,15 @@ class User extends BaseModel
         $preparedQuery->execute();
         $result = $preparedQuery->fetchAll();
 
+        $arrayOfUsers = array();
+
         foreach ($result as $var) {
             $instance = new self();
             $instance->fill($var);
-            $arrayOfAttendances[] = $instance;
+            $arrayOfUsers[] = $instance;
 
         }
-        return $arrayOfAttendances;
+        return $arrayOfUsers;
     }
 
     /**
@@ -245,7 +249,7 @@ class User extends BaseModel
         $query = "insert into user (id, orion_login, name, last_name, honorific_prefix, honorific_suffix, authority, is_active, main_work_station) value (:id, :orionLogin, :name, :lastName, :honorificPrefix, :honorificSuffix, :authority, :isActive, :mainWorkStation) on duplicate key update orion_login = :orionLogin, name = :name,last_name = :lastName,honorific_prefix = :honorificPrefix, honorific_suffix = :honorificSuffix, authority = :authority, is_active = :isActive, main_work_station = :mainWorkStation;";
         $preparedQuery = Database::getConnection()->prepare($query);
         $preparedQuery->bindValue(":id", $user->getId() == -1 ? null : $user->getId());
-        $preparedQuery->bindValue(":orionLogin", $user->getOrion());
+        $preparedQuery->bindValue(":orionLogin", $user->getOrionLogin());
         $preparedQuery->bindValue(":name", $user->getName());
         $preparedQuery->bindValue(":lastName", $user->getLastName());
         $preparedQuery->bindValue(":honorificPrefix", $user->getHonorificPrefix());
