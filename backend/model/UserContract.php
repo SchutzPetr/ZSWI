@@ -24,11 +24,11 @@ class UserContract extends BaseModel
      */
     private $obligation = "";
     /**
-     * @var string
+     * @var DateTime
      */
     private $activeFrom = "";
     /**
-     * @var string
+     * @var DateTime
      */
     private $activeTo = "";
 
@@ -81,7 +81,7 @@ class UserContract extends BaseModel
     }
 
     /**
-     * @return string
+     * @return DateTime
      */
     public function getActiveFrom()
     {
@@ -89,7 +89,7 @@ class UserContract extends BaseModel
     }
 
     /**
-     * @param string $activeFrom
+     * @param DateTime $activeFrom
      */
     public function setActiveFrom($activeFrom)
     {
@@ -97,7 +97,7 @@ class UserContract extends BaseModel
     }
 
     /**
-     * @return string
+     * @return DateTime
      */
     public function getActiveTo()
     {
@@ -105,7 +105,7 @@ class UserContract extends BaseModel
     }
 
     /**
-     * @param string $activeTo
+     * @param DateTime $activeTo
      */
     public function setActiveTo($activeTo)
     {
