@@ -51,6 +51,7 @@ abstract class BaseModel
 
     /**
      * Aktualizuje hodnoty instance podle jsonu
+     * @param string $json
      */
     public function json_decode($json)
     {
@@ -76,4 +77,19 @@ abstract class BaseModel
         $this->id = $id;
     }
 
+    /**
+     * @param integer $id
+     * @return mixed
+     */
+    public static abstract function findById($id);
+
+    /**
+     * @return array
+     */
+    public static abstract function findAll();
+
+    /**
+     * @param BaseModel $entity
+     */
+    public static abstract function save($entity);
 }
