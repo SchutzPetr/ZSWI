@@ -45,8 +45,8 @@ class UserTable extends React.Component {
                                 return <TableRow key={`${index}-${user.orion}`}>
                                     <TableCell>{user.displayFullName}</TableCell>
                                     <TableCell>{user.mainWorkStation}</TableCell>
-                                    <TableCell>{user.role}</TableCell>
-                                    <TableCell>{user.active}</TableCell>
+                                    <TableCell>{user.authority}</TableCell>
+                                    <TableCell>{user.active.toString()}</TableCell>
                                     <TableCell>
                                         <Tooltip title="Editace">
                                             <IconButton aria-label="Editace" onClick={this.props.onEditClick(user)}>

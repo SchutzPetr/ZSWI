@@ -12,6 +12,8 @@ const Client = {
                 return axios.get(USER_API + "?/user/login=" + JSON.stringify(data));
             case "getUsers":
                 return axios.get(USER_API + "?/user/getAllUsers");
+            case "getAssignUsersToProject":
+                return axios.get(USER_API + "?/user/getAssignUsersToProject" + JSON.stringify(data));
             case "getUser":
                 return axios.get(USER_API + "?/user/getById", {params: data});
             case "createUser":
@@ -23,7 +25,7 @@ const Client = {
             case "addProject":
                 return axios.get(PROJECT_API + "?/project/addNewProject=" + data.toJSON());
             case "editProject":
-                return axios.get(PROJECT_API + "?/project/addNewProject=" + data.toJSON());
+                return axios.get(PROJECT_API + "?/project/updateProject=" + data.toJSON());
             default:
                 throw `Url ${url} does not exists.`;
         }

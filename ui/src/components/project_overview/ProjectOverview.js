@@ -14,9 +14,8 @@ import ProjectCreateModal from "../project_create_modal/ProjectCreateModal"
 class ProjectOverview extends React.Component {
 
     state = {
-        login: "",
-        password: "",
-        showPassword: false,
+        modalOpen: false,
+        modalData: null,
     };
 
     static mapProjectToSuggestion(project) {
@@ -74,7 +73,7 @@ class ProjectOverview extends React.Component {
                     <div className={classes.projectSelect}>
                         <ProjectSelect value={ProjectOverview.mapProjectToSuggestion(this.props.project)}
                                        suggestions={ProjectOverview.mapProjectsToSuggestion(this.props.projects)}
-                                       onSelect={this.props.onChangeProject}/>
+                                       onSelect={this.props.onChangeProject} placeholder={"Vyberte projekt:"}/>
                     </div>
                     {this.props.project ?
                         <div className={classes.projectDetail}>

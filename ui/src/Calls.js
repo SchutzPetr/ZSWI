@@ -36,11 +36,15 @@ class Calls {
     }
 
     static editUser(dataIn){
-        Calls._get("editUser", dataIn);
+        Calls._get("updateUser", dataIn);
     }
 
     static getUsers(dataIn){
         Calls._get("getUsers", dataIn);
+    }
+
+    static getAssignUsersToProject(dataIn){
+        Calls._get("getAssignUsersToProject", dataIn)
     }
 
     static getProjects(dataIn){
@@ -52,7 +56,7 @@ class Calls {
     }
 
     static editProject(dataIn) {
-
+        Calls._get("editProject", dataIn)
     }
 
     static createProject(dataIn) {

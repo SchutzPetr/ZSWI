@@ -1,6 +1,7 @@
 class User {
 
-    constructor(){
+    constructor() {
+        this._id = -1;
         this._name = "";
         this._lastName = "";
         this._email = "";
@@ -13,12 +14,12 @@ class User {
         this._timeJob = 1;
     }
 
-    get orion() {
-        return this._orion;
+    get id() {
+        return this._id;
     }
 
-    set orion(value) {
-        this._orion = value;
+    set id(value) {
+        this._id = value;
     }
 
     get name() {
@@ -61,6 +62,14 @@ class User {
         this._honorificSuffix = value;
     }
 
+    get orion() {
+        return this._orion;
+    }
+
+    set orion(value) {
+        this._orion = value;
+    }
+
     get authority() {
         return this._authority;
     }
@@ -85,10 +94,6 @@ class User {
         this._mainWorkStation = value;
     }
 
-    get displayFullName(){
-        return `${this._honorificPrefix} ${this._name} ${this._lastName} ${this._honorificSuffix}`;
-    }
-
     get timeJob() {
         return this._timeJob;
     }
@@ -97,12 +102,16 @@ class User {
         this._timeJob = value;
     }
 
+    get displayFullName() {
+        return `${this._honorificPrefix} ${this._name} ${this._lastName} ${this._honorificSuffix}`;
+    }
+
     clone() {
         return Object.assign(new User(), this);
     }
 
-    static map(userDTO){
-        if(userDTO instanceof Array){
+    static map(userDTO) {
+        if (userDTO instanceof Array) {
             return userDTO.map(value => Object.assign(new User(), value)) || [];
         }
         return Object.assign(new User(), userDTO);
@@ -112,12 +121,12 @@ class User {
         let obj = {};
 
         for (let key in this) {
-            if(!this.hasOwnProperty(key)){
-               continue;
+            if (!this.hasOwnProperty(key)) {
+                continue;
             }
             if (key[0] === '_') {
                 obj[key.substr(1)] = this[key];
-            }else{
+            } else {
                 obj[key] = this[key];
             }
         }

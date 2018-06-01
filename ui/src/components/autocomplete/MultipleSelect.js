@@ -11,7 +11,7 @@ import ClearIcon from 'material-ui-icons/es/Clear';
 import Chip from 'material-ui/Chip';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
-import Styles from "./style/SingleSelectStyle";
+import Styles from "./style/UserMultipleSelectStyle";
 import Suggestion from "./entity/Suggestion";
 
 class Option extends React.Component {
@@ -39,11 +39,12 @@ class Option extends React.Component {
 }
 
 function SelectWrapped(props) {
-    const {classes, ...other} = props;
+    const {classes, disabled, ...other} = props;
 
     return (
         <Select
             optionComponent={Option}
+            disabled={disabled}
             noResultsText={<Typography>{'No results found'}</Typography>}
             arrowRenderer={arrowProps => {
                 return arrowProps.isOpen ? <ArrowDropUpIcon/> : <ArrowDropDownIcon/>;
@@ -55,6 +56,9 @@ function SelectWrapped(props) {
                 const onDelete = event => {
                     event.preventDefault();
                     event.stopPropagation();
+                    if(disabled){
+                        return;
+                    }
                     onRemove(value);
                 };
 
@@ -64,6 +68,7 @@ function SelectWrapped(props) {
                             tabIndex={-1}
                             label={children}
                             className={classes.chip}
+                            disabled={disabled}
                             deleteIcon={<CancelIcon onTouchEnd={onDelete}/>}
                             onDelete={onDelete}
                         />
@@ -77,7 +82,7 @@ function SelectWrapped(props) {
     );
 }
 
-class SingleSelect extends React.Component {
+class UserMultipleSelect extends React.Component {
 
     render() {
         const {classes} = this.props;
@@ -85,19 +90,21 @@ class SingleSelect extends React.Component {
         return (
             <div className={classes.root}>
                 <Input
-                    fullWidth={true}
+                    fullWidth
                     inputComponent={SelectWrapped}
-                    value={this.props.value ? this.props.value.value : null}
+                    value={this.props.values}
                     onChange={this.props.onSelect}
                     placeholder={this.props.placeholder}
-                    id={"react-select-single"}
+                    name={"react-select-chip"}
                     disabled={this.props.disabled}
                     inputProps={{
                         classes,
-                        name: "react-select-single",
-                        instanceId: "react-select-single",
+                        multi: true,
+                        instanceId: 'react-select-chip',
+                        id: 'react-select-chip',
                         simpleValue: this.props.simpleValue,
                         options: this.props.suggestions,
+                        disabled: this.props.disabled
                     }}
                 />
             </div>
@@ -105,20 +112,20 @@ class SingleSelect extends React.Component {
     }
 }
 
-SingleSelect.propTypes = {
+UserMultipleSelect.propTypes = {
     classes: PropTypes.object.isRequired,
-    value: PropTypes.instanceOf(Suggestion),
+    values: PropTypes.arrayOf(Suggestion),
     suggestions: PropTypes.arrayOf(Suggestion).isRequired,
     onSelect: PropTypes.func.isRequired,
     simpleValue: PropTypes.bool,
-    disabled: PropTypes.bool,
     placeholder: PropTypes.string,
+    disabled: PropTypes.bool,
 };
 
-SingleSelect.defaultProps = {
+UserMultipleSelect.defaultProps = {
     simpleValue: false,
     placeholder: "",
-    disabled: false,
+    disabled: false
 };
 
-export default withStyles(Styles, {withTheme: true})(SingleSelect);
+export default withStyles(Styles, {withTheme: true})(UserMultipleSelect);
