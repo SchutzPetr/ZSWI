@@ -189,7 +189,7 @@ class Attendance extends BaseModel
      * @param Attendance $attendance
      */
     static function save($attendance){
-        $query = "insert into attendance (id, user_id active_from, first_part_from, first_part_to, second_part_from, second_part_to ) value (:id, :user_id, :active_from, :first_part_from, :first_part_to, :second_part_from, :second_part_to ) on duplicate key update user_id = :user_id, active_from = :active_from, first_part_from = :first_part_from, first_part_to = :first_part_to, second_part_from = :second_part_from, second_part_to = :second_part_to ;";
+        $query = "insert into attendance (id, user_id, active_from, first_part_from, first_part_to, second_part_from, second_part_to ) value (:id, :user_id, :active_from, :first_part_from, :first_part_to, :second_part_from, :second_part_to ) on duplicate key update user_id = :user_id, active_from = :active_from, first_part_from = :first_part_from, first_part_to = :first_part_to, second_part_from = :second_part_from, second_part_to = :second_part_to ;";
         $preparedQuery = Database::getConnection()->prepare($query);
         $preparedQuery->bindValue(":id", $attendance->getId() == -1 ? null : $attendance->getId());
         $preparedQuery->bindValue(":user_id", $attendance->getUserId());
