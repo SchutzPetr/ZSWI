@@ -14,7 +14,7 @@ class Database
     private static $port = 3306;
     private static $db_name = "attendance_new";
     private static $username = "root";
-    private static $password = "password";
+    private static $password = "";
     public static $conn;
 
     // get the database connection
