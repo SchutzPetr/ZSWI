@@ -13,10 +13,9 @@ class Permission
      * USER.FIND
      * USER.CREATE
      * USER.UPDATE
-     * PROJECT.CREATE
+     * PROJECT.FIND
      * PROJECT.UPDATE
-     *
-     *
+     * PROJECT.CREATE
      *
      */
 

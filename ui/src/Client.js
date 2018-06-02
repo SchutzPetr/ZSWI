@@ -1,25 +1,21 @@
 import axios from 'axios';
 
-const API = "http://development.com/ZSWI/controller";
+const API = "http://localhost/backend/api/v1";
 
-const USER_API = API + "/user.ctrl.php";
+const USER_API = API + "/user/";
 const PROJECT_API = API + "/project.ctrl.php";
 
 const Client = {
     get(url, data) {
         switch (url) {
             case "login":
-                return axios.get(USER_API + "?/user/login=" + JSON.stringify(data));
+                return axios.get(USER_API + "user/user.ctrl.php?/user/login=" + JSON.stringify(data));
             case "getUsers":
-                return axios.get(USER_API + "?/user/getAllUsers");
+                return axios.get(USER_API + "findAll.php");
+            case "getUser":
+                return axios.get(USER_API + "findById.php", {params: data});
             case "getAssignUsersToProject":
                 return axios.get(USER_API + "?/user/getAssignUsersToProject" + JSON.stringify(data));
-            case "getUser":
-                return axios.get(USER_API + "?/user/getById", {params: data});
-            case "createUser":
-                return axios.post(USER_API + "?/user/addNewUser=" + data.toJSON());
-            case "updateUser":
-                return axios.post(USER_API + "?/user/update/id=" + data.toJSON());
             case "getProjects":
                 return axios.get(PROJECT_API + "?/project/getAll=");
             case "addProject":
@@ -34,9 +30,9 @@ const Client = {
     post(url, data) {
         switch (url) {
             case "createUser":
-                return axios.post(USER_API + "?/user/addNewUser=" + data.toJSON());
+                return axios.post(USER_API + "create.php", data);
             case "updateUser":
-                return axios.post(USER_API + "?/user/update/id=" + data.toJSON());
+                return axios.post(USER_API + "update.php", data);
             default:
                 throw `Url ${url} does not exists.`;
         }

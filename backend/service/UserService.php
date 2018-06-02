@@ -6,17 +6,17 @@
  * Time: 0:13
  */
 
-include_once ('./../exception/PermissionException.php');
-include_once ('Service.php');
 
-include_once ('./../model/User.php');
-
+include_once (__DIR__."/../exception/PermissionException.php");
+include_once (__DIR__."/../util/Permission.php");
+include_once (__DIR__."/Service.php");
+include_once (__DIR__."/../model/User.php");
+include_once (__DIR__."./../vendor/netresearch/jsonmapper/src/JsonMapper.php");
 
 class UserService extends Service
 {
-
     /**
-     * @param integer $id
+     * @param $id integer
      * @return User
      * @throws PermissionException
      */
@@ -41,7 +41,7 @@ class UserService extends Service
     }
 
     /**
-     * @param User $user
+     * @param $user User
      * @throws PermissionException
      */
     public static function create($user){
@@ -53,7 +53,7 @@ class UserService extends Service
     }
 
     /**
-     * @param User $user
+     * @param $user User
      * @throws PermissionException
      */
     public static function update($user){
@@ -62,5 +62,16 @@ class UserService extends Service
         }
 
         User::save($user);
+    }
+
+    /**
+     * @param $jsonUser string
+     * @return User|object
+     * @throws JsonMapper_Exception
+     */
+    public static function jsonUserDecode($jsonUser){
+        $mapper = new JsonMapper();
+        $user = $mapper->map(json_decode($jsonUser), new User());
+        return $user;
     }
 }

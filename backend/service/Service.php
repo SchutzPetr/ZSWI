@@ -6,7 +6,7 @@
  * Time: 0:25
  */
 
-include_once ('./../model/User.php');
+include_once (__DIR__."/../model/User.php");
 
 abstract class Service
 {

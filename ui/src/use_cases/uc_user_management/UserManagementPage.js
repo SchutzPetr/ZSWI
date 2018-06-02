@@ -33,7 +33,9 @@ class UserManagementPage extends React.Component {
                 this.setState({loadFeedback: "error"});
                 //todo: error throw
             }
-        })
+        });
+
+        Calls.getUser({data: {id: 1}, done: ()=>{}, fail: ()=>{}})
     }
 
     handleOpenEdit = modalData => event => {

@@ -7,10 +7,10 @@
  * Time: 21:57
  */
 
-include_once ('../database/Database.php');
-include_once ('BaseModel.php');
+include_once (__DIR__."/../database/Database.php");
+include_once (__DIR__."/BaseModel.php");
 
-class User extends BaseModel
+class User extends BaseModel implements JsonSerializable
 {
     /**
      * @var string
@@ -182,7 +182,7 @@ class User extends BaseModel
     }
 
     /**
-     * @param string $row
+     * @param array $row
      */
     private function fill($row)
     {
@@ -216,7 +216,7 @@ class User extends BaseModel
     }
 
     /**
-     * @return array
+     * @return User[]
      *
      * Funkce, která nalezne všechny uživatele a vrátí je jako jedno pole.
      */
@@ -259,5 +259,17 @@ class User extends BaseModel
         $preparedQuery->bindValue(":mainWorkStation", $user->getMainWorkStation());
 
         $preparedQuery->execute();
+    }
+
+    /**
+     * Specify data which should be serialized to JSON
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     * @since 5.4.0
+     */
+    public function jsonSerialize()
+    {
+        return get_object_vars($this);
     }
 }
