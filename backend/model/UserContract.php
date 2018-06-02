@@ -6,8 +6,8 @@
  * Time: 11:27
  */
 
-include_once ("../database/Database.php");
-include_once ("BaseModel.php");
+include_once (__DIR__."../database/Database.php");
+include_once (__DIR__."BaseModel.php");
 
 class UserContract extends BaseModel
 {
