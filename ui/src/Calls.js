@@ -26,41 +26,47 @@ class Calls {
     static _post(url, dataIn){
         Calls._call("post", url, dataIn);
     }
-    
-    static login(dataIn){
-        Calls._get("login", dataIn);
-    }
 
     static createUser(dataIn){
         Calls._post("createUser", dataIn);
     }
 
-    static editUser(dataIn){
+    static updateUser(dataIn){
         Calls._post("updateUser", dataIn);
+    }
+
+    static createProject(dataIn){
+        Calls._post("createProject", dataIn);
+    }
+
+    static updateProject(dataIn){
+        Calls._post("updateProject", dataIn);
     }
 
     static getUsers(dataIn){
         Calls._get("getUsers", dataIn);
     }
 
-    static getAssignUsersToProject(dataIn){
-        Calls._get("getAssignUsersToProject", dataIn)
+    static getUser(dataIn){
+        Calls._get("getUser", dataIn);
     }
 
     static getProjects(dataIn){
         Calls._get("getProjects", dataIn);
     }
+
+    static getProject(dataIn){
+        Calls._get("getProject", dataIn);
+    }
+
+
     
-    static getUser(dataIn){
-        Calls._get("getUser", dataIn);
+    static login(dataIn){
+        Calls._get("login", dataIn);
     }
 
-    static editProject(dataIn) {
-        Calls._get("editProject", dataIn)
-    }
-
-    static createProject(dataIn) {
-        Calls._get("addProject", dataIn)
+    static getAssignUsersToProject(dataIn){
+        Calls._get("getAssignUsersToProject", dataIn)
     }
 }
 

@@ -29,7 +29,7 @@ class UserCreateModal extends React.Component {
             this.setState({loadFeedback: "error"});
         };
         if (this.props.userToEdit) {
-            Calls.editUser({
+            Calls.updateUser({
                 data: this.state.user,
                 done: (data) => {
                     this.props.onSaveDone();

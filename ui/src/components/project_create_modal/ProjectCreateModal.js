@@ -30,7 +30,7 @@ class ProjectCreateModal extends React.Component {
             this.setState({loadFeedback: "error"});
         };
         if (this.props.projectToEdit) {
-            Calls.editProject({
+            Calls.updateProject({
                 data: this.state.project,
                 done: (data) => {
                     this.props.onSaveDone();
