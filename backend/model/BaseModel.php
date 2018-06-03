@@ -7,7 +7,7 @@
  * Time: 21:58
  */
 
-abstract class BaseModel
+abstract class BaseModel implements JsonSerializable
 {
 
     /**
