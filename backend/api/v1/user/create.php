@@ -13,7 +13,7 @@ header("Access-Control-Allow-Methods: POST");
 include_once (__DIR__."/../../../service/UserService.php");
 include_once (__DIR__."/../../../exception/PermissionException.php");
 
-$data = utf8_encode(file_get_contents('php://input'));
+$data = file_get_contents('php://input');
 
 if((!isset($data) || trim($data)==='')){
     die;
