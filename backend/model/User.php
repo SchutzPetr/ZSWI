@@ -255,7 +255,7 @@ class User extends BaseModel implements JsonSerializable
         $preparedQuery->bindValue(":honorificPrefix", $user->getHonorificPrefix());
         $preparedQuery->bindValue(":honorificSuffix", $user->getHonorificSuffix());
         $preparedQuery->bindValue(":authority", $user->getAuthority());
-        $preparedQuery->bindValue(":isActive", $user->isActive());
+        $preparedQuery->bindValue(":isActive", $user->isActive(), PDO::PARAM_BOOL);
         $preparedQuery->bindValue(":mainWorkStation", $user->getMainWorkStation());
 
         $preparedQuery->execute();
@@ -270,6 +270,9 @@ class User extends BaseModel implements JsonSerializable
      */
     public function jsonSerialize()
     {
-        return get_object_vars($this);
+        $array = array();
+        $array["id"] = $this->getId();
+        $array = array_merge($array, get_object_vars($this));
+        return $array;
     }
 }
