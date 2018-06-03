@@ -105,7 +105,7 @@ class UserTableProjectAssignment extends React.Component {
                             <TableBody>
                                 {this.props.users.map((user, index) => {
                                     user = new User();
-                                    return <TableRow key={`${index}-${user.orion}`}>
+                                    return <TableRow key={`${index}-${user.orionLogin}`}>
                                         <TableCell>{user.displayFullName}</TableCell>
                                         <TableCell>{user.mainWorkStation}</TableCell>
                                         <TableCell>{user.role}</TableCell>

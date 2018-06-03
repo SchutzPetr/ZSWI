@@ -7,7 +7,7 @@ class User {
         this._email = "";
         this._honorificPrefix = "";
         this._honorificSuffix = "";
-        this._orion = "";
+        this._orionLogin = "";
         this._authority = "USER";
         this._active = true;
         this._mainWorkStation = "KIV";
@@ -62,12 +62,12 @@ class User {
         this._honorificSuffix = value;
     }
 
-    get orion() {
-        return this._orion;
+    get orionLogin() {
+        return this._orionLogin;
     }
 
-    set orion(value) {
-        this._orion = value;
+    set orionLogin(value) {
+        this._orionLogin = value;
     }
 
     get authority() {

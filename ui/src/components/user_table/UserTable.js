@@ -42,7 +42,7 @@ class UserTable extends React.Component {
                         <EnhancedTableHead rowCount={this.props.users.length}/>
                         <TableBody>
                             {this.props.users.map((user, index) => {
-                                return <TableRow key={`${index}-${user.orion}`}>
+                                return <TableRow key={`${index}-${user.orionLogin}`}>
                                     <TableCell>{user.displayFullName}</TableCell>
                                     <TableCell>{user.mainWorkStation}</TableCell>
                                     <TableCell>{user.authority}</TableCell>

@@ -130,12 +130,12 @@ class UserCreateModal extends React.Component {
                         <div className={classes.formRow}>
                             <TextField
                                 required={true}
-                                id={"orion"}
-                                label={"Orion"}
+                                id={"orionLogin"}
+                                label={"Orion Login"}
                                 margin={"normal"}
                                 className={classes.textField}
-                                value={this.state.user.orion}
-                                onChange={this.handleChangeUser("orion")}
+                                value={this.state.user.orionLogin}
+                                onChange={this.handleChangeUser("orionLogin")}
                             />
                             <FormControl className={classes.formControl}>
                                 <InputLabel htmlFor="authority-simple">Role</InputLabel>
@@ -169,7 +169,7 @@ class UserCreateModal extends React.Component {
                             </FormControl>
                             <TextField
                                 required={true}
-                                id={"orion"}
+                                id={"orionLogin"}
                                 label={"Velikost úvazku"}
                                 margin={"normal"}
                                 type="number"
