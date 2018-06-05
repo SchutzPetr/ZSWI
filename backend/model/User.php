@@ -216,9 +216,32 @@ class User extends BaseModel implements JsonSerializable
     }
 
     /**
-     * @return User[]
-     *
-     * Funkce, která nalezne všechny uživatele a vrátí je jako jedno pole.
+     * @param int $projectId
+     * @return array
+     */
+    static function findByProjectId($projectId)
+    {
+        $query = "SELECT * FROM user WHERE id IN (SELECT DISTINCT user_id from user_assigned_to_project WHERE project_id = :projectId);";
+        $preparedQuery = Database::getConnection()->prepare($query);
+        $preparedQuery->bindValue(":projectId", $projectId);
+        $preparedQuery->execute();
+
+        $result = $preparedQuery->fetchAll();
+
+        $arrayOfUsers = array();
+
+        foreach ($result as $var) {
+            $instance = new self();
+            $instance->fill($var);
+            $arrayOfUsers[] = $instance;
+
+        }
+        return $arrayOfUsers;
+
+    }
+
+    /**
+     * @return array
      */
     static function findAll()
     {
