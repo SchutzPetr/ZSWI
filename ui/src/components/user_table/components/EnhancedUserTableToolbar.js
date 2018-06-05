@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {withStyles} from 'material-ui/styles';
-import {IconButton, Toolbar, Tooltip, Typography} from "material-ui";
+import {withStyles} from '@material-ui/core/styles/index';
+import {IconButton, Toolbar, Tooltip, Typography} from "@material-ui/core/index";
 import Styles from "../style/EnhancedUserTableToolbarStyle";
-import AddIcon from "material-ui-icons/es/Add";
+import AddIcon from "@material-ui/icons/es/Add";
 
 class EnhancedUserTableToolbar extends React.Component {
 

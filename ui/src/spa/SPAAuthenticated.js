@@ -1,19 +1,19 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {Route, Switch} from "react-router-dom";
-import {withStyles} from "material-ui/styles";
+import {withStyles} from "@material-ui/core/styles/index";
 import classNames from "classnames";
 
-import MenuIcon from "material-ui-icons/Menu";
-import ChevronLeftIcon from "material-ui-icons/ChevronLeft";
-import {AppBar, Badge, Divider, Drawer, Hidden, IconButton, List, Toolbar, Typography} from "material-ui";
+import MenuIcon from "@material-ui/icons/Menu";
+import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
+import {AppBar, Badge, Divider, Drawer, Hidden, IconButton, List, Toolbar, Typography} from "@material-ui/core/index";
 
 import Styles from "./style/SPAAuthenticatedStyle";
 import AgendaOverview from "../use_cases/uc_agenda_overview/AgendaOverview";
 
-import {secretaryMenuItems, otherMailFolderListItems} from "./SPAAuthenticatedMenuItems";
+import {secretaryMenuItems} from "./SPAAuthenticatedMenuItems";
 import Home from "../use_cases/uc_home/Home";
-import Notifications from "material-ui-icons/es/Notifications";
+import Notifications from "@material-ui/icons/es/Notifications";
 import NotificationPopover from "../components/notification/NotificationPopover";
 import Share from "../use_cases/uc_share/SharePage";
 import UserHolidayPage from "../use_cases/uc_user_holiday/UserHolidayPage";

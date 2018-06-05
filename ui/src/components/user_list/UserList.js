@@ -1,16 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
-import User from "../../entity/User";
-import {IconButton, Input, List, Menu, MenuItem, Paper} from "material-ui";
+import {IconButton, Input, List, Menu, MenuItem, Paper} from "@material-ui/core/index";
 import UserListItem from "./UserListItem";
-import {withStyles} from "material-ui/styles";
-import ExpansionUserFilter from "../ExpansionUserFilter";
-import FilterListIcon from "material-ui-icons/FilterList";
+import {withStyles} from "@material-ui/core/styles/index";
+import FilterListIcon from "@material-ui/icons/FilterList";
 
-import {darken, fade, lighten} from "material-ui/styles/colorManipulator";
+import {darken, fade, lighten} from "@material-ui/core/styles/colorManipulator";
 import FilterModal from "./FilterModal";
-import Fade from "material-ui/es/transitions/Fade";
-
+import Fade from '@material-ui/core/Fade';
 
 const styles = theme => ({
     root: {

@@ -1,6 +1,9 @@
-class DayTimeSheet {
+import BaseEntity from "./BaseEntity";
+
+class DayTimeSheet extends BaseEntity{
 
     constructor(date, dayType, firstPartFrom, firstPartTo, firstPartType, secondPartFrom, secondPartTo, secondPartType){
+        super();
         this._date = date;
         this._dayType = dayType;
         this._firstPartFrom = firstPartFrom;

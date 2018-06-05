@@ -3,7 +3,7 @@ import "./index.css";
 import Authentication from "./Authentication";
 import Observer from "./Observer";
 import SPAAuthenticated from "./spa/SPAAuthenticated";
-import {MuiThemeProvider, createMuiTheme} from "material-ui/styles";
+import {createMuiTheme, MuiThemeProvider} from "@material-ui/core/styles/index";
 import moment from 'moment';
 import MomentUtils from 'material-ui-pickers/utils/moment-utils';
 import {MuiPickersUtilsProvider} from "material-ui-pickers";

@@ -2,9 +2,9 @@ import React from "react";
 import PropTypes from "prop-types";
 import Calls from "../../Calls";
 import LinearProgressCentered from "../../components/LinearProgressCentered";
-import Grid from "material-ui/es/Grid/Grid";
+import Grid from "@material-ui/core/es/Grid/Grid";
 import Styles from "./style/UserHolidayPageStyle";
-import withStyles from "material-ui/es/styles/withStyles";
+import withStyles from "@material-ui/core/es/styles/withStyles";
 import HolidayTable from "../../components/holiday_table/HolidayTable";
 
 class UserHolidayPage extends React.Component {

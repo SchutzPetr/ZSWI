@@ -1,15 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {withStyles} from "material-ui/styles";
+import {withStyles} from "@material-ui/core/styles/index";
 import Styles from "./style/NotificationItemStyle";
-import ListItem from "material-ui/es/List/ListItem";
-import ListItemAvatar from "material-ui/es/List/ListItemAvatar";
-import Avatar from "material-ui/es/Avatar/Avatar";
-import ListItemText from "material-ui/es/List/ListItemText";
-import ListItemSecondaryAction from "material-ui/es/List/ListItemSecondaryAction";
-import IconButton from "material-ui/es/IconButton/IconButton";
-import DeleteIcon from "material-ui-icons/es/Delete"
+import IconButton from "@material-ui/core/es/IconButton/IconButton";
+import DeleteIcon from "@material-ui/icons/es/Delete"
 import {Link} from "react-router-dom";
+import {ListItem, ListItemSecondaryAction, ListItemText} from "@material-ui/core/index";
 
 class NotificationItem extends React.Component {
 

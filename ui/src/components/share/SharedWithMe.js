@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {withStyles} from "material-ui/styles";
+import {withStyles} from "@material-ui/core/styles/index";
 import Styles from "./style/ShareStyle";
 import {
     Card,
@@ -13,9 +13,9 @@ import {
     TableHead,
     TableRow,
     Typography
-} from "material-ui";
-import AccountCircle from "material-ui-icons/es/AccountCircle";
-import Delete from "material-ui-icons/es/Delete";
+} from "@material-ui/core/index";
+import AccountCircle from "@material-ui/icons/es/AccountCircle";
+import Delete from "@material-ui/icons/es/Delete";
 
 class SharedWithMe extends React.Component {
 

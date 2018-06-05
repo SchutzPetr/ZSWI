@@ -1,18 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {withStyles} from 'material-ui/styles';
-import Typography from 'material-ui/Typography';
-import Input from 'material-ui/Input';
-import {MenuItem} from 'material-ui/Menu';
-import ArrowDropDownIcon from 'material-ui-icons/es/ArrowDropDown';
-import CancelIcon from 'material-ui-icons/es/Cancel';
-import ArrowDropUpIcon from 'material-ui-icons/es/ArrowDropUp';
-import ClearIcon from 'material-ui-icons/es/Clear';
-import Chip from 'material-ui/Chip';
+import {withStyles} from '@material-ui/core/styles/index';
+import ArrowDropDownIcon from '@material-ui/icons/es/ArrowDropDown';
+import CancelIcon from '@material-ui/icons/es/Cancel';
+import ArrowDropUpIcon from '@material-ui/icons/es/ArrowDropUp';
+import ClearIcon from '@material-ui/icons/es/Clear';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 import Styles from "./style/SingleSelectStyle";
 import Suggestion from "./entity/Suggestion";
+import {Chip, Input, MenuItem, Typography} from "@material-ui/core/index";
 
 class Option extends React.Component {
     handleClick = event => {

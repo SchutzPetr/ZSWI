@@ -1,12 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Button from 'material-ui/Button';
-import {withStyles} from 'material-ui/styles';
-import Dialog, {DialogActions, DialogContent, DialogTitle} from 'material-ui/Dialog';
-import {FormControl, FormControlLabel, FormGroup, InputLabel, MenuItem, Select, Switch, TextField} from "material-ui";
+import {withStyles} from '@material-ui/core/styles/index';
+import {
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    FormControl,
+    FormControlLabel,
+    InputLabel,
+    MenuItem,
+    Select,
+    Switch,
+    TextField,
+    Typography
+} from "@material-ui/core/index";
 import User from "./../../entity/User";
+import Attendance from "./../../entity/Attendance";
 import Calls from "../../Calls";
 import Styles from "./style/UserCreateModalStyle";
+import {TimePicker} from "material-ui-pickers";
 
 class UserCreateModal extends React.Component {
 
@@ -19,6 +33,7 @@ class UserCreateModal extends React.Component {
     static getDerivedStateFromProps(nextProps, prevState) {
         return {
             user: nextProps.userToEdit || new User(),
+            attendance: nextProps.userToEdit ? nextProps.userToEdit.attendance :  new Attendance() || new Attendance(),
             loadFeedback: "ready",
         };
     }
@@ -76,6 +91,10 @@ class UserCreateModal extends React.Component {
             }
         });
     };
+
+    handleChangeAttendance() {
+
+    }
 
     render() {
         const {classes} = this.props;
@@ -178,7 +197,7 @@ class UserCreateModal extends React.Component {
                                 onChange={this.handleChangeUser("timeJob")}
                             />
                         </div>
-                        <FormGroup row={true}>
+                        <div className={classes.formRow}>
                             <FormControlLabel
                                 control={
                                     <Switch
@@ -189,7 +208,50 @@ class UserCreateModal extends React.Component {
                                 }
                                 label="Secondary"
                             />
-                        </FormGroup>
+                        </div>
+                        <Typography className={classes.timePickerTitle} variant={"title"}>Docházka</Typography>
+                        <div className={classes.formRow}>
+                            <TimePicker
+                                className={classes.timePicker}
+                                clearable={true}
+                                ampm={false}
+                                keyboard={true}
+                                mask={[/\d/, /\d/, ':', /\d/, /\d/]}
+                                label="OD"
+                                value={this.state.attendance.firstPartFrom}
+                                onChange={this.handleChangeAttendance}
+                            />
+                            <TimePicker
+                                className={classes.timePicker}
+                                clearable={true}
+                                ampm={false}
+                                keyboard={true}
+                                mask={[/\d/, /\d/, ':', /\d/, /\d/]}
+                                label="DO"
+                                value={this.state.attendance.firstPartTo}
+                                onChange={this.handleChangeAttendance}
+                            />
+                            <TimePicker
+                                className={classes.timePicker}
+                                clearable={true}
+                                ampm={false}
+                                keyboard={true}
+                                mask={[/\d/, /\d/, ':', /\d/, /\d/]}
+                                label="OD"
+                                value={this.state.attendance.secondPartFrom}
+                                onChange={this.handleChangeAttendance}
+                            />
+                            <TimePicker
+                                className={classes.timePicker}
+                                clearable={true}
+                                ampm={false}
+                                keyboard={true}
+                                mask={[/\d/, /\d/, ':', /\d/, /\d/]}
+                                label="DO"
+                                value={this.state.attendance.secondPartTo}
+                                onChange={this.handleChangeAttendance}
+                            />
+                        </div>
                     </form>
                 </DialogContent>
                 <DialogActions>
@@ -210,7 +272,7 @@ UserCreateModal.propTypes = {
     open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
     onSaveDone: PropTypes.func.isRequired,
-    userToEdit: PropTypes.instanceOf(User)
+    userToEdit: PropTypes.instanceOf(User),
 };
 
 export default withStyles(Styles)(UserCreateModal);

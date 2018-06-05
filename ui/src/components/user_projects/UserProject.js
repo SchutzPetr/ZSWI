@@ -1,20 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {withStyles} from "material-ui/styles";
+import {withStyles} from "@material-ui/core/styles/index";
 import Styles from "./style/UserProjectStyle";
-import LinearProgress from "material-ui/es/Progress/LinearProgress";
-import {
-    Typography,
-    Paper,
-    CardContent,
-    Card,
-    CardHeader,
-    Table,
-    TableHead,
-    TableRow,
-    TableCell,
-    TableBody
-} from "material-ui";
+import {Card, CardContent, CardHeader, Table, TableBody, TableCell, TableHead, TableRow} from "@material-ui/core/index";
 import moment from "moment";
 
 class UserProject extends React.Component {

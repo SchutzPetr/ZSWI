@@ -1,10 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {Avatar, IconButton, ListItem, ListItemSecondaryAction, ListItemText} from "material-ui";
-import AccountCircle from "material-ui-icons/AccountCircle";
-import User from "../../entity/User";
-import {MoreVert} from "material-ui-icons";
-import { Link } from 'react-router-dom'
+import {Avatar, IconButton, ListItem, ListItemSecondaryAction, ListItemText} from "@material-ui/core/index";
+import AccountCircle from "@material-ui/icons/AccountCircle";
+import MoreVert from "@material-ui/icons/MoreVert";
+import {Link} from 'react-router-dom'
 
 class UserListItem extends React.Component {
 

@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {withStyles} from 'material-ui/styles';
+import {withStyles} from '@material-ui/core/styles/index';
 import Styles from "./style/OverviewOfWorkSchedulesStyle";
-import {Paper, Table, TableBody, TableCell, TableHead, TableRow} from "material-ui";
+import {Paper, Table, TableBody, TableCell, TableHead, TableRow} from "@material-ui/core/index";
 import moment from "moment";
 
 class OverviewOfWorkSchedules extends React.Component {

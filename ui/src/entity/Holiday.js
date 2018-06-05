@@ -1,6 +1,9 @@
-class Holiday {
+import BaseEntity from "./BaseEntity";
+
+class Holiday extends BaseEntity{
 
     constructor(id, userId, date, type){
+        super();
         this._id = id || -1;
         this._userId = userId || {};
         this._date = date || new Date();

@@ -1,14 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {withStyles} from "material-ui/styles";
-import Table, {TableBody, TableCell, TableHead, TableRow} from "material-ui/Table";
-import {IconButton, Menu, MenuItem, Paper} from "material-ui";
+import {withStyles} from "@material-ui/core/styles/index";
+import {IconButton, Paper, Table, TableBody, TableCell, TableHead, TableRow} from "@material-ui/core/index";
 import moment from "moment";
-import Utils from "../../other/Utils"
-import MoreVert from "material-ui-icons/MoreVert";
-import Fade from "material-ui/es/transitions/Fade";
+import MoreVert from "@material-ui/icons/MoreVert";
 import AgendaEditModal from "./AgendaEditModal";
-import DayTimeSheet from "../../entity/DayTimeSheet";
 import TimeSheet from "../../entity/TimeSheet";
 
 const rowHeightHeader = 24;

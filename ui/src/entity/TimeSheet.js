@@ -1,8 +1,9 @@
-import DayTimeSheet from "./DayTimeSheet";
+import BaseEntity from "./BaseEntity";
 
-class TimeSheet {
+class TimeSheet extends BaseEntity{
 
     constructor(month, isNTIS, dayTimeSheets){
+        super();
         //map(day, DayTimeSheet)
         //key2 = day number
         this._dayTimeSheets = dayTimeSheets || {};

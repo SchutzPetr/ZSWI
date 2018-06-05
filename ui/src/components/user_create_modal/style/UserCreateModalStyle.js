@@ -19,7 +19,15 @@ const Styles = theme => ({
     },
     select: {
         minWidth: 182
-    }
+    },
+    timePickerTitle:{
+        margin: 2*theme.spacing.unit,
+        alignSelf: "flex-start"
+    },
+    timePicker:{
+        width: 182,
+        margin: theme.spacing.unit,
+    },
 });
 
 export default Styles;

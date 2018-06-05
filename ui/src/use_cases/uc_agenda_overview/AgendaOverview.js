@@ -4,9 +4,9 @@ import UserList from "../../components/user_list/UserList";
 import AgendaTabs from "../../components/agenda/AgendaTabs";
 import Calls from "../../Calls";
 import LinearProgressCentered from "../../components/LinearProgressCentered";
-import Grid from "material-ui/es/Grid/Grid";
+import Grid from "@material-ui/core/es/Grid/Grid";
 import Styles from "../uc_home/style/HomeStyle";
-import withStyles from "material-ui/es/styles/withStyles";
+import withStyles from "@material-ui/core/es/styles/withStyles";
 
 export const userData = [
     {

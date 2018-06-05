@@ -2,9 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import Calls from "../../Calls";
 import LinearProgressCentered from "../../components/LinearProgressCentered";
-import Grid from "material-ui/es/Grid/Grid";
 import Styles from "./style/OverviewOfWorkSchedulesPageStyle";
-import withStyles from "material-ui/es/styles/withStyles";
+import withStyles from "@material-ui/core/es/styles/withStyles";
 import OverviewOfWorkSchedules from "../../components/overview_of_work_schedules/OverviewOfWorkSchedules";
 
 class OverviewOfWorkSchedulesPage extends React.Component {
