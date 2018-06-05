@@ -6,8 +6,8 @@
  * Time: 11:35
  */
 
-include_once (__DIR__."../database/Database.php");
-include_once (__DIR__."BaseModel.php");
+include_once (__DIR__."/../database/Database.php");
+include_once (__DIR__."/BaseModel.php");
 
 class Attendance extends BaseModel
 {
@@ -165,7 +165,25 @@ class Attendance extends BaseModel
     }
 
     /**
-     * @return array
+     * @param int $userId
+     * @return Attendance
+     */
+    static function findLastByUserId($userId)
+    {
+        $query = "SELECT * FROM attendance WHERE user_id = :user_id ORDER BY active_from DESC LIMIT 1;";
+        $preparedQuery = Database::getConnection()->prepare($query);
+        $preparedQuery->bindValue(":user_id", $userId);
+        $preparedQuery->execute();
+        $result = $preparedQuery->fetch();
+
+        $instance = new self();
+        $instance->fill($result);
+
+        return $instance;
+    }
+
+    /**
+     * @return Attendance[]
      */
     static function findAll()
     {
@@ -186,9 +204,34 @@ class Attendance extends BaseModel
     }
 
     /**
+     * @param int $userId
+     * @return Attendance[]
+     */
+    static function findAllByUserId($userId)
+    {
+        $query = "SELECT * FROM attendance WHERE user_id = :user_id;";
+        $preparedQuery = Database::getConnection()->prepare($query);
+        $preparedQuery->bindValue(":user_id", $userId);
+        $preparedQuery->execute();
+        $result = $preparedQuery->fetchAll();
+
+        $arrayOfAttendances = array();
+
+        foreach ($result as $var) {
+            $instance = new self();
+            $instance->fill($var);
+            $arrayOfAttendances[] = $instance;
+
+        }
+        return $arrayOfAttendances;
+
+    }
+
+    /**
      * @param Attendance $attendance
      */
-    static function save($attendance){
+    static function save($attendance)
+    {
         $query = "insert into attendance (id, user_id, active_from, first_part_from, first_part_to, second_part_from, second_part_to ) value (:id, :user_id, :active_from, :first_part_from, :first_part_to, :second_part_from, :second_part_to ) on duplicate key update user_id = :user_id, active_from = :active_from, first_part_from = :first_part_from, first_part_to = :first_part_to, second_part_from = :second_part_from, second_part_to = :second_part_to ;";
         $preparedQuery = Database::getConnection()->prepare($query);
         $preparedQuery->bindValue(":id", $attendance->getId() == -1 ? null : $attendance->getId());

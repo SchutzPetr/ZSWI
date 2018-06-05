@@ -9,8 +9,9 @@
 
 include_once (__DIR__."/../database/Database.php");
 include_once (__DIR__."/BaseModel.php");
+include_once (__DIR__."/Attendance.php");
 
-class User extends BaseModel implements JsonSerializable
+class User extends BaseModel
 {
     /**
      * @var string
@@ -44,11 +45,15 @@ class User extends BaseModel implements JsonSerializable
      * @var string
      */
     private $mainWorkStation = "";
+    /**
+     * @var Attendance
+     */
+    private $attendance = null;
 
     /**
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -56,7 +61,7 @@ class User extends BaseModel implements JsonSerializable
     /**
      * @param string $name
      */
-    public function setName($name)
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
@@ -64,7 +69,7 @@ class User extends BaseModel implements JsonSerializable
     /**
      * @return string
      */
-    public function getLastName()
+    public function getLastName(): string
     {
         return $this->lastName;
     }
@@ -72,7 +77,7 @@ class User extends BaseModel implements JsonSerializable
     /**
      * @param string $lastName
      */
-    public function setLastName($lastName)
+    public function setLastName(string $lastName): void
     {
         $this->lastName = $lastName;
     }
@@ -80,7 +85,7 @@ class User extends BaseModel implements JsonSerializable
     /**
      * @return string
      */
-    public function getHonorificPrefix()
+    public function getHonorificPrefix(): string
     {
         return $this->honorificPrefix;
     }
@@ -88,7 +93,7 @@ class User extends BaseModel implements JsonSerializable
     /**
      * @param string $honorificPrefix
      */
-    public function setHonorificPrefix($honorificPrefix)
+    public function setHonorificPrefix(string $honorificPrefix): void
     {
         $this->honorificPrefix = $honorificPrefix;
     }
@@ -96,7 +101,7 @@ class User extends BaseModel implements JsonSerializable
     /**
      * @return string
      */
-    public function getHonorificSuffix()
+    public function getHonorificSuffix(): string
     {
         return $this->honorificSuffix;
     }
@@ -104,7 +109,7 @@ class User extends BaseModel implements JsonSerializable
     /**
      * @param string $honorificSuffix
      */
-    public function setHonorificSuffix($honorificSuffix)
+    public function setHonorificSuffix(string $honorificSuffix): void
     {
         $this->honorificSuffix = $honorificSuffix;
     }
@@ -112,7 +117,7 @@ class User extends BaseModel implements JsonSerializable
     /**
      * @return string
      */
-    public function getOrionLogin()
+    public function getOrionLogin(): string
     {
         return $this->orionLogin;
     }
@@ -120,7 +125,7 @@ class User extends BaseModel implements JsonSerializable
     /**
      * @param string $orionLogin
      */
-    public function setOrionLogin($orionLogin)
+    public function setOrionLogin(string $orionLogin): void
     {
         $this->orionLogin = $orionLogin;
     }
@@ -128,7 +133,7 @@ class User extends BaseModel implements JsonSerializable
     /**
      * @return string
      */
-    public function getAuthority()
+    public function getAuthority(): string
     {
         return $this->authority;
     }
@@ -136,7 +141,7 @@ class User extends BaseModel implements JsonSerializable
     /**
      * @param string $authority
      */
-    public function setAuthority($authority)
+    public function setAuthority(string $authority): void
     {
         $this->authority = $authority;
     }
@@ -144,7 +149,7 @@ class User extends BaseModel implements JsonSerializable
     /**
      * @return bool
      */
-    public function isActive()
+    public function isActive(): bool
     {
         return $this->active;
     }
@@ -152,7 +157,7 @@ class User extends BaseModel implements JsonSerializable
     /**
      * @param bool $active
      */
-    public function setActive($active)
+    public function setActive(bool $active): void
     {
         $this->active = $active;
     }
@@ -160,7 +165,7 @@ class User extends BaseModel implements JsonSerializable
     /**
      * @return string
      */
-    public function getMainWorkStation()
+    public function getMainWorkStation(): string
     {
         return $this->mainWorkStation;
     }
@@ -168,9 +173,25 @@ class User extends BaseModel implements JsonSerializable
     /**
      * @param string $mainWorkStation
      */
-    public function setMainWorkStation($mainWorkStation)
+    public function setMainWorkStation(string $mainWorkStation): void
     {
         $this->mainWorkStation = $mainWorkStation;
+    }
+
+    /**
+     * @return Attendance
+     */
+    public function getAttendance(): Attendance
+    {
+        return $this->attendance;
+    }
+
+    /**
+     * @param Attendance $attendance
+     */
+    public function setAttendance(Attendance $attendance): void
+    {
+        $this->attendance = $attendance;
     }
 
     /**
@@ -186,7 +207,7 @@ class User extends BaseModel implements JsonSerializable
      */
     private function fill($row)
     {
-        self::setId($row["id"]);
+        self::setId($row["user_id"]);
         self::setName($row["name"]);
         self::setLastName($row["last_name"]);
         self::setHonorificPrefix($row["honorific_prefix"]);
@@ -195,6 +216,27 @@ class User extends BaseModel implements JsonSerializable
         self::setAuthority($row["authority"]);
         self::setActive($row["is_active"]);
         self::setMainWorkStation($row["main_work_station"]);
+
+        /**
+         * $datetimeFormat = 'Y-m-d H:i:s';
+
+        $date = new \DateTime();
+        // If you must have use time zones
+        // $date = new \DateTime('now', new \DateTimeZone('Europe/Helsinki'));
+        $date->setTimestamp($timestamp);
+         */
+
+        //$attendance init
+        $attendance = new Attendance();
+        $attendance->setId($row["attendance_id"]);
+        $attendance->setUserId($row["user_id"]);
+        $attendance->setActiveFrom($row["active_from"]);
+        $attendance->setFirstPartFrom($row["first_part_from"]);
+        $attendance->setFirstPartTo($row["first_part_to"]);
+        $attendance->setSecondPartFrom($row["second_part_from"]);
+        $attendance->setSecondPartTo($row["second_part_to"]);
+
+        self::setAttendance($attendance);
     }
 
     /**
@@ -203,7 +245,7 @@ class User extends BaseModel implements JsonSerializable
      */
     static function findById($id)
     {
-        $query = "SELECT * FROM user WHERE id = :id;";
+        $query = "SELECT *, user.id as user_id, a.id as attendance_id FROM user JOIN attendance a on user.id = a.user_id WHERE user.id = :id;";
         $preparedQuery = Database::getConnection()->prepare($query);
         $preparedQuery->bindValue(":id", $id);
         $preparedQuery->execute();
@@ -245,7 +287,7 @@ class User extends BaseModel implements JsonSerializable
      */
     static function findAll()
     {
-        $query = "SELECT * FROM user;";
+        $query = "SELECT *, user.id as user_id, a.id as attendance_id FROM user JOIN attendance a on user.id = a.user_id;";
         $preparedQuery = Database::getConnection()->prepare($query);
         $preparedQuery->execute();
         $result = $preparedQuery->fetchAll();

@@ -1,4 +1,5 @@
 import BaseEntity from "./BaseEntity";
+import moment from "moment";
 
 class Attendance extends BaseEntity{
 
@@ -67,6 +68,36 @@ class Attendance extends BaseEntity{
 
     set secondPartTo(value) {
         this._secondPartTo = value;
+    }
+
+    static map(attendanceDTO) {
+        if (attendanceDTO instanceof Array) {
+            return attendanceDTO.map(value => this.map(value)) || [];
+        }
+
+        let attendance = new Attendance();
+
+        attendance.id = attendanceDTO.id;
+        attendance.userId = attendanceDTO.userId;
+        attendance.activeFrom = moment(attendanceDTO.activeFrom, "YYYY-MM-DD HH:mm:ss").toDate();
+        attendance.firstPartFrom = moment(attendanceDTO.firstPartFrom, "HH:mm:ss").toDate();
+        attendance.firstPartTo = moment(attendanceDTO.firstPartTo, "HH:mm:ss").toDate();
+        attendance.secondPartFrom = moment(attendanceDTO.secondPartFrom, "HH:mm:ss").toDate();
+        attendance.secondPartTo = moment(attendanceDTO.secondPartTo, "HH:mm:ss").toDate();
+
+        return attendance;
+    }
+
+    toJSON(){
+        let attendanceDTO = super.toJSON();
+
+        attendanceDTO.activeFrom = moment(this.activeFrom, "YYYY-MM-DD HH:mm:ss").format("YYYY-MM-DD HH:mm:ss");
+        attendanceDTO.firstPartFrom = moment(this.firstPartFrom).format("HH:mm:ss");
+        attendanceDTO.firstPartTo = moment(this.firstPartTo).format("HH:mm:ss");
+        attendanceDTO.secondPartFrom = moment(this.secondPartFrom).format("HH:mm:ss");
+        attendanceDTO.secondPartTo = moment(this.secondPartTo).format("HH:mm:ss");
+
+        return attendanceDTO;
     }
 }
 
