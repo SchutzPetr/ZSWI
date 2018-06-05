@@ -125,15 +125,11 @@ class User extends BaseEntity{
 
     static map(userDTO) {
         if (userDTO instanceof Array) {
-            return userDTO.map(value => {
-                let user = Object.assign(new User(), value);
-                user.attendance = Object.assign(new Attendance(), value.attendance);
-
-                return user;
-            }) || [];
+            return userDTO.map(value => this.map(value)) || [];
         }
+
         let user = Object.assign(new User(), userDTO);
-        user.attendance = Object.assign(new Attendance(), userDTO.attendance);
+        user.attendance = Attendance.map(userDTO.attendance);
 
         return user;
     }
