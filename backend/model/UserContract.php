@@ -165,7 +165,8 @@ class UserContract extends BaseModel
         return $arrayOfUserContracts;
     }
 
-    static function save($userContract){
+    static function save($userContract)
+    {
         $query = "insert into user_contract (id, work_station, obligation, active_from, active_to) value (:id, :work_station, :obligation, :active_from, :active_to) on duplicate key update work_station = :work_station, obligation = :obligation, active_from = :active_from, active_to = :active_to;";
         $preparedQuery = Database::getConnection()->prepare($query);
         $preparedQuery->bindValue(":id", $userContract->getId() == -1 ? null : $userContract->getId());
@@ -177,5 +178,19 @@ class UserContract extends BaseModel
         $preparedQuery->execute();
     }
 
+    /**
+     * Specify data which should be serialized to JSON
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     * @since 5.4.0
+     */
+    public function jsonSerialize()
+    {
+        $array = array();
+        $array["id"] = $this->getId();
+        $array = array_merge($array, get_object_vars($this));
+        return $array;
+    }
 
 }
