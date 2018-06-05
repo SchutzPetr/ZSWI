@@ -1,9 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {withStyles} from "material-ui/styles";
+import {withStyles} from "@material-ui/core/styles/index";
 import Styles from "./style/UserDetailStyle";
-import LinearProgress from "material-ui/es/Progress/LinearProgress";
-import {Typography, Paper, CardContent, Card, CardHeader} from "material-ui";
+import {Card, CardContent, CardHeader, Typography} from "@material-ui/core/index";
 import User from "../../entity/User";
 import Authentication from "./../../Authentication";
 

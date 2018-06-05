@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Checkbox, TableCell, TableHead, TableRow} from "material-ui";
-import {withStyles} from "material-ui/styles/index";
+import {Checkbox, TableCell, TableHead, TableRow} from "@material-ui/core/index";
+import {withStyles} from "@material-ui/core/styles/index";
 import Styles from "./../style/EnhancedTableHeadStyle";
 
 const columnDataNew = [

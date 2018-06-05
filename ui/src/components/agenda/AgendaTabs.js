@@ -1,11 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {withStyles} from "material-ui/styles";
+import {withStyles} from "@material-ui/core/styles/index";
 import moment from "moment";
-import {Button, LinearProgress, Paper, Tab, Tabs} from "material-ui";
+import {Button, LinearProgress, Paper, Tab, Tabs} from "@material-ui/core/index";
 import Agenda from "./Agenda";
 import Utils from "../../other/Utils";
-import TimeSheet from "../../entity/TimeSheet";
 import UserTimeSheets from "../../entity/UserTimeSheets";
 
 

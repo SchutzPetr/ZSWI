@@ -1,16 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {withStyles} from 'material-ui/styles';
-import Table, {TableBody, TableCell, TablePagination, TableRow,} from 'material-ui/Table';
-import Paper from 'material-ui/Paper';
-import Checkbox from 'material-ui/Checkbox';
+import {withStyles} from '@material-ui/core/styles/index';
+import {
+    Checkbox,
+    IconButton,
+    Paper,
+    Table,
+    TableBody,
+    TableCell,
+    TablePagination,
+    TableRow,
+    Tooltip
+} from '@material-ui/core/index';
 import Styles from "./style/HolidayTableStyle";
 import EnhancedTableToolbar from "./components/EnhancedTableToolbar";
 import EnhancedTableHead from "./components/EnhancedTableHead";
 import HolidayRowRecord from "../../entity/HolidayRowRecord";
 import moment from "moment/moment";
-import {IconButton, Tooltip} from "material-ui";
-import EditIcon from "material-ui-icons/es/Edit";
+import EditIcon from "@material-ui/icons/es/Edit";
 
 class HolidayTable extends React.Component {
     constructor(props, context) {

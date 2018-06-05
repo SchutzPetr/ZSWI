@@ -1,6 +1,9 @@
-class Project {
+import BaseEntity from "./BaseEntity";
+
+class Project extends BaseEntity{
 
     constructor() {
+        super();
         this._id = -1;
         this._name = "";
         this._shortName = "";

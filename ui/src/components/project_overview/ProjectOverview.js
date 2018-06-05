@@ -1,14 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
-
 import Styles from "./style/ProjectOverviewStyle"
-import {withStyles} from "material-ui/styles/index";
-import {IconButton, Paper, Tooltip, Typography} from "material-ui";
+import {withStyles} from "@material-ui/core/styles/index";
+import {IconButton, Paper, Tooltip, Typography} from "@material-ui/core/index";
 import ProjectSelect from "../autocomplete/SingleSelect";
 import Project from "../../entity/Project";
 import Suggestion from "../autocomplete/entity/Suggestion";
-import AddIcon from "material-ui-icons/es/Add";
-import EditIcon from "material-ui-icons/es/Edit";
+import AddIcon from "@material-ui/icons/es/Add";
+import EditIcon from "@material-ui/icons/es/Edit";
 import ProjectCreateModal from "../project_create_modal/ProjectCreateModal"
 
 class ProjectOverview extends React.Component {

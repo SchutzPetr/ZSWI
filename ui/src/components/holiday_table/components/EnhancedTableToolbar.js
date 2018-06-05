@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import {withStyles} from 'material-ui/styles';
-import {IconButton, Toolbar, Tooltip, Typography} from "material-ui";
+import {withStyles} from '@material-ui/core/styles/index';
+import {IconButton, Toolbar, Tooltip, Typography} from "@material-ui/core/index";
 import Styles from "./../style/EnhancedTableToolbarStyle";
-import DeleteIcon from "material-ui-icons/es/Delete";
-import AddIcon from "material-ui-icons/es/Add";
+import DeleteIcon from "@material-ui/icons/es/Delete";
+import AddIcon from "@material-ui/icons/es/Add";
 import HolidayCreateModal from "../../holiday_create_modal/HolidayCreateModal";
 
 class EnhancedTableToolbar extends React.Component {

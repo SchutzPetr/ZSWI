@@ -1,11 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {withStyles} from 'material-ui/styles';
+import {withStyles} from '@material-ui/core/styles/index';
 import Styles from "./style/HolidayCreateModalStyle";
-import Button from 'material-ui/Button';
-import Dialog, {DialogActions, DialogContent, DialogContentText, DialogTitle,} from 'material-ui/Dialog';
+import {
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    FormControl,
+    InputLabel,
+    MenuItem,
+    Select
+} from '@material-ui/core/index';
 import {DatePicker} from "material-ui-pickers";
-import {FormControl, InputLabel, MenuItem, Select} from "material-ui";
 
 class HolidayCreateModal extends React.Component {
     state = {

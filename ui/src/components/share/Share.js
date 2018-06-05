@@ -1,23 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {withStyles} from "material-ui/styles";
+import {withStyles} from "@material-ui/core/styles/index";
 import Styles from "./style/ShareStyle";
-import {
-    Button,
-    Card,
-    CardContent,
-    CardHeader,
-    IconButton,
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableRow,
-    Typography
-} from "material-ui";
-import AccountCircle from "material-ui-icons/es/AccountCircle";
-import Forward from "material-ui-icons/es/Forward";
-import ShareIcon from "material-ui-icons/es/Share";
+import {Button, Card, CardContent, CardHeader} from "@material-ui/core/index";
+import ShareIcon from "@material-ui/icons/es/Share";
 import UserMultipleSelect from "../autocomplete/UserMultipleSelect";
 import ProjectSelect from "../autocomplete/SingleSelect";
 

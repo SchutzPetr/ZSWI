@@ -1,9 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {withStyles} from "material-ui/styles";
+import {withStyles} from "@material-ui/core/styles/index";
 import Styles from "./style/LinearProgressCenteredStyle";
-import LinearProgress from "material-ui/es/Progress/LinearProgress";
-import Paper from "material-ui/es/Paper/Paper";
+import {LinearProgress, Paper} from "@material-ui/core/index";
 
 class LinearProgressCentered extends React.Component {
 

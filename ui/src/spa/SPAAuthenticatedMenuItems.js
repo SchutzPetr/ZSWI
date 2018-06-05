@@ -1,23 +1,18 @@
 // This file is shared across the demos.
 
 import React from "react";
-import {ListItem, ListItemIcon, ListItemText} from "material-ui/List";
-import InboxIcon from "material-ui-icons/MoveToInbox";
-import DraftsIcon from "material-ui-icons/Drafts";
-import StarIcon from "material-ui-icons/Star";
-import SendIcon from "material-ui-icons/Send";
-import MailIcon from "material-ui-icons/Mail";
-import DeleteIcon from "material-ui-icons/Delete";
-import ReportIcon from "material-ui-icons/Report";
-import Home from "material-ui-icons/es/Home";
+import {ListItem, ListItemIcon, ListItemText, Divider} from "@material-ui/core/index";
+import MailIcon from "@material-ui/icons/Mail";
+import DeleteIcon from "@material-ui/icons/Delete";
+import ReportIcon from "@material-ui/icons/Report";
+import Home from "@material-ui/icons/es/Home";
 import {Link} from "react-router-dom";
-import ViewAgenda from "material-ui-icons/es/ViewAgenda";
-import Divider from "material-ui/es/Divider/Divider";
-import Share from "material-ui-icons/es/Share";
-import EventBusy from "material-ui-icons/es/EventBusy";
-import Settings from "material-ui-icons/es/Settings";
-import SupervisorAccount from "material-ui-icons/es/SupervisorAccount";
-import Work from "material-ui-icons/es/Work";
+import ViewAgenda from "@material-ui/icons/es/ViewAgenda";
+import Share from "@material-ui/icons/es/Share";
+import EventBusy from "@material-ui/icons/es/EventBusy";
+import Settings from "@material-ui/icons/es/Settings";
+import SupervisorAccount from "@material-ui/icons/es/SupervisorAccount";
+import Work from "@material-ui/icons/es/Work";
 
 
 export let secretaryMenuItems = (classes) => {

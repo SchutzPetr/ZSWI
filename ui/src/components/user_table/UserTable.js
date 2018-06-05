@@ -1,13 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {withStyles} from 'material-ui/styles';
-import Table, {TableBody, TableCell, TablePagination, TableRow,} from 'material-ui/Table';
-import Paper from 'material-ui/Paper';
+import {withStyles} from '@material-ui/core/styles/index';
 import Styles from "./style/UserTableStyle";
 import EnhancedTableToolbar from "./components/EnhancedUserTableToolbar";
 import EnhancedTableHead from "./components/EnhancedUserTableHead";
-import {IconButton, Tooltip} from "material-ui";
-import EditIcon from "material-ui-icons/es/Edit";
+import {
+    IconButton,
+    Paper,
+    Table,
+    TableBody,
+    TableCell,
+    TablePagination,
+    TableRow,
+    Tooltip
+} from "@material-ui/core/index";
+import EditIcon from "@material-ui/icons/es/Edit";
 import User from "../../entity/User";
 
 class UserTable extends React.Component {

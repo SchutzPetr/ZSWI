@@ -1,30 +1,24 @@
 import React from 'react';
 import PropTypes from "prop-types";
-import {withStyles} from "material-ui/styles";
-import Typography from "material-ui/Typography";
-import Modal from "material-ui/Modal";
+import {withStyles} from "@material-ui/core/styles/index";
+import Typography from "@material-ui/core/Typography";
 
 import {
     Button,
     Dialog,
     DialogActions,
     DialogContent,
-    DialogContentText,
-    DialogTitle, ExpansionPanel, ExpansionPanelDetails,
+    DialogTitle,
+    ExpansionPanel,
+    ExpansionPanelDetails,
     ExpansionPanelSummary,
-    FormControl,
-    FormControlLabel,
-    FormGroup,
-    FormLabel, IconButton, Snackbar,
-    Switch,
-    TextField
-} from "material-ui";
+    IconButton,
+    Snackbar
+} from "@material-ui/core/index";
 
 import {TimePicker} from 'material-ui-pickers';
-import ExpandMoreIcon from "material-ui-icons/ExpandMore";
-import CloseIcon from 'material-ui-icons/Close';
-import DayTimeSheet from "../../entity/DayTimeSheet";
-import moment from "moment";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import CloseIcon from '@material-ui/icons/Close';
 
 
 function getModalStyle() {
@@ -60,7 +54,7 @@ class AgendaEditModal extends React.Component {
         this.state = AgendaEditModal.getDerivedStateFromProps(props);
     }
 
-    static getDerivedStateFromProps(nextProps, prevState){
+    static getDerivedStateFromProps(nextProps, prevState) {
         return {
             expanded: null,
             snackbar: false,
@@ -89,7 +83,7 @@ class AgendaEditModal extends React.Component {
         this.setState({snackbar: false});
     };
 
-    _handleSave = () =>{
+    _handleSave = () => {
         this.setState({
             expanded: null
         });
@@ -260,7 +254,8 @@ class AgendaEditModal extends React.Component {
                     <ExpansionPanel expanded={this.state.expanded === 'panel3'}
                                     onChange={this.handleChangePanel('panel3')}>
                         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
-                            <Typography className={classes.heading}>Dovolená, státní svátek, služební cesta, atd...</Typography>
+                            <Typography className={classes.heading}>Dovolená, státní svátek, služební cesta,
+                                atd...</Typography>
                         </ExpansionPanelSummary>
                         <ExpansionPanelDetails>
                             <Typography>

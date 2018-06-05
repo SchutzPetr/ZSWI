@@ -1,14 +1,18 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {withStyles} from "material-ui/styles";
-import Typography from "material-ui/Typography";
-import Modal from "material-ui/Modal";
+import {withStyles} from "@material-ui/core/styles/index";
 import {
-    Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, FormControlLabel,
-    FormGroup, FormLabel,
-    Switch,
-    TextField
-} from "material-ui";
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    FormControl,
+    FormControlLabel,
+    FormGroup,
+    FormLabel,
+    Switch
+} from "@material-ui/core/index";
 
 
 function getModalStyle() {

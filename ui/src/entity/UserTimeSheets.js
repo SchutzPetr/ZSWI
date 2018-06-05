@@ -1,6 +1,9 @@
-class UserTimeSheets {
+import BaseEntity from "./BaseEntity";
+
+class UserTimeSheets extends BaseEntity{
 
     constructor(user){
+        super();
         //map(month, TimeSheet)
         //key = month number
         this._user = user;

@@ -3,12 +3,12 @@ import PropTypes from "prop-types";
 
 import Styles from "./style/LoginStyle"
 import classNames from 'classnames';
-import {withStyles} from "material-ui/styles/index";
-import {Button, FormControl, IconButton, Input, InputAdornment, InputLabel, Paper} from "material-ui";
-import VisibilityOff from "material-ui-icons/es/VisibilityOff";
-import Visibility from "material-ui-icons/es/Visibility";
-import AccountCircle from "material-ui-icons/es/AccountCircle";
-import NavigateNext from "material-ui-icons/es/NavigateNext";
+import {withStyles} from "@material-ui/core/styles/index";
+import {Button, FormControl, IconButton, Input, InputAdornment, InputLabel, Paper} from "@material-ui/core/index";
+import VisibilityOff from "@material-ui/icons/es/VisibilityOff";
+import Visibility from "@material-ui/icons/es/Visibility";
+import AccountCircle from "@material-ui/icons/es/AccountCircle";
+import NavigateNext from "@material-ui/icons/es/NavigateNext";
 
 class Login extends React.Component {
 

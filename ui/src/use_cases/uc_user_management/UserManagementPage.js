@@ -2,11 +2,10 @@ import React from "react";
 import PropTypes from "prop-types";
 import Calls from "../../Calls";
 import LinearProgressCentered from "../../components/LinearProgressCentered";
-import Grid from "material-ui/es/Grid/Grid";
+import Grid from "@material-ui/core/es/Grid/Grid";
 import Styles from "./style/UserManagementPageStyle";
-import withStyles from "material-ui/es/styles/withStyles";
+import withStyles from "@material-ui/core/es/styles/withStyles";
 import UserCreateModal from "../../components/user_create_modal/UserCreateModal";
-import {Button} from "material-ui";
 import UserTable from "../../components/user_table/UserTable";
 import User from "../../entity/User";
 

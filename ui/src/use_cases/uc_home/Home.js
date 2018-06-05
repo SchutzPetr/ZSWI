@@ -3,12 +3,12 @@ import PropTypes from "prop-types";
 import AgendaTabs from "../../components/agenda/AgendaTabs";
 import Calls from "../../Calls";
 import LinearProgressCentered from "../../components/LinearProgressCentered";
-import Grid from "material-ui/es/Grid/Grid";
 import UserDetail from "../../components/user_detail/UserDetail";
 import Styles from "./style/HomeStyle";
-import withStyles from "material-ui/es/styles/withStyles";
+import withStyles from "@material-ui/core/es/styles/withStyles";
 import UserProject from "../../components/user_projects/UserProject";
 import Authentication from "./../../Authentication";
+import {Grid} from "@material-ui/core/index";
 
 
 class Home extends React.Component {

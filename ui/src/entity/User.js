@@ -1,6 +1,10 @@
-class User {
+import Attendance from "./Attendance";
+import BaseEntity from "./BaseEntity";
+
+class User extends BaseEntity{
 
     constructor() {
+        super();
         this._id = -1;
         this._name = "";
         this._lastName = "";
@@ -12,6 +16,7 @@ class User {
         this._active = true;
         this._mainWorkStation = "KIV";
         this._timeJob = 1;
+        this._attendance = {};
     }
 
     get id() {
@@ -102,6 +107,14 @@ class User {
         this._timeJob = value;
     }
 
+    get attendance() {
+        return this._attendance;
+    }
+
+    set attendance(value) {
+        this._attendance = value;
+    }
+
     get displayFullName() {
         return `${this._honorificPrefix} ${this._name} ${this._lastName} ${this._honorificSuffix}`;
     }
@@ -112,27 +125,17 @@ class User {
 
     static map(userDTO) {
         if (userDTO instanceof Array) {
-            return userDTO.map(value => Object.assign(new User(), value)) || [];
+            return userDTO.map(value => {
+                let user = Object.assign(new User(), value);
+                user.attendance = Object.assign(new Attendance(), value.attendance);
+
+                return user;
+            }) || [];
         }
-        return Object.assign(new User(), userDTO);
-    }
+        let user = Object.assign(new User(), userDTO);
+        user.attendance = Object.assign(new Attendance(), userDTO.attendance);
 
-    toJSON() {
-        let obj = {};
-
-        for (let key in this) {
-            if (!this.hasOwnProperty(key)) {
-                continue;
-            }
-            if (key[0] === '_') {
-                obj[key.substr(1)] = this[key];
-            } else {
-                obj[key] = this[key];
-            }
-        }
-
-        return JSON.stringify(obj);
-
+        return user;
     }
 }
 

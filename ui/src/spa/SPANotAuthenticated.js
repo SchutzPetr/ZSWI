@@ -2,10 +2,11 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import Styles from "./style/SPANotAuthenticatedStyle"
-import {withStyles} from "material-ui/styles/index";
-import {AppBar, Button, Toolbar, Typography} from "material-ui";
+import {withStyles} from "@material-ui/core/styles/index";
 import {Link, Route} from "react-router-dom";
 import LoginPage from "../use_cases/uc_login/LoginPage";
+import {AppBar, Button, Toolbar, Typography} from "@material-ui/core/index";
+
 
 class SPANotAuthenticated extends React.Component {
 

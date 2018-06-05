@@ -1,9 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Button from 'material-ui/Button';
-import {withStyles} from 'material-ui/styles';
-import Dialog, {DialogActions, DialogContent, DialogTitle} from 'material-ui/Dialog';
-import {FormGroup} from "material-ui";
+import {withStyles} from '@material-ui/core/styles/index';
+import {Button, Dialog, DialogActions, DialogContent, DialogTitle, FormGroup} from '@material-ui/core/index';
 import Calls from "../../Calls";
 import Styles from "./style/UserAssignProjectModalStyle";
 import Project from "../../entity/Project";
