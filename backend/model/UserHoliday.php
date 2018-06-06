@@ -101,6 +101,42 @@ class UserHoliday extends BaseModel
         return $instance;
     }
 
+	/**
+	 * @param int $id
+	 * @return UserHoliday
+	 */
+	static function findByUserId($id){
+		$query = "SELECT * FROM user_holiday WHERE user_id = :id;";
+		$preparedQuery = Database::getConnection()->prepare($query);
+		$preparedQuery->bindValue(":id", $id);
+		$preparedQuery->execute();
+		$result = $preparedQuery->fetch();
+
+		$instance = new self();
+		$instance->fill($result);
+
+		return $instance;
+	}
+
+	/**
+	 * @param int $id
+	 * @param int $year
+	 * @return UserHoliday
+	 */
+	static function findAllByUserIdAndYear($id, $year){
+		$query = "SELECT * FROM user_holiday WHERE user_id = :id AND YEAR(day) =:year;";
+		$preparedQuery = Database::getConnection()->prepare($query);
+		$preparedQuery->bindValue(":id", $id);
+		$preparedQuery->bindValue(":year", $year);
+		$preparedQuery->execute();
+		$result = $preparedQuery->fetch();
+
+		$instance = new self();
+		$instance->fill($result);
+
+		return $instance;
+	}
+
     /**
      * @return array
      */
