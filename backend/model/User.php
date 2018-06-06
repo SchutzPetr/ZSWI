@@ -7,9 +7,9 @@
  * Time: 21:57
  */
 
-include_once (__DIR__."/../database/Database.php");
-include_once (__DIR__."/BaseModel.php");
-include_once (__DIR__."/Attendance.php");
+include_once(__DIR__ . "/../database/Database.php");
+include_once(__DIR__ . "/BaseModel.php");
+include_once(__DIR__ . "/Attendance.php");
 
 class User extends BaseModel
 {
@@ -217,15 +217,6 @@ class User extends BaseModel
         self::setActive($row["is_active"]);
         self::setMainWorkStation($row["main_work_station"]);
 
-        /**
-         * $datetimeFormat = 'Y-m-d H:i:s';
-
-        $date = new \DateTime();
-        // If you must have use time zones
-        // $date = new \DateTime('now', new \DateTimeZone('Europe/Helsinki'));
-        $date->setTimestamp($timestamp);
-         */
-
         //$attendance init
         $attendance = new Attendance();
         $attendance->setId($row["attendance_id"]);
@@ -245,7 +236,10 @@ class User extends BaseModel
      */
     static function findById($id)
     {
-        $query = "SELECT *, user.id as user_id, a.id as attendance_id FROM user JOIN attendance a on user.id = a.user_id WHERE user.id = :id;";
+        $query = "SELECT u.*, a1.*, u.id as user_id, a1.id as attendance_id FROM user u JOIN attendance a1 
+                  ON (u.id = a1.user_id) LEFT OUTER JOIN attendance a2 ON (u.id = a2.user_id AND 
+                  (a1.active_from > a2.active_from OR a1.active_from = a2.active_from AND a1.id < a2.id)) 
+                  WHERE a2.id IS NULL AND u.id = :user_id;";
         $preparedQuery = Database::getConnection()->prepare($query);
         $preparedQuery->bindValue(":id", $id);
         $preparedQuery->execute();
@@ -287,7 +281,9 @@ class User extends BaseModel
      */
     static function findAll()
     {
-        $query = "SELECT *, user.id as user_id, a.id as attendance_id FROM user JOIN attendance a on user.id = a.user_id;";
+        $query = "SELECT u.*, a1.*, u.id as user_id, a1.id as attendance_id FROM user u JOIN attendance a1 
+                  ON (u.id = a1.user_id) LEFT OUTER JOIN attendance a2 ON (u.id = a2.user_id AND 
+                  (a1.active_from > a2.active_from OR a1.active_from = a2.active_from AND a1.id < a2.id)) WHERE a2.id IS NULL;";
         $preparedQuery = Database::getConnection()->prepare($query);
         $preparedQuery->execute();
         $result = $preparedQuery->fetchAll();
