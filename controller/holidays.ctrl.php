@@ -17,7 +17,7 @@ $dbObject = new DataBase();
  */
 if(isset($_GET["/holidays/add"])){
 	$obj = json_decode($_GET["/holidays/add"], false);
-	//if some holiday exist
+	//if some usersholiday exist
 	if(!$dbObject->getHolidayByDay($obj->day)){
 		if($dbObject->addHolidays($obj->day, $obj->nameHolidays)){
 			echo json_encode($dbObject->getHolidayByDay($obj->day));

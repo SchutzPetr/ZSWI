@@ -18,8 +18,8 @@ if(isset($_GET["/contract/getById"])){
 	$obj = json_decode($_GET["/contract/getById"], false);
 	$array = $dbObject->getUserContractById($obj->userId);
 	echo json_encode($array);
-
-} /***
+}
+/***
  * prida novy contract do DB
  * jestli jiz nejaky contract existuje - "uzavri" ho se stejnym datumem
  * ocekava objekt z userId, nts (double cislo zamestnani na ntis), kiv (double cislo zamestnani na kivu),

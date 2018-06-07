@@ -125,6 +125,8 @@ class Notification extends BaseModel
         return $instance;
     }
 
+
+
     /**
      * @return array
      */
@@ -145,6 +147,26 @@ class Notification extends BaseModel
         }
         return $arrayOfNotifications;
     }
+
+	/**
+	 * @return array
+	 */
+	static function findAllUnread(){
+		$query = "SELECT * FROM notification WHERE shown=0;";
+		$preparedQuery = Database::getConnection()->prepare($query);
+		$preparedQuery->execute();
+		$result = $preparedQuery->fetchAll();
+
+		$arrayOfNotifications = array();
+
+		foreach ($result as $var) {
+			$instance = new self();
+			$instance->fill($var);
+			$arrayOfNotifications[] = $instance;
+
+		}
+		return $arrayOfNotifications;
+	}
 
     static function save($notification)
     {
