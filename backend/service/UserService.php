@@ -29,6 +29,19 @@ class UserService extends Service
     }
 
     /**
+     * @param $id integer
+     * @return array
+     * @throws PermissionException
+     */
+    public static function findByProjectId($id){
+        if(!Permission::hasPermission(self::getUserFromContext(), "USER.FIND")){
+            throw new PermissionException();
+        }
+
+        return User::findByProjectId($id);
+    }
+
+    /**
      * @return User[]
      * @throws PermissionException
      */
