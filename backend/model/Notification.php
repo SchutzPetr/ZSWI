@@ -6,8 +6,8 @@
  * Time: 11:32
  */
 
-include_once (__DIR__."../database/Database.php");
-include_once (__DIR__."BaseModel.php");
+include_once (__DIR__."/../database/Database.php");
+include_once (__DIR__."/BaseModel.php");
 
 class Notification extends BaseModel
 {
