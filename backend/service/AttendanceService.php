@@ -43,6 +43,22 @@ class AttendanceService extends Service
     }
 
     /**
+     * @param $userId integer
+     * @param $day integer
+     * @param $month integer
+     * @param $year integer
+     * @return Attendance
+     * @throws PermissionException
+     */
+    public static function findByUserIdAndDate($userId, $day, $month, $year){
+        if(!Permission::hasPermission(self::getUserFromContext(), "ATTENDANCE.FIND")){
+            throw new PermissionException();
+        }
+
+        return Attendance::findByUserIdAndDate($userId, $day, $month, $year);
+    }
+
+    /**
      * @param $id integer
      * @return Attendance
      * @throws PermissionException

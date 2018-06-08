@@ -8,7 +8,7 @@
 
 include_once (__DIR__."../exception/PermissionException.php");
 include_once (__DIR__."../util/Permission.php");
-include_once (__DIR__."Service.php");
+include_once (__DIR__."/Service.php");
 include_once (__DIR__."../model/Project.php");
 include_once (__DIR__."./../vendor/netresearch/jsonmapper/src/JsonMapper.php");
 

@@ -228,6 +228,28 @@ class Attendance extends BaseModel
     }
 
     /**
+     * @param $userId integer
+     * @param $day integer
+     * @param $month integer
+     * @param $year integer
+     * @return Attendance
+     */
+    public static function findByUserIdAndDate($userId, $day, $month, $year){
+        $query = "SELECT * from attendance WHERE user_id = :user_id AND active_from <= :active_from ORDER BY active_from DESC LIMIT 1;";
+
+        $preparedQuery = Database::getConnection()->prepare($query);
+        $preparedQuery->bindValue(":user_id", $userId);
+        $preparedQuery->bindValue(":active_from", sprintf("%'.04d-%'.02d-%'.02d", $year, $month, $day));
+        $preparedQuery->execute();
+        $result = $preparedQuery->fetch();
+
+        $instance = new self();
+        $instance->fill($result);
+
+        return $instance;
+    }
+
+    /**
      * @param Attendance $attendance
      */
     static function save($attendance)

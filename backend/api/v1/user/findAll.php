@@ -13,7 +13,6 @@ header("Access-Control-Allow-Methods: GET");
 
 include_once (__DIR__."/../FatalErrorHandler.php");
 include_once (__DIR__."/../../../service/UserService.php");
-include_once (__DIR__."/../../../service/UserService.php");
 
 try {
     $users = UserService::findAll();

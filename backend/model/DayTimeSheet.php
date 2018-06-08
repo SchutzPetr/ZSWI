@@ -6,8 +6,8 @@
  * Time: 23:18
  */
 
-include_once (__DIR__."../database/Database.php");
-include_once (__DIR__."BaseModel.php");
+include_once (__DIR__."/../database/Database.php");
+include_once (__DIR__."/BaseModel.php");
 
 class DayTimeSheet extends BaseModel
 {
@@ -16,7 +16,7 @@ class DayTimeSheet extends BaseModel
      */
     private $userId = -1;
     /**
-     * @var DateTime
+     * @var string
      */
     private $date = "";
     /**
@@ -24,19 +24,19 @@ class DayTimeSheet extends BaseModel
      */
     private $dayType = "";
     /**
-     * @var DateTime
+     * @var string
      */
     private $firstPartFrom = "";
     /**
-     * @var DateTime
+     * @var string
      */
     private $firstPartTo = "";
     /**
-     * @var DateTime
+     * @var string
      */
     private $secondPartFrom = "";
     /**
-     * @var DateTime
+     * @var string
      */
     private $secondPartTo = "";
 
@@ -58,7 +58,7 @@ class DayTimeSheet extends BaseModel
     }
 
     /**
-     * @return DateTime
+     * @return string
      */
     public function getDate()
     {
@@ -66,7 +66,7 @@ class DayTimeSheet extends BaseModel
     }
 
     /**
-     * @param DateTime $date
+     * @param string $date
      */
     public function setDate($date)
     {
@@ -90,7 +90,7 @@ class DayTimeSheet extends BaseModel
     }
 
     /**
-     * @return DateTime
+     * @return string
      */
     public function getFirstPartFrom()
     {
@@ -98,7 +98,7 @@ class DayTimeSheet extends BaseModel
     }
 
     /**
-     * @param DateTime $firstPartFrom
+     * @param string $firstPartFrom
      */
     public function setFirstPartFrom($firstPartFrom)
     {
@@ -106,7 +106,7 @@ class DayTimeSheet extends BaseModel
     }
 
     /**
-     * @return DateTime
+     * @return string
      */
     public function getFirstPartTo()
     {
@@ -114,7 +114,7 @@ class DayTimeSheet extends BaseModel
     }
 
     /**
-     * @param DateTime $firstPartTo
+     * @param string $firstPartTo
      */
     public function setFirstPartTo($firstPartTo)
     {
@@ -122,7 +122,7 @@ class DayTimeSheet extends BaseModel
     }
 
     /**
-     * @return DateTime
+     * @return string
      */
     public function getSecondPartFrom()
     {
@@ -130,7 +130,7 @@ class DayTimeSheet extends BaseModel
     }
 
     /**
-     * @param DateTime $secondPartFrom
+     * @param string $secondPartFrom
      */
     public function setSecondPartFrom($secondPartFrom)
     {
@@ -138,7 +138,7 @@ class DayTimeSheet extends BaseModel
     }
 
     /**
-     * @return DateTime
+     * @return string
      */
     public function getSecondPartTo()
     {
@@ -146,7 +146,7 @@ class DayTimeSheet extends BaseModel
     }
 
     /**
-     * @param DateTime $secondPartTo
+     * @param string $secondPartTo
      */
     public function setSecondPartTo($secondPartTo)
     {
@@ -193,6 +193,33 @@ class DayTimeSheet extends BaseModel
     {
         $query = "SELECT * FROM day_time_sheet;";
         $preparedQuery = Database::getConnection()->prepare($query);
+        $preparedQuery->execute();
+        $result = $preparedQuery->fetchAll();
+
+        $arrayOfDayTimeSheets = array();
+
+        foreach ($result as $var) {
+            $instance = new self();
+            $instance->fill($var);
+            $arrayOfDayTimeSheets[] = $instance;
+
+        }
+        return $arrayOfDayTimeSheets;
+    }
+
+    /**
+     * @param $userId integer
+     * @param $month integer
+     * @param $year integer
+     * @return DayTimeSheet[]
+     */
+    static function findAllByUserIdAndYearAndMonth($userId, $month, $year)
+    {
+        $query = "SELECT * FROM day_time_sheet WHERE user_id = :user_id and YEAR(date) = :year AND MONTH(date) = :month;";
+        $preparedQuery = Database::getConnection()->prepare($query);
+        $preparedQuery->bindValue(":user_id", $userId);
+        $preparedQuery->bindValue(":year", $month);
+        $preparedQuery->bindValue(":month", $year);
         $preparedQuery->execute();
         $result = $preparedQuery->fetchAll();
 
