@@ -103,7 +103,16 @@ class UserHoliday extends BaseModel
 
 	/**
 	 * @param int $id
-	 * @return UserHoliday
+	 */
+	static function deleteById($id){
+	    $query = "SELECT * FROM user_holiday WHERE id = :id;";
+	    $preparedQuery = Database::getConnection()->prepare($query);
+	    $preparedQuery->bindValue(":id", $id);
+	    $preparedQuery->execute();
+    }
+
+	/**
+	 * @param int $id
 	 */
 	static function findByUserId($id){
 		$query = "SELECT * FROM user_holiday WHERE user_id = :id;";
@@ -115,7 +124,6 @@ class UserHoliday extends BaseModel
 		$instance = new self();
 		$instance->fill($result);
 
-		return $instance;
 	}
 
 	/**

@@ -234,6 +234,22 @@ class DayTimeSheet extends BaseModel
         return $arrayOfDayTimeSheets;
     }
 
+    static function findByUserIdAndDate($userId, $day, $month, $year){
+    	$date = date_create($year."-".$month."-".$day);
+	    $query = "SELECT * FROM day_time_sheet WHERE user_id = :user_id and date=:date;";
+	    $preparedQuery = Database::getConnection()->prepare($query);
+	    $preparedQuery->bindValue(":user_id", $userId);
+	    $preparedQuery->bindValue(":date", date_format("Y-m-d", $date));
+	    $preparedQuery->execute();
+	    $result = $preparedQuery->fetch();
+
+	    $instance = new self();
+	    $instance->fill($result);
+
+	    return $instance;
+
+    }
+
     /**
      * @param DayTimeSheet $dayTimeSheet
      */
