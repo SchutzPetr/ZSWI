@@ -6,8 +6,8 @@
  * Time: 11:35
  */
 
-include_once (__DIR__."/../database/Database.php");
-include_once (__DIR__."/BaseModel.php");
+include_once(__DIR__ . "/../database/Database.php");
+include_once(__DIR__ . "/BaseModel.php");
 
 class Attendance extends BaseModel
 {
@@ -15,6 +15,14 @@ class Attendance extends BaseModel
      * @var int
      */
     private $userId = -1;
+    /**
+     * @var int
+     */
+    private $dayInWeek = -1;
+    /**
+     * @var bool
+     */
+    private $enabled = true;
     /**
      * @var string
      */
@@ -39,7 +47,7 @@ class Attendance extends BaseModel
     /**
      * @return int
      */
-    public function getUserId()
+    public function getUserId(): int
     {
         return $this->userId;
     }
@@ -47,15 +55,47 @@ class Attendance extends BaseModel
     /**
      * @param int $userId
      */
-    public function setUserId($userId)
+    public function setUserId(int $userId): void
     {
         $this->userId = $userId;
     }
 
     /**
+     * @return int
+     */
+    public function getDayInWeek(): int
+    {
+        return $this->dayInWeek;
+    }
+
+    /**
+     * @param int $dayInWeek
+     */
+    public function setDayInWeek(int $dayInWeek): void
+    {
+        $this->dayInWeek = $dayInWeek;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEnabled(): bool
+    {
+        return $this->enabled;
+    }
+
+    /**
+     * @param bool $enabled
+     */
+    public function setEnabled(bool $enabled): void
+    {
+        $this->enabled = $enabled;
+    }
+
+    /**
      * @return string
      */
-    public function getActiveFrom()
+    public function getActiveFrom(): string
     {
         return $this->activeFrom;
     }
@@ -63,7 +103,7 @@ class Attendance extends BaseModel
     /**
      * @param string $activeFrom
      */
-    public function setActiveFrom($activeFrom)
+    public function setActiveFrom(string $activeFrom): void
     {
         $this->activeFrom = $activeFrom;
     }
@@ -71,7 +111,7 @@ class Attendance extends BaseModel
     /**
      * @return string
      */
-    public function getFirstPartFrom()
+    public function getFirstPartFrom(): string
     {
         return $this->firstPartFrom;
     }
@@ -79,7 +119,7 @@ class Attendance extends BaseModel
     /**
      * @param string $firstPartFrom
      */
-    public function setFirstPartFrom($firstPartFrom)
+    public function setFirstPartFrom(string $firstPartFrom): void
     {
         $this->firstPartFrom = $firstPartFrom;
     }
@@ -87,7 +127,7 @@ class Attendance extends BaseModel
     /**
      * @return string
      */
-    public function getFirstPartTo()
+    public function getFirstPartTo(): string
     {
         return $this->firstPartTo;
     }
@@ -95,7 +135,7 @@ class Attendance extends BaseModel
     /**
      * @param string $firstPartTo
      */
-    public function setFirstPartTo($firstPartTo)
+    public function setFirstPartTo(string $firstPartTo): void
     {
         $this->firstPartTo = $firstPartTo;
     }
@@ -103,7 +143,7 @@ class Attendance extends BaseModel
     /**
      * @return string
      */
-    public function getSecondPartFrom()
+    public function getSecondPartFrom(): string
     {
         return $this->secondPartFrom;
     }
@@ -111,7 +151,7 @@ class Attendance extends BaseModel
     /**
      * @param string $secondPartFrom
      */
-    public function setSecondPartFrom($secondPartFrom)
+    public function setSecondPartFrom(string $secondPartFrom): void
     {
         $this->secondPartFrom = $secondPartFrom;
     }
@@ -119,7 +159,7 @@ class Attendance extends BaseModel
     /**
      * @return string
      */
-    public function getSecondPartTo()
+    public function getSecondPartTo(): string
     {
         return $this->secondPartTo;
     }
@@ -127,10 +167,11 @@ class Attendance extends BaseModel
     /**
      * @param string $secondPartTo
      */
-    public function setSecondPartTo($secondPartTo)
+    public function setSecondPartTo(string $secondPartTo): void
     {
         $this->secondPartTo = $secondPartTo;
     }
+
 
     /**
      * @param $row
@@ -139,6 +180,8 @@ class Attendance extends BaseModel
     {
         self::setId($row["id"]);
         self::setUserId($row["user_id"]);
+        self::setEnabled($row["enabled"]);
+        self::setDayInWeek($row["day_in_week"]);
         self::setActiveFrom($row["active_from"]);
         self::setFirstPartFrom($row["first_part_from"]);
         self::setFirstPartTo($row["first_part_to"]);
@@ -166,20 +209,25 @@ class Attendance extends BaseModel
 
     /**
      * @param int $userId
-     * @return Attendance
+     * @return Attendance[]
      */
     static function findLastByUserId($userId)
     {
-        $query = "SELECT * FROM attendance WHERE user_id = :user_id ORDER BY active_from DESC LIMIT 1;";
+        $query = "SELECT *, a.id AS attendance_id FROM attendance a WHERE active_from = (SELECT max(active_from) FROM attendance a2 WHERE a2.day_in_week = a.day_in_week AND a2.user_id = a.user_id) and user_id = :user_id GROUP BY id, user_id ORDER BY day_in_week DESC LIMIT 5;";
         $preparedQuery = Database::getConnection()->prepare($query);
         $preparedQuery->bindValue(":user_id", $userId);
         $preparedQuery->execute();
-        $result = $preparedQuery->fetch();
+        $result = $preparedQuery->fetchAll();
 
-        $instance = new self();
-        $instance->fill($result);
+        $arrayOfAttendances = array();
 
-        return $instance;
+        foreach ($result as $var) {
+            $instance = new self();
+            $instance->fill($var);
+            $arrayOfAttendances[$instance->getDayInWeek()] = $instance;
+
+        }
+        return $arrayOfAttendances;
     }
 
     /**
@@ -234,12 +282,17 @@ class Attendance extends BaseModel
      * @param $year integer
      * @return Attendance
      */
-    public static function findByUserIdAndDate($userId, $day, $month, $year){
-        $query = "SELECT * from attendance WHERE user_id = :user_id AND active_from <= :active_from ORDER BY active_from DESC LIMIT 1;";
+    public static function findByUserIdAndDate($userId, $day, $month, $year)
+    {
+        $date = sprintf("%'.04d-%'.02d-%'.02d", $year, $month, $day);
+        $dayOfWeek = date('N', strtotime($date));
+
+        $query = "SELECT * from attendance WHERE user_id = :user_id AND active_from <= :active_from  AND day_in_week = :day_in_week ORDER BY active_from DESC LIMIT 1;";
 
         $preparedQuery = Database::getConnection()->prepare($query);
         $preparedQuery->bindValue(":user_id", $userId);
-        $preparedQuery->bindValue(":active_from", sprintf("%'.04d-%'.02d-%'.02d", $year, $month, $day));
+        $preparedQuery->bindValue(":active_from", $date);
+        $preparedQuery->bindValue(":day_in_week", $dayOfWeek);
         $preparedQuery->execute();
         $result = $preparedQuery->fetch();
 
@@ -254,11 +307,13 @@ class Attendance extends BaseModel
      */
     static function save($attendance)
     {
-        $query = "insert into attendance (id, user_id, active_from, first_part_from, first_part_to, second_part_from, second_part_to ) value (:id, :user_id, :active_from, :first_part_from, :first_part_to, :second_part_from, :second_part_to ) on duplicate key update user_id = :user_id, active_from = :active_from, first_part_from = :first_part_from, first_part_to = :first_part_to, second_part_from = :second_part_from, second_part_to = :second_part_to ;";
+        $query = "insert into attendance (id, user_id, active_from, day_in_week, enabled, first_part_from, first_part_to, second_part_from, second_part_to ) value (:id, :user_id, :active_from, :day_in_week, :enabled, :first_part_from, :first_part_to, :second_part_from, :second_part_to ) on duplicate key update user_id = :user_id, active_from = :active_from, day_in_week = :day_in_week, enabled = :enabled, first_part_from = :first_part_from, first_part_to = :first_part_to, second_part_from = :second_part_from, second_part_to = :second_part_to ;";
         $preparedQuery = Database::getConnection()->prepare($query);
         $preparedQuery->bindValue(":id", $attendance->getId() == -1 ? null : $attendance->getId());
         $preparedQuery->bindValue(":user_id", $attendance->getUserId());
         $preparedQuery->bindValue(":active_from", $attendance->getActiveFrom() == "" ? null : $attendance->getActiveFrom());
+        $preparedQuery->bindValue(":day_in_week", $attendance->getDayInWeek());
+        $preparedQuery->bindValue(":enabled", $attendance->isEnabled());
         $preparedQuery->bindValue(":first_part_from", $attendance->getFirstPartFrom());
         $preparedQuery->bindValue(":first_part_to", $attendance->getFirstPartTo());
         $preparedQuery->bindValue(":second_part_from", $attendance->getSecondPartFrom());

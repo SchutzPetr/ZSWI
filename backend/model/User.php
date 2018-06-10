@@ -46,9 +46,9 @@ class User extends BaseModel
      */
     private $mainWorkStation = "";
     /**
-     * @var Attendance
+     * @var Attendance[]
      */
-    private $attendance = null;
+    private $attendanceSchedules = array();
 
     /**
      * @return string
@@ -179,19 +179,19 @@ class User extends BaseModel
     }
 
     /**
-     * @return Attendance
+     * @return Attendance[]
      */
-    public function getAttendance(): Attendance
+    public function getAttendanceSchedules(): array
     {
-        return $this->attendance;
+        return $this->attendanceSchedules;
     }
 
     /**
-     * @param Attendance $attendance
+     * @param Attendance[] $attendanceSchedules
      */
-    public function setAttendance(Attendance $attendance): void
+    public function setAttendanceSchedules(array $attendanceSchedules): void
     {
-        $this->attendance = $attendance;
+        $this->attendanceSchedules = $attendanceSchedules;
     }
 
     /**
@@ -207,7 +207,7 @@ class User extends BaseModel
      */
     private function fill($row)
     {
-        self::setId($row["user_id"]);
+        self::setId($row["id"]);
         self::setName($row["name"]);
         self::setLastName($row["last_name"]);
         self::setHonorificPrefix($row["honorific_prefix"]);
@@ -216,18 +216,7 @@ class User extends BaseModel
         self::setAuthority($row["authority"]);
         self::setActive($row["is_active"]);
         self::setMainWorkStation($row["main_work_station"]);
-
-        //$attendance init
-        $attendance = new Attendance();
-        $attendance->setId($row["attendance_id"]);
-        $attendance->setUserId($row["user_id"]);
-        $attendance->setActiveFrom($row["active_from"]);
-        $attendance->setFirstPartFrom($row["first_part_from"]);
-        $attendance->setFirstPartTo($row["first_part_to"]);
-        $attendance->setSecondPartFrom($row["second_part_from"]);
-        $attendance->setSecondPartTo($row["second_part_to"]);
-
-        self::setAttendance($attendance);
+        self::setAttendanceSchedules(Attendance::findLastByUserId(self::getId()));
     }
 
     /**
@@ -236,12 +225,27 @@ class User extends BaseModel
      */
     static function findById($id)
     {
-        $query = "SELECT u.*, a1.*, u.id as user_id, a1.id as attendance_id FROM user u JOIN attendance a1 
-                  ON (u.id = a1.user_id) LEFT OUTER JOIN attendance a2 ON (u.id = a2.user_id AND 
-                  (a1.active_from > a2.active_from OR a1.active_from = a2.active_from AND a1.id < a2.id)) 
-                  WHERE a2.id IS NULL AND u.id = :user_id;";
+        $query = "SELECT * FROM user WHERE id = :user_id;";
         $preparedQuery = Database::getConnection()->prepare($query);
-        $preparedQuery->bindValue(":id", $id);
+        $preparedQuery->bindValue(":user_id", $id);
+        $preparedQuery->execute();
+        $result = $preparedQuery->fetch();
+
+        $instance = new self();
+        $instance->fill($result);
+
+        return $instance;
+    }
+
+    /**
+     * @param string $orion
+     * @return User
+     */
+    static function findByOrion($orion)
+    {
+        $query = "SELECT * FROM user WHERE orion_login = :orion_login;";
+        $preparedQuery = Database::getConnection()->prepare($query);
+        $preparedQuery->bindValue(":orion_login", $orion);
         $preparedQuery->execute();
         $result = $preparedQuery->fetch();
 
@@ -281,9 +285,7 @@ class User extends BaseModel
      */
     static function findAll()
     {
-        $query = "SELECT u.*, a1.*, u.id as user_id, a1.id as attendance_id FROM user u JOIN attendance a1 
-                  ON (u.id = a1.user_id) LEFT OUTER JOIN attendance a2 ON (u.id = a2.user_id AND 
-                  (a1.active_from > a2.active_from OR a1.active_from = a2.active_from AND a1.id < a2.id)) WHERE a2.id IS NULL;";
+        $query = "SELECT * FROM user";
         $preparedQuery = Database::getConnection()->prepare($query);
         $preparedQuery->execute();
         $result = $preparedQuery->fetchAll();
@@ -304,6 +306,7 @@ class User extends BaseModel
      *
      * Funkce, která založí nového uživatele. Pokud však existuje uživatel se stejným id,
      * tak dojde k updatu.
+     * @return User
      */
     static function save($user)
     {
@@ -320,6 +323,9 @@ class User extends BaseModel
         $preparedQuery->bindValue(":mainWorkStation", $user->getMainWorkStation());
 
         $preparedQuery->execute();
+
+
+        return self::findByOrion($user->getOrionLogin());
     }
 
     /**

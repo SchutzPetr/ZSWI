@@ -18,7 +18,7 @@ class AttendanceService extends Service
 
     /**
      * @param $userId integer
-     * @return Attendance
+     * @return Attendance[]
      * @throws PermissionException
      */
     public static function findLastByUserId($userId){
@@ -84,15 +84,39 @@ class AttendanceService extends Service
     }
 
     /**
-     * @param $attendance Attendance
+     * @param $attendance Attendance[]|Attendance
      * @throws PermissionException
      */
     public static function create($attendance){
-        if(!Permission::hasPermission(self::getUserFromContext(), "USER.CREATE")){
+        if(!Permission::hasPermission(self::getUserFromContext(), "ATTENDANCE.CREATE")){
             throw new PermissionException();
         }
 
-        Attendance::save($attendance);
+        if(is_array($attendance)){
+            foreach ($attendance as $item){
+                Attendance::save($item);
+            }
+        }else{
+            Attendance::save($attendance);
+        }
+    }
+
+    /**
+     * @param $attendance Attendance[]|Attendance
+     * @throws PermissionException
+     */
+    public static function update($attendance){
+        if(!Permission::hasPermission(self::getUserFromContext(), "ATTENDANCE.CREATE")){
+            throw new PermissionException();
+        }
+
+        if(is_array($attendance)){
+            foreach ($attendance as $item){
+                Attendance::save($item);
+            }
+        }else{
+            Attendance::save($attendance);
+        }
     }
 
     /**
