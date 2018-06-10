@@ -129,7 +129,7 @@ class UserHoliday extends BaseModel
 	/**
 	 * @param int $id
 	 * @param int $year
-	 * @return UserHoliday
+	 * @return UserHoliday[]
 	 */
 	static function findAllByUserIdAndYear($id, $year){
 		$query = "SELECT * FROM user_holiday WHERE user_id = :id AND YEAR(day) =:year;";
@@ -137,19 +137,24 @@ class UserHoliday extends BaseModel
 		$preparedQuery->bindValue(":id", $id);
 		$preparedQuery->bindValue(":year", $year);
 		$preparedQuery->execute();
-		$result = $preparedQuery->fetch();
+		$result = $preparedQuery->fetchAll();
 
-		$instance = new self();
-		$instance->fill($result);
+		$arrayOfUserHoliday = array();
 
-		return $instance;
+		foreach ($result as $var) {
+			$instance = new self();
+			$instance->fill($var);
+			$arrayOfUserHoliday[] = $instance;
+
+		}
+		return $arrayOfUserHoliday;
 	}
 
 	/**
 	 * @param int $id
 	 * @param int $year
 	 * @param int $month
-	 * @return UserHoliday
+	 * @return UserHoliday[]
 	 */
 	static function findAllByUserIdAndMonthAndYear($id, $year, $month){
 		$query = "SELECT * FROM user_holiday WHERE user_id = :id AND YEAR(day) =:year AND MONTH(day) =:month ORDER BY day;";
@@ -158,12 +163,16 @@ class UserHoliday extends BaseModel
 		$preparedQuery->bindValue(":year", $year);
 		$preparedQuery->bindValue(":month", $month);
 		$preparedQuery->execute();
-		$result = $preparedQuery->fetch();
+		$result = $preparedQuery->fetchAll();
 
-		$instance = new self();
-		$instance->fill($result);
-
-		return $instance;
+		$arrayOfUserHoliday = array();
+		
+		foreach ($result as $var) {
+			$instance = new self();
+			$instance->fill($var);
+			$arrayOfUserHoliday[] = $instance;
+		}
+		return $arrayOfUserHoliday;
 	}
 
     /**

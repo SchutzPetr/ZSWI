@@ -57,6 +57,7 @@ class UserHolidayService extends Service
 	/**
 	 * @param int $id
 	 * @param int $year
+	 * @param int $month
 	 * @return UserHoliday[]
 	 * @throws PermissionException
 	 */
@@ -67,7 +68,8 @@ class UserHolidayService extends Service
 		$usersHoliday = UserHoliday::findAllByUserIdAndMonthAndYear($id, $year, $month);
 		$usersHolidayArray = array();
 		foreach ($usersHoliday as $holiday){
-			$usersHolidayArray[$holiday->etDay()] = $holiday;
+			$day = date("d", $holiday->getDay());
+			$usersHolidayArray[$day] = $holiday;
 		}
 		return $usersHolidayArray;
 
