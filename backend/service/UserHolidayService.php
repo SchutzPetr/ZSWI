@@ -55,6 +55,26 @@ class UserHolidayService extends Service
 	}
 
 	/**
+	 * @param int $id
+	 * @param int $year
+	 * @return UserHoliday[]
+	 * @throws PermissionException
+	 */
+	public static function findAllByUserIdAndMonthAndYear($id, $year, $month){
+		if(!Permission::hasPermission(self::getUserFromContext(), "USER_HOLIDAY.FIND")){
+			throw new PermissionException();
+		}
+		$usersHoliday = UserHoliday::findAllByUserIdAndMonthAndYear($id, $year, $month);
+		$usersHolidayArray = array();
+		foreach ($usersHoliday as $holiday){
+			$usersHolidayArray[$holiday->etDay()] = $holiday;
+		}
+		return $usersHolidayArray;
+
+	}
+
+
+		/**
 	 * @return UserHoliday[]
 	 * @throws PermissionException
 	 */
