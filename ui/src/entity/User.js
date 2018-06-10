@@ -16,7 +16,13 @@ class User extends BaseEntity{
         this._active = true;
         this._mainWorkStation = "KIV";
         this._timeJob = 1;
-        this._attendance = {};
+        this._attendanceSchedules = {
+            1: new Attendance(1),
+            2: new Attendance(2),
+            3: new Attendance(3),
+            4: new Attendance(4),
+            5: new Attendance(5),
+        };
     }
 
     get id() {
@@ -107,14 +113,21 @@ class User extends BaseEntity{
         this._timeJob = value;
     }
 
-    get attendance() {
-        return this._attendance;
+    /**
+     *
+     * @returns {{"1": Attendance, "2": Attendance, "3": Attendance, "4": Attendance, "5": Attendance}|*}
+     */
+    get attendanceSchedules() {
+        return this._attendanceSchedules;
     }
 
-    set attendance(value) {
-        this._attendance = value;
+    set attendanceSchedules(value) {
+        this._attendanceSchedules = value;
     }
 
+    /**
+     * @returns {string}
+     */
     get displayFullName() {
         return `${this._honorificPrefix} ${this._name} ${this._lastName} ${this._honorificSuffix}`;
     }
@@ -129,7 +142,19 @@ class User extends BaseEntity{
         }
 
         let user = Object.assign(new User(), userDTO);
-        user.attendance = Attendance.map(userDTO.attendance);
+
+        for (let key in userDTO.attendanceSchedules) {
+            // skip loop if the property is from prototype
+            if (!userDTO.attendanceSchedules.hasOwnProperty(key)) continue;
+
+            let obj = userDTO.attendanceSchedules[key];
+            for (let prop in obj) {
+                // skip loop if the property is from prototype
+                if(!obj.hasOwnProperty(prop)) continue;
+
+                user.attendanceSchedules[key] =  Attendance.map(userDTO.attendanceSchedules[key]);
+            }
+        }
 
         return user;
     }

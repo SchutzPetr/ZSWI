@@ -3,6 +3,7 @@ const Styles = theme => ({
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
+        maxWidth: 808
         //flexWrap: 'wrap',
     },
     formRow: {
@@ -12,6 +13,11 @@ const Styles = theme => ({
     },
     textField: {
         margin: theme.spacing.unit,
+    },
+    switch:{
+        marginLeft: -theme.spacing.unit,
+        marginTop: theme.spacing.unit,
+        marginBottom: theme.spacing.unit,
     },
     formControl: {
         margin: theme.spacing.unit,

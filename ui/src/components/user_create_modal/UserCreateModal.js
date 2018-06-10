@@ -19,8 +19,10 @@ import {
 import User from "./../../entity/User";
 import Attendance from "./../../entity/Attendance";
 import Calls from "../../Calls";
+import AttendanceDayContent from "./components/AttendanceDayContent";
 import Styles from "./style/UserCreateModalStyle";
-import {TimePicker} from "material-ui-pickers";
+import {DatePicker, TimePicker} from "material-ui-pickers";
+import moment from "moment";
 
 class UserCreateModal extends React.Component {
 
@@ -31,21 +33,52 @@ class UserCreateModal extends React.Component {
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
+        const user = nextProps.userToEdit || new User();
         return {
-            user: nextProps.userToEdit || new User(),
-            attendance: nextProps.userToEdit ? nextProps.userToEdit.attendance :  new Attendance() || new Attendance(),
+            user: user,
+            attendanceSchedules: user.attendanceSchedules,
             loadFeedback: "ready",
         };
     }
 
+
+    /**
+     * @returns {boolean}
+     */
+    validate() {
+        let result = false;
+
+        for (let i = 1; i < 6; i++) {
+            result = this.state.attendanceSchedules[`${i}`].firstPartFrom < this.state.attendanceSchedules[`${i}`].firstPartTo &&
+                this.state.attendanceSchedules[`${i}`].firstPartTo < this.state.attendanceSchedules[`${i}`].secondPartFrom &&
+                this.state.attendanceSchedules[`${i}`].secondPartFrom < this.state.attendanceSchedules[`${i}`].secondPartTo;
+
+            if(!result){
+                return false;
+            }
+        }
+        if (this.state.user.timeJob < 0 || this.state.user.timeJob > 1) {
+            result = false;
+        }
+
+        return result;
+    }
+
     handleSave = () => {
+        if (!this.validate()) {
+            return;
+        }
+
         this.setState({loadFeedback: "loading"});
         const fail = (data) => {
             this.setState({loadFeedback: "error"});
         };
+
+        let user = this.state.user;
+        user.attendanceSchedules =  this.state.attendanceSchedules;
         if (this.props.userToEdit) {
             Calls.updateUser({
-                data: this.state.user,
+                data: user,
                 done: (data) => {
                     this.props.onSaveDone();
                 },
@@ -53,7 +86,7 @@ class UserCreateModal extends React.Component {
             });
         } else {
             Calls.createUser({
-                data: this.state.user,
+                data: user,
                 done: (data) => {
                     this.props.onSaveDone();
                 },
@@ -83,7 +116,7 @@ class UserCreateModal extends React.Component {
             }
         }
         this.setState((prevState) => {
-            let user = prevState.user;
+            let user = Object.assign(new User(), prevState.user);
             user[name] = value;
 
             return {
@@ -92,9 +125,42 @@ class UserCreateModal extends React.Component {
         });
     };
 
-    handleChangeAttendance() {
+    handleChangeAttendance = (name, dayInWeek) => value => {
 
-    }
+        if (name === "firstPartTo" || name === "firstPartFrom" || name === "secondPartTo" || name === "secondPartFrom" || name === "activeFrom") {
+            this.setState((prevState) => {
+                let attendanceSchedules = Object.assign({}, prevState.attendanceSchedules);
+                let attendance = Object.assign(new Attendance(), prevState.attendanceSchedules[dayInWeek]);
+
+                if(value){
+                    attendance[name] = value.toDate();
+                }else{
+                    attendance[name] = new Attendance()[name];
+                }
+                attendanceSchedules[dayInWeek] = attendance;
+
+                debugger;
+
+
+                return {
+                    attendanceSchedules: attendanceSchedules
+                }
+            });
+        } else if (name === "enabled") {
+            const checked = value.target.checked;
+            this.setState((prevState) => {
+                let attendanceSchedules = Object.assign({}, prevState.attendanceSchedules);
+                let attendance = Object.assign(new Attendance(), prevState.attendanceSchedules[dayInWeek]);
+
+                attendance[name] = checked;
+                attendanceSchedules[dayInWeek] = attendance;
+
+                return {
+                    attendanceSchedules: attendanceSchedules
+                }
+            });
+        }
+    };
 
     render() {
         const {classes} = this.props;
@@ -145,8 +211,6 @@ class UserCreateModal extends React.Component {
                                 value={this.state.user.honorificSuffix}
                                 onChange={this.handleChangeUser("honorificSuffix")}
                             />
-                        </div>
-                        <div className={classes.formRow}>
                             <TextField
                                 required={true}
                                 id={"orionLogin"}
@@ -187,18 +251,17 @@ class UserCreateModal extends React.Component {
                                 </Select>
                             </FormControl>
                             <TextField
+                                className={classes.textField}
                                 required={true}
                                 id={"orionLogin"}
                                 label={"Velikost úvazku"}
                                 margin={"normal"}
                                 type="number"
-                                className={classes.textField}
                                 value={this.state.user.timeJob}
                                 onChange={this.handleChangeUser("timeJob")}
                             />
-                        </div>
-                        <div className={classes.formRow}>
                             <FormControlLabel
+                                className={classes.switch}
                                 control={
                                     <Switch
                                         checked={this.state.user.active}
@@ -206,59 +269,27 @@ class UserCreateModal extends React.Component {
                                         value={"active"}
                                     />
                                 }
-                                label="Secondary"
+                                label="Aktivní"
                             />
                         </div>
-                        <Typography className={classes.timePickerTitle} variant={"title"}>Docházka</Typography>
-                        <div className={classes.formRow}>
-                            <TimePicker
-                                className={classes.timePicker}
-                                clearable={true}
-                                ampm={false}
-                                keyboard={true}
-                                mask={[/\d/, /\d/, ':', /\d/, /\d/]}
-                                label="OD"
-                                value={this.state.attendance.firstPartFrom}
-                                onChange={this.handleChangeAttendance}
-                            />
-                            <TimePicker
-                                className={classes.timePicker}
-                                clearable={true}
-                                ampm={false}
-                                keyboard={true}
-                                mask={[/\d/, /\d/, ':', /\d/, /\d/]}
-                                label="DO"
-                                value={this.state.attendance.firstPartTo}
-                                onChange={this.handleChangeAttendance}
-                            />
-                            <TimePicker
-                                className={classes.timePicker}
-                                clearable={true}
-                                ampm={false}
-                                keyboard={true}
-                                mask={[/\d/, /\d/, ':', /\d/, /\d/]}
-                                label="OD"
-                                value={this.state.attendance.secondPartFrom}
-                                onChange={this.handleChangeAttendance}
-                            />
-                            <TimePicker
-                                className={classes.timePicker}
-                                clearable={true}
-                                ampm={false}
-                                keyboard={true}
-                                mask={[/\d/, /\d/, ':', /\d/, /\d/]}
-                                label="DO"
-                                value={this.state.attendance.secondPartTo}
-                                onChange={this.handleChangeAttendance}
-                            />
-                        </div>
+                        <Typography className={classes.timePickerTitle} variant={"headline"}>Docházka</Typography>
+                        <AttendanceDayContent attendance={this.state.attendanceSchedules["1"]} title={"Pondělí"}
+                                              handleChange={this.handleChangeAttendance} dayInWeek={1}/>
+                        <AttendanceDayContent attendance={this.state.attendanceSchedules["2"]} title={"Úterý"}
+                                              handleChange={this.handleChangeAttendance} dayInWeek={2}/>
+                        <AttendanceDayContent attendance={this.state.attendanceSchedules["3"]} title={"Středa"}
+                                              handleChange={this.handleChangeAttendance} dayInWeek={3}/>
+                        <AttendanceDayContent attendance={this.state.attendanceSchedules["4"]} title={"Čtvrtek"}
+                                              handleChange={this.handleChangeAttendance} dayInWeek={4}/>
+                        <AttendanceDayContent attendance={this.state.attendanceSchedules["5"]} title={"Pátek"}
+                                              handleChange={this.handleChangeAttendance} dayInWeek={5}/>
                     </form>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={this.props.onClose} color="primary">
                         Zrušit
                     </Button>
-                    <Button onClick={this.handleSave} color="primary">
+                    <Button onClick={this.handleSave} disabled={!this.validate()} color="primary">
                         Uložit
                     </Button>
                 </DialogActions>

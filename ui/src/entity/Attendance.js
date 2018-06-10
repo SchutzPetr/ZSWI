@@ -1,17 +1,19 @@
 import BaseEntity from "./BaseEntity";
 import moment from "moment";
 
-class Attendance extends BaseEntity{
+class Attendance extends BaseEntity {
 
-    constructor(){
+    constructor(dayInWeek = 0) {
         super();
         this._id = -1;
         this._userId = -1;
+        this._dayInWeek = dayInWeek;
+        this._enabled = true;
         this._activeFrom = new Date();
-        this._firstPartFrom = new Date().setHours(8, 0);
-        this._firstPartTo = new Date().setHours(12, 0);
-        this._secondPartFrom = new Date().setHours(12, 30);
-        this._secondPartTo = new Date().setHours(16, 30);
+        this._firstPartFrom = new Date(new Date().setHours(8, 0, 0, 0));
+        this._firstPartTo = new Date(new Date().setHours(12, 0, 0, 0));
+        this._secondPartFrom = new Date(new Date().setHours(12, 30, 0, 0));
+        this._secondPartTo = new Date(new Date().setHours(16, 30, 0, 0));
     }
 
     get id() {
@@ -28,6 +30,22 @@ class Attendance extends BaseEntity{
 
     set userId(value) {
         this._userId = value;
+    }
+
+    get dayInWeek() {
+        return this._dayInWeek;
+    }
+
+    set dayInWeek(value) {
+        this._dayInWeek = value;
+    }
+
+    get enabled() {
+        return this._enabled;
+    }
+
+    set enabled(value) {
+        this._enabled = value;
     }
 
     get activeFrom() {
@@ -79,6 +97,8 @@ class Attendance extends BaseEntity{
 
         attendance.id = attendanceDTO.id;
         attendance.userId = attendanceDTO.userId;
+        attendance.dayInWeek = attendanceDTO.dayInWeek;
+        attendance.enabled = attendanceDTO.enabled;
         attendance.activeFrom = moment(attendanceDTO.activeFrom, "YYYY-MM-DD HH:mm:ss").toDate();
         attendance.firstPartFrom = moment(attendanceDTO.firstPartFrom, "HH:mm:ss").toDate();
         attendance.firstPartTo = moment(attendanceDTO.firstPartTo, "HH:mm:ss").toDate();
@@ -88,7 +108,7 @@ class Attendance extends BaseEntity{
         return attendance;
     }
 
-    toJSON(){
+    toJSON() {
         let attendanceDTO = super.toJSON();
 
         attendanceDTO.activeFrom = moment(this.activeFrom, "YYYY-MM-DD HH:mm:ss").format("YYYY-MM-DD HH:mm:ss");
