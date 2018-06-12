@@ -7,68 +7,40 @@ import LinearProgressCentered from "../../components/LinearProgressCentered";
 import Grid from "@material-ui/core/es/Grid/Grid";
 import Styles from "../uc_home/style/HomeStyle";
 import withStyles from "@material-ui/core/es/styles/withStyles";
-
-export const userData = [
-    {
-        "givenName": "Petr",
-        "familyName": "Schutz",
-        "email": "schutzp@students.zcu.cz"
-    },
-    {
-        "givenName": "Tyler",
-        "familyName": "Chapman",
-        "email": "chapman@students.zcu.cz"
-    },
-    {
-        "givenName": "Petr",
-        "familyName": "Schutz",
-        "email": "schutzp@students.zcu.cz"
-    },
-    {
-        "givenName": "Petr",
-        "familyName": "Schutz",
-        "email": "schutzp@students.zcu.cz"
-    },
-    {
-        "givenName": "Petr",
-        "familyName": "Schutz",
-        "email": "schutzp@students.zcu.cz"
-    },
-    {
-        "givenName": "Petr",
-        "familyName": "Schutz",
-        "email": "schutzp@students.zcu.cz"
-    },
-    {
-        "givenName": "Petr",
-        "familyName": "Schutz",
-        "email": "schutzp@students.zcu.cz"
-    },
-
-];
+import User from "../../entity/User";
 
 class AgendaOverview extends React.Component {
 
-    state = {
-        users: userData,
-        loadFeedback: "ready"
-    };
+    constructor(props) {
+        super(props);
+
+        this.state = AgendaOverview.getDerivedStateFromProps(props);
+    }
+
+    static getDerivedStateFromProps(nextProps, prevState) {
+        return {
+            user: nextProps.match.params.userId ? nextProps.users.find(x => x.id === nextProps.match.params.userId) : null,
+            users: [],
+            loadFeedback: "ready"
+        };
+    }
+
 
     componentDidMount() {
-        //todo: this._fetchData();
+        this._fetchData();
     }
 
     _fetchData() {
         Calls.getUsers({
             data: {},
             done: (data) => {
-                this.setState({users: data, loadFeedback: "ready"});
+                this.setState({users: User.map(data.data), loadFeedback: "ready"});
             },
             fail: (data) => {
                 this.setState({loadFeedback: "error"});
                 //todo: error throw
             }
-        })
+        });
     }
 
     _getContend() {
@@ -78,10 +50,10 @@ class AgendaOverview extends React.Component {
             return (
                 <Grid className={this.props.classes.mainGrid} container={true} spacing={16}>
                     <Grid item={true} xs={12} sm={3}>
-                        <UserList match={this.props.match} users={this.state.users}/>
+                        <UserList match={this.props.match} history={this.props.history} user={this.state.user} users={this.state.users}/>
                     </Grid>
                     <Grid item={true} xs={12} sm={9}>
-                        <AgendaTabs/>
+                        <AgendaTabs match={this.props.match} history={this.props.history} user={this.state.user}/>
                     </Grid>
                 </Grid>
             );
@@ -101,7 +73,8 @@ class AgendaOverview extends React.Component {
 
 AgendaOverview.propTypes = {
     classes: PropTypes.object.isRequired,
-    match: PropTypes.object.isRequired
+    match: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired,
 };
 
 export default withStyles(Styles, {withTheme: true})(AgendaOverview);

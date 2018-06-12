@@ -1,75 +1,39 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {IconButton, Input, List, Menu, MenuItem, Paper} from "@material-ui/core/index";
-import UserListItem from "./UserListItem";
+import {Paper} from "@material-ui/core/index";
 import {withStyles} from "@material-ui/core/styles/index";
-import FilterListIcon from "@material-ui/icons/FilterList";
+import Style from "./style/UserListStyle";
 
-import {darken, fade, lighten} from "@material-ui/core/styles/colorManipulator";
-import FilterModal from "./FilterModal";
-import Fade from '@material-ui/core/Fade';
+import SingleSelect from "../autocomplete/SingleSelect";
+import Suggestion from "../autocomplete/entity/Suggestion";
+import User from "../../entity/User";
 
-const styles = theme => ({
-    root: {
-        backgroundColor: theme.palette.background.paper,
-        overflow: "auto",
-        maxHeight: `calc(100vh - 171px)`,
-        height: `calc(100vh - 171px)`
-    },
-    listSection: {
-        backgroundColor: "inherit",
-    },
-    ul: {
-        backgroundColor: "inherit",
-        padding: 0,
-    },
-    input: {
-        width: "100%",
-        margin: theme.spacing.unit,
-        marginLeft: 0
-    },
-    filterWrapper: {
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        padding: "5px 16px",
-        borderBottom: `1px solid ${
-            theme.palette.type === "light"
-                ? lighten(fade(theme.palette.divider, 1), 0.88)
-                : darken(fade(theme.palette.divider, 1), 0.8)
-            }`
-    }
-});
 
 class UserList extends React.Component {
 
-    state = {
-        open: false,
-        anchorEl: null,
-    };
+    static mapUserToSuggestion(user) {
+        if (!user) {
+            return null;
+        }
+        return new Suggestion(user.id, user.displayFullName, user)
+    }
 
-    handleOpen = () => {
-        this.setState({ open: true });
-    };
+    static mapUsersToSuggestion(user) {
+        return user.map(value => this.mapUserToSuggestion(value));
+    }
 
-    handleClose = () => {
-        this.setState({ open: false });
-    };
-
-    handleOpenMenu = (event) => {
-        this.setState({anchorEl: event.currentTarget});
-    };
-
-    handleCloseMenu = (event) => {
-        this.setState({anchorEl: null});
+    handleSelect = (value) => {
+        if(value){
+            this.props.history.push(`/agenda/${value.data.id}`);
+        }else{
+            this.props.history.push(`/agenda/`);
+        }
     };
 
     render() {
-        return (
-            <Paper>
-                <FilterModal open={this.state.open} handleClose={this.handleClose.bind(this)}/>
-                <div className={this.props.classes.filterWrapper}>
-                    <Input
+        //<FilterModal open={this.state.open} handleClose={this.handleClose.bind(this)}/>
+        /*
+        <Input
                         defaultValue=""
                         className={this.props.classes.input}
                         inputProps={{
@@ -81,22 +45,14 @@ class UserList extends React.Component {
                             </IconButton>
                         }
                     />
+         */
+        return (
+            <Paper>
+                <div className={this.props.classes.filterWrapper}>
+                    <SingleSelect value={UserList.mapUserToSuggestion(this.props.user)}
+                                  suggestions={UserList.mapUsersToSuggestion(this.props.users)}
+                                  onSelect={this.handleSelect}/>
                 </div>
-                <List className={this.props.classes.root}>
-                    {this.props.users.map((value, index) => <UserListItem key={"user-list-item-" + value.email + index}
-                                                                          match={this.props.match} user={value} onOpen={this.handleOpenMenu}/>)}
-                </List>
-                <Menu
-                    id="fade-menu"
-                    anchorEl={this.state.anchorEl}
-                    open={Boolean(this.state.anchorEl)}
-                    onClose={this.handleCloseMenu}
-                    transition={Fade}
-                >
-                    <MenuItem onClick={this.handleCloseMenu}>Editovat výkaz</MenuItem>
-                    <MenuItem onClick={this.handleCloseMenu}>My account</MenuItem>
-                    <MenuItem onClick={this.handleCloseMenu}>Logout</MenuItem>
-                </Menu>
             </Paper>
         );
     }
@@ -104,7 +60,9 @@ class UserList extends React.Component {
 
 UserList.propTypes = {
     classes: PropTypes.object.isRequired,
-    match: PropTypes.object,
+    user: PropTypes.instanceOf(User).isRequired,
+    match: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired,
     users: PropTypes.array.isRequired,
 };
-export default withStyles(styles, {withTheme: true})(UserList);
+export default withStyles(Style, {withTheme: true})(UserList);

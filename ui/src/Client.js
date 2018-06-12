@@ -4,6 +4,7 @@ const API = "http://localhost/backend/api/v1";
 
 const USER_API = API + "/user/";
 const PROJECT_API = API + "/project/";
+const TIMESHEET_API = API + "/timesheet/";
 
 const Client = {
     get(url, data) {
@@ -16,8 +17,8 @@ const Client = {
                 return axios.get(PROJECT_API + "findAll.php");
             case "getProject":
                 return axios.get(PROJECT_API + "findById.php", {params: data});
-
-
+            case "getUserTimeSheet":
+                return axios.get(TIMESHEET_API + "findAllByUserIdAndYearAndMonth.php", {params: data});
             case "login":
                 return axios.get(USER_API + "user/user.ctrl.php?/user/login=" + JSON.stringify(data)); //todo:
             case "getAssignUsersToProject":

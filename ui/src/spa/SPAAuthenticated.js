@@ -127,9 +127,9 @@ class SPAAuthenticated extends React.Component {
                            render={props => (
                                <Home match={props.match}/>
                            )}/>
-                    <Route path={"/agenda"} exact={true}
+                    <Route path={"/agenda/:userId?"} exact={true}
                            render={props => (
-                               <AgendaOverview match={props.match}/>
+                               <AgendaOverview history={props.history} match={props.match}/>
                            )}/>
                     <Route path={"/share"} exact={true}
                            render={props => (

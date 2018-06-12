@@ -1,5 +1,6 @@
 import Attendance from "./Attendance";
 import BaseEntity from "./BaseEntity";
+import UserContract from "./UserContract";
 
 class User extends BaseEntity{
 
@@ -15,7 +16,6 @@ class User extends BaseEntity{
         this._authority = "USER";
         this._active = true;
         this._mainWorkStation = "KIV";
-        this._timeJob = 1;
         this._attendanceSchedules = {
             1: new Attendance(1),
             2: new Attendance(2),
@@ -23,6 +23,8 @@ class User extends BaseEntity{
             4: new Attendance(4),
             5: new Attendance(5),
         };
+        this._currentUserContract = new UserContract();
+        this._futureUserContract = [];
     }
 
     get id() {
@@ -105,12 +107,31 @@ class User extends BaseEntity{
         this._mainWorkStation = value;
     }
 
-    get timeJob() {
-        return this._timeJob;
+    /**
+     * @returns {UserContract}
+     */
+    get currentUserContract() {
+        return this._currentUserContract;
     }
 
-    set timeJob(value) {
-        this._timeJob = value;
+    /**
+     * @param value {UserContract}
+     */
+    set currentUserContract(value) {
+        this._currentUserContract = value;
+    }
+
+    /**
+     * @returns {UserContract[]}
+     */
+    get futureUserContract() {
+        return this._futureUserContract;
+    }
+    /**
+     * @param value {UserContract[]}
+     */
+    set futureUserContract(value) {
+        this._futureUserContract = value;
     }
 
     /**

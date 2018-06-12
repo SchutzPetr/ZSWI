@@ -51,6 +51,10 @@ class Calls {
         Calls._get("getUser", dataIn);
     }
 
+    static getUserTimeSheet(dataIn){
+        Calls._get("getUserTimeSheet", dataIn);
+    }
+
     static getProjects(dataIn){
         Calls._get("getProjects", dataIn);
     }

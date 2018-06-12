@@ -121,6 +121,8 @@ class Agenda extends React.Component {
 
         let dayTimeSheets = timeSheet.dayTimeSheets;
 
+        return <Paper className={classes.root}/>;
+
         return (
             <Paper className={classes.root}>
                 <Table className={classes.table}>

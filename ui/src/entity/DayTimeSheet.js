@@ -2,16 +2,30 @@ import BaseEntity from "./BaseEntity";
 
 class DayTimeSheet extends BaseEntity{
 
-    constructor(date, dayType, firstPartFrom, firstPartTo, firstPartType, secondPartFrom, secondPartTo, secondPartType){
+    constructor(){
         super();
-        this._date = date;
-        this._dayType = dayType;
-        this._firstPartFrom = firstPartFrom;
-        this._firstPartTo = firstPartTo;
-        this._secondPartFrom = secondPartFrom;
-        this._secondPartTo = secondPartTo;
+
+        this._userId = -1;
+        this._date = new Date();
+        this._dayType = "";
+        this._firstPartFrom = null;
+        this._firstPartTo = null;
+        this._secondPartFrom = null;
+        this._secondPartTo = null;
     }
 
+
+    get userId() {
+        return this._userId;
+    }
+
+    set userId(value) {
+        this._userId = value;
+    }
+
+    /**
+     * @returns {Date}
+     */
     get date() {
         return this._date;
     }
@@ -28,6 +42,9 @@ class DayTimeSheet extends BaseEntity{
         this._dayType = value;
     }
 
+    /**
+     * @returns {null|Date}
+     */
     get firstPartFrom() {
         return this._firstPartFrom;
     }
@@ -36,6 +53,9 @@ class DayTimeSheet extends BaseEntity{
         this._firstPartFrom = value;
     }
 
+    /**
+     * @returns {null|Date}
+     */
     get firstPartTo() {
         return this._firstPartTo;
     }
@@ -44,14 +64,9 @@ class DayTimeSheet extends BaseEntity{
         this._firstPartTo = value;
     }
 
-    get firstPartType() {
-        return this._firstPartType;
-    }
-
-    set firstPartType(value) {
-        this._firstPartType = value;
-    }
-
+    /**
+     * @returns {null|Date}
+     */
     get secondPartFrom() {
         return this._secondPartFrom;
     }
@@ -60,20 +75,15 @@ class DayTimeSheet extends BaseEntity{
         this._secondPartFrom = value;
     }
 
+    /**
+     * @returns {null|Date}
+     */
     get secondPartTo() {
         return this._secondPartTo;
     }
 
     set secondPartTo(value) {
         this._secondPartTo = value;
-    }
-
-    get secondPartType() {
-        return this._secondPartType;
-    }
-
-    set secondPartType(value) {
-        this._secondPartType = value;
     }
 
     clone() {

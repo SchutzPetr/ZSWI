@@ -8,30 +8,46 @@ const Styles = theme => ({
     },
     formRow: {
         display: "flex",
+        width: "100%",
         flexWrap: "wrap",
         margin: theme.spacing.unit,
     },
+    formRow2:{
+        display: "flex",
+        width: "100%",
+        flexWrap: "wrap",
+        margin: theme.spacing.unit,
+        alignItems: "center",
+    },
     textField: {
+        height: 60,
         margin: theme.spacing.unit,
     },
-    switch:{
-        marginLeft: -theme.spacing.unit,
-        marginTop: theme.spacing.unit,
-        marginBottom: theme.spacing.unit,
+    statusSwitchWrapper:{
+        margin: theme.spacing.unit,
+        minWidth: 182
+    },
+    statusSwitchLabel:{
+        marginTop: 0
+    },
+    statusSwitch:{
+        //marginLeft: -theme.spacing.unit,
     },
     formControl: {
         margin: theme.spacing.unit,
         minWidth: 120,
+        height: 60,
     },
     select: {
         minWidth: 182
     },
     timePickerTitle:{
-        margin: 2*theme.spacing.unit,
+        margin: theme.spacing.unit,
         alignSelf: "flex-start"
     },
-    timePicker:{
+    datePicker:{
         width: 182,
+        height: 60,
         margin: theme.spacing.unit,
     },
 });

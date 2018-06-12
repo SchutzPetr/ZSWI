@@ -9,6 +9,8 @@ import {
     DialogTitle,
     FormControl,
     FormControlLabel,
+    FormHelperText,
+    FormLabel,
     InputLabel,
     MenuItem,
     Select,
@@ -20,9 +22,12 @@ import User from "./../../entity/User";
 import Attendance from "./../../entity/Attendance";
 import Calls from "../../Calls";
 import AttendanceDayContent from "./components/AttendanceDayContent";
+import UserContractContent from "./components/UserContractContent";
+
 import Styles from "./style/UserCreateModalStyle";
-import {DatePicker, TimePicker} from "material-ui-pickers";
-import moment from "moment";
+import UserContract from "../../entity/UserContract";
+import moment from "moment/moment";
+import {DatePicker} from "material-ui-pickers";
 
 class UserCreateModal extends React.Component {
 
@@ -37,6 +42,7 @@ class UserCreateModal extends React.Component {
         return {
             user: user,
             attendanceSchedules: user.attendanceSchedules,
+            currentUserContract: user.currentUserContract,
             loadFeedback: "ready",
         };
     }
@@ -76,6 +82,8 @@ class UserCreateModal extends React.Component {
 
         let user = this.state.user;
         user.attendanceSchedules =  this.state.attendanceSchedules;
+        user.currentUserContract = this.state.currentUserContract;
+
         if (this.props.userToEdit) {
             Calls.updateUser({
                 data: user,
@@ -110,17 +118,32 @@ class UserCreateModal extends React.Component {
 
     handleChangeUser = name => event => {
         const value = event.target.value;
-        if (name === "timeJob") {
-            if (value < 0 || value > 1) {
-                return;
-            }
-        }
         this.setState((prevState) => {
             let user = Object.assign(new User(), prevState.user);
             user[name] = value;
 
             return {
                 user: user
+            }
+        });
+    };
+
+    handleChangeUserContract = name => event => {
+        let value;
+        if(name === "obligationKIV" || name === "obligationNTIS"){
+            value = event.target.value;
+            if (value < 0 || value > 1) {
+                return;
+            }
+        }else{
+            value = event;
+        }
+        this.setState((prevState) => {
+            let currentUserContract = Object.assign(new UserContract(), prevState.currentUserContract);
+            currentUserContract[name] = value;
+
+            return {
+                currentUserContract: currentUserContract
             }
         });
     };
@@ -138,9 +161,6 @@ class UserCreateModal extends React.Component {
                     attendance[name] = new Attendance()[name];
                 }
                 attendanceSchedules[dayInWeek] = attendance;
-
-                debugger;
-
 
                 return {
                     attendanceSchedules: attendanceSchedules
@@ -250,28 +270,22 @@ class UserCreateModal extends React.Component {
                                     <MenuItem value={"NTIS"}>NTIS</MenuItem>
                                 </Select>
                             </FormControl>
-                            <TextField
-                                className={classes.textField}
-                                required={true}
-                                id={"orionLogin"}
-                                label={"Velikost úvazku"}
-                                margin={"normal"}
-                                type="number"
-                                value={this.state.user.timeJob}
-                                onChange={this.handleChangeUser("timeJob")}
-                            />
-                            <FormControlLabel
-                                className={classes.switch}
-                                control={
-                                    <Switch
-                                        checked={this.state.user.active}
-                                        onChange={this.handleChangeUserSwitch}
-                                        value={"active"}
-                                    />
-                                }
-                                label="Aktivní"
-                            />
+                            <FormControl className={classes.statusSwitchWrapper} component={"div"}>
+                                <FormHelperText className={classes.statusSwitchLabel}>{"Status uživatele"}</FormHelperText>
+                                <FormControlLabel
+                                    className={classes.statusSwitch}
+                                    control={
+                                        <Switch
+                                            checked={this.state.user.active}
+                                            onChange={this.handleChangeUserSwitch}
+                                            value={"active"}
+                                        />
+                                    }
+                                    label={"Aktivní"}
+                                />
+                            </FormControl>
                         </div>
+                        <UserContractContent handleChangeCurrent={this.handleChangeUserContract} currentUserContract={this.state.currentUserContract} futureUserContract={[new UserContract()]}/>
                         <Typography className={classes.timePickerTitle} variant={"headline"}>Docházka</Typography>
                         <AttendanceDayContent attendance={this.state.attendanceSchedules["1"]} title={"Pondělí"}
                                               handleChange={this.handleChangeAttendance} dayInWeek={1}/>

@@ -1,65 +1,31 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {withStyles} from "@material-ui/core/styles/index";
+import Style from "./style/AgendaTabsStyle";
 import moment from "moment";
 import {Button, LinearProgress, Paper, Tab, Tabs} from "@material-ui/core/index";
 import Agenda from "./Agenda";
 import Utils from "../../other/Utils";
 import UserTimeSheets from "../../entity/UserTimeSheets";
-
-
-const styles = theme => ({
-    root: {
-        flexGrow: 1,
-        width: "100%",
-        backgroundColor: theme.palette.background.paper,
-    },
-    tabs: {
-        width: "90%",
-        height: 35,
-        minHeight: 35
-    },
-    tab: {
-        width: "8.333333333333333%",
-        minWidth: "8.333333333333333%",
-        maxWidth: "8.333333333333333%",
-        height: 35
-    },
-    yearButton: {
-        width: "5%",
-        minWidth: "5%",
-        maxWidth: "5%",
-    },
-    indicator: {
-        height: 3
-    },
-    loadingPaper: {
-        maxHeight: "calc(100vh - 115px)",
-        height: "calc(100vh - 115px)",
-
-    },
-    loading: {
-        top: "50%",
-        left: "50%",
-        transform: "translateX(-50%) translateY(-50%)",
-        width: "80%"
-    },
-    bottom:{
-        display: "flex"
-    }
-});
+import User from "../../entity/User";
+import Calls from "../../Calls";
 
 class AgendaTabs extends React.Component {
 
     constructor(props) {
         super(props);
 
-        this.state = {
-            userTimeSheets: new UserTimeSheets(props.user),
+        this.state = AgendaTabs.getDerivedStateFromProps(props);
+    }
+
+    static getDerivedStateFromProps(nextProps, prevState) {
+        return {
+            userTimeSheets: new UserTimeSheets(nextProps.user),
             year: 2018,
             month: new Date().getMonth(),
-        }
+        };
     }
+
 
     componentDidMount() {
         this.loadTimeSheet(this.state.month, this.state.year);
@@ -82,6 +48,16 @@ class AgendaTabs extends React.Component {
     };
 
     loadTimeSheet(month, year) {
+       /* Calls.getUserTimeSheet({
+            data: {userId: this.props.user.id, month: month, year: year},
+            done: (data) => {
+                this.setState({users: User.map(data.data), loadFeedback: "ready"});
+            },
+            fail: (data) => {
+                this.setState({loadFeedback: "error"});
+                //todo: error throw
+            }
+        });*/
         setTimeout(() => {
             this.setState(prevState => {
                 let userTimeSheets = prevState.userTimeSheets;
@@ -185,6 +161,9 @@ class AgendaTabs extends React.Component {
 
 AgendaTabs.propTypes = {
     classes: PropTypes.object.isRequired,
+    user: PropTypes.instanceOf(User).isRequired,
+    match: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles, {withTheme: true})(AgendaTabs);
+export default withStyles(Style, {withTheme: true})(AgendaTabs);

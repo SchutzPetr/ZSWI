@@ -38,6 +38,17 @@ class Utils {
 
         return new TimeSheet(month, ntis, dayTimeSheets);
     }
+
+    /**
+     *
+     * @param {Date} firstPartFrom
+     * @param {Date} firstPartTo
+     * @param {Date} secondPartFrom
+     * @param {Date} secondPartTo
+     */
+    static valideTimeSheatDates(firstPartFrom, firstPartTo, secondPartFrom, secondPartTo){
+
+    }
 }
 export {Utils};
 export default Utils;
