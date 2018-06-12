@@ -10,6 +10,7 @@
 include_once(__DIR__ . "/../database/Database.php");
 include_once(__DIR__ . "/BaseModel.php");
 include_once(__DIR__ . "/Attendance.php");
+include_once(__DIR__ . "/UserContract.php");
 
 class User extends BaseModel
 {
@@ -49,6 +50,14 @@ class User extends BaseModel
      * @var Attendance[]
      */
     private $attendanceSchedules = array();
+    /**
+     * @var UserContract
+     */
+    private $currentUserContract = null;
+    /**
+     * @var UserContract[]
+     */
+    private $futureUserContract = array();
 
     /**
      * @return string
@@ -195,6 +204,38 @@ class User extends BaseModel
     }
 
     /**
+     * @return UserContract
+     */
+    public function getCurrentUserContract(): UserContract
+    {
+        return $this->currentUserContract;
+    }
+
+    /**
+     * @param UserContract $currentUserContract
+     */
+    public function setCurrentUserContract(UserContract $currentUserContract): void
+    {
+        $this->currentUserContract = $currentUserContract;
+    }
+
+    /**
+     * @return UserContract[]
+     */
+    public function getFutureUserContract(): array
+    {
+        return $this->futureUserContract;
+    }
+
+    /**
+     * @param UserContract[] $futureUserContract
+     */
+    public function setFutureUserContract(array $futureUserContract): void
+    {
+        $this->futureUserContract = $futureUserContract;
+    }
+
+    /**
      * @return string
      */
     public function displayFullName()
@@ -217,6 +258,13 @@ class User extends BaseModel
         self::setActive($row["is_active"]);
         self::setMainWorkStation($row["main_work_station"]);
         self::setAttendanceSchedules(Attendance::findLastByUserId(self::getId()));
+
+        $userContracts = UserContract::findLastAndAllFutureByUserIdAndDate(self::getId(), date("Y-m-d"));
+
+        if(!empty($userContracts)){
+            self::setCurrentUserContract($userContracts[0]);
+            self::setFutureUserContract(array_slice($userContracts, 1));
+        }
     }
 
     /**

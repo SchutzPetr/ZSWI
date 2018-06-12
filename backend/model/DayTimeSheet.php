@@ -7,9 +7,8 @@
  */
 
 include_once (__DIR__."/../database/Database.php");
-include_once (__DIR__."/BaseModel.php");
 
-class DayTimeSheet extends BaseModel
+class DayTimeSheet implements JsonSerializable
 {
     /**
      * @var int
@@ -159,31 +158,12 @@ class DayTimeSheet extends BaseModel
     private function fill($row)
     {
         self::setUserId($row["user_id"]);
-        self::setId($row["id"]);
         self::setDate($row["date"]);
         self::setDayType($row["day_type"]);
         self::setFirstPartFrom($row["first_part_from"]);
         self::setFirstPartTo($row["first_part_to"]);
         self::setSecondPartFrom($row["second_part_from"]);
         self::setSecondPartTo($row["second_part_to"]);
-    }
-
-    /**
-     * @param int $id
-     * @return DayTimeSheet
-     */
-    static function findById($id)
-    {
-        $query = "SELECT * FROM day_time_sheet WHERE id = :id;";
-        $preparedQuery = Database::getConnection()->prepare($query);
-        $preparedQuery->bindValue(":id", $id);
-        $preparedQuery->execute();
-        $result = $preparedQuery->fetch();
-
-        $instance = new self();
-        $instance->fill($result);
-
-        return $instance;
     }
 
     /**
@@ -218,8 +198,8 @@ class DayTimeSheet extends BaseModel
         $query = "SELECT * FROM day_time_sheet WHERE user_id = :user_id and YEAR(date) = :year AND MONTH(date) = :month;";
         $preparedQuery = Database::getConnection()->prepare($query);
         $preparedQuery->bindValue(":user_id", $userId);
-        $preparedQuery->bindValue(":year", $month);
-        $preparedQuery->bindValue(":month", $year);
+        $preparedQuery->bindValue(":year", $year);
+        $preparedQuery->bindValue(":month", $month);
         $preparedQuery->execute();
         $result = $preparedQuery->fetchAll();
 
@@ -228,7 +208,7 @@ class DayTimeSheet extends BaseModel
         foreach ($result as $var) {
             $instance = new self();
             $instance->fill($var);
-            $arrayOfDayTimeSheets[] = $instance;
+            $arrayOfDayTimeSheets[date('d', strtotime($instance->getDate()))] = $instance;
 
         }
         return $arrayOfDayTimeSheets;
@@ -255,9 +235,8 @@ class DayTimeSheet extends BaseModel
      */
     static function save($dayTimeSheet)
     {
-        $query = "insert into day_time_sheet (id, user_id, date, first_part_from, first_part_to, second_part_from, second_part_to, day_type) value (:id, :user_id, :date, :first_part_from, :first_part_to, :second_part_from, :second_part_to, :day_type) on duplicate key update user_id = :user_id, date = :date, first_part_from = :first_part_from, first_part_to = :first_part_to, second_part_from = :second_part_from, second_part_to = :second_part_to, day_type = :day_type;";
+        $query = "insert into day_time_sheet (user_id, date, first_part_from, first_part_to, second_part_from, second_part_to, day_type) value (:user_id, :date, :first_part_from, :first_part_to, :second_part_from, :second_part_to, :day_type) on duplicate key update first_part_from = :first_part_from, first_part_to = :first_part_to, second_part_from = :second_part_from, second_part_to = :second_part_to, day_type = :day_type;";
         $preparedQuery = Database::getConnection()->prepare($query);
-        $preparedQuery->bindValue(":id", $dayTimeSheet->getId() == -1 ? null : $dayTimeSheet->getId());
         $preparedQuery->bindValue(":user_id", $dayTimeSheet->getUserId());
         $preparedQuery->bindValue(":date", $dayTimeSheet->getDate());
         $preparedQuery->bindValue(":first_part_from", $dayTimeSheet->getFirstPartFrom());
@@ -280,7 +259,6 @@ class DayTimeSheet extends BaseModel
     public function jsonSerialize()
     {
         $array = array();
-        $array["id"] = $this->getId();
         $array = array_merge($array, get_object_vars($this));
         return $array;
     }

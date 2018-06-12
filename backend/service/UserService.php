@@ -11,8 +11,10 @@ include_once (__DIR__."/../exception/PermissionException.php");
 include_once (__DIR__."/../util/Permission.php");
 include_once (__DIR__."/Service.php");
 include_once (__DIR__."/AttendanceService.php");
+include_once (__DIR__."/UserContractService.php");
 include_once (__DIR__."/../model/User.php");
 include_once (__DIR__."/../vendor/netresearch/jsonmapper/src/JsonMapper.php");
+include_once (__DIR__."/../vendor/netresearch/jsonmapper/src/JsonMapper/Exception.php");
 
 class UserService extends Service
 {
@@ -68,6 +70,8 @@ class UserService extends Service
             $var->setUserId($createdUser->getId());
         }
         AttendanceService::create($user->getAttendanceSchedules());
+        $user->getCurrentUserContract()->setUserId($createdUser->getId());
+        UserContractService::create($user->getCurrentUserContract());
     }
 
     /**
@@ -84,6 +88,16 @@ class UserService extends Service
             $var->setUserId($updatedUser->getId());
         }
         AttendanceService::update($user->getAttendanceSchedules());
+        if($user->getCurrentUserContract()->getUserId() === -1){
+            $user->getCurrentUserContract()->setUserId($updatedUser->getId());
+            UserContractService::create($user->getCurrentUserContract());
+        }else{
+            UserContractService::update($user->getCurrentUserContract());
+        }
+        foreach ($user->getFutureUserContract() as $contract) {
+            UserContractService::update($contract);
+        }
+
     }
 
     /**

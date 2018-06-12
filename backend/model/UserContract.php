@@ -6,135 +6,157 @@
  * Time: 11:27
  */
 
-include_once (__DIR__."/../database/Database.php");
-include_once (__DIR__."/BaseModel.php");
+include_once(__DIR__ . "/../database/Database.php");
+include_once(__DIR__ . "/UserProjectAssignment.php");
 
-class UserContract extends BaseModel
+class UserContract implements JsonSerializable
 {
     /**
      * @var int
      */
-    private $user_id = -1;
+    private $userId = -1;
     /**
      * @var string
      */
-    private $workStation = "";
+    private $activeFrom = "";
+    /**
+     * @var string|null
+     */
+    private $activeTo = "";
     /**
      * @var double
      */
-    private $obligation = "";
+    private $obligationKIV = 0;
     /**
-     * @var DateTime
+     * @var double
      */
-    private $activeFrom = "";
+    private $obligationNTIS = 0;
+
     /**
-     * @var DateTime
+     * @var UserProjectAssignment[]
      */
-    private $activeTo = "";
+    private $userProjectAssignment = [];
 
     /**
      * @return int
      */
-    public function getUserId()
+    public function getUserId(): int
     {
-        return $this->user_id;
+        return $this->userId;
     }
 
     /**
-     * @param int $user_id
+     * @param int $userId
      */
-    public function setUserId($user_id)
+    public function setUserId(int $userId): void
     {
-        $this->user_id = $user_id;
+        $this->userId = $userId;
     }
 
     /**
      * @return string
      */
-    public function getWorkStation()
-    {
-        return $this->workStation;
-    }
-
-    /**
-     * @param string $workStation
-     */
-    public function setWorkStation($workStation)
-    {
-        $this->workStation = $workStation;
-    }
-
-    /**
-     * @return double
-     */
-    public function getObligation()
-    {
-        return $this->obligation;
-    }
-
-    /**
-     * @param double $obligation
-     */
-    public function setObligation($obligation)
-    {
-        $this->obligation = $obligation;
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getActiveFrom()
+    public function getActiveFrom(): string
     {
         return $this->activeFrom;
     }
 
     /**
-     * @param DateTime $activeFrom
+     * @param string $activeFrom
      */
-    public function setActiveFrom($activeFrom)
+    public function setActiveFrom(string $activeFrom): void
     {
         $this->activeFrom = $activeFrom;
     }
 
     /**
-     * @return DateTime
+     * @return null|string
      */
-    public function getActiveTo()
+    public function getActiveTo(): ?string
     {
         return $this->activeTo;
     }
 
     /**
-     * @param DateTime $activeTo
+     * @param null|string $activeTo
      */
-    public function setActiveTo($activeTo)
+    public function setActiveTo(?string $activeTo): void
     {
         $this->activeTo = $activeTo;
     }
+
+
+    /**
+     * @return float
+     */
+    public function getObligationKIV(): float
+    {
+        return $this->obligationKIV;
+    }
+
+    /**
+     * @param float $obligationKIV
+     */
+    public function setObligationKIV(float $obligationKIV): void
+    {
+        $this->obligationKIV = $obligationKIV;
+    }
+
+    /**
+     * @return float
+     */
+    public function getObligationNTIS(): float
+    {
+        return $this->obligationNTIS;
+    }
+
+    /**
+     * @param float $obligationNTIS
+     */
+    public function setObligationNTIS(float $obligationNTIS): void
+    {
+        $this->obligationNTIS = $obligationNTIS;
+    }
+
+    /**
+     * @return UserProjectAssignment[]
+     */
+    public function getUserProjectAssignment(): array
+    {
+        return $this->userProjectAssignment;
+    }
+
+    /**
+     * @param UserProjectAssignment[] $userProjectAssignment
+     */
+    public function setUserProjectAssignment(array $userProjectAssignment): void
+    {
+        $this->userProjectAssignment = $userProjectAssignment;
+    }
+
 
     /**
      * @param $row
      */
     private function fill($row)
     {
-        self::setId($row["id"]);
         self::setUserId($row["user_id"]);
-        self::setWorkStation($row["work_station"]);
-        self::setObligation($row["obligation"]);
         self::setActiveFrom($row["active_from"]);
-        self::setActiveTo($row["active_to"]);
-
+        self::setObligationKIV($row["obligation_KIV"]);
+        self::setObligationNTIS($row["obligation_NTIS"]);
     }
 
     /**
-     * @param int $id
+     * @param $userId integer
+     * @param $active_from string
      * @return UserContract
      */
-    static function findById($id)
+    static function findLastByUserId($userId, $active_from)
     {
-        $query = "SELECT * FROM user_contract WHERE id = :id;";
+        $query = "SELECT * FROM user_contract WHERE user_id = :user_id AND active_from <= :active_from ORDER BY active_from DESC LIMIT 1;";
         $preparedQuery = Database::getConnection()->prepare($query);
-        $preparedQuery->bindValue(":id", $id);
+        $preparedQuery->bindValue(":user_id", $userId);
+        $preparedQuery->bindValue(":active_from", $active_from);
         $preparedQuery->execute();
         $result = $preparedQuery->fetch();
 
@@ -142,6 +164,27 @@ class UserContract extends BaseModel
         $instance->fill($result);
 
         return $instance;
+    }
+
+
+    static function findLastAndAllFutureByUserIdAndDate($userId, $active_from)
+    {
+        $query = "(SELECT * FROM user_contract WHERE user_id = :user_id AND active_from <= :active_from ORDER BY active_from DESC LIMIT 1) UNION SELECT * FROM user_contract WHERE user_id = :user_id AND active_from > :active_from ORDER BY active_from;";
+        $preparedQuery = Database::getConnection()->prepare($query);
+        $preparedQuery->bindValue(":user_id", $userId);
+        $preparedQuery->bindValue(":active_from", $active_from);
+        $preparedQuery->execute();
+        $result = $preparedQuery->fetchAll();
+
+        $array = array();
+
+        foreach ($result as $var) {
+            $instance = new self();
+            $instance->fill($var);
+            $array[] = $instance;
+
+        }
+        return $array;
     }
 
     /**
@@ -165,15 +208,18 @@ class UserContract extends BaseModel
         return $arrayOfUserContracts;
     }
 
+    /**
+     * @param UserContract $userContract
+     */
     static function save($userContract)
     {
-        $query = "insert into user_contract (id, work_station, obligation, active_from, active_to) value (:id, :work_station, :obligation, :active_from, :active_to) on duplicate key update work_station = :work_station, obligation = :obligation, active_from = :active_from, active_to = :active_to;";
+        $query = "insert into user_contract (user_id, active_from, active_to, obligation_KIV, obligation_NTIS) value (:user_id, :active_from, :active_to, :obligation_KIV, :obligation_NTIS) on duplicate key update active_to = :active_to, obligation_KIV = :obligation_KIV, obligation_NTIS = :obligation_NTIS";
         $preparedQuery = Database::getConnection()->prepare($query);
-        $preparedQuery->bindValue(":id", $userContract->getId() == -1 ? null : $userContract->getId());
-        $preparedQuery->bindValue(":work_station", $userContract->getWorkStation());
-        $preparedQuery->bindValue(":obligation", $userContract->getObligation());
+        $preparedQuery->bindValue(":user_id", $userContract->getUserId());
         $preparedQuery->bindValue(":active_from", $userContract->getActiveFrom());
         $preparedQuery->bindValue(":active_to", $userContract->getActiveTo());
+        $preparedQuery->bindValue(":obligation_KIV", $userContract->getObligationKIV());
+        $preparedQuery->bindValue(":obligation_NTIS", $userContract->getObligationNTIS());
 
         $preparedQuery->execute();
     }
@@ -188,7 +234,6 @@ class UserContract extends BaseModel
     public function jsonSerialize()
     {
         $array = array();
-        $array["id"] = $this->getId();
         $array = array_merge($array, get_object_vars($this));
         return $array;
     }

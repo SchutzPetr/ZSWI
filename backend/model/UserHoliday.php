@@ -41,7 +41,7 @@ class UserHoliday extends BaseModel
     }
 
     /**
-     * @return DateTime
+     * @return string
      */
     public function getDay()
     {
@@ -49,7 +49,7 @@ class UserHoliday extends BaseModel
     }
 
     /**
-     * @param DateTime $day
+     * @param string $day
      */
     public function setDay($day)
     {
@@ -57,6 +57,10 @@ class UserHoliday extends BaseModel
     }
 
     /**
+     * ALL_DAY
+     * FIRST_PART_OF_DAY
+     * SECOND_PART_OF_DAY
+     *
      * @return string
      */
     public function getType()

@@ -5,7 +5,7 @@
  * Date: 06.06.2018
  * Time: 17:24
  */
-include_once (__DIR__."../exception/PermissionException.php");
+include_once (__DIR__."/../exception/PermissionException.php");
 include_once (__DIR__."/../util/Permission.php");
 include_once (__DIR__."/Service.php");
 include_once (__DIR__."/../model/UserHoliday.php");

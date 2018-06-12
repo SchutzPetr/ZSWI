@@ -296,6 +296,10 @@ class Attendance extends BaseModel
         $preparedQuery->execute();
         $result = $preparedQuery->fetch();
 
+        if($result === false){
+            return null;
+        }
+
         $instance = new self();
         $instance->fill($result);
 
