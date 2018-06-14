@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {Checkbox, TableCell, TableHead, TableRow} from "@material-ui/core/index";
 import {withStyles} from "@material-ui/core/styles/index";
 import Styles from "./../style/EnhancedTableHeadStyle";
+import User from "../../../entity/User";
 
 const columnDataNew = [
     {id: 'date', disablePadding: true, label: "Datum"},
@@ -18,7 +19,7 @@ class EnhancedTableHead extends React.Component {
                     <TableCell padding="checkbox">
                         <Checkbox
                             indeterminate={this.props.numSelected > 0 && this.props.numSelected < this.props.rowCount}
-                            checked={this.props.numSelected === this.props.rowCount}
+                            checked={this.props.numSelected === this.props.rowCount && this.props.numSelected !== 0}
                             onChange={() => {
                                 this.props.onSelectAllChange(this.props.numSelected !== this.props.rowCount)
                             }}

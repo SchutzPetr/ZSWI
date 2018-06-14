@@ -8,6 +8,8 @@ import Grid from "@material-ui/core/es/Grid/Grid";
 import Styles from "../uc_home/style/HomeStyle";
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import User from "../../entity/User";
+import Authentication from "../../Authentication";
+import UserDetail from "../../components/user_detail/UserDetail";
 
 class AgendaOverview extends React.Component {
 
@@ -58,6 +60,8 @@ class AgendaOverview extends React.Component {
                 <Grid className={this.props.classes.mainGrid} container={true} spacing={16}>
                     <Grid item={true} xs={12} sm={3}>
                         <UserList match={this.props.match} history={this.props.history} user={this.state.user} users={this.state.users}/>
+                        <div className={this.props.classes.divider}/>
+                        <UserDetail user={this.state.user}/>
                     </Grid>
                     <Grid item={true} xs={12} sm={9}>
                         <AgendaTabs match={this.props.match} history={this.props.history} user={this.state.user}/>

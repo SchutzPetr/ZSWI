@@ -159,10 +159,11 @@ class DayTimeSheet extends BaseEntity{
         dayTimeSheet.dayType = dayTimeSheetDTO.dayType;
 
         dayTimeSheet.date = moment(dayTimeSheetDTO.date, "YYYY-MM-DD").toDate();
-        dayTimeSheet.firstPartFrom = moment(dayTimeSheetDTO.firstPartFrom, "HH:mm:ss").toDate();
-        dayTimeSheet.firstPartTo = moment(dayTimeSheetDTO.firstPartTo, "HH:mm:ss").toDate();
-        dayTimeSheet.secondPartFrom = moment(dayTimeSheetDTO.secondPartFrom, "HH:mm:ss").toDate();
-        dayTimeSheet.secondPartTo = moment(dayTimeSheetDTO.secondPartTo, "HH:mm:ss").toDate();
+
+        dayTimeSheet.firstPartFrom = dayTimeSheetDTO.firstPartFrom ? moment(dayTimeSheetDTO.firstPartFrom, "HH:mm:ss").toDate() : null;
+        dayTimeSheet.firstPartTo = dayTimeSheetDTO.firstPartTo ? moment(dayTimeSheetDTO.firstPartTo, "HH:mm:ss").toDate() : null;
+        dayTimeSheet.secondPartFrom = dayTimeSheetDTO.secondPartFrom ? moment(dayTimeSheetDTO.secondPartFrom, "HH:mm:ss").toDate() : null;
+        dayTimeSheet.secondPartTo = dayTimeSheetDTO.secondPartTo ? moment(dayTimeSheetDTO.secondPartTo, "HH:mm:ss").toDate() : null;
 
         return dayTimeSheet;
     }
@@ -172,10 +173,10 @@ class DayTimeSheet extends BaseEntity{
 
         dayTimeSheetDTO.date = moment(this.date, "YYYY-MM-DD").format("YYYY-MM-DD");
 
-        dayTimeSheetDTO.firstPartFrom = moment(this.firstPartFrom).format("HH:mm:ss");
-        dayTimeSheetDTO.firstPartTo = moment(this.firstPartTo).format("HH:mm:ss");
-        dayTimeSheetDTO.secondPartFrom = moment(this.secondPartFrom).format("HH:mm:ss");
-        dayTimeSheetDTO.secondPartTo = moment(this.secondPartTo).format("HH:mm:ss");
+        dayTimeSheetDTO.firstPartFrom = this.firstPartFrom ? moment(this.firstPartFrom).format("HH:mm:ss") : null;
+        dayTimeSheetDTO.firstPartTo = this.firstPartTo ? moment(this.firstPartTo).format("HH:mm:ss") : null;
+        dayTimeSheetDTO.secondPartFrom = this.secondPartFrom ? moment(this.secondPartFrom).format("HH:mm:ss") : null;
+        dayTimeSheetDTO.secondPartTo = this.secondPartTo ? moment(this.secondPartTo).format("HH:mm:ss") : null;
 
         return dayTimeSheetDTO;
     }

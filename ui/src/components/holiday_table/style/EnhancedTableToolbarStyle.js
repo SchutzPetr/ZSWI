@@ -17,6 +17,10 @@ const Styles = theme => ({
     spacer: {
         flex: '1 1 100%',
     },
+    singleSelect: {
+        paddingRight: 5 * theme.spacing.unit,
+        width: "100%"
+    },
     actions: {
         color: theme.palette.text.secondary,
     },

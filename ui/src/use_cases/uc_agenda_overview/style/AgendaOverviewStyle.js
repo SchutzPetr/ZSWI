@@ -7,6 +7,9 @@ const Styles = theme => ({
     mainGrid:{
         padding: theme.spacing.unit * 1,
     },
+    divider: {
+        height: 8,
+    },
 });
 
 export default Styles;

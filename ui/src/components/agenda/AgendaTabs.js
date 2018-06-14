@@ -94,14 +94,15 @@ class AgendaTabs extends React.Component {
     }
 
     handleTimeSheetEdit(dayTimeSheetEdited) {
-        this.setState(prevState => {
-            let userTimeSheets = prevState.timeSheets;
-            userTimeSheets.getTimeSheet(prevState.month).dayTimeSheets[dayTimeSheetEdited.date.getDate().toString()] = dayTimeSheetEdited;
-
-            return {
-                userTimeSheets: userTimeSheets
+        this.setState({loadFeedback: "loading"});
+        Calls.updateDayTimeSheet({
+            data: dayTimeSheetEdited,
+            done: (data) => {
+                this.loadTimeSheet(this.state.month, this.state.year, true)
+            },
+            fail: (data) => {
+                this.setState({loadFeedback: "error"});
             }
-
         });
     };
 
@@ -135,7 +136,7 @@ class AgendaTabs extends React.Component {
             if(timeSheet == null){
                 return  <Paper className={classes.loadingPaper}>EMPTY</Paper>
             }else{
-                return <Agenda timeSheet={timeSheet} onTimeSheetEdit={this.handleTimeSheetEdit.bind(this)}/>;
+                return <Agenda user={this.props.user} timeSheet={timeSheet} onTimeSheetEdit={this.handleTimeSheetEdit.bind(this)}/>;
             }
         } else {
             return  <Paper className={classes.loadingPaper}>ERROR</Paper>

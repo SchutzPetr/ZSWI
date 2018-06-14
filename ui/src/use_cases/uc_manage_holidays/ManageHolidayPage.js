@@ -6,47 +6,8 @@ import Grid from "@material-ui/core/es/Grid/Grid";
 import Styles from "./style/ManageHolidayPageStyle";
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import HolidayTable from "../../components/holiday_table/HolidayTable";
-import UserList from "../../components/user_list/UserList";
 import HolidayRowRecord from "../../entity/HolidayRowRecord";
-
-export const userData = [
-    {
-        "givenName": "Petr",
-        "familyName": "Schutz",
-        "email": "schutzp@students.zcu.cz"
-    },
-    {
-        "givenName": "Tyler",
-        "familyName": "Chapman",
-        "email": "chapman@students.zcu.cz"
-    },
-    {
-        "givenName": "Petr",
-        "familyName": "Schutz",
-        "email": "schutzp@students.zcu.cz"
-    },
-    {
-        "givenName": "Petr",
-        "familyName": "Schutz",
-        "email": "schutzp@students.zcu.cz"
-    },
-    {
-        "givenName": "Petr",
-        "familyName": "Schutz",
-        "email": "schutzp@students.zcu.cz"
-    },
-    {
-        "givenName": "Petr",
-        "familyName": "Schutz",
-        "email": "schutzp@students.zcu.cz"
-    },
-    {
-        "givenName": "Petr",
-        "familyName": "Schutz",
-        "email": "schutzp@students.zcu.cz"
-    },
-
-];
+import User from "../../entity/User";
 
 function createData() {
     let data = [];
@@ -59,27 +20,37 @@ function createData() {
 
 class ManageHolidayPage extends React.Component {
 
-    state = {
-        users: userData,
-        loadFeedback: "ready",
-        data: createData(),
-    };
+    constructor(props) {
+        super(props);
+
+        this.state = ManageHolidayPage.getDerivedStateFromProps(props, {});
+    }
+
+    static getDerivedStateFromProps(nextProps, prevState) {
+        return {
+            users: prevState.users || [],
+            user: nextProps.match.params.userId && prevState.users ? prevState.users.find(x => x.id === nextProps.match.params.userId) : null,
+            loadFeedback: prevState.loadFeedback || "loading",
+            data: prevState.data || []
+        };
+    }
 
     componentDidMount() {
-        //this._fetchData();
+        this._fetchData();
     }
 
     _fetchData() {
+        this.setState({loadFeedback: "loading"});
         Calls.getUsers({
             data: {},
             done: (data) => {
-                this.setState({users: data, loadFeedback: "ready"});
+                this.setState({users: User.map(data.data), loadFeedback: "ready"});
             },
             fail: (data) => {
                 this.setState({loadFeedback: "error"});
                 //todo: error throw
             }
-        })
+        });
     }
 
     onSelectChange = (item, value) => {
@@ -92,10 +63,12 @@ class ManageHolidayPage extends React.Component {
         });
     };
 
-    onSelectAllChange = (value)=>{
+    onSelectAllChange = (value) => {
         this.setState((prevState) => {
             let data = prevState.data;
-            data.forEach(x => {x.isSelected = value});
+            data.forEach(x => {
+                x.isSelected = value
+            });
             return {
                 data: data
             }
@@ -113,11 +86,10 @@ class ManageHolidayPage extends React.Component {
                       alignItems={"center"}
                       direction={"row"}
                       justify={"center"}>
-                    <Grid item={true} xs={12} sm={3}>
-                        <UserList match={this.props.match} users={this.state.users}/>
-                    </Grid>
-                    <Grid item={true} xs={12} sm={9}>
+                    <Grid item={true} xs={12} sm={12}>
                         <HolidayTable fullHeight={true}
+                                      user={this.state.user}
+                                      users={this.state.users}
                                       data={this.state.data}
                                       rowsPerPage={11}
                                       rowsPerPageOptions={[]}

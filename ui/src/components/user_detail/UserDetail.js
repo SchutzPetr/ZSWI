@@ -9,8 +9,12 @@ import Authentication from "./../../Authentication";
 class UserDetail extends React.Component {
 
     render() {
-        let user = new User();
-        //user = this.props.user;
+        let user = this.props.user;
+
+        if(!user){
+            return (<Card className={this.props.classes.empty}/>)
+        }
+
         return (
             <Card>
                 <CardHeader title={user.displayFullName}/>
@@ -20,8 +24,12 @@ class UserDetail extends React.Component {
                         <Typography variant={"body1"}>{user.mainWorkStation}</Typography>
                     </div>
                     <div className={this.props.classes.row}>
-                        <Typography variant={"body2"}>Typ pracovního úvazků:</Typography>
-                        <Typography variant={"body1"}>{"TODO"}</Typography>
+                        <Typography variant={"body2"}>Velikost pracovního úvazků KIV:</Typography>
+                        <Typography variant={"body1"}>{user.currentUserContract.obligationKIV}</Typography>
+                    </div>
+                    <div className={this.props.classes.row}>
+                        <Typography variant={"body2"}>Velikost pracovního úvazků NTIS:</Typography>
+                        <Typography variant={"body1"}>{user.currentUserContract.obligationNTIS}</Typography>
                     </div>
                     <div className={this.props.classes.row}>
                         <Typography variant={"body2"}>Počet dnů dovolené:</Typography>

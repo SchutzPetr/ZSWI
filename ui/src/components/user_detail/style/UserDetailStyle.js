@@ -12,6 +12,9 @@ const Styles = theme => ({
         alignItems: "center",
         //padding: theme.spacing.unit,
     },
+    empty:{
+        height: 200
+    }
 });
 
 export default Styles;

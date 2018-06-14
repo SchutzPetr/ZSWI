@@ -139,7 +139,7 @@ class SPAAuthenticated extends React.Component {
                            render={props => (
                                <UserHolidayPage/>
                            )}/>
-                    <Route path={"/manage-holidays"} exact={true}
+                    <Route path={"/manage-holidays/:userId?"} exact={true}
                            render={props => (
                                <ManageHolidayPage match={props.match}/>
                            )}/>

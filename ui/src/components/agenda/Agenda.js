@@ -9,6 +9,7 @@ import AgendaEditModal from "./AgendaEditModal";
 import TimeSheet from "../../entity/TimeSheet";
 import Utils from "../../other/Utils";
 import DayTimeSheet from "../../entity/DayTimeSheet";
+import User from "../../entity/User";
 
 const rowHeightHeader = 24;
 const rowHeight = 20;
@@ -108,7 +109,7 @@ class Agenda extends React.Component {
         this.setState({openEdit: false, rowData: null});
     }
 
-    handleOnSaveEdit = (data) =>{
+    handleOnSaveEdit = (data) => {
         this.props.onTimeSheetEdit(data);
         this.handleCloseEdit();
     };
@@ -155,10 +156,11 @@ class Agenda extends React.Component {
                         {days.map((value, index) => {
                             const dayTimeSheet = dayTimeSheets[value.getDate()];
 
-                            if(!dayTimeSheet){
+                            if (!dayTimeSheet) {
                                 return (
                                     <TableRow key={`${index}-${value}`} className={this.getRowBackgroundColor(value)}>
-                                        <TableCell className={classes.tableCell}>{moment(value).format("LL")}</TableCell>
+                                        <TableCell
+                                            className={classes.tableCell}>{moment(value).format("LL")}</TableCell>
                                         <TableCell className={classes.tableCell}/>
                                         <TableCell className={classes.tableCell}/>
                                         <TableCell className={classes.tableCell}/>
@@ -179,35 +181,36 @@ class Agenda extends React.Component {
                                     </TableRow>
 
                                 );
-                            }else{
+                            } else {
                                 const firstPartFrom = moment(dayTimeSheet.firstPartFrom);
                                 const firstPartTo = moment(dayTimeSheet.firstPartTo);
                                 const secondPartFrom = moment(dayTimeSheet.secondPartFrom);
                                 const secondPartTo = moment(dayTimeSheet.secondPartTo);
 
-                                const firstPartDiff = firstPartFrom && firstPartTo ? firstPartTo.diff(firstPartFrom, "hours", true) : null;
-                                const secondPartDiff = secondPartFrom && secondPartTo ? secondPartTo.diff(secondPartFrom, "hours", true) : null;
+                                const firstPartDiff = dayTimeSheet.firstPartFrom && dayTimeSheet.firstPartTo ? firstPartTo.diff(firstPartFrom, "hours", true) : null;
+                                const secondPartDiff = dayTimeSheet.secondPartFrom && dayTimeSheet.secondPartTo ? secondPartTo.diff(secondPartFrom, "hours", true) : null;
 
                                 return (
                                     <TableRow key={`${index}-${value}`} className={this.getRowBackgroundColor(value)}>
-                                        <TableCell className={classes.tableCell}>{moment(value).format("LL")}</TableCell>
+                                        <TableCell
+                                            className={classes.tableCell}>{moment(value).format("LL")}</TableCell>
                                         <TableCell className={classes.partTableCell}>
-                                            {firstPartFrom ? firstPartFrom.format("H:mm") : null}
+                                            {dayTimeSheet.firstPartFrom ? firstPartFrom.format("H:mm") : null}
                                         </TableCell>
                                         <TableCell className={classes.partTableCell}>
-                                            {firstPartTo ? firstPartTo.format("H:mm") : null}
+                                            {dayTimeSheet.firstPartTo ? firstPartTo.format("H:mm") : null}
                                         </TableCell>
                                         <TableCell className={classes.partTableCell}>
-                                            {firstPartDiff + "h"}
+                                            {firstPartDiff ? firstPartDiff + "h" : null}
                                         </TableCell>
                                         <TableCell className={classes.partTableCell}>
-                                            {secondPartFrom ? secondPartFrom.format("H:mm") : null}
+                                            {dayTimeSheet.secondPartFrom ? secondPartFrom.format("H:mm") : null}
                                         </TableCell>
                                         <TableCell className={classes.partTableCell}>
-                                            {secondPartTo ? secondPartTo.format("H:mm") : null}
+                                            {dayTimeSheet.secondPartTo ? secondPartTo.format("H:mm") : null}
                                         </TableCell>
                                         <TableCell className={classes.partTableCell}>
-                                            {secondPartDiff + "h"}
+                                            {secondPartDiff ? secondPartDiff + "h" : null}
                                         </TableCell>
                                         <TableCell className={classes.tableCell}>{""}</TableCell>
                                         <TableCell className={`${classes.tableCell} ${classes.tableCellMenu}`}>
@@ -224,7 +227,9 @@ class Agenda extends React.Component {
 
                         })}
                     </TableBody>
-                    <AgendaEditModal open={this.state.openEdit} dayTimeSheet={this.state.rowData} handleClose={this.handleCloseEdit.bind(this)} handleOnSave={this.handleOnSaveEdit}/>
+                    <AgendaEditModal user={this.props.user} open={this.state.openEdit} dayTimeSheet={this.state.rowData}
+                                     handleClose={this.handleCloseEdit.bind(this)}
+                                     handleOnSave={this.handleOnSaveEdit}/>
                 </Table>
             </Paper>
         );
@@ -234,7 +239,8 @@ class Agenda extends React.Component {
 Agenda.propTypes = {
     classes: PropTypes.object.isRequired,
     timeSheet: PropTypes.instanceOf(TimeSheet),
-    onTimeSheetEdit: PropTypes.func.isRequired
+    onTimeSheetEdit: PropTypes.func.isRequired,
+    user: PropTypes.instanceOf(User)
 };
 
 export default withStyles(styles, {withTheme: true})(Agenda);

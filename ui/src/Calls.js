@@ -43,6 +43,10 @@ class Calls {
         Calls._post("updateProject", dataIn);
     }
 
+    static updateDayTimeSheet(dataIn){
+        Calls._post("updateDayTimeSheet", dataIn);
+    }
+
     static getUsers(dataIn){
         Calls._get("getUsers", dataIn);
     }

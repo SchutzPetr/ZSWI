@@ -100,10 +100,10 @@ class Attendance extends BaseEntity {
         attendance.dayInWeek = attendanceDTO.dayInWeek;
         attendance.enabled = attendanceDTO.enabled;
         attendance.activeFrom = moment(attendanceDTO.activeFrom, "YYYY-MM-DD HH:mm:ss").toDate();
-        attendance.firstPartFrom = moment(attendanceDTO.firstPartFrom, "HH:mm:ss").toDate();
-        attendance.firstPartTo = moment(attendanceDTO.firstPartTo, "HH:mm:ss").toDate();
-        attendance.secondPartFrom = moment(attendanceDTO.secondPartFrom, "HH:mm:ss").toDate();
-        attendance.secondPartTo = moment(attendanceDTO.secondPartTo, "HH:mm:ss").toDate();
+        attendance.firstPartFrom = attendanceDTO.firstPartFrom ? moment(attendanceDTO.firstPartFrom, "HH:mm:ss").toDate() : null;
+        attendance.firstPartTo = attendanceDTO.firstPartTo ? moment(attendanceDTO.firstPartTo, "HH:mm:ss").toDate() : null;
+        attendance.secondPartFrom = attendanceDTO.secondPartFrom ? moment(attendanceDTO.secondPartFrom, "HH:mm:ss").toDate() : null;
+        attendance.secondPartTo = attendanceDTO.secondPartTo ? moment(attendanceDTO.secondPartTo, "HH:mm:ss").toDate() : null;
 
         return attendance;
     }
@@ -112,10 +112,10 @@ class Attendance extends BaseEntity {
         let attendanceDTO = super.toJSON();
 
         attendanceDTO.activeFrom = moment(this.activeFrom, "YYYY-MM-DD HH:mm:ss").format("YYYY-MM-DD HH:mm:ss");
-        attendanceDTO.firstPartFrom = moment(this.firstPartFrom).format("HH:mm:ss");
-        attendanceDTO.firstPartTo = moment(this.firstPartTo).format("HH:mm:ss");
-        attendanceDTO.secondPartFrom = moment(this.secondPartFrom).format("HH:mm:ss");
-        attendanceDTO.secondPartTo = moment(this.secondPartTo).format("HH:mm:ss");
+        attendanceDTO.firstPartFrom = this.firstPartFrom ? moment(this.firstPartFrom).format("HH:mm:ss") : null;
+        attendanceDTO.firstPartTo = this.firstPartTo ? moment(this.firstPartTo).format("HH:mm:ss") : null;
+        attendanceDTO.secondPartFrom = this.secondPartFrom ? moment(this.secondPartFrom).format("HH:mm:ss") : null;
+        attendanceDTO.secondPartTo = this.secondPartTo ? moment(this.secondPartTo).format("HH:mm:ss") : null;
 
         return attendanceDTO;
     }

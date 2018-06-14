@@ -19,6 +19,10 @@ import {
 import {TimePicker} from 'material-ui-pickers';
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import CloseIcon from '@material-ui/icons/Close';
+import DayTimeSheet from "../../entity/DayTimeSheet";
+import Attendance from "../../entity/Attendance";
+import {FormControlLabel, Switch} from "@material-ui/core/es/index";
+import User from "../../entity/User";
 
 
 function getModalStyle() {
@@ -44,6 +48,15 @@ const styles = theme => ({
         width: theme.spacing.unit * 4,
         height: theme.spacing.unit * 4,
     },
+    expansionPanelDetails:{
+        display: "flex",
+        width: "100%",
+        flexWrap: "wrap",
+        //alignItems: "center",
+    },
+    switchEnable:{
+        width: "100%"
+    }
 });
 
 class AgendaEditModal extends React.Component {
@@ -57,15 +70,17 @@ class AgendaEditModal extends React.Component {
     static getDerivedStateFromProps(nextProps, prevState) {
         return {
             expanded: null,
-            snackbar: false,
-            snackbarText: "",
-            date: nextProps.dayTimeSheet == null ? null : nextProps.dayTimeSheet.date,
+
             firstPartFrom: nextProps.dayTimeSheet == null ? null : nextProps.dayTimeSheet.firstPartFrom,
             firstPartTo: nextProps.dayTimeSheet == null ? null : nextProps.dayTimeSheet.firstPartTo,
-            firstPartType: nextProps.dayTimeSheet == null ? null : nextProps.dayTimeSheet.firstPartType,
             secondPartFrom: nextProps.dayTimeSheet == null ? null : nextProps.dayTimeSheet.secondPartFrom,
             secondPartTo: nextProps.dayTimeSheet == null ? null : nextProps.dayTimeSheet.secondPartTo,
-            secondPartType: nextProps.dayTimeSheet == null ? null : nextProps.dayTimeSheet.secondPartType,
+
+            dayType: nextProps.dayTimeSheet == null ? null : nextProps.dayTimeSheet.dayType,
+
+            enabledFirstPart: nextProps.dayTimeSheet == null ? false : (nextProps.dayTimeSheet.firstPartFrom && nextProps.dayTimeSheet.firstPartTo),
+            enabledSecondPart: nextProps.dayTimeSheet == null ? false : (nextProps.dayTimeSheet.secondPartFrom && nextProps.dayTimeSheet.secondPartTo),
+
         };
     }
 
@@ -75,13 +90,6 @@ class AgendaEditModal extends React.Component {
         });
     };
 
-    handleCloseSnackbar = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-
-        this.setState({snackbar: false});
-    };
 
     _handleSave = () => {
         this.setState({
@@ -90,17 +98,69 @@ class AgendaEditModal extends React.Component {
 
         let result = this.props.dayTimeSheet.clone();
 
-        result.date = this.state.date;
-
         result.firstPartFrom = this.state.firstPartFrom;
         result.firstPartTo = this.state.firstPartTo;
-        result.firstPartType = this.state.firstPartType;
 
         result.secondPartFrom = this.state.secondPartFrom;
         result.secondPartTo = this.state.secondPartTo;
-        result.secondPartType = this.state.secondPartType;
+
+        result.dayType = this.state.dayType;
 
         this.props.handleOnSave(result);
+    };
+
+    handleChange = name => value => {
+        this.setState((prevState) => {
+
+            if (value) {
+                prevState[name] = value.toDate();
+            } else {
+                if (name === "firstPartFrom" || name === "firstPartTo") {
+                    prevState["firstPartFrom"] = null;
+                    prevState["firstPartTo"] = null;
+                } else if (name === "secondPartFrom" || name === "secondPartTo") {
+                    prevState["secondPartFrom"] = null;
+                    prevState["secondPartTo"] = null;
+                }
+            }
+
+            return {...prevState}
+        });
+    };
+
+    handleChangeEnable = name => value => {
+        const checked = value.target.checked;
+        let attendance = this.props.user.attendanceSchedules[new Date().getDay()];
+
+        if(name === "enabledFirstPart"){
+            if(checked){
+                this.setState({
+                    enabledFirstPart: checked,
+                    firstPartFrom: this.props.dayTimeSheet ? this.props.dayTimeSheet.firstPartFrom : attendance ? attendance.firstPartFrom ? attendance.firstPartFrom : new Date(new Date().setHours(8, 0, 0, 0)) :  new Date(new Date().setHours(8, 0, 0, 0)),
+                    firstPartTo: this.props.dayTimeSheet ? this.props.dayTimeSheet.firstPartTo : attendance ? attendance.firstPartTo ? attendance.firstPartTo : new Date(new Date().setHours(12, 0, 0, 0)) :  new Date(new Date().setHours(12, 0, 0, 0)),
+                });
+            }else{
+                this.setState({
+                    enabledFirstPart: checked,
+                    firstPartFrom: null,
+                    firstPartTo: null
+                });
+            }
+        }else if(name === "enabledSecondPart"){
+            if(checked){
+                this.setState({
+                    enabledSecondPart: checked,
+                    secondPartFrom: this.props.dayTimeSheet ? this.props.dayTimeSheet.secondPartFrom : attendance ? attendance.secondPartFrom ? attendance.secondPartFrom : new Date(new Date().setHours(12, 30, 0, 0)) :  new Date(new Date().setHours(12, 30, 0, 0)),
+                    secondPartTo: this.props.dayTimeSheet ? this.props.dayTimeSheet.secondPartTo : attendance ? attendance.secondPartTo ? attendance.secondPartTo : new Date(new Date().setHours(16, 30, 0, 0)) :  new Date(new Date().setHours(16, 30, 0, 0)),
+                });
+            }else{
+                this.setState({
+                    enabledSecondPart: checked,
+                    secondPartFrom: null,
+                    secondPartTo: null
+                });
+            }
+        }
     };
 
     _handleClose = () => {
@@ -187,8 +247,80 @@ class AgendaEditModal extends React.Component {
 
     }
 
+    _getMinDate(name) {
+        if (name === "firstPartFrom") {
+            return new Date(new Date().setHours(0, 0, 0, 0));
+        } else if (name === "firstPartTo") {
+            if(this.state.enabledFirstPart){
+                return new Date(this.state.firstPartFrom.getTime());
+            }
+            return null;
+        } else if (name === "secondPartFrom") {
+            if(this.state.enabledFirstPart){
+                return new Date(this.state.firstPartTo.getTime());
+            }
+            return null;
+
+        } else if (name === "secondPartTo") {
+            if(this.state.enabledSecondPart){
+                return new Date(this.state.secondPartFrom.getTime());
+            }
+            return null;
+        }
+
+    };
+
+    _getMaxDate(name) {
+        if (name === "firstPartFrom") {
+            if(this.state.enabledFirstPart){
+                return new Date(this.state.firstPartTo.getTime());
+            }
+            return null;
+        } else if (name === "firstPartTo") {
+            if(this.state.enabledSecondPart){
+                return new Date(this.state.secondPartFrom.getTime())
+            }
+            return null;
+        } else if (name === "secondPartFrom") {
+            if(this.state.enabledSecondPart){
+                return new Date(this.state.secondPartTo.getTime());
+            }
+            return null;
+
+        } else if (name === "secondPartTo") {
+            return new Date().setHours(23, 59, 0, 0);
+        }else{
+            return null;
+        }
+
+    };
+
+    /**
+     * @returns {boolean}
+     */
+    validate() {
+        let result;
+
+        if(this.state.enabledFirstPart && this.state.enabledSecondPart){
+            result = this.state.firstPartFrom < this.state.firstPartTo &&
+                this.state.firstPartTo < this.state.secondPartFrom &&
+                this.state.secondPartFrom < this.state.secondPartTo;
+        }else if(this.state.enabledFirstPart && !this.state.enabledSecondPart){
+            result = this.state.firstPartFrom < this.state.firstPartTo;
+        } else if(!this.state.enabledFirstPart && this.state.enabledSecondPart){
+            result =  this.state.secondPartFrom < this.state.secondPartTo;
+        }else{
+            result = true;
+        }
+        return result;
+    }
+
     render() {
         const {classes} = this.props;
+
+        if (!this.props.dayTimeSheet) {
+            return null;
+        }
 
         return (
 
@@ -204,24 +336,40 @@ class AgendaEditModal extends React.Component {
                         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
                             <Typography className={classes.heading}>První část</Typography>
                         </ExpansionPanelSummary>
-                        <ExpansionPanelDetails>
+                        <ExpansionPanelDetails className={classes.expansionPanelDetails}>
+                            <div className={classes.switchEnable}>
+                                <FormControlLabel
+                                    control={
+                                        <Switch
+                                            checked={this.state.enabledFirstPart}
+                                            onChange={this.handleChangeEnable("enabledFirstPart")}
+                                            value={"active"}
+                                        />
+                                    }
+                                    label={"Povolena první část"}
+                                />
+                            </div>
                             <TimePicker
-                                clearable
+                                disabled={!this.state.enabledFirstPart}
                                 ampm={false}
                                 keyboard={true}
                                 mask={[/\d/, /\d/, ':', /\d/, /\d/]}
                                 label="OD"
                                 value={this.state.firstPartFrom}
-                                onChange={this._handleFromDateChange(true)}
+                                minDate={this._getMinDate("firstPartFrom")}
+                                maxDate={this._getMaxDate("firstPartFrom")}
+                                onChange={this.handleChange("firstPartFrom")}
                             />
                             <TimePicker
-                                clearable
+                                disabled={!this.state.enabledFirstPart}
                                 ampm={false}
                                 keyboard={true}
                                 mask={[/\d/, /\d/, ':', /\d/, /\d/]}
                                 label="DO"
                                 value={this.state.firstPartTo}
-                                onChange={this._handleToDateChange(true)}
+                                minDate={this._getMinDate("firstPartTo")}
+                                maxDate={this._getMaxDate("firstPartTo")}
+                                onChange={this.handleChange("firstPartTo")}
                             />
                         </ExpansionPanelDetails>
                     </ExpansionPanel>
@@ -231,23 +379,39 @@ class AgendaEditModal extends React.Component {
                             <Typography className={classes.heading}>Druhá část</Typography>
                         </ExpansionPanelSummary>
                         <ExpansionPanelDetails>
+                            <div className={classes.switchEnable}>
+                                <FormControlLabel
+                                    control={
+                                        <Switch
+                                            checked={this.state.enabledSecondPart}
+                                            onChange={this.handleChangeEnable("enabledSecondPart")}
+                                            value={"active"}
+                                        />
+                                    }
+                                    label={"Povolena první část"}
+                                />
+                            </div>
                             <TimePicker
-                                clearable
+                                disabled={!this.state.enabledSecondPart}
                                 ampm={false}
                                 keyboard={true}
                                 mask={[/\d/, /\d/, ':', /\d/, /\d/]}
                                 label="OD"
                                 value={this.state.secondPartFrom}
-                                onChange={this._handleFromDateChange(false)}
+                                minDate={this._getMinDate("secondPartFrom")}
+                                maxDate={this._getMaxDate("secondPartFrom")}
+                                onChange={this.handleChange("secondPartFrom")}
                             />
                             <TimePicker
-                                clearable
+                                disabled={!this.state.enabledSecondPart}
                                 ampm={false}
                                 keyboard={true}
                                 mask={[/\d/, /\d/, ':', /\d/, /\d/]}
                                 label="DO"
                                 value={this.state.secondPartTo}
-                                onChange={this._handleToDateChange(false)}
+                                minDate={this._getMinDate("secondPartTo")}
+                                maxDate={this._getMaxDate("secondPartTo")}
+                                onChange={this.handleChange("secondPartTo")}
                             />
                         </ExpansionPanelDetails>
                     </ExpansionPanel>
@@ -266,33 +430,9 @@ class AgendaEditModal extends React.Component {
                     </ExpansionPanel>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={this._handleSave} color="primary">Uložit</Button>
+                    <Button onClick={this._handleClose} color="primary">Zrušit</Button>
+                    <Button onClick={this._handleSave} disabled={!this.validate()} color="primary">Uložit</Button>
                 </DialogActions>
-                <Snackbar
-                    className={classes.snackbar}
-                    anchorOrigin={{
-                        vertical: 'top',
-                        horizontal: 'center',
-                    }}
-                    open={this.state.snackbar}
-                    autoHideDuration={3000}
-                    onClose={this.handleCloseSnackbar}
-                    SnackbarContentProps={{
-                        'aria-describedby': 'message-id',
-                    }}
-                    message={<span id="message-id">{this.state.snackbarText}</span>}
-                    action={[
-                        <IconButton
-                            key="close"
-                            aria-label="Close"
-                            color="inherit"
-                            className={classes.snackbarClose}
-                            onClick={this.handleCloseSnackbar}
-                        >
-                            <CloseIcon/>
-                        </IconButton>,
-                    ]}
-                />
             </Dialog>
         );
     }
@@ -301,7 +441,8 @@ class AgendaEditModal extends React.Component {
 AgendaEditModal.propTypes = {
     classes: PropTypes.object.isRequired,
     open: PropTypes.bool.isRequired,
-    dayTimeSheet: PropTypes.object,
+    dayTimeSheet: PropTypes.instanceOf(DayTimeSheet),
+    user: PropTypes.instanceOf(User),
     handleClose: PropTypes.func.isRequired,
     handleOnSave: PropTypes.func.isRequired
 };

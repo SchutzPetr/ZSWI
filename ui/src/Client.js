@@ -1,10 +1,13 @@
 import axios from 'axios';
+import DayTimeSheet from "./entity/DayTimeSheet";
 
 const API = "http://localhost/backend/api/v1";
 
 const USER_API = API + "/user/";
 const PROJECT_API = API + "/project/";
 const TIMESHEET_API = API + "/timesheet/";
+const DAYTIMESHEET_API = API + "/daytimesheet/";
+
 
 const Client = {
     get(url, data) {
@@ -38,6 +41,8 @@ const Client = {
                 return axios.post(PROJECT_API + "create.php", data);
             case "updateProject":
                 return axios.post(PROJECT_API + "update.php", data);
+            case "updateDayTimeSheet":
+                return axios.post(DAYTIMESHEET_API + "update.php", data);
             default:
                 throw `Url ${url} does not exists.`;
         }

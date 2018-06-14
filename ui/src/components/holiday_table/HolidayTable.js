@@ -18,6 +18,7 @@ import EnhancedTableHead from "./components/EnhancedTableHead";
 import HolidayRowRecord from "../../entity/HolidayRowRecord";
 import moment from "moment/moment";
 import EditIcon from "@material-ui/icons/es/Edit";
+import User from "../../entity/User";
 
 class HolidayTable extends React.Component {
     constructor(props, context) {
@@ -80,7 +81,10 @@ class HolidayTable extends React.Component {
         return (
             <Paper className={this.props.fullHeight ? classes.fullHeightRoot : classes.root}>
                 <EnhancedTableToolbar numSelected={numSelected}
-                                      onDeleteSelected={this.onDeleteSelected}/>
+                                      onDeleteSelected={this.onDeleteSelected}
+                                      user={this.props.user}
+                                      users={this.props.users}
+                />
                 <div className={classes.tableWrapper}>
                     <Table className={classes.table}>
                         <EnhancedTableHead
@@ -151,8 +155,12 @@ HolidayTable.propTypes = {
     onDeleteSelected: PropTypes.func.isRequired,
     data: PropTypes.arrayOf(HolidayRowRecord).isRequired,
     rowsPerPageOptions: PropTypes.array,
+    user: PropTypes.instanceOf(User),
+    users: PropTypes.arrayOf(User),
 };
 HolidayTable.defaultProps = {
-    rowsPerPageOptions: [5, 10, 25]
+    rowsPerPageOptions: [5, 10, 25],
+    user: null,
+    users: [],
 };
 export default withStyles(Styles, {withTheme: true})(HolidayTable);
