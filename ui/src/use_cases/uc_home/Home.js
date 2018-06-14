@@ -1,26 +1,20 @@
 import React from "react";
 import PropTypes from "prop-types";
 import AgendaTabs from "../../components/agenda/AgendaTabs";
-import Calls from "../../Calls";
 import LinearProgressCentered from "../../components/LinearProgressCentered";
 import UserDetail from "../../components/user_detail/UserDetail";
 import Styles from "./style/HomeStyle";
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import UserProject from "../../components/user_projects/UserProject";
-import Authentication from "./../../Authentication";
 import {Grid} from "@material-ui/core/index";
+import User from "../../entity/User";
 
 
 class Home extends React.Component {
 
     state = {
-        users: [],
         loadFeedback: "ready"
     };
-
-    componentDidMount() {
-        //this._fetchData();
-    }
 
     _getContend() {
         if (this.state.loadFeedback === "loading") {
@@ -29,12 +23,13 @@ class Home extends React.Component {
             return (
                 <Grid className={this.props.classes.mainGrid} container={true} spacing={16}>
                     <Grid item={true} xs={12} sm={3}>
-                        <UserDetail user={Authentication.user}/>
+                        <UserDetail user={this.props.authenticatedUser}/>
                         <div className={this.props.classes.divider}/>
                         <UserProject/>
                     </Grid>
                     <Grid item={true} xs={12} sm={9}>
-                        <AgendaTabs/>
+                        <AgendaTabs match={this.props.match} history={this.props.history}
+                                    user={this.props.authenticatedUser}/>
                     </Grid>
                 </Grid>
             );
@@ -54,7 +49,8 @@ class Home extends React.Component {
 
 Home.propTypes = {
     classes: PropTypes.object.isRequired,
-    match: PropTypes.object.isRequired
+    match: PropTypes.object.isRequired,
+    authenticatedUser: PropTypes.instanceOf(User)
 
 };
 
