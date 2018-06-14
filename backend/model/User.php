@@ -259,7 +259,7 @@ class User extends BaseModel
         self::setMainWorkStation($row["main_work_station"]);
         self::setAttendanceSchedules(Attendance::findLastByUserId(self::getId()));
 
-        $userContracts = UserContract::findLastAndAllFutureByUserIdAndDate(self::getId(), date("Y-m-d"));
+        $userContracts = UserContract::findCurrentAndAllFutureByUserIdAndDate(self::getId(), date("Y-m-d"));
 
         if(!empty($userContracts)){
             self::setCurrentUserContract($userContracts[0]);

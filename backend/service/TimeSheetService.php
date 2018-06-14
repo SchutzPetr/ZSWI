@@ -13,35 +13,50 @@ include_once(__DIR__ . "/UserHolidayService.php");
 include_once(__DIR__ . "/AttendanceService.php");
 include_once(__DIR__ . "/../model/DayTimeSheet.php");
 include_once(__DIR__ . "/../vendor/netresearch/jsonmapper/src/JsonMapper.php");
+include_once(__DIR__ . "/../api/v1/dto/TimeSheet.php");
 
 class TimeSheetService extends Service
 {
 
     /**
-     * @param $userId integer
-     * @param $month integer
-     * @param $year integer
-     * @return DayTimeSheet[]
+     * @param integer $userId
+     * @param integer $month
+     * @param integer $year
+     * @param DayTimeSheet[] $prev
+     * @return TimeSheet
      * @throws PermissionException
      */
-    public static function findAllByUserIdAndYearAndMonth($userId, $month, $year)
+    public static function findAllByUserIdAndYearAndMonth($userId, $month, $year, $prev = [])
     {
         if (!Permission::hasPermission(self::getUserFromContext(), "TIME_SHEET.FIND")) {
             throw new PermissionException();
         }
 
+        $timeSheet = new TimeSheet();
+        $timeSheet->setMonth($month);
+        $timeSheet->setYear($year);
+
         $dayTimeSheets = DayTimeSheet::findAllByUserIdAndYearAndMonth($userId, $month, $year);
 
         if (empty($dayTimeSheets)) {
-            try {
-                self::generate($userId, $month, $year);
-            } catch (PermissionException $e) {
-                return array();
+            if(!empty($prev)){
+                $timeSheet->setDayTimeSheets($prev);
+                return $timeSheet;
             }
-            return self::findAllByUserIdAndYearAndMonth($userId, $month, $year);
+            try {
+                $array = self::generate($userId, $month, $year);
+                if(empty($array)){
+                    return $timeSheet;
+                }
+            } catch (PermissionException $e) {
+                return $timeSheet;
+            }
+            return self::findAllByUserIdAndYearAndMonth($userId, $month, $year, $array);
         }
 
-        return $dayTimeSheets;
+        $timeSheet->setDayTimeSheets($dayTimeSheets);
+
+        return $timeSheet;
     }
 
     /**
@@ -61,9 +76,11 @@ class TimeSheetService extends Service
 
         $dayTimeSheets = array();
 
+        $holidays = UserHoliday::findAllByUserIdAndMonthAndYear($userId, $year, $month);
+
         for ($i = 1; $i <= $number; $i++) {
-            $dayTimeSheet = self::generateForDay($userId, $i, $month, $year);
-            if ($dayTimeSheet === null) {
+            $dayTimeSheet = self::generateForDay($userId, $i, $month, $year, $holidays);
+            if ($dayTimeSheet !== null) {
                 $dayTimeSheets[] = $dayTimeSheet;
             }
         }

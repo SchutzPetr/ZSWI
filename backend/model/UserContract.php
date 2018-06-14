@@ -142,6 +142,7 @@ class UserContract implements JsonSerializable
     {
         self::setUserId($row["user_id"]);
         self::setActiveFrom($row["active_from"]);
+        self::setActiveTo($row["active_to"]);
         self::setObligationKIV($row["obligation_KIV"]);
         self::setObligationNTIS($row["obligation_NTIS"]);
     }
@@ -166,8 +167,46 @@ class UserContract implements JsonSerializable
         return $instance;
     }
 
+    /**
+     * @param $userId integer
+     * @param $date string
+     * @return UserContract
+     */
+    static function findValidByDateAndUserId($userId, $date)
+    {
+        $query = "SELECT * FROM user_contract WHERE user_id = :user_id AND active_from <= :active_from ORDER BY active_from DESC LIMIT 1";
+        $preparedQuery = Database::getConnection()->prepare($query);
+        $preparedQuery->bindValue(":user_id", $userId);
+        $preparedQuery->bindValue(":active_from", $date);
+        $preparedQuery->execute();
+        $result = $preparedQuery->fetch();
 
-    static function findLastAndAllFutureByUserIdAndDate($userId, $active_from)
+        $instance = new self();
+        $instance->fill($result);
+
+        return $instance;
+    }
+
+    /**
+     * @param $userId integer
+     * @return UserContract
+     */
+    static function findCurrentByUserId($userId)
+    {
+        $query = "SELECT * FROM user_contract WHERE user_id = :user_id AND active_from <= :active_from ORDER BY active_from DESC LIMIT 1";
+        $preparedQuery = Database::getConnection()->prepare($query);
+        $preparedQuery->bindValue(":user_id", $userId);
+        $preparedQuery->bindValue(":active_from", date("Y-m-d"));
+        $preparedQuery->execute();
+        $result = $preparedQuery->fetch();
+
+        $instance = new self();
+        $instance->fill($result);
+
+        return $instance;
+    }
+
+    static function findCurrentAndAllFutureByUserIdAndDate($userId, $active_from)
     {
         $query = "(SELECT * FROM user_contract WHERE user_id = :user_id AND active_from <= :active_from ORDER BY active_from DESC LIMIT 1) UNION SELECT * FROM user_contract WHERE user_id = :user_id AND active_from > :active_from ORDER BY active_from;";
         $preparedQuery = Database::getConnection()->prepare($query);

@@ -15,7 +15,6 @@ include_once (__DIR__."/../model/UserContract.php");
 include_once (__DIR__."/../vendor/netresearch/jsonmapper/src/JsonMapper.php");
 include_once (__DIR__."/../vendor/netresearch/jsonmapper/src/JsonMapper/Exception.php");
 
-
 class UserContractService extends Service
 {
 
@@ -41,7 +40,20 @@ class UserContractService extends Service
         }
 
         UserContract::save($userContract);
+    }
 
+    /**
+     * @param $userId integer
+     * @param $date string
+     * @return UserContract
+     * @throws PermissionException
+     */
+    public static function findValidByDateAndUserId($userId, $date){
+        if(!Permission::hasPermission(self::getUserFromContext(), "USER_CONTRACT.FIND")){
+            throw new PermissionException();
+        }
+
+        return UserContract::findValidByDateAndUserId($userId, $date);
     }
 
     /**

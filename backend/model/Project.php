@@ -102,6 +102,14 @@ class Project extends BaseModel
     }
 
     /**
+     * @param $projectId Integer
+     * @param $userIds Integer[]
+     */
+    static function assignUsers($projectId, $userIds){
+
+    }
+
+    /**
      * @return array
      */
     static function findAll()

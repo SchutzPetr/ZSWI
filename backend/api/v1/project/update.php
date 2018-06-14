@@ -14,6 +14,10 @@ include_once (__DIR__."/../FatalErrorHandler.php");
 include_once (__DIR__."/../../../service/ProjectService.php");
 include_once (__DIR__."/../../../exception/PermissionException.php");
 
+if ($_SERVER['REQUEST_METHOD'] === "OPTIONS") {
+    die();
+}
+
 $data = file_get_contents('php://input');
 
 if((!isset($data) || trim($data)==='')){
