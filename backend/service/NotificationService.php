@@ -10,6 +10,7 @@ include_once (__DIR__."/../util/Permission.php");
 include_once (__DIR__."/Service.php");
 include_once (__DIR__."/../model/Notification.php");
 include_once (__DIR__."./../vendor/netresearch/jsonmapper/src/JsonMapper.php");
+include_once (__DIR__."/../vendor/netresearch/jsonmapper/src/JsonMapper/Exception.php");
 
 class NotificationService extends Service
 {

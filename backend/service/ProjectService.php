@@ -15,7 +15,7 @@ include_once (__DIR__."/../model/Project.php");
 include_once (__DIR__ . "/../model/ProjectAssign.php");
 include_once (__DIR__ . "/../model/UserContract.php");
 include_once (__DIR__."./../vendor/netresearch/jsonmapper/src/JsonMapper.php");
-
+include_once (__DIR__."/../vendor/netresearch/jsonmapper/src/JsonMapper/Exception.php");
 
 class ProjectService extends Service
 {

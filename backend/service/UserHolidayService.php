@@ -11,7 +11,7 @@ include_once (__DIR__."/Service.php");
 include_once (__DIR__."/../model/UserHoliday.php");
 include_once (__DIR__."/../model/DayTimeSheet.php");
 include_once (__DIR__."./../vendor/netresearch/jsonmapper/src/JsonMapper.php");
-
+include_once (__DIR__."/../vendor/netresearch/jsonmapper/src/JsonMapper/Exception.php");
 
 class UserHolidayService extends Service
 {

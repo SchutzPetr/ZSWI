@@ -13,6 +13,7 @@ include_once(__DIR__ . "/UserHolidayService.php");
 include_once(__DIR__ . "/AttendanceService.php");
 include_once(__DIR__ . "/../model/DayTimeSheet.php");
 include_once(__DIR__ . "/../vendor/netresearch/jsonmapper/src/JsonMapper.php");
+include_once (__DIR__."/../vendor/netresearch/jsonmapper/src/JsonMapper/Exception.php");
 include_once(__DIR__ . "/../api/v1/dto/TimeSheet.php");
 
 class TimeSheetService extends Service
@@ -39,13 +40,13 @@ class TimeSheetService extends Service
         $dayTimeSheets = DayTimeSheet::findAllByUserIdAndYearAndMonth($userId, $month, $year);
 
         if (empty($dayTimeSheets)) {
-            if(!empty($prev)){
+            if (!empty($prev)) {
                 $timeSheet->setDayTimeSheets($prev);
                 return $timeSheet;
             }
             try {
                 $array = self::generate($userId, $month, $year);
-                if(empty($array)){
+                if (empty($array)) {
                     return $timeSheet;
                 }
             } catch (PermissionException $e) {
@@ -153,7 +154,7 @@ class TimeSheetService extends Service
         $dayTimeSheet->setDate(sprintf("%'.04d-%'.02d-%'.02d", $year, $month, $day));
         $dayTimeSheet->setUserId($userId);
 
-        if($attendance === null){
+        if ($attendance === null) {
             $dayTimeSheet->setFirstPartFrom(null);
             $dayTimeSheet->setFirstPartTo(null);
 
@@ -205,5 +206,29 @@ class TimeSheetService extends Service
         DayTimeSheet::save($dayTimeSheet);
 
         return $dayTimeSheet;
+    }
+
+    /**
+     * @param DayTimeSheet $dayTimeSheet
+     * @throws PermissionException
+     */
+    public static function update($dayTimeSheet)
+    {
+        if (!Permission::hasPermission(self::getUserFromContext(), "TIME_SHEET.UPDATE")) {
+            throw new PermissionException();
+        }
+
+        DayTimeSheet::save($dayTimeSheet);
+    }
+
+    /**
+     * @param $data string
+     * @return DayTimeSheet|object
+     * @throws JsonMapper_Exception
+     */
+    public static function jsonDayTimeSheetDecode($data)
+    {
+        $mapper = new JsonMapper();
+        return $mapper->map(json_decode($data), new DayTimeSheet());
     }
 }

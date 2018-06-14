@@ -12,6 +12,7 @@ include_once (__DIR__."/../util/Permission.php");
 include_once (__DIR__."/Service.php");
 include_once (__DIR__."/../model/Attendance.php");
 include_once (__DIR__."./../vendor/netresearch/jsonmapper/src/JsonMapper.php");
+include_once (__DIR__."/../vendor/netresearch/jsonmapper/src/JsonMapper/Exception.php");
 
 class AttendanceService extends Service
 {
