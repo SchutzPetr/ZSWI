@@ -22,19 +22,6 @@ class Home extends React.Component {
         //this._fetchData();
     }
 
-    _fetchData() {
-        Calls.getUsers({
-            data: {},
-            done: (data) => {
-                this.setState({users: data, loadFeedback: "ready"});
-            },
-            fail: (data) => {
-                this.setState({loadFeedback: "error"});
-                //todo: error throw
-            }
-        })
-    }
-
     _getContend() {
         if (this.state.loadFeedback === "loading") {
             return <LinearProgressCentered paper={false}/>

@@ -78,8 +78,8 @@ class ProjectCreateModal extends React.Component {
                                 label={"Jméno projektu"}
                                 margin={"normal"}
                                 className={classes.textField}
-                                value={this.state.project.name}
-                                onChange={this.handleChange("name")}
+                                value={this.state.project.projectName}
+                                onChange={this.handleChange("projectName")}
                             />
                             <TextField
                                 required={true}
@@ -87,8 +87,8 @@ class ProjectCreateModal extends React.Component {
                                 label={"Zkratka"}
                                 margin={"normal"}
                                 className={classes.textField}
-                                value={this.state.project.shortName}
-                                onChange={this.handleChange("shortName")}
+                                value={this.state.project.projectNameShort}
+                                onChange={this.handleChange("projectNameShort")}
                             />
                         </FormGroup>
                         <FormGroup row={true} className={classes.fullWidth}>

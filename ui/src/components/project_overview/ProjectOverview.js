@@ -21,7 +21,7 @@ class ProjectOverview extends React.Component {
         if (!project) {
             return null;
         }
-        return new Suggestion(project.id, project.name, project)
+        return new Suggestion(project.id, project.projectName, project)
     }
 
     static mapProjectsToSuggestion(projects) {
@@ -77,9 +77,9 @@ class ProjectOverview extends React.Component {
                     {this.props.project ?
                         <div className={classes.projectDetail}>
                             <Typography className={classes.text}
-                                        variant={"title"}>{`Název: ${this.props.project.name}`}</Typography>
+                                        variant={"title"}>{`Název: ${this.props.project.projectName}`}</Typography>
                             <Typography className={classes.text}
-                                        variant={"title"}>{`Zkratka: ${this.props.project.shortName}`}</Typography>
+                                        variant={"title"}>{`Zkratka: ${this.props.project.projectNameShort}`}</Typography>
                             <Typography className={classes.text} variant={"title"}>{"Popis: "}</Typography>
                             <Typography className={classes.textScroll}>{this.props.project.description}</Typography>
                         </div>

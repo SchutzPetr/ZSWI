@@ -22,7 +22,7 @@ const Client = {
             case "login":
                 return axios.get(USER_API + "user/user.ctrl.php?/user/login=" + JSON.stringify(data)); //todo:
             case "getAssignUsersToProject":
-                return axios.get(USER_API + "?/user/getAssignUsersToProject" + JSON.stringify(data));
+                return axios.get(PROJECT_API + "?/user/getAssignUsersToProject" +  {params: data});
             default:
                 throw `Url ${url} does not exists.`;
         }

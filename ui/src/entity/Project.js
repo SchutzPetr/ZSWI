@@ -5,8 +5,8 @@ class Project extends BaseEntity{
     constructor() {
         super();
         this._id = -1;
-        this._name = "";
-        this._shortName = "";
+        this._projectName = "";
+        this._projectNameShort = "";
         this._description = "";
     }
 
@@ -18,20 +18,20 @@ class Project extends BaseEntity{
         this._id = value;
     }
 
-    get name() {
-        return this._name;
+    get projectName() {
+        return this._projectName;
     }
 
-    set name(value) {
-        this._name = value;
+    set projectName(value) {
+        this._projectName = value;
     }
 
-    get shortName() {
-        return this._shortName;
+    get projectNameShort() {
+        return this._projectNameShort;
     }
 
-    set shortName(value) {
-        this._shortName = value;
+    set projectNameShort(value) {
+        this._projectNameShort = value;
     }
 
     get description() {
@@ -51,24 +51,6 @@ class Project extends BaseEntity{
             return dto.map(value => Object.assign(new Project(), value)) || [];
         }
         return Object.assign(new Project(), dto);
-    }
-
-    toJSON() {
-        let obj = {};
-
-        for (let key in this) {
-            if (!this.hasOwnProperty(key)) {
-                continue;
-            }
-            if (key[0] === '_') {
-                obj[key.substr(1)] = this[key];
-            } else {
-                obj[key] = this[key];
-            }
-        }
-
-        return JSON.stringify(obj);
-
     }
 }
 

@@ -33,7 +33,7 @@ class UserContractContent extends React.PureComponent {
                         onChange={this.props.handleChangeCurrent("activeFrom")}
                         animateYearScrolling={false}
                         value={this.props.currentUserContract.activeFrom}
-                        maxDate={this.props.currentUserContract.activeTo}
+                        maxDate={this.props.currentUserContract.activeTo ? this.props.currentUserContract.activeTo : new Date(2100, 1, 1)}
                     />
                     <DatePicker
                         className={classes.datePicker}

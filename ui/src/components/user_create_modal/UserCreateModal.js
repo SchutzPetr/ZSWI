@@ -63,9 +63,6 @@ class UserCreateModal extends React.Component {
                 return false;
             }
         }
-        if (this.state.user.timeJob < 0 || this.state.user.timeJob > 1) {
-            result = false;
-        }
 
         return result;
     }

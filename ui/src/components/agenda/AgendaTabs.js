@@ -9,21 +9,25 @@ import Utils from "../../other/Utils";
 import UserTimeSheets from "../../entity/UserTimeSheets";
 import User from "../../entity/User";
 import Calls from "../../Calls";
+import TimeSheet from "../../entity/TimeSheet";
 
 class AgendaTabs extends React.Component {
 
     constructor(props) {
         super(props);
 
-        this.state = AgendaTabs.getDerivedStateFromProps(props);
+        this.state = {
+            timeSheets: [],
+            loadFeedback: "ready",
+            year: new Date().getFullYear(),
+            month: new Date().getMonth()
+        };
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
         return {
-            userTimeSheets: new UserTimeSheets(nextProps.user),
-            year: 2018,
-            month: new Date().getMonth(),
-        };
+            timeSheets: nextProps.user ? prevState.timeSheets : []
+        }
     }
 
 
@@ -31,11 +35,23 @@ class AgendaTabs extends React.Component {
         this.loadTimeSheet(this.state.month, this.state.year);
     }
 
+    shouldComponentUpdate(newProps, newState, nextContext){
+        return true;
+    }
+
+    componentDidUpdate(prevProps, prevState, prevContext){
+        if(prevProps.user !== this.props.user) {
+            this.loadTimeSheet(this.state.month, this.state.year, true);
+        }else if(prevProps.user && this.props.user && prevProps.user.id !== this.props.user.id){
+            this.loadTimeSheet(this.state.month, this.state.year);
+        }
+    }
+
     changeMonth(event, value) {
         this.setState({
-            month: value - 1
+            month: value
         }, () => {
-            this.loadTimeSheet(value - 1, this.state.year)
+            this.loadTimeSheet(value, this.state.year)
         });
     }
 
@@ -47,33 +63,39 @@ class AgendaTabs extends React.Component {
         });
     };
 
-    loadTimeSheet(month, year) {
-       /* Calls.getUserTimeSheet({
-            data: {userId: this.props.user.id, month: month, year: year},
+    loadTimeSheet(month, year, clear) {
+        if(!this.props.user){
+            return;
+        }
+        if(clear){
+            this.setState({loadFeedback: "loading", timeSheets: []});
+        }else{
+            this.setState({loadFeedback: "loading"});
+        }
+        Calls.getUserTimeSheet({
+            data: {userId: this.props.user.id, month: month + 1, year: year},
             done: (data) => {
-                this.setState({users: User.map(data.data), loadFeedback: "ready"});
+                this.setState(prevState =>{
+                    let timeSheets = prevState.timeSheets.map(value => Object.assign(new TimeSheet(), value));
+
+                    timeSheets[month] = TimeSheet.map(data.data);
+
+                    return {
+                        timeSheets: timeSheets,
+                        loadFeedback: "ready"
+                    }
+                });
             },
             fail: (data) => {
                 this.setState({loadFeedback: "error"});
                 //todo: error throw
             }
-        });*/
-        setTimeout(() => {
-            this.setState(prevState => {
-                let userTimeSheets = prevState.userTimeSheets;
-                userTimeSheets.putTimeSheet(Utils.generateMockData(month, year, false));
-
-                return {
-                    userTimeSheets: userTimeSheets
-                }
-
-            });
-        }, 1000);
+        });
     }
 
     handleTimeSheetEdit(dayTimeSheetEdited) {
         this.setState(prevState => {
-            let userTimeSheets = prevState.userTimeSheets;
+            let userTimeSheets = prevState.timeSheets;
             userTimeSheets.getTimeSheet(prevState.month).dayTimeSheets[dayTimeSheetEdited.date.getDate().toString()] = dayTimeSheetEdited;
 
             return {
@@ -83,14 +105,14 @@ class AgendaTabs extends React.Component {
         });
     };
 
-    changeNTIS(){
+    changeNTIS() {
 
     }
 
-    _wrapIsNTIS(timeSheet, data){
+    _wrapIsNTIS(timeSheet, data) {
         const {classes} = this.props;
 
-        if(timeSheet != null && timeSheet.isNTIS){
+        if (timeSheet != null && timeSheet.isNTIS) {
             return (
                 <Tabs classes={{root: classes.tabs, indicator: classes.indicator}}
                       value={this.state.month + 1}
@@ -101,11 +123,24 @@ class AgendaTabs extends React.Component {
                     <Tab key={"TAB-NTIS"} className={classes.tab} label={"NTIS"}/>
                 </Tabs>
             )
-        }else{
+        } else {
 
         }
     }
 
+    _getContend(classes, timeSheet, months) {
+        if (this.state.loadFeedback === "loading") {
+            return <Paper className={classes.loadingPaper}><LinearProgress className={classes.loading}/></Paper>
+        } else if (this.state.loadFeedback === "ready") {
+            if(timeSheet == null){
+                return  <Paper className={classes.loadingPaper}>EMPTY</Paper>
+            }else{
+                return <Agenda timeSheet={timeSheet} onTimeSheetEdit={this.handleTimeSheetEdit.bind(this)}/>;
+            }
+        } else {
+            return  <Paper className={classes.loadingPaper}>ERROR</Paper>
+        }
+    }
     render() {
         const {classes} = this.props;
 
@@ -115,38 +150,32 @@ class AgendaTabs extends React.Component {
             months.push(new Date(this.state.year, i));
         }
 
-        console.log(JSON.stringify(this.state.userTimeSheets));
+        let timeSheet = this.state.timeSheets[this.state.month];
 
-        let timeSheet = this.state.userTimeSheets.getTimeSheet(this.state.month);
-
-//                {timeSheet == null ? <Paper className={classes.loading}><LinearProgress/></Paper> : <Agenda timeSheet={timeSheet} onTimeSheetEdit={this.handleTimeSheetEdit.bind(this)}/>}
         return (
             <Paper className={classes.root}>
                 {timeSheet != null && timeSheet.isNTIS ?
                     <Tabs classes={{root: classes.tabs, indicator: classes.indicator}}
-                                                               value={this.state.month + 1}
-                                                               onChange={this.changeNTIS.bind(this)}
-                                                               scrollable={false}
-                                                               indicatorColor={"primary"}>
-                    <Tab className={classes.tab} label={"FAV"}/>
-                    <Tab className={classes.tab} label={"NTIS"}/>
-                </Tabs> : null}
-                {timeSheet == null ?
-                    <Paper className={classes.loadingPaper}><LinearProgress className={classes.loading}/></Paper> :
-                    <Agenda timeSheet={timeSheet} onTimeSheetEdit={this.handleTimeSheetEdit.bind(this)}/>}
+                          value={this.state.month + 1}
+                          onChange={this.changeNTIS.bind(this)}
+                          scrollable={false}
+                          indicatorColor={"primary"}>
+                        <Tab className={classes.tab} label={"FAV"}/>
+                        <Tab className={classes.tab} label={"NTIS"}/>
+                    </Tabs> : null}
+                {this._getContend(classes, timeSheet, months)}
                 <div className={classes.bottom}>
                     <Button className={classes.yearButton}
                             disabled={timeSheet == null}
                             onClick={this.handleChangeYear(this.state.year - 1)}>{this.state.year - 1}</Button>
                     <Tabs classes={{root: classes.tabs, indicator: classes.indicator}}
-                          value={this.state.month + 1}
+                          value={this.state.month}
                           onChange={this.changeMonth.bind(this)}
                           scrollable={false}
                           indicatorColor={"primary"}>
                         {months.map((value, index) => {
                             return <Tab key={`TAB-Agenda-${moment(value).format("MMMM")}`}
                                         className={classes.tab}
-                                        disabled={timeSheet == null}
                                         label={moment(value).format("MMMM")}/>
                         })}
                     </Tabs>

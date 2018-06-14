@@ -110,7 +110,7 @@ class UserAssignProjectModal extends React.Component {
                 open={this.props.open}
                 onClose={this.handleClose}
             >
-                <DialogTitle>{this.props.projectToEdit ? "Editace úvazku" : "Vytvoření úvazku k projektu: " + this.props.project.name}</DialogTitle>
+                <DialogTitle>{this.props.projectToEdit ? "Editace úvazku" : "Vytvoření úvazku k projektu: " + this.props.project.projectName}</DialogTitle>
                 <DialogContent>
                     <form className={classes.container}>
                         <FormGroup className={classes.row} row={true}>
@@ -173,7 +173,7 @@ UserAssignProjectModal.propTypes = {
     onClose: PropTypes.func.isRequired,
     onSaveDone: PropTypes.func.isRequired,
     project: PropTypes.instanceOf(Project).isRequired,
-    user: PropTypes.instanceOf(User).isRequired,
+    user: PropTypes.instanceOf(User),
 
 };
 

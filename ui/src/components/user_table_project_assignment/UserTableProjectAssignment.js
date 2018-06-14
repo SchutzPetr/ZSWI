@@ -53,7 +53,8 @@ class UserTableProjectAssignment extends React.Component {
         if (!project) {
             return;
         }
-        Calls.getAssignUsersToProject({
+        this.setState({users: [], loadFeedback: "ready"});
+        /*Calls.getAssignUsersToProject({
             data: project,
             done: (data) => {
                 this.setState({users: User.map(data.data), loadFeedback: "ready"});
@@ -62,7 +63,7 @@ class UserTableProjectAssignment extends React.Component {
                 this.setState({loadFeedback: "error"});
                 //todo: error throw
             }
-        });
+        });*/
     }
 
     handleOpenEdit = modalData => event => {
@@ -145,7 +146,7 @@ class UserTableProjectAssignment extends React.Component {
                         onChangePage={this.handleChangePage}
                         onChangeRowsPerPage={this.handleChangeRowsPerPage}
                     />
-                    <UserAssignProjectModal open={this.state.modalOpen} project={this.props.project}
+                    <UserAssignProjectModal user={null} open={this.state.modalOpen} project={this.props.project}
                                             onSaveDone={this.handleOnSaveDone} onClose={this.handleCloseEdit}/>
                 </Paper>
             );

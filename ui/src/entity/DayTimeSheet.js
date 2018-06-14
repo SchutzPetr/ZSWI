@@ -1,24 +1,60 @@
 import BaseEntity from "./BaseEntity";
+import moment from "moment/moment";
 
 class DayTimeSheet extends BaseEntity{
 
     constructor(){
         super();
-
+        /**
+         * User id
+         * @type {number}
+         * @private
+         */
         this._userId = -1;
+        /**
+         * Date
+         * @type {Date}
+         * @private
+         */
         this._date = new Date();
+        /**
+         * Day type
+         * @type {string}
+         * @private
+         */
         this._dayType = "";
+        /**
+         * @type {null|Date}
+         * @private
+         */
         this._firstPartFrom = null;
+        /**
+         * @type {null|Date}
+         * @private
+         */
         this._firstPartTo = null;
+        /**
+         * @type {null|Date}
+         * @private
+         */
         this._secondPartFrom = null;
+        /**
+         * @type {null|Date}
+         * @private
+         */
         this._secondPartTo = null;
     }
 
-
+    /**
+     * @returns {number}
+     */
     get userId() {
         return this._userId;
     }
 
+    /**
+     * @param value {number}
+     */
     set userId(value) {
         this._userId = value;
     }
@@ -30,60 +66,118 @@ class DayTimeSheet extends BaseEntity{
         return this._date;
     }
 
+    /**
+     * @param value {Date}
+     */
     set date(value) {
         this._date = value;
     }
 
+    /**
+     * @returns {string}
+     */
     get dayType() {
         return this._dayType;
     }
 
+    /**
+     * @param value {string}
+     */
     set dayType(value) {
         this._dayType = value;
     }
 
     /**
-     * @returns {null|Date}
+     * @returns {Date}
      */
     get firstPartFrom() {
         return this._firstPartFrom;
     }
 
+    /**
+     * @param value {Date}
+     */
     set firstPartFrom(value) {
         this._firstPartFrom = value;
     }
 
     /**
-     * @returns {null|Date}
+     * @returns {Date}
      */
     get firstPartTo() {
         return this._firstPartTo;
     }
 
+    /**
+     * @param value {Date}
+     */
     set firstPartTo(value) {
         this._firstPartTo = value;
     }
 
     /**
-     * @returns {null|Date}
+     * @returns {Date}
      */
     get secondPartFrom() {
         return this._secondPartFrom;
     }
 
+    /**
+     * @param value {Date}
+     */
     set secondPartFrom(value) {
         this._secondPartFrom = value;
     }
 
     /**
-     * @returns {null|Date}
+     * @returns {Date}
      */
     get secondPartTo() {
         return this._secondPartTo;
     }
 
+    /**
+     * @param value {Date}
+     */
     set secondPartTo(value) {
         this._secondPartTo = value;
+    }
+
+    /**
+     *
+     * @param dayTimeSheetDTO {*}
+     * @returns {DayTimeSheet|DayTimeSheet[]}
+     */
+    static map(dayTimeSheetDTO) {
+        if (dayTimeSheetDTO instanceof Array) {
+            return dayTimeSheetDTO.map(value => this.map(value)) || [];
+        }
+
+        let dayTimeSheet = new DayTimeSheet();
+
+        dayTimeSheet.userId = dayTimeSheetDTO.userId;
+        dayTimeSheet.dayType = dayTimeSheetDTO.dayType;
+
+        dayTimeSheet.date = moment(dayTimeSheetDTO.date, "YYYY-MM-DD").toDate();
+        dayTimeSheet.firstPartFrom = moment(dayTimeSheetDTO.firstPartFrom, "HH:mm:ss").toDate();
+        dayTimeSheet.firstPartTo = moment(dayTimeSheetDTO.firstPartTo, "HH:mm:ss").toDate();
+        dayTimeSheet.secondPartFrom = moment(dayTimeSheetDTO.secondPartFrom, "HH:mm:ss").toDate();
+        dayTimeSheet.secondPartTo = moment(dayTimeSheetDTO.secondPartTo, "HH:mm:ss").toDate();
+
+        return dayTimeSheet;
+    }
+
+    toJSON() {
+        let dayTimeSheetDTO = super.toJSON();
+
+        dayTimeSheetDTO.date = moment(this.date, "YYYY-MM-DD").format("YYYY-MM-DD");
+
+        dayTimeSheetDTO.firstPartFrom = moment(this.firstPartFrom).format("HH:mm:ss");
+        dayTimeSheetDTO.firstPartTo = moment(this.firstPartTo).format("HH:mm:ss");
+        dayTimeSheetDTO.secondPartFrom = moment(this.secondPartFrom).format("HH:mm:ss");
+        dayTimeSheetDTO.secondPartTo = moment(this.secondPartTo).format("HH:mm:ss");
+
+        return dayTimeSheetDTO;
     }
 
     clone() {
@@ -92,10 +186,6 @@ class DayTimeSheet extends BaseEntity{
 
     merge(dayTimeSheet){
         return Object.assign(this, dayTimeSheet);
-    }
-
-    static map(dayTimeSheet){
-        return Object.assign(new DayTimeSheet(), dayTimeSheet);
     }
 }
 

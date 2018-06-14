@@ -1,20 +1,33 @@
 import BaseEntity from "./BaseEntity";
+import moment from "moment/moment";
+import DayTimeSheet from "./DayTimeSheet";
+import Utils from "../other/Utils";
 
 class TimeSheet extends BaseEntity{
 
     constructor(month, isNTIS, dayTimeSheets){
         super();
-        //map(day, DayTimeSheet)
-        //key2 = day number
+        /**
+         *
+         * @type {DayTimeSheet[]}
+         * @private
+         */
         this._dayTimeSheets = dayTimeSheets || {};
         this._isNTIS = isNTIS || false;
         this._month = month || 0;
+        this._year = 0;
     }
 
+    /**
+     * @returns {DayTimeSheet[]}
+     */
     get dayTimeSheets() {
         return this._dayTimeSheets;
     }
 
+    /**
+     * @param value {DayTimeSheet[]}
+     */
     set dayTimeSheets(value) {
         this._dayTimeSheets = value;
     }
@@ -35,20 +48,41 @@ class TimeSheet extends BaseEntity{
         this._month = value;
     }
 
-    putDayTimeSheet(dayTimeSheet){
-        this._dayTimeSheets[dayTimeSheet.day] = dayTimeSheet;
+    get year() {
+        return this._year;
     }
 
-    getDayTimeSheet(day){
-        return this._dayTimeSheets[day];
+    set year(value) {
+        this._year = value;
+    }
+
+    /**
+     *
+     * @param timeSheetDTO {*}
+     * @returns {TimeSheet|TimeSheet[]}
+     */
+    static map(timeSheetDTO) {
+        if (timeSheetDTO instanceof Array) {
+            return timeSheetDTO.map(value => this.map(value)) || [];
+        }
+
+        let timeSheet = new TimeSheet();
+        timeSheet.month = timeSheetDTO.month -= 1;
+        timeSheet.year = timeSheetDTO.year;
+
+        let dayTimeSheets = [];
+
+        Object.keys(timeSheetDTO.dayTimeSheets).forEach(value => {
+            dayTimeSheets[Number(value)] = DayTimeSheet.map(timeSheetDTO.dayTimeSheets[value]);
+        });
+
+        timeSheet.dayTimeSheets = dayTimeSheets;
+
+        return timeSheet;
     }
 
     clone() {
         return Object.assign(new TimeSheet(), this);
-    }
-
-    static map(timeSheet){
-        return Object.assign(new TimeSheet(), timeSheet);
     }
 }
 

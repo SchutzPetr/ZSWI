@@ -14,13 +14,13 @@ class AgendaOverview extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = AgendaOverview.getDerivedStateFromProps(props);
+        this.state = AgendaOverview.getDerivedStateFromProps(props, {});
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
         return {
-            user: nextProps.match.params.userId ? nextProps.users.find(x => x.id === nextProps.match.params.userId) : null,
-            users: [],
+            users: prevState.users || [],
+            user: nextProps.match.params.userId && prevState.users ? prevState.users.find(x => x.id === nextProps.match.params.userId) : null,
             loadFeedback: "ready"
         };
     }
@@ -34,7 +34,14 @@ class AgendaOverview extends React.Component {
         Calls.getUsers({
             data: {},
             done: (data) => {
-                this.setState({users: User.map(data.data), loadFeedback: "ready"});
+                this.setState(prevState => {
+                    const users = User.map(data.data);
+                    return {
+                        users: users,
+                        loadFeedback: "ready",
+                        user: this.props.match.params.userId ? users.find(x => x.id === this.props.match.params.userId) : null
+                    }
+                });
             },
             fail: (data) => {
                 this.setState({loadFeedback: "error"});
