@@ -1,5 +1,4 @@
 import axios from 'axios';
-import DayTimeSheet from "./entity/DayTimeSheet";
 
 const API = "http://localhost/backend/api/v1";
 
@@ -7,6 +6,7 @@ const USER_API = API + "/user/";
 const PROJECT_API = API + "/project/";
 const TIMESHEET_API = API + "/timesheet/";
 const DAYTIMESHEET_API = API + "/daytimesheet/";
+const USERHOLIDAY_API = API + "/usersholiday/";
 
 
 const Client = {
@@ -22,10 +22,12 @@ const Client = {
                 return axios.get(PROJECT_API + "findById.php", {params: data});
             case "getUserTimeSheet":
                 return axios.get(TIMESHEET_API + "findAllByUserIdAndYearAndMonth.php", {params: data});
+            case "getUserHolidayByUserIdAndYear":
+                return axios.get(USERHOLIDAY_API + "findAllByUserIdAndYear.php", {params: data});
             case "login":
                 return axios.get(USER_API + "user/user.ctrl.php?/user/login=" + JSON.stringify(data)); //todo:
             case "getAssignUsersToProject":
-                return axios.get(PROJECT_API + "?/user/getAssignUsersToProject" +  {params: data});
+                return axios.get(PROJECT_API + "?/user/getAssignUsersToProject" + {params: data});
             default:
                 throw `Url ${url} does not exists.`;
         }
@@ -43,6 +45,8 @@ const Client = {
                 return axios.post(PROJECT_API + "update.php", data);
             case "updateDayTimeSheet":
                 return axios.post(DAYTIMESHEET_API + "update.php", data);
+            case "createUserHoliday":
+                return axios.post(USERHOLIDAY_API + "create.php", data);
             default:
                 throw `Url ${url} does not exists.`;
         }

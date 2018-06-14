@@ -1,6 +1,7 @@
-import Holiday from "./Holiday";
+import UserHoliday from "./UserHoliday";
+import moment from "moment/moment";
 
-class HolidayRowRecord extends Holiday{
+class HolidayRowRecord extends UserHoliday{
 
     constructor(id, userId, date, type, isSelected){
         super(id, userId, date, type);
@@ -19,9 +20,16 @@ class HolidayRowRecord extends Holiday{
     clone() {
         return Object.assign(new HolidayRowRecord(), this);
     }
+    static map(holidayRowRecord) {
+        if (holidayRowRecord instanceof Array) {
+            return holidayRowRecord.map(value => this.map(value)) || [];
+        }
 
-    static map(holidayRowRecord){
-        return Object.assign(new HolidayRowRecord(), holidayRowRecord);
+        let userHoliday = Object.assign(new HolidayRowRecord(), holidayRowRecord);
+
+        userHoliday.activeFrom = moment(holidayRowRecord.activeFrom, "YYYY-MM-DD HH:mm:ss").toDate();
+
+        return userHoliday;
     }
 }
 

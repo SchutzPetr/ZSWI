@@ -67,14 +67,20 @@ class Calls {
         Calls._get("getProject", dataIn);
     }
 
-
-    
     static login(dataIn){
         Calls._get("login", dataIn);
     }
 
     static getAssignUsersToProject(dataIn){
         Calls._get("getAssignUsersToProject", dataIn)
+    }
+
+    static createUserHoliday(dataIn) {
+        Calls._post("createUserHoliday", dataIn);
+    }
+
+    static getUserHolidayByUserIdAndYear(dataIn){
+        Calls._get("getUserHolidayByUserIdAndYear", dataIn)
     }
 }
 

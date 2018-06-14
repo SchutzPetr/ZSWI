@@ -15,6 +15,8 @@ import {
     Select
 } from '@material-ui/core/index';
 import {DatePicker} from "material-ui-pickers";
+import UserHoliday from "../../entity/UserHoliday";
+import User from "../../entity/User";
 
 class HolidayCreateModal extends React.Component {
     state = {
@@ -41,7 +43,12 @@ class HolidayCreateModal extends React.Component {
     };
 
     handleSave = () => {
-        this.props.onSave({holidayDate: this.state.holidayDate, holidayType: this.state.holidayType})
+        const userHoliday = new UserHoliday();
+        userHoliday.userId = this.props.user.id;
+        userHoliday.date = this.state.holidayDate;
+        userHoliday.type = this.state.holidayType;
+
+        this.props.onSave(userHoliday)
     };
 
     render() {
@@ -117,6 +124,7 @@ HolidayCreateModal.propTypes = {
     onSave: PropTypes.func.isRequired,
     edit: PropTypes.bool,
     minDate: PropTypes.bool,
+    user: PropTypes.instanceOf(User),
 };
 
 export default withStyles(Styles, {withTheme: true})(HolidayCreateModal);

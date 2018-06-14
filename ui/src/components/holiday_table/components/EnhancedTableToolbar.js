@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import {withStyles} from '@material-ui/core/styles/index';
-import { withRouter } from 'react-router-dom'
+import {withRouter} from 'react-router-dom'
 import {IconButton, Toolbar, Tooltip, Typography} from "@material-ui/core/index";
 import Styles from "./../style/EnhancedTableToolbarStyle";
 import DeleteIcon from "@material-ui/icons/es/Delete";
@@ -11,11 +11,14 @@ import HolidayCreateModal from "../../holiday_create_modal/HolidayCreateModal";
 import User from "../../../entity/User";
 import Suggestion from "../../autocomplete/entity/Suggestion";
 import SingleSelect from "../../autocomplete/SingleSelect";
+import Calls from "../../../Calls";
+import {FormControl, InputLabel, MenuItem, Select} from "@material-ui/core/es/index";
 
 class EnhancedTableToolbar extends React.Component {
 
     state = {
-        holidayCreateModal: false
+        holidayCreateModal: false,
+        year: 2018
     };
 
     static mapUserToSuggestion(user) {
@@ -29,11 +32,21 @@ class EnhancedTableToolbar extends React.Component {
         return user.map(value => this.mapUserToSuggestion(value));
     }
 
-    handleSelect = (value) => {
-        if(value){
-            this.props.history.push(`/manage-holidays/${value.data.id}`);
-        }else{
-            this.props.history.push(`/manage-holidays/`);
+    static generateYears() {
+        let x = [];
+
+        for (let i = 2018; i < 2050; i++) {
+            x.push(<MenuItem value={i}>{i}</MenuItem>)
+        }
+
+        return x;
+    }
+
+    handleSelect = (event) => {
+        if (event) {
+            this.props.history.push(`/manage-holidays/${event.data.id}/${this.props.year}`);
+        } else {
+            this.props.history.push(`/manage-holidays/${null}/${this.props.year}`);
         }
     };
 
@@ -41,13 +54,17 @@ class EnhancedTableToolbar extends React.Component {
         this.setState({holidayCreateModal: false});
     };
 
-    handleSaveHolidayCreateModal = values => {
-        this.handleCloseHolidayCreateModal();
-    };
-
     handleOpenHolidayCreateModal = () => {
         this.setState({holidayCreateModal: true});
     };
+
+    handleChangeYear(event) {
+        if (event) {
+            this.props.history.push(`/manage-holidays/${this.props.user ? this.props.user.id : null}/${event.target.value}`);
+        } else {
+            this.props.history.push(`/manage-holidays/${this.props.user ? this.props.user.id : null}/${2018}`);
+        }
+    }
 
     render() {
         const {numSelected, classes} = this.props;
@@ -68,10 +85,25 @@ class EnhancedTableToolbar extends React.Component {
                     )}
                 </div>
                 <div className={classes.spacer}/>
-                <div className={classes.singleSelect}>
-                    <SingleSelect value={EnhancedTableToolbar.mapUserToSuggestion(this.props.user)}
-                                  suggestions={EnhancedTableToolbar.mapUsersToSuggestion(this.props.users)}
-                                  onSelect={this.handleSelect}/>
+                <div className={classes.wrapper}>
+                    <div className={classes.singleSelect}>
+                        <SingleSelect value={EnhancedTableToolbar.mapUserToSuggestion(this.props.user)}
+                                      suggestions={EnhancedTableToolbar.mapUsersToSuggestion(this.props.users)}
+                                      onSelect={this.handleSelect}/>
+                    </div>
+                    <FormControl className={classes.formControl}>
+                        <InputLabel htmlFor="age-simple">Age</InputLabel>
+                        <Select
+                            value={this.props.year}
+                            onChange={this.handleChangeYear.bind(this)}
+                            inputProps={{
+                                name: 'year',
+                                id: 'year',
+                            }}
+                        >
+                            {EnhancedTableToolbar.generateYears()}
+                        </Select>
+                    </FormControl>
                 </div>
                 <div className={classes.actions}>
                     {numSelected > 0 ? (
@@ -81,14 +113,23 @@ class EnhancedTableToolbar extends React.Component {
                             </IconButton>
                         </Tooltip>
                     ) : (
-                        <Tooltip title="Filter list">
-                            <IconButton aria-label={"Přidat dovolenou"} onClick={this.handleOpenHolidayCreateModal}>
-                                <AddIcon/>
-                            </IconButton>
+                        <Tooltip title={this.props.user ? "Přidat dovolenou" : "Nejprve vyber uživatele"}>
+                            <div>
+                                <IconButton aria-label={"Přidat dovolenou"} disabled={!this.props.user}
+                                            onClick={this.handleOpenHolidayCreateModal}>
+                                    <AddIcon/>
+                                </IconButton>
+                            </div>
                         </Tooltip>
                     )}
                 </div>
-                <HolidayCreateModal open={this.state.holidayCreateModal} onClose={this.handleCloseHolidayCreateModal} onSave={this.handleSaveHolidayCreateModal}/>
+                <HolidayCreateModal open={this.state.holidayCreateModal}
+                                    user={this.props.user}
+                                    onClose={this.handleCloseHolidayCreateModal}
+                                    onSave={(userHoliday) => {
+                                        this.handleCloseHolidayCreateModal();
+                                        this.props.onSave(userHoliday);
+                                    }}/>
             </Toolbar>
         )
     }
@@ -100,6 +141,8 @@ EnhancedTableToolbar.propTypes = {
     onDeleteSelected: PropTypes.func.isRequired,
     users: PropTypes.arrayOf(User).isRequired,
     user: PropTypes.instanceOf(User),
+    year: PropTypes.number,
+    onSave: PropTypes.func.isRequired,
 };
 
 EnhancedTableToolbar.defaultProps = {

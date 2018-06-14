@@ -9,15 +9,6 @@ import HolidayTable from "../../components/holiday_table/HolidayTable";
 import HolidayRowRecord from "../../entity/HolidayRowRecord";
 import User from "../../entity/User";
 
-function createData() {
-    let data = [];
-    for (let i = 0; i < 25; i++) {
-        data.push(new HolidayRowRecord(i, 1, new Date(), "ALL_DAY", false))
-    }
-
-    return data;
-}
-
 class ManageHolidayPage extends React.Component {
 
     constructor(props) {
@@ -30,13 +21,27 @@ class ManageHolidayPage extends React.Component {
         return {
             users: prevState.users || [],
             user: nextProps.match.params.userId && prevState.users ? prevState.users.find(x => x.id === nextProps.match.params.userId) : null,
+            year: nextProps.match.params.year ? Number(nextProps.match.params.year) : new Date().getFullYear(),
             loadFeedback: prevState.loadFeedback || "loading",
             data: prevState.data || []
         };
     }
 
+    shouldComponentUpdate(newProps, newState, nextContext) {
+        return true;
+    }
+
+    componentDidUpdate(prevProps, prevState, prevContext) {
+        if ((prevState.user !== this.state.user) || (prevState.user && this.state.user && prevState.user.id !== this.state.user.id)) {
+            this._fetchUserHolidayData();
+        }
+    }
+
     componentDidMount() {
         this._fetchData();
+        if (this.state.user) {
+            this._fetchUserHolidayData();
+        }
     }
 
     _fetchData() {
@@ -44,7 +49,33 @@ class ManageHolidayPage extends React.Component {
         Calls.getUsers({
             data: {},
             done: (data) => {
-                this.setState({users: User.map(data.data), loadFeedback: "ready"});
+                this.setState((prevState) => {
+
+                    let users = User.map(data.data);
+
+                    return {
+                        users: users,
+                        user: this.props.match.params.userId && users ? users.find(x => x.id === this.props.match.params.userId) : null,
+                        loadFeedback:
+                            "ready"
+                    }
+                });
+            },
+            fail: (data) => {
+                this.setState({loadFeedback: "error"});
+                //todo: error throw
+            }
+        });
+    }
+
+    _fetchUserHolidayData() {
+        if (!this.state.user || !this.state.year) {
+            return;
+        }
+        Calls.getUserHolidayByUserIdAndYear({
+            data: {userId: this.state.user.id, year: this.state.year},
+            done: (data) => {
+                this.setState({data: HolidayRowRecord.map(data.data), loadFeedback: "ready"});
             },
             fail: (data) => {
                 this.setState({loadFeedback: "error"});
@@ -89,12 +120,15 @@ class ManageHolidayPage extends React.Component {
                     <Grid item={true} xs={12} sm={12}>
                         <HolidayTable fullHeight={true}
                                       user={this.state.user}
+                                      year={this.state.year}
                                       users={this.state.users}
                                       data={this.state.data}
                                       rowsPerPage={11}
                                       rowsPerPageOptions={[]}
                                       onSelectChange={this.onSelectChange}
-                                      onSelectAllChange={this.onSelectAllChange}/>
+                                      onSelectAllChange={this.onSelectAllChange}
+                                      onSaveDone={this._fetchUserHolidayData.bind(this)}
+                        />
                     </Grid>
                 </Grid>
             );

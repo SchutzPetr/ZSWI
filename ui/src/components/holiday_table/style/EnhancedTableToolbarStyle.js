@@ -17,8 +17,12 @@ const Styles = theme => ({
     spacer: {
         flex: '1 1 100%',
     },
+    wrapper:{
+        width: "100%",
+        display: "flex",
+    },
     singleSelect: {
-        paddingRight: 5 * theme.spacing.unit,
+        paddingTop: 14,
         width: "100%"
     },
     actions: {
@@ -27,5 +31,10 @@ const Styles = theme => ({
     title: {
         flex: '0 0 auto',
     },
+    formControl:{
+        width: 100,
+        marginRight: 5 * theme.spacing.unit,
+        marginLeft: 5 * theme.spacing.unit,
+    }
 });
 export default Styles;
