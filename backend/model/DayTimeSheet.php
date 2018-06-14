@@ -215,11 +215,12 @@ class DayTimeSheet implements JsonSerializable
     }
 
     static function findByUserIdAndDate($userId, $day, $month, $year){
-    	$date = date_create($year."-".$month."-".$day);
+    	$date = DateTime::createFromFormat("Y-m-d", $year."-".$month."-".$day);
+
 	    $query = "SELECT * FROM day_time_sheet WHERE user_id = :user_id and date=:date;";
 	    $preparedQuery = Database::getConnection()->prepare($query);
 	    $preparedQuery->bindValue(":user_id", $userId);
-	    $preparedQuery->bindValue(":date", date_format("Y-m-d", $date));
+	    $preparedQuery->bindValue(":date", $date->format("Y-m-d"));
 	    $preparedQuery->execute();
 	    $result = $preparedQuery->fetch();
 

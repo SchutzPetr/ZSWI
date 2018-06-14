@@ -170,7 +170,7 @@ class UserHoliday extends BaseModel
 		$result = $preparedQuery->fetchAll();
 
 		$arrayOfUserHoliday = array();
-		
+
 		foreach ($result as $var) {
 			$instance = new self();
 			$instance->fill($var);
