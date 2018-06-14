@@ -8,6 +8,7 @@
 include_once (__DIR__."/../exception/PermissionException.php");
 include_once (__DIR__."/../util/Permission.php");
 include_once (__DIR__."/Service.php");
+include_once (__DIR__."/TimeSheetService.php");
 include_once (__DIR__."/../model/UserHoliday.php");
 include_once (__DIR__."/../model/DayTimeSheet.php");
 include_once (__DIR__."./../vendor/netresearch/jsonmapper/src/JsonMapper.php");
@@ -44,7 +45,7 @@ class UserHolidayService extends Service
 	/**
 	 * @param int $id
 	 * @param int $year
-	 * @return UserHoliday
+	 * @return UserHoliday[]
  	 * @throws PermissionException
 	 */
 	public static function findAllByUserIdAndYear($id, $year){
@@ -68,7 +69,7 @@ class UserHolidayService extends Service
 		$usersHoliday = UserHoliday::findAllByUserIdAndMonthAndYear($id, $year, $month);
 		$usersHolidayArray = array();
 		foreach ($usersHoliday as $holiday){
-			$day = date("d", $holiday->getDay());
+			$day = date("d", $holiday->getDate());
 			$usersHolidayArray[$day] = $holiday;
 		}
 		return $usersHolidayArray;
@@ -97,12 +98,7 @@ class UserHolidayService extends Service
 			throw new PermissionException();
 		}
 		UserHoliday::save($userHoliday);
-		$day = date("d", $userHoliday->getDay());
-		$month = date('m', $userHoliday->getDay());
-		$year = date('Y', $userHoliday->getDay());
-		$dayTimeSheet =	DayTimeSheet::findByUserIdAndDate($userHoliday->getUserId(), $day, $month, $year);
-		$dayTimeSheet->setDayType("HOLIDAY");
-		DayTimeSheet::save($dayTimeSheet);
+        TimeSheetService::reGenerateForHoliday($userHoliday->getUserId(),array($userHoliday));
 	}
 
 	/**
@@ -115,6 +111,7 @@ class UserHolidayService extends Service
 		}
 
 		UserHoliday::save($userHoliday);
+        TimeSheetService::reGenerateForHoliday($userHoliday->getUserId(),array($userHoliday));
 	}
 
 
@@ -127,9 +124,9 @@ class UserHolidayService extends Service
 			throw new PermissionException();
 		}
 		$userHoliday = self::findById($id);
-		$day = date("d", $userHoliday->getDay());
-		$month = date('m', $userHoliday->getDay());
-		$year = date('Y', $userHoliday->getDay());
+		$day = date("d", $userHoliday->getDate());
+		$month = date('m', $userHoliday->getDate());
+		$year = date('Y', $userHoliday->getDate());
 		$dayTimeSheet =	DayTimeSheet::findByUserIdAndDate($userHoliday->getUserId(), $day, $month, $year);
 		$dayTimeSheet->setDayType(NULL);
 		DayTimeSheet::save($dayTimeSheet);

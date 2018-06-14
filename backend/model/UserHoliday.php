@@ -16,9 +16,9 @@ class UserHoliday extends BaseModel
      */
     private $userId = -1;
     /**
-     * @var DateTime
+     * @var string
      */
-    private $day = "";
+    private $date = "";
     /**
      * @var string
      */
@@ -43,17 +43,17 @@ class UserHoliday extends BaseModel
     /**
      * @return string
      */
-    public function getDay()
+    public function getDate(): string
     {
-        return $this->day;
+        return $this->date;
     }
 
     /**
-     * @param string $day
+     * @param string $date
      */
-    public function setDay($day)
+    public function setDate(string $date): void
     {
-        $this->day = $day;
+        $this->date = $date;
     }
 
     /**
@@ -83,7 +83,7 @@ class UserHoliday extends BaseModel
     {
         self::setId($row["id"]);
         self::setUserId($row["user_id"]);
-        self::setDay($row["day"]);
+        self::setDate($row["date"]);
         self::setType($row["type"]);
     }
 
@@ -136,7 +136,7 @@ class UserHoliday extends BaseModel
 	 * @return UserHoliday[]
 	 */
 	static function findAllByUserIdAndYear($id, $year){
-		$query = "SELECT * FROM user_holiday WHERE user_id = :id AND YEAR(day) =:year;";
+		$query = "SELECT * FROM user_holiday WHERE user_id = :id AND YEAR(date) =:year;";
 		$preparedQuery = Database::getConnection()->prepare($query);
 		$preparedQuery->bindValue(":id", $id);
 		$preparedQuery->bindValue(":year", $year);
@@ -161,7 +161,7 @@ class UserHoliday extends BaseModel
 	 * @return UserHoliday[]
 	 */
 	static function findAllByUserIdAndMonthAndYear($id, $year, $month){
-		$query = "SELECT * FROM user_holiday WHERE user_id = :id AND YEAR(day) =:year AND MONTH(day) =:month ORDER BY day;";
+		$query = "SELECT * FROM user_holiday WHERE user_id = :id AND YEAR(date) =:year AND MONTH(date) =:month ORDER BY date;";
 		$preparedQuery = Database::getConnection()->prepare($query);
 		$preparedQuery->bindValue(":id", $id);
 		$preparedQuery->bindValue(":year", $year);
@@ -205,11 +205,11 @@ class UserHoliday extends BaseModel
      */
     static function save($userHoliday)
     {
-        $query = "insert into user_holiday (id, user_id, day, type) value (:id, :user_id, :day, :type) on duplicate key update user_id = :user_id, day = :day, type = :type;";
+        $query = "insert into user_holiday (id, user_id, date, type) value (:id, :user_id, :date, :type) on duplicate key update date = :date, type = :type;";
         $preparedQuery = Database::getConnection()->prepare($query);
         $preparedQuery->bindValue(":id", $userHoliday->getId() == -1 ? null : $userHoliday->getId());
         $preparedQuery->bindValue(":user_id", $userHoliday->getUserId());
-        $preparedQuery->bindValue(":day", $userHoliday->getDay());
+        $preparedQuery->bindValue(":date", $userHoliday->getDate());
         $preparedQuery->bindValue(":type", $userHoliday->getType());
 
         $preparedQuery->execute();

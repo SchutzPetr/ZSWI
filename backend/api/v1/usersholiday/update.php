@@ -15,10 +15,16 @@ include_once (__DIR__."/../FatalErrorHandler.php");
 include_once ( __DIR__ . "/../../../service/UserHolidayService.php" );
 include_once (__DIR__."/../../../exception/PermissionException.php");
 
+if ($_SERVER['REQUEST_METHOD'] === "OPTIONS") {
+    die();
+}
+
 $data = file_get_contents('php://input');
 
 if((!isset($data) || trim($data)==='')){
-	die;
+    header('HTTP/1.1 500 Internal Server Error');
+    header('Content-Type: application/json; charset=UTF-8');
+    die(json_encode(new Exception("EMPTY_DATA")));
 }
 if(substr( $data, 0, 1 ) === "\"" &&  substr($data, strlen("\"")*-1) == "\""){
 	$data = json_decode($data);

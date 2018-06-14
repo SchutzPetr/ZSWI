@@ -15,7 +15,7 @@ include_once ( __DIR__ . "/../../../service/UserHolidayService.php" );
 include_once (__DIR__."/../../../exception/PermissionException.php");
 
 try {
-	echo json_encode(UserHolidayService::findAllByUserIdAndYear($_GET['id'], $_GET['year']));
+	echo json_encode(UserHolidayService::findAllByUserIdAndYear($_GET['userId'], $_GET['year']));
 } catch (PermissionException $permissionException) {
 	header("HTTP/1.1 401 Unauthorized");
 	echo json_encode($permissionException);

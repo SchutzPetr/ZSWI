@@ -19,31 +19,30 @@ class DayTimeSheet implements JsonSerializable
      */
     private $date = "";
     /**
-     * @var string
+     * @var string|null
      */
     private $dayType = "";
     /**
-     * @var string
+     * @var string|null
      */
     private $firstPartFrom = "";
     /**
-     * @var string
+     * @var string|null
      */
     private $firstPartTo = "";
     /**
-     * @var string
+     * @var string|null
      */
     private $secondPartFrom = "";
     /**
-     * @var string
+     * @var string|null
      */
     private $secondPartTo = "";
-
 
     /**
      * @return int
      */
-    public function getUserId()
+    public function getUserId(): int
     {
         return $this->userId;
     }
@@ -51,7 +50,7 @@ class DayTimeSheet implements JsonSerializable
     /**
      * @param int $userId
      */
-    public function setUserId($userId)
+    public function setUserId(int $userId): void
     {
         $this->userId = $userId;
     }
@@ -59,7 +58,7 @@ class DayTimeSheet implements JsonSerializable
     /**
      * @return string
      */
-    public function getDate()
+    public function getDate(): string
     {
         return $this->date;
     }
@@ -67,90 +66,91 @@ class DayTimeSheet implements JsonSerializable
     /**
      * @param string $date
      */
-    public function setDate($date)
+    public function setDate(string $date): void
     {
         $this->date = $date;
     }
 
     /**
-     * @return string
+     * @return null|string
      */
-    public function getDayType()
+    public function getDayType(): ?string
     {
         return $this->dayType;
     }
 
     /**
-     * @param string $dayType
+     * @param null|string $dayType
      */
-    public function setDayType($dayType)
+    public function setDayType(?string $dayType): void
     {
         $this->dayType = $dayType;
     }
 
     /**
-     * @return string
+     * @return null|string
      */
-    public function getFirstPartFrom()
+    public function getFirstPartFrom(): ?string
     {
         return $this->firstPartFrom;
     }
 
     /**
-     * @param string $firstPartFrom
+     * @param null|string $firstPartFrom
      */
-    public function setFirstPartFrom($firstPartFrom)
+    public function setFirstPartFrom(?string $firstPartFrom): void
     {
         $this->firstPartFrom = $firstPartFrom;
     }
 
     /**
-     * @return string
+     * @return null|string
      */
-    public function getFirstPartTo()
+    public function getFirstPartTo(): ?string
     {
         return $this->firstPartTo;
     }
 
     /**
-     * @param string $firstPartTo
+     * @param null|string $firstPartTo
      */
-    public function setFirstPartTo($firstPartTo)
+    public function setFirstPartTo(?string $firstPartTo): void
     {
         $this->firstPartTo = $firstPartTo;
     }
 
     /**
-     * @return string
+     * @return null|string
      */
-    public function getSecondPartFrom()
+    public function getSecondPartFrom(): ?string
     {
         return $this->secondPartFrom;
     }
 
     /**
-     * @param string $secondPartFrom
+     * @param null|string $secondPartFrom
      */
-    public function setSecondPartFrom($secondPartFrom)
+    public function setSecondPartFrom(?string $secondPartFrom): void
     {
         $this->secondPartFrom = $secondPartFrom;
     }
 
     /**
-     * @return string
+     * @return null|string
      */
-    public function getSecondPartTo()
+    public function getSecondPartTo(): ?string
     {
         return $this->secondPartTo;
     }
 
     /**
-     * @param string $secondPartTo
+     * @param null|string $secondPartTo
      */
-    public function setSecondPartTo($secondPartTo)
+    public function setSecondPartTo(?string $secondPartTo): void
     {
         $this->secondPartTo = $secondPartTo;
     }
+
 
     /**
      * @param $row

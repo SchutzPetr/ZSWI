@@ -103,7 +103,7 @@ class TimeSheetService extends Service
         $holidaysByYearAndMonth = array();
 
         foreach ($holidays as $holiday) {
-            $time = strtotime($holiday->getDay());
+            $time = strtotime($holiday->getDate());
 
             $year = date('Y', $time);
             $month = date('m', $time);
