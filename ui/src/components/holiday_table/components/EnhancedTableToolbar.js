@@ -59,10 +59,18 @@ class EnhancedTableToolbar extends React.Component {
     };
 
     handleChangeYear(event) {
-        if (event) {
-            this.props.history.push(`/manage-holidays/${this.props.user ? this.props.user.id : null}/${event.target.value}`);
-        } else {
-            this.props.history.push(`/manage-holidays/${this.props.user ? this.props.user.id : null}/${2018}`);
+        if(this.props.mode === "USER"){
+            if (event) {
+                this.props.history.push(`/holiday/${event.target.value}`);
+            } else {
+                this.props.history.push(`/holiday/${new Date().getFullYear()}`);
+            }
+        }else{
+            if (event) {
+                this.props.history.push(`/manage-holidays/${this.props.user ? this.props.user.id : null}/${event.target.value}`);
+            } else {
+                this.props.history.push(`/manage-holidays/${this.props.user ? this.props.user.id : null}/${new Date().getFullYear()}`);
+            }
         }
     }
 
@@ -89,7 +97,7 @@ class EnhancedTableToolbar extends React.Component {
                     <div className={classes.singleSelect}>
                         <SingleSelect value={EnhancedTableToolbar.mapUserToSuggestion(this.props.user)}
                                       suggestions={EnhancedTableToolbar.mapUsersToSuggestion(this.props.users)}
-                                      onSelect={this.handleSelect}/>
+                                      onSelect={this.handleSelect} disabled={this.props.mode === "USER"}/>
                     </div>
                     <FormControl className={classes.formControl}>
                         <InputLabel htmlFor="age-simple">Age</InputLabel>
@@ -143,6 +151,7 @@ EnhancedTableToolbar.propTypes = {
     user: PropTypes.instanceOf(User),
     year: PropTypes.number,
     onSave: PropTypes.func.isRequired,
+    mode: PropTypes.string,
 };
 
 EnhancedTableToolbar.defaultProps = {

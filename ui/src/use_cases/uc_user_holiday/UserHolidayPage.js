@@ -6,30 +6,78 @@ import Grid from "@material-ui/core/es/Grid/Grid";
 import Styles from "./style/UserHolidayPageStyle";
 import withStyles from "@material-ui/core/es/styles/withStyles";
 import HolidayTable from "../../components/holiday_table/HolidayTable";
+import User from "../../entity/User";
+import HolidayRowRecord from "../../entity/HolidayRowRecord";
 
 class UserHolidayPage extends React.Component {
 
-    state = {
-        users: [],
-        loadFeedback: "ready"
-    };
+    constructor(props) {
+        super(props);
 
-    componentDidMount() {
-        //this._fetchData();
+        this.state = UserHolidayPage.getDerivedStateFromProps(props, {});
     }
 
-    _fetchData() {
-        Calls.getUsers({
-            data: {},
+    static getDerivedStateFromProps(nextProps, prevState) {
+        return {
+            year: nextProps.match.params.year ? Number(nextProps.match.params.year) : new Date().getFullYear(),
+            loadFeedback: prevState.loadFeedback || "loading",
+            data: prevState.data || []
+        };
+    }
+
+    shouldComponentUpdate(newProps, newState, nextContext) {
+        return true;
+    }
+
+    componentDidUpdate(prevProps, prevState, prevContext) {
+        if (this.props.authenticatedUser && !prevProps.authenticatedUser || this.state.year !== prevState.year) {
+            this._fetchUserHolidayData();
+        }
+    }
+
+    componentDidMount() {
+        if (this.props.authenticatedUser) {
+            this._fetchUserHolidayData();
+        }
+    }
+
+    _fetchUserHolidayData() {
+        if (!this.props.authenticatedUser || !this.state.year) {
+            return;
+        }
+        Calls.getUserHolidayByUserIdAndYear({
+            data: {userId: this.props.authenticatedUser.id, year: this.state.year},
             done: (data) => {
-                this.setState({users: data, loadFeedback: "ready"});
+                this.setState({data: HolidayRowRecord.map(data.data), loadFeedback: "ready"});
             },
             fail: (data) => {
                 this.setState({loadFeedback: "error"});
                 //todo: error throw
             }
-        })
+        });
     }
+
+    onSelectChange = (item, value) => {
+        this.setState((prevState) => {
+            let data = prevState.data;
+            data.find(x => x.id === item.id).isSelected = value;
+            return {
+                data: data
+            }
+        });
+    };
+
+    onSelectAllChange = (value) => {
+        this.setState((prevState) => {
+            let data = prevState.data;
+            data.forEach(x => {
+                x.isSelected = value
+            });
+            return {
+                data: data
+            }
+        });
+    };
 
     _getContend() {
         if (this.state.loadFeedback === "loading") {
@@ -37,12 +85,23 @@ class UserHolidayPage extends React.Component {
         } else if (this.state.loadFeedback === "ready") {
             return (
                 <Grid className={this.props.classes.mainGrid}
-                      container={true} spacing={16}
+                      container={true}
+                      spacing={16}
                       alignItems={"center"}
                       direction={"row"}
                       justify={"center"}>
-                    <Grid className={this.props.classes.secondGrid} item={true} xs={12} sm={8}>
-                        <HolidayTable/>
+                    <Grid item={true} xs={12} sm={12}>
+                        <HolidayTable fullHeight={true}
+                                      user={this.props.authenticatedUser}
+                                      year={this.state.year}
+                                      users={[this.props.authenticatedUser]}
+                                      data={this.state.data}
+                                      rowsPerPage={10}
+                                      rowsPerPageOptions={[]}
+                                      onSelectChange={this.onSelectChange}
+                                      onSelectAllChange={this.onSelectAllChange}
+                                      onSaveDone={this._fetchUserHolidayData.bind(this)}
+                        />
                     </Grid>
                 </Grid>
             );
@@ -62,7 +121,8 @@ class UserHolidayPage extends React.Component {
 
 UserHolidayPage.propTypes = {
     classes: PropTypes.object.isRequired,
-    match: PropTypes.object
+    match: PropTypes.object,
+    authenticatedUser: PropTypes.instanceOf(User)
 
 };
 

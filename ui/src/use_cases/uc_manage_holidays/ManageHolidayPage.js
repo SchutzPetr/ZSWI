@@ -32,7 +32,7 @@ class ManageHolidayPage extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState, prevContext) {
-        if ((prevState.user !== this.state.user) || (prevState.user && this.state.user && prevState.user.id !== this.state.user.id)) {
+        if ((prevState.user !== this.state.user) || (prevState.user && this.state.user && prevState.user.id !== this.state.user.id) || this.state.year !== prevState.year) {
             this._fetchUserHolidayData();
         }
     }
@@ -123,11 +123,12 @@ class ManageHolidayPage extends React.Component {
                                       year={this.state.year}
                                       users={this.state.users}
                                       data={this.state.data}
-                                      rowsPerPage={11}
+                                      rowsPerPage={10}
                                       rowsPerPageOptions={[]}
                                       onSelectChange={this.onSelectChange}
                                       onSelectAllChange={this.onSelectAllChange}
                                       onSaveDone={this._fetchUserHolidayData.bind(this)}
+                                      mode={"SECRETARY"}
                         />
                     </Grid>
                 </Grid>

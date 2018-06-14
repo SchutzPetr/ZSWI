@@ -21,6 +21,7 @@ import ManageHolidayPage from "../use_cases/uc_manage_holidays/ManageHolidayPage
 import ProjectOverviewPage from "../use_cases/uc_project_overview/ProjectOverviewPage";
 import OverviewOfWorkSchedulesPage from "../use_cases/uc_overview_of_work_schedules/OverviewOfWorkSchedulesPage";
 import UserManagementPage from "../use_cases/uc_user_management/UserManagementPage";
+import User from "../entity/User";
 
 
 class SPAAuthenticated extends React.Component {
@@ -125,7 +126,7 @@ class SPAAuthenticated extends React.Component {
                 <Switch>
                     <Route path={"/"} exact={true}
                            render={props => (
-                               <Home match={props.match}/>
+                               <Home authenticatedUser={this.props.authenticatedUser} match={props.match}/>
                            )}/>
                     <Route path={"/agenda/:userId?"} exact={true}
                            render={props => (
@@ -135,9 +136,9 @@ class SPAAuthenticated extends React.Component {
                            render={props => (
                                <Share/>
                            )}/>
-                    <Route path={"/holiday"} exact={true}
+                    <Route path={"/holiday/:year?"} exact={true}
                            render={props => (
-                               <UserHolidayPage/>
+                               <UserHolidayPage authenticatedUser={this.props.authenticatedUser} match={props.match}/>
                            )}/>
                     <Route path={"/manage-holidays/:userId?/:year?"} exact={true}
                            render={props => (
@@ -165,7 +166,8 @@ SPAAuthenticated.propTypes = {
     classes: PropTypes.object.isRequired,
     theme: PropTypes.object.isRequired,
     match: PropTypes.any.isRequired,
-    history: PropTypes.any.isRequired
+    history: PropTypes.any.isRequired,
+    authenticatedUser: PropTypes.instanceOf(User)
 };
 
 export default withStyles(Styles, {withTheme: true})(SPAAuthenticated);

@@ -5,8 +5,6 @@ const Styles = theme => ({
     },
     fullHeightRoot:{
         overflow: "auto",
-        maxHeight: `calc(100vh - 80px)`,
-        height: `calc(100vh - 80px)`,
         display: "flex",
         flexDirection: "column",
         justifyContent: "center"

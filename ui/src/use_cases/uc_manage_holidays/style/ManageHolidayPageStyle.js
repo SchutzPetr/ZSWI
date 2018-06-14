@@ -13,6 +13,8 @@ const Styles = theme => ({
     },
     mainGrid: {
         overflow: "auto",
+        maxHeight: `calc(100vh - 80px)`,
+        height: `calc(100vh - 80px)`,
         padding: theme.spacing.unit * 1,
     },
 });

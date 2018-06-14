@@ -10,6 +10,8 @@ import {MuiPickersUtilsProvider} from "material-ui-pickers";
 import axios from 'axios';
 import SPANotAuthenticated from "./spa/SPANotAuthenticated";
 import {Route} from "react-router-dom";
+import Calls from "./Calls";
+import User from "./entity/User";
 
 const theme = createMuiTheme();
 
@@ -28,6 +30,20 @@ class App extends React.Component {
         Observer.registerListener("AuthenticationChangeEvent", ()=>{
             this.setState({authenticated: Authentication.isAuthenticated()});
         });
+
+        Calls.getUser({
+            data: {id: 3},
+            done: (data) => {
+                this.setState((prevState) => {
+                    return {
+                        authenticatedUser: User.map(data.data),
+                    }
+                });
+            },
+            fail: (data) => {
+                this.setState({loadFeedback: "error"});
+            }
+        });
     }
 
     state = {
@@ -44,7 +60,7 @@ class App extends React.Component {
                 >
                     <Route path={"*"} exact={true}
                            render={props => (
-                               Authentication.isAuthenticated() ? <SPAAuthenticated match={props.match} history={props.history}/> : <SPAAuthenticated match={props.match} history={props.history}/>
+                               Authentication.isAuthenticated() ? <SPAAuthenticated authenticatedUser={this.state.authenticatedUser} match={props.match} history={props.history}/> : <SPAAuthenticated authenticatedUser={this.state.authenticatedUser} match={props.match} history={props.history}/>
                            )}/>
                 </MuiPickersUtilsProvider>
             </MuiThemeProvider>
@@ -61,7 +77,7 @@ class App extends React.Component {
                 >
                     <Route path={"*"} exact={true}
                            render={props => (
-                               Authentication.isAuthenticated() ? <SPAAuthenticated match={props.match} history={props.history}/> : <SPANotAuthenticated match={props.match} history={props.history}/>
+                               Authentication.isAuthenticated() ? <SPAAuthenticated authenticatedUser={this.state.authenticatedUser} match={props.match} history={props.history}/> : <SPANotAuthenticated authenticatedUser={this.state.user} match={props.match} history={props.history}/>
                            )}/>
                 </MuiPickersUtilsProvider>
             </MuiThemeProvider>

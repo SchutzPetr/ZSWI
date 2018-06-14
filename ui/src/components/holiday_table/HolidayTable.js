@@ -126,6 +126,7 @@ class HolidayTable extends React.Component {
                                       year={this.props.year}
                                       users={this.props.users}
                                       onSave={this._handleSaveHolidayCreateModal}
+                                      mode={this.props.mode}
                 />
                 <div className={classes.tableWrapper}>
                     <Table className={classes.table}>
@@ -200,11 +201,13 @@ HolidayTable.propTypes = {
     rowsPerPageOptions: PropTypes.array,
     user: PropTypes.instanceOf(User),
     year: PropTypes.number,
+    mode: PropTypes.string,
     users: PropTypes.arrayOf(User),
 };
 HolidayTable.defaultProps = {
     rowsPerPageOptions: [5, 10, 25],
     user: null,
     users: [],
+    mode: "USER",
 };
 export default withStyles(Styles, {withTheme: true})(HolidayTable);
