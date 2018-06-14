@@ -109,7 +109,7 @@ class UserHoliday extends BaseModel
 	 * @param int $id
 	 */
 	static function deleteById($id){
-	    $query = "SELECT * FROM user_holiday WHERE id = :id;";
+	    $query = "DELETE FROM user_holiday WHERE id = :id;";
 	    $preparedQuery = Database::getConnection()->prepare($query);
 	    $preparedQuery->bindValue(":id", $id);
 	    $preparedQuery->execute();
