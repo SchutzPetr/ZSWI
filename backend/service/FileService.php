@@ -11,7 +11,7 @@ include_once(__DIR__ . "/../util/Permission.php");
 include_once(__DIR__ . "/Service.php");
 include_once(__DIR__ . "/UserService.php");
 include_once(__DIR__ . "/AttendanceService.php");
-include_once(__DIR__ . "/ProjectService.php");
+include_once(__DIR__ . "/ProjectAssignService.php");
 include_once(__DIR__ . "/../model/DayTimeSheet.php");
 include_once(__DIR__ . "/../vendor/netresearch/jsonmapper/src/JsonMapper.php");
 include_once (__DIR__."/../vendor/netresearch/jsonmapper/src/JsonMapper/Exception.php");
@@ -174,11 +174,23 @@ class FileService extends Service
 					   || strpos($arrayForOneLine->getDayType(), "OČR") !== false
 					){
 						$sheet->setCellValueByColumnAndRow(array_search('Q', $alphabet), $startLine+$day, $arrayForOneLine->getDayType());
+					}else if(strpos($arrayForOneLine->getDayType(), "cesta") !== false){
+						$sheet->setCellValueByColumnAndRow(array_search('R', $alphabet), $startLine+$day, $arrayForOneLine->getDayType());
 					}else{
 						$sheet->setCellValueByColumnAndRow(array_search('R', $alphabet), $startLine+$day, $arrayForOneLine->getDayType());
+						$attendance = AttendanceService::findByUserIdAndDate($user->getId(), $day, $month, $year);
+						$timestamp1 = strtotime($attendance->getFirstPartFrom());
+						$timestamp2 = strtotime($attendance->getFirstPartTo());
+						$time = (date('H', $timestamp2)-date('H', $timestamp1));
+						$time += (date('i', $timestamp2) - date('i', $timestamp1))/60;
+						$nationalHoliday+=$time;
+						$timestamp1 = strtotime($attendance->getSecondPartFrom());
+						$timestamp2 = strtotime($attendance->getSecondPartTo());
+						$time = (date('H', $timestamp2)-date('H', $timestamp1));
+						$time += (date('i', $timestamp2) - date('i', $timestamp1))/60;
+						$nationalHoliday+=$time;
 					}
 				}else{
-					//TODO national holidays
 					$attendance = AttendanceService::findByUserIdAndDate($user->getId(), $day, $month, $year);
 					$timestamp1 = strtotime($attendance->getFirstPartFrom());
 					$timestamp2 = strtotime($attendance->getFirstPartTo());
@@ -193,15 +205,25 @@ class FileService extends Service
 				}
 
 			}
-
+			echo $user;
 			$sheet->setCellValueByColumnAndRow(array_search('A', $alphabet), 36, "Evidence ostatních skutečností o náhradních a placených dobách je vedena standardním způsobem");
 			$startLine = 38;
 			$sheet->setCellValueByColumnAndRow(array_search('F', $alphabet), $startLine, "Celkem:");
-			$projects = ProjectService::findAll();
-			for($i = 1; $i<count($projects); $i++){
-				$sheet->setCellValueByColumnAndRow(array_search('F', $alphabet)+$i+1, $startLine, $projects[$i-1]->getProjectNameShort());
+			$projects = ProjectAssignService::findByUserIdAllActiveInMonthAndYear($user->getId(), $month, $year);
+			$indexForFrame = 0;
+			for($i = 1; $i<=count($projects); $i++){
+				$percent = $projects[$i-1]->getObligation();
+				$sheet->setCellValueByColumnAndRow(array_search('F', $alphabet)+$i+1, $startLine, $projects[$i-1]->getProject()->getProjectNameShort());
+				$sheet->setCellValueByColumnAndRow(array_search("F", $alphabet)+$i+1, $startLine+1, $workingHourInMonth*$percent);//Celkem odpracováno hodin
+				$sheet->setCellValueByColumnAndRow(array_search("F", $alphabet)+$i+1, $startLine+2, $nationalHoliday*$percent); //Fond prac. doby za státní svátky
+				$sheet->setCellValueByColumnAndRow(array_search("F", $alphabet)+$i+1, $startLine+3, ($workingHourInMonth+$nationalHoliday)*$percent); //Celkem se státními svátky
+				$sheet->setCellValueByColumnAndRow(array_search("F", $alphabet)+$i+1, $startLine+4, $holidaysHours*$percent); //Dovolená přepočtená na hodiny
+				$sheet->setCellValueByColumnAndRow(array_search("F", $alphabet)+$i+1, $startLine+5, $sickHours*$percent); //Nemocenská, OČR (přepočt. na hod.)
+				$sheet->setCellValueByColumnAndRow(array_search("F", $alphabet)+$i+1, $startLine+6, ($sickHours+$holidaysHours+$workingHourInMonth+$nationalHoliday)*$percent); //Celkem k proplacení
+				$sheet->setCellValueByColumnAndRow(array_search("F", $alphabet)+$i+1, $startLine+7, $workingHourInMonth*$percent); // Celkem disponibilní fond bez přestávek
+				$indexForFrame = array_search("F", $alphabet)+$i+1;
 			}
-			$sheet->setCellValueByColumnAndRow(array_search('K', $alphabet), $startLine, "Name of project 2");
+			$indexForFrame+=2;
 
 			$startLine= 39;
 			$arrayForTableDownTable  = array("Celkem odpracováno hodin", "Fond prac. doby za státní svátky", "Celkem se státními svátky",
@@ -209,6 +231,7 @@ class FileService extends Service
 
 			for ($i = 0; $i<count($arrayForTableDownTable); $i++){
 				$sheet->setCellValueByColumnAndRow(array_search('A', $alphabet), $startLine+$i, $arrayForTableDownTable[$i]);
+				$document->getActiveSheet()->mergeCellsByColumnAndRow(array_search('A', $alphabet), $startLine+$i, array_search('E', $alphabet), $startLine+$i);
 			}
 			$sheet->setCellValueByColumnAndRow(array_search("F", $alphabet), $startLine, $workingHourInMonth);//Celkem odpracováno hodin
 			$sheet->setCellValueByColumnAndRow(array_search("F", $alphabet), $startLine+1, $nationalHoliday); //Fond prac. doby za státní svátky
@@ -223,6 +246,7 @@ class FileService extends Service
 				                                                              PHPExcel_Style_Border::BORDER_MEDIUM,'color' => array('argb' => '000000'),)));
 
 			$sheet->getStyle("A1:R2")->applyFromArray($border_style);
+			$sheet->getStyle("A".$startLine.":F".($startLine+6))->applyFromArray($border_style);
 
 			$border_style= array('borders' => array('allborders' => array('style' =>
 				                                                              PHPExcel_Style_Border::BORDER_THIN,'color' => array('argb' => '000000'),)));

@@ -157,13 +157,15 @@ class DayTimeSheet implements JsonSerializable
      */
     private function fill($row)
     {
-        self::setUserId($row["user_id"]);
-        self::setDate($row["date"]);
-        self::setDayType($row["day_type"]);
-        self::setFirstPartFrom($row["first_part_from"]);
-        self::setFirstPartTo($row["first_part_to"]);
-        self::setSecondPartFrom($row["second_part_from"]);
-        self::setSecondPartTo($row["second_part_to"]);
+    	if($row["user_id"] != null){
+		    self::setUserId($row["user_id"]);
+		    self::setDate($row["date"]);
+		    self::setDayType($row["day_type"]);
+		    self::setFirstPartFrom($row["first_part_from"]);
+		    self::setFirstPartTo($row["first_part_to"]);
+		    self::setSecondPartFrom($row["second_part_from"]);
+		    self::setSecondPartTo($row["second_part_to"]);
+	    }
     }
 
     /**
@@ -216,7 +218,6 @@ class DayTimeSheet implements JsonSerializable
 
     static function findByUserIdAndDate($userId, $day, $month, $year){
     	$date = DateTime::createFromFormat("Y-m-d", $year."-".$month."-".$day);
-
 	    $query = "SELECT * FROM day_time_sheet WHERE user_id = :user_id and date=:date;";
 	    $preparedQuery = Database::getConnection()->prepare($query);
 	    $preparedQuery->bindValue(":user_id", $userId);
