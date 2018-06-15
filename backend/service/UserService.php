@@ -32,6 +32,19 @@ class UserService extends Service
     }
 
     /**
+     * @param string $login
+     * @return User
+     * @throws PermissionException
+     */
+    public static function findByLogin($login){
+        if(!Permission::hasPermission(self::getUserFromContext(), "USER.FIND")){
+            throw new PermissionException();
+        }
+
+        return User::findByOrion($login);
+    }
+
+    /**
      * @param $id integer
      * @return array
      * @throws PermissionException
