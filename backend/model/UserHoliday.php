@@ -6,8 +6,8 @@
  * Time: 23:17
  */
 
-include_once (__DIR__."/../database/Database.php");
-include_once (__DIR__."/BaseModel.php");
+include_once(__DIR__ . "/../database/Database.php");
+include_once(__DIR__ . "/BaseModel.php");
 
 class UserHoliday extends BaseModel
 {
@@ -41,22 +41,6 @@ class UserHoliday extends BaseModel
     }
 
     /**
-     * @return string
-     */
-    public function getDate(): string
-    {
-        return $this->date;
-    }
-
-    /**
-     * @param string $date
-     */
-    public function setDate(string $date): void
-    {
-        $this->date = $date;
-    }
-
-    /**
      * ALL_DAY
      * FIRST_PART_OF_DAY
      * SECOND_PART_OF_DAY
@@ -74,6 +58,22 @@ class UserHoliday extends BaseModel
     public function setType($type)
     {
         $this->type = $type;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+    /**
+     * @param string $date
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
     }
 
     /**
@@ -105,79 +105,83 @@ class UserHoliday extends BaseModel
         return $instance;
     }
 
-	/**
-	 * @param int $id
-	 */
-	static function deleteById($id){
-	    $query = "DELETE FROM user_holiday WHERE id = :id;";
-	    $preparedQuery = Database::getConnection()->prepare($query);
-	    $preparedQuery->bindValue(":id", $id);
-	    $preparedQuery->execute();
+    /**
+     * @param int $id
+     */
+    static function deleteById($id)
+    {
+        $query = "DELETE FROM user_holiday WHERE id = :id;";
+        $preparedQuery = Database::getConnection()->prepare($query);
+        $preparedQuery->bindValue(":id", $id);
+        $preparedQuery->execute();
     }
 
-	/**
-	 * @param int $id
-	 */
-	static function findByUserId($id){
-		$query = "SELECT * FROM user_holiday WHERE user_id = :id;";
-		$preparedQuery = Database::getConnection()->prepare($query);
-		$preparedQuery->bindValue(":id", $id);
-		$preparedQuery->execute();
-		$result = $preparedQuery->fetch();
+    /**
+     * @param int $id
+     */
+    static function findByUserId($id)
+    {
+        $query = "SELECT * FROM user_holiday WHERE user_id = :id;";
+        $preparedQuery = Database::getConnection()->prepare($query);
+        $preparedQuery->bindValue(":id", $id);
+        $preparedQuery->execute();
+        $result = $preparedQuery->fetch();
 
-		$instance = new self();
-		$instance->fill($result);
+        $instance = new self();
+        $instance->fill($result);
 
-	}
+    }
 
-	/**
-	 * @param int $id
-	 * @param int $year
-	 * @return UserHoliday[]
-	 */
-	static function findAllByUserIdAndYear($id, $year){
-		$query = "SELECT * FROM user_holiday WHERE user_id = :id AND YEAR(date) =:year;";
-		$preparedQuery = Database::getConnection()->prepare($query);
-		$preparedQuery->bindValue(":id", $id);
-		$preparedQuery->bindValue(":year", $year);
-		$preparedQuery->execute();
-		$result = $preparedQuery->fetchAll();
+    /**
+     * @param int $id
+     * @param int $year
+     * @return UserHoliday[]
+     */
+    static function findAllByUserIdAndYear($id, $year)
+    {
+        $query = "SELECT * FROM user_holiday WHERE user_id = :id AND YEAR(date) =:year;";
+        $preparedQuery = Database::getConnection()->prepare($query);
+        $preparedQuery->bindValue(":id", $id);
+        $preparedQuery->bindValue(":year", $year);
+        $preparedQuery->execute();
+        $result = $preparedQuery->fetchAll();
 
-		$arrayOfUserHoliday = array();
+        $arrayOfUserHoliday = array();
 
-		foreach ($result as $var) {
-			$instance = new self();
-			$instance->fill($var);
-			$arrayOfUserHoliday[] = $instance;
+        foreach ($result as $var) {
+            $instance = new self();
+            $instance->fill($var);
+            $arrayOfUserHoliday[] = $instance;
 
-		}
-		return $arrayOfUserHoliday;
-	}
+        }
+        return $arrayOfUserHoliday;
+    }
 
-	/**
-	 * @param int $id
-	 * @param int $year
-	 * @param int $month
-	 * @return UserHoliday[]
-	 */
-	static function findAllByUserIdAndMonthAndYear($id, $year, $month){
-		$query = "SELECT * FROM user_holiday WHERE user_id = :id AND YEAR(date) =:year AND MONTH(date) =:month ORDER BY date;";
-		$preparedQuery = Database::getConnection()->prepare($query);
-		$preparedQuery->bindValue(":id", $id);
-		$preparedQuery->bindValue(":year", $year);
-		$preparedQuery->bindValue(":month", $month);
-		$preparedQuery->execute();
-		$result = $preparedQuery->fetchAll();
+    /**
+     * @param int $id
+     * @param int $year
+     * @param int $month
+     * @return UserHoliday[]
+     */
+    static function findAllByUserIdAndMonthAndYear($id, $year, $month)
+    {
+        $query = "SELECT * FROM user_holiday WHERE user_id = :id AND YEAR(date) =:year AND MONTH(date) =:month ORDER BY date;";
+        $preparedQuery = Database::getConnection()->prepare($query);
+        $preparedQuery->bindValue(":id", $id);
+        $preparedQuery->bindValue(":year", $year);
+        $preparedQuery->bindValue(":month", $month);
+        $preparedQuery->execute();
+        $result = $preparedQuery->fetchAll();
 
-		$arrayOfUserHoliday = array();
+        $arrayOfUserHoliday = array();
 
-		foreach ($result as $var) {
-			$instance = new self();
-			$instance->fill($var);
-			$arrayOfUserHoliday[] = $instance;
-		}
-		return $arrayOfUserHoliday;
-	}
+        foreach ($result as $var) {
+            $instance = new self();
+            $instance->fill($var);
+            $arrayOfUserHoliday[] = $instance;
+        }
+        return $arrayOfUserHoliday;
+    }
 
     /**
      * @return array

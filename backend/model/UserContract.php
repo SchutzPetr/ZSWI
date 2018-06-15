@@ -40,7 +40,7 @@ class UserContract implements JsonSerializable
     /**
      * @return int
      */
-    public function getUserId(): int
+    public function getUserId()
     {
         return $this->userId;
     }
@@ -48,7 +48,7 @@ class UserContract implements JsonSerializable
     /**
      * @param int $userId
      */
-    public function setUserId(int $userId): void
+    public function setUserId($userId)
     {
         $this->userId = $userId;
     }
@@ -56,7 +56,7 @@ class UserContract implements JsonSerializable
     /**
      * @return string
      */
-    public function getActiveFrom(): string
+    public function getActiveFrom()
     {
         return $this->activeFrom;
     }
@@ -64,7 +64,7 @@ class UserContract implements JsonSerializable
     /**
      * @param string $activeFrom
      */
-    public function setActiveFrom(string $activeFrom): void
+    public function setActiveFrom($activeFrom)
     {
         $this->activeFrom = $activeFrom;
     }
@@ -72,7 +72,7 @@ class UserContract implements JsonSerializable
     /**
      * @return null|string
      */
-    public function getActiveTo(): ?string
+    public function getActiveTo()
     {
         return $this->activeTo;
     }
@@ -80,16 +80,15 @@ class UserContract implements JsonSerializable
     /**
      * @param null|string $activeTo
      */
-    public function setActiveTo(?string $activeTo): void
+    public function setActiveTo($activeTo)
     {
         $this->activeTo = $activeTo;
     }
 
-
     /**
      * @return float
      */
-    public function getObligationKIV(): float
+    public function getObligationKIV()
     {
         return $this->obligationKIV;
     }
@@ -97,7 +96,7 @@ class UserContract implements JsonSerializable
     /**
      * @param float $obligationKIV
      */
-    public function setObligationKIV(float $obligationKIV): void
+    public function setObligationKIV($obligationKIV)
     {
         $this->obligationKIV = $obligationKIV;
     }
@@ -105,7 +104,7 @@ class UserContract implements JsonSerializable
     /**
      * @return float
      */
-    public function getObligationNTIS(): float
+    public function getObligationNTIS()
     {
         return $this->obligationNTIS;
     }
@@ -113,7 +112,7 @@ class UserContract implements JsonSerializable
     /**
      * @param float $obligationNTIS
      */
-    public function setObligationNTIS(float $obligationNTIS): void
+    public function setObligationNTIS($obligationNTIS)
     {
         $this->obligationNTIS = $obligationNTIS;
     }
@@ -121,7 +120,7 @@ class UserContract implements JsonSerializable
     /**
      * @return UserProjectAssignment[]
      */
-    public function getUserProjectAssignment(): array
+    public function getUserProjectAssignment()
     {
         return $this->userProjectAssignment;
     }
@@ -129,11 +128,10 @@ class UserContract implements JsonSerializable
     /**
      * @param UserProjectAssignment[] $userProjectAssignment
      */
-    public function setUserProjectAssignment(array $userProjectAssignment): void
+    public function setUserProjectAssignment($userProjectAssignment)
     {
         $this->userProjectAssignment = $userProjectAssignment;
     }
-
 
     /**
      * @param $row

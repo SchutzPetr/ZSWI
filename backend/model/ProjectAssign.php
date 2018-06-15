@@ -6,7 +6,7 @@
  * Time: 22:04
  */
 
-include_once (__DIR__."/Project.php");
+include_once(__DIR__ . "/Project.php");
 
 
 class ProjectAssign implements JsonSerializable
@@ -32,16 +32,15 @@ class ProjectAssign implements JsonSerializable
      * @var double
      */
     private $obligation = 0.0;
-	/**
-	 * @var Project|null
-	 */
+    /**
+     * @var Project|null
+     */
     private $project = "";
-
 
     /**
      * @return string
      */
-    public function getProjectId(): string
+    public function getProjectId()
     {
         return $this->projectId;
     }
@@ -49,7 +48,7 @@ class ProjectAssign implements JsonSerializable
     /**
      * @param string $projectId
      */
-    public function setProjectId(string $projectId): void
+    public function setProjectId($projectId)
     {
         $this->projectId = $projectId;
     }
@@ -57,7 +56,7 @@ class ProjectAssign implements JsonSerializable
     /**
      * @return string
      */
-    public function getUserId(): string
+    public function getUserId()
     {
         return $this->userId;
     }
@@ -65,7 +64,7 @@ class ProjectAssign implements JsonSerializable
     /**
      * @param string $userId
      */
-    public function setUserId(string $userId): void
+    public function setUserId($userId)
     {
         $this->userId = $userId;
     }
@@ -73,7 +72,7 @@ class ProjectAssign implements JsonSerializable
     /**
      * @return string
      */
-    public function getActiveFrom(): string
+    public function getActiveFrom()
     {
         return $this->activeFrom;
     }
@@ -81,7 +80,7 @@ class ProjectAssign implements JsonSerializable
     /**
      * @param string $activeFrom
      */
-    public function setActiveFrom(string $activeFrom): void
+    public function setActiveFrom($activeFrom)
     {
         $this->activeFrom = $activeFrom;
     }
@@ -89,7 +88,7 @@ class ProjectAssign implements JsonSerializable
     /**
      * @return null|string
      */
-    public function getActiveTo(): ?string
+    public function getActiveTo()
     {
         return $this->activeTo;
     }
@@ -97,7 +96,7 @@ class ProjectAssign implements JsonSerializable
     /**
      * @param null|string $activeTo
      */
-    public function setActiveTo(?string $activeTo): void
+    public function setActiveTo($activeTo)
     {
         $this->activeTo = $activeTo;
     }
@@ -105,7 +104,7 @@ class ProjectAssign implements JsonSerializable
     /**
      * @return float
      */
-    public function getObligation(): float
+    public function getObligation()
     {
         return $this->obligation;
     }
@@ -113,25 +112,27 @@ class ProjectAssign implements JsonSerializable
     /**
      * @param float $obligation
      */
-    public function setObligation(float $obligation): void
+    public function setObligation($obligation)
     {
         $this->obligation = $obligation;
     }
 
-	/**
-	 * @return null|Project
-	 */
-	public function getProject() {
-		return $this->project;
-	}
 
-	/**
-	 * @param null|Project $project
-	 */
-	public function setProject( $project ) {
-		$this->project = $project;
-	}
+    /**
+     * @return null|Project
+     */
+    public function getProject()
+    {
+        return $this->project;
+    }
 
+    /**
+     * @param null|Project $project
+     */
+    public function setProject($project)
+    {
+        $this->project = $project;
+    }
 
 
     /**
@@ -146,113 +147,118 @@ class ProjectAssign implements JsonSerializable
         self::setObligation($row["obligation"]);
     }
 
-	/***
-	 * @param Project $project
-	 */
-    private function addProject($project){
-    	self::setProject($project);
+    /***
+     * @param Project $project
+     */
+    private function addProject($project)
+    {
+        self::setProject($project);
     }
 
-	/***
-	 * @param int $userId
-	 *
-	 * @return ProjectAssign [] array
-	 */
-    public static function findAllByUserId($userId){
-    	$query = 'SELECT * FROM user_assigned_to_project WHERE user_id=:user_id;';
-	    $preparedQuery = Database::getConnection()->prepare($query);
-	    $preparedQuery->bindValue(":user_id", $userId);
-	    $preparedQuery->execute();
-	    $result = $preparedQuery->fetchAll();
-	    $arrayOfProjects = array();
+    /***
+     * @param int $userId
+     *
+     * @return ProjectAssign [] array
+     */
+    public static function findAllByUserId($userId)
+    {
+        $query = 'SELECT * FROM user_assigned_to_project WHERE user_id=:user_id;';
+        $preparedQuery = Database::getConnection()->prepare($query);
+        $preparedQuery->bindValue(":user_id", $userId);
+        $preparedQuery->execute();
+        $result = $preparedQuery->fetchAll();
+        $arrayOfProjects = array();
 
-	    foreach ($result as $var) {
-		    $instance = new self();
+        foreach ($result as $var) {
+            $instance = new self();
 
-		    $instance->fill($var);
-		    $instance->addProject(Project::findById($instance->getProjectId()));
-		    $arrayOfProjects[] = $instance;
-	    }
+            $instance->fill($var);
+            $instance->addProject(Project::findById($instance->getProjectId()));
+            $arrayOfProjects[] = $instance;
+        }
 
-	    return $arrayOfProjects;
+        return $arrayOfProjects;
     }
 
 
-	/***
-	 * @param int $userId
-	 * @param int $year
-	 * @return ProjectAssign [] array
-	 */
-	public static function findAllByUserIdAndYear($userId, $year){
-		$query = 'SELECT * FROM user_assigned_to_project WHERE user_id=:user_id AND YEAR(active_from)<=:year 
+    /***
+     * @param int $userId
+     * @param int $year
+     * @return ProjectAssign [] array
+     */
+    public static function findAllByUserIdAndYear($userId, $year)
+    {
+        $query = 'SELECT * FROM user_assigned_to_project WHERE user_id=:user_id AND YEAR(active_from)<=:year 
 AND ((active_to is null or active_to = \'\')  OR (YEAR(active_to) >=:year));';
-		$preparedQuery = Database::getConnection()->prepare($query);
-		$preparedQuery->bindValue(":user_id", $userId);
-		$preparedQuery->bindValue(":year", $year);
-		$preparedQuery->execute();
-		$result = $preparedQuery->fetchAll();
-		$arrayOfProjects = array();
+        $preparedQuery = Database::getConnection()->prepare($query);
+        $preparedQuery->bindValue(":user_id", $userId);
+        $preparedQuery->bindValue(":year", $year);
+        $preparedQuery->execute();
+        $result = $preparedQuery->fetchAll();
+        $arrayOfProjects = array();
 
-		foreach ($result as $var) {
-			$instance = new self();
-			$instance->fill($var);
-			$instance->addProject(Project::findById($instance->getProjectId()));
-			$arrayOfProjects[] = $instance;
-		}
-		return $arrayOfProjects;
-	}
+        foreach ($result as $var) {
+            $instance = new self();
+            $instance->fill($var);
+            $instance->addProject(Project::findById($instance->getProjectId()));
+            $arrayOfProjects[] = $instance;
+        }
+        return $arrayOfProjects;
+    }
 
-	/***
-	 * @param int $userId
-	 * @param int $month
-	 * @param int $year
-	 *
-	 * @return ProjectAssign [] array
-	 */
-    public static function findByUserIdAllActiveInMonthAndYear($userId, $month, $year){
-	    $query = 'SELECT * FROM user_assigned_to_project WHERE user_id=:user_id 
+    /***
+     * @param int $userId
+     * @param int $month
+     * @param int $year
+     *
+     * @return ProjectAssign [] array
+     */
+    public static function findByUserIdAllActiveInMonthAndYear($userId, $month, $year)
+    {
+        $query = 'SELECT * FROM user_assigned_to_project WHERE user_id=:user_id 
 AND YEAR(active_from)<=:year AND MONTH(active_from)<=:month  AND ((active_to is null or active_to = \'\') 
 OR (YEAR(active_to) >=:year AND MONTH(active_to) >=:month));';
-	    $preparedQuery = Database::getConnection()->prepare($query);
-	    $preparedQuery->bindValue(":user_id", $userId);
-	    $preparedQuery->bindValue(":month", $month);
-	    $preparedQuery->bindValue(":year", $year);
-	    $preparedQuery->execute();
-	    $result = $preparedQuery->fetchAll();
-	    $arrayOfProjects = array();
+        $preparedQuery = Database::getConnection()->prepare($query);
+        $preparedQuery->bindValue(":user_id", $userId);
+        $preparedQuery->bindValue(":month", $month);
+        $preparedQuery->bindValue(":year", $year);
+        $preparedQuery->execute();
+        $result = $preparedQuery->fetchAll();
+        $arrayOfProjects = array();
 
-	    foreach ($result as $var) {
-		    $instance = new self();
-		    $instance->fill($var);
-		    $instance->addProject(Project::findById($instance->getProjectId()));
-		    $arrayOfProjects[] = $instance;
-	    }
-	    return $arrayOfProjects;
+        foreach ($result as $var) {
+            $instance = new self();
+            $instance->fill($var);
+            $instance->addProject(Project::findById($instance->getProjectId()));
+            $arrayOfProjects[] = $instance;
+        }
+        return $arrayOfProjects;
     }
 
 
-	/***
-	 * @param $userId
-	 * @param $projectId
-	 *
-	 * @return ProjectAssign [] array
-	 */
-    public static function findAllByUserIdAndProjectId($userId, $projectId){
-	    $query = 'SELECT * FROM user_assigned_to_project WHERE user_id=:user_id  AND project_id=:project_id;';
-	    $preparedQuery = Database::getConnection()->prepare($query);
-	    $preparedQuery->bindValue(":user_id", $userId);
-	    $preparedQuery->bindValue(":project_id", $projectId);
-	    $preparedQuery->execute();
-	    $result = $preparedQuery->fetchAll();
-	    $arrayOfProjects = array();
+    /***
+     * @param $userId
+     * @param $projectId
+     *
+     * @return ProjectAssign [] array
+     */
+    public static function findAllByUserIdAndProjectId($userId, $projectId)
+    {
+        $query = 'SELECT * FROM user_assigned_to_project WHERE user_id=:user_id  AND project_id=:project_id;';
+        $preparedQuery = Database::getConnection()->prepare($query);
+        $preparedQuery->bindValue(":user_id", $userId);
+        $preparedQuery->bindValue(":project_id", $projectId);
+        $preparedQuery->execute();
+        $result = $preparedQuery->fetchAll();
+        $arrayOfProjects = array();
 
-	    foreach ($result as $var) {
-		    $instance = new self();
-		    $instance->fill($var);
-		    $instance->addProject(Project::findById($instance->getProjectId()));
-		    $arrayOfProjects[] = $instance;
-	    }
-	    return $arrayOfProjects;
+        foreach ($result as $var) {
+            $instance = new self();
+            $instance->fill($var);
+            $instance->addProject(Project::findById($instance->getProjectId()));
+            $arrayOfProjects[] = $instance;
+        }
+        return $arrayOfProjects;
     }
 
     /**

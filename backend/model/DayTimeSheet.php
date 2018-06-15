@@ -42,7 +42,7 @@ class DayTimeSheet implements JsonSerializable
     /**
      * @return int
      */
-    public function getUserId(): int
+    public function getUserId()
     {
         return $this->userId;
     }
@@ -50,7 +50,7 @@ class DayTimeSheet implements JsonSerializable
     /**
      * @param int $userId
      */
-    public function setUserId(int $userId): void
+    public function setUserId($userId)
     {
         $this->userId = $userId;
     }
@@ -58,7 +58,7 @@ class DayTimeSheet implements JsonSerializable
     /**
      * @return string
      */
-    public function getDate(): string
+    public function getDate()
     {
         return $this->date;
     }
@@ -66,7 +66,7 @@ class DayTimeSheet implements JsonSerializable
     /**
      * @param string $date
      */
-    public function setDate(string $date): void
+    public function setDate($date)
     {
         $this->date = $date;
     }
@@ -74,7 +74,7 @@ class DayTimeSheet implements JsonSerializable
     /**
      * @return null|string
      */
-    public function getDayType(): ?string
+    public function getDayType()
     {
         return $this->dayType;
     }
@@ -82,7 +82,7 @@ class DayTimeSheet implements JsonSerializable
     /**
      * @param null|string $dayType
      */
-    public function setDayType(?string $dayType): void
+    public function setDayType($dayType)
     {
         $this->dayType = $dayType;
     }
@@ -90,7 +90,7 @@ class DayTimeSheet implements JsonSerializable
     /**
      * @return null|string
      */
-    public function getFirstPartFrom(): ?string
+    public function getFirstPartFrom()
     {
         return $this->firstPartFrom;
     }
@@ -98,7 +98,7 @@ class DayTimeSheet implements JsonSerializable
     /**
      * @param null|string $firstPartFrom
      */
-    public function setFirstPartFrom(?string $firstPartFrom): void
+    public function setFirstPartFrom($firstPartFrom)
     {
         $this->firstPartFrom = $firstPartFrom;
     }
@@ -106,7 +106,7 @@ class DayTimeSheet implements JsonSerializable
     /**
      * @return null|string
      */
-    public function getFirstPartTo(): ?string
+    public function getFirstPartTo()
     {
         return $this->firstPartTo;
     }
@@ -114,7 +114,7 @@ class DayTimeSheet implements JsonSerializable
     /**
      * @param null|string $firstPartTo
      */
-    public function setFirstPartTo(?string $firstPartTo): void
+    public function setFirstPartTo($firstPartTo)
     {
         $this->firstPartTo = $firstPartTo;
     }
@@ -122,7 +122,7 @@ class DayTimeSheet implements JsonSerializable
     /**
      * @return null|string
      */
-    public function getSecondPartFrom(): ?string
+    public function getSecondPartFrom()
     {
         return $this->secondPartFrom;
     }
@@ -130,7 +130,7 @@ class DayTimeSheet implements JsonSerializable
     /**
      * @param null|string $secondPartFrom
      */
-    public function setSecondPartFrom(?string $secondPartFrom): void
+    public function setSecondPartFrom($secondPartFrom)
     {
         $this->secondPartFrom = $secondPartFrom;
     }
@@ -138,7 +138,7 @@ class DayTimeSheet implements JsonSerializable
     /**
      * @return null|string
      */
-    public function getSecondPartTo(): ?string
+    public function getSecondPartTo()
     {
         return $this->secondPartTo;
     }
@@ -146,11 +146,10 @@ class DayTimeSheet implements JsonSerializable
     /**
      * @param null|string $secondPartTo
      */
-    public function setSecondPartTo(?string $secondPartTo): void
+    public function setSecondPartTo($secondPartTo)
     {
         $this->secondPartTo = $secondPartTo;
     }
-
 
     /**
      * @param $row

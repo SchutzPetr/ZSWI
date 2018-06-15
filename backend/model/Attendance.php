@@ -47,7 +47,7 @@ class Attendance extends BaseModel
     /**
      * @return int
      */
-    public function getUserId(): int
+    public function getUserId()
     {
         return $this->userId;
     }
@@ -55,7 +55,7 @@ class Attendance extends BaseModel
     /**
      * @param int $userId
      */
-    public function setUserId(int $userId): void
+    public function setUserId($userId)
     {
         $this->userId = $userId;
     }
@@ -63,7 +63,7 @@ class Attendance extends BaseModel
     /**
      * @return int
      */
-    public function getDayInWeek(): int
+    public function getDayInWeek()
     {
         return $this->dayInWeek;
     }
@@ -71,7 +71,7 @@ class Attendance extends BaseModel
     /**
      * @param int $dayInWeek
      */
-    public function setDayInWeek(int $dayInWeek): void
+    public function setDayInWeek($dayInWeek)
     {
         $this->dayInWeek = $dayInWeek;
     }
@@ -79,7 +79,7 @@ class Attendance extends BaseModel
     /**
      * @return bool
      */
-    public function isEnabled(): bool
+    public function isEnabled()
     {
         return $this->enabled;
     }
@@ -87,7 +87,7 @@ class Attendance extends BaseModel
     /**
      * @param bool $enabled
      */
-    public function setEnabled(bool $enabled): void
+    public function setEnabled($enabled)
     {
         $this->enabled = $enabled;
     }
@@ -95,7 +95,7 @@ class Attendance extends BaseModel
     /**
      * @return string
      */
-    public function getActiveFrom(): string
+    public function getActiveFrom()
     {
         return $this->activeFrom;
     }
@@ -103,7 +103,7 @@ class Attendance extends BaseModel
     /**
      * @param string $activeFrom
      */
-    public function setActiveFrom(string $activeFrom): void
+    public function setActiveFrom($activeFrom)
     {
         $this->activeFrom = $activeFrom;
     }
@@ -111,7 +111,7 @@ class Attendance extends BaseModel
     /**
      * @return string
      */
-    public function getFirstPartFrom(): string
+    public function getFirstPartFrom()
     {
         return $this->firstPartFrom;
     }
@@ -119,7 +119,7 @@ class Attendance extends BaseModel
     /**
      * @param string $firstPartFrom
      */
-    public function setFirstPartFrom(string $firstPartFrom): void
+    public function setFirstPartFrom($firstPartFrom)
     {
         $this->firstPartFrom = $firstPartFrom;
     }
@@ -127,7 +127,7 @@ class Attendance extends BaseModel
     /**
      * @return string
      */
-    public function getFirstPartTo(): string
+    public function getFirstPartTo()
     {
         return $this->firstPartTo;
     }
@@ -135,7 +135,7 @@ class Attendance extends BaseModel
     /**
      * @param string $firstPartTo
      */
-    public function setFirstPartTo(string $firstPartTo): void
+    public function setFirstPartTo($firstPartTo)
     {
         $this->firstPartTo = $firstPartTo;
     }
@@ -143,7 +143,7 @@ class Attendance extends BaseModel
     /**
      * @return string
      */
-    public function getSecondPartFrom(): string
+    public function getSecondPartFrom()
     {
         return $this->secondPartFrom;
     }
@@ -151,7 +151,7 @@ class Attendance extends BaseModel
     /**
      * @param string $secondPartFrom
      */
-    public function setSecondPartFrom(string $secondPartFrom): void
+    public function setSecondPartFrom($secondPartFrom)
     {
         $this->secondPartFrom = $secondPartFrom;
     }
@@ -159,7 +159,7 @@ class Attendance extends BaseModel
     /**
      * @return string
      */
-    public function getSecondPartTo(): string
+    public function getSecondPartTo()
     {
         return $this->secondPartTo;
     }
@@ -167,7 +167,7 @@ class Attendance extends BaseModel
     /**
      * @param string $secondPartTo
      */
-    public function setSecondPartTo(string $secondPartTo): void
+    public function setSecondPartTo($secondPartTo)
     {
         $this->secondPartTo = $secondPartTo;
     }

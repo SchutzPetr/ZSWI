@@ -62,7 +62,7 @@ class User extends BaseModel
     /**
      * @return string
      */
-    public function getName(): string
+    public function getName()
     {
         return $this->name;
     }
@@ -70,7 +70,7 @@ class User extends BaseModel
     /**
      * @param string $name
      */
-    public function setName(string $name): void
+    public function setName($name)
     {
         $this->name = $name;
     }
@@ -78,7 +78,7 @@ class User extends BaseModel
     /**
      * @return string
      */
-    public function getLastName(): string
+    public function getLastName()
     {
         return $this->lastName;
     }
@@ -86,7 +86,7 @@ class User extends BaseModel
     /**
      * @param string $lastName
      */
-    public function setLastName(string $lastName): void
+    public function setLastName($lastName)
     {
         $this->lastName = $lastName;
     }
@@ -94,7 +94,7 @@ class User extends BaseModel
     /**
      * @return string
      */
-    public function getHonorificPrefix(): string
+    public function getHonorificPrefix()
     {
         return $this->honorificPrefix;
     }
@@ -102,7 +102,7 @@ class User extends BaseModel
     /**
      * @param string $honorificPrefix
      */
-    public function setHonorificPrefix(string $honorificPrefix): void
+    public function setHonorificPrefix($honorificPrefix)
     {
         $this->honorificPrefix = $honorificPrefix;
     }
@@ -110,7 +110,7 @@ class User extends BaseModel
     /**
      * @return string
      */
-    public function getHonorificSuffix(): string
+    public function getHonorificSuffix()
     {
         return $this->honorificSuffix;
     }
@@ -118,7 +118,7 @@ class User extends BaseModel
     /**
      * @param string $honorificSuffix
      */
-    public function setHonorificSuffix(string $honorificSuffix): void
+    public function setHonorificSuffix($honorificSuffix)
     {
         $this->honorificSuffix = $honorificSuffix;
     }
@@ -126,7 +126,7 @@ class User extends BaseModel
     /**
      * @return string
      */
-    public function getOrionLogin(): string
+    public function getOrionLogin()
     {
         return $this->orionLogin;
     }
@@ -134,7 +134,7 @@ class User extends BaseModel
     /**
      * @param string $orionLogin
      */
-    public function setOrionLogin(string $orionLogin): void
+    public function setOrionLogin($orionLogin)
     {
         $this->orionLogin = $orionLogin;
     }
@@ -142,7 +142,7 @@ class User extends BaseModel
     /**
      * @return string
      */
-    public function getAuthority(): string
+    public function getAuthority()
     {
         return $this->authority;
     }
@@ -150,7 +150,7 @@ class User extends BaseModel
     /**
      * @param string $authority
      */
-    public function setAuthority(string $authority): void
+    public function setAuthority($authority)
     {
         $this->authority = $authority;
     }
@@ -158,7 +158,7 @@ class User extends BaseModel
     /**
      * @return bool
      */
-    public function isActive(): bool
+    public function isActive()
     {
         return $this->active;
     }
@@ -166,7 +166,7 @@ class User extends BaseModel
     /**
      * @param bool $active
      */
-    public function setActive(bool $active): void
+    public function setActive($active)
     {
         $this->active = $active;
     }
@@ -174,7 +174,7 @@ class User extends BaseModel
     /**
      * @return string
      */
-    public function getMainWorkStation(): string
+    public function getMainWorkStation()
     {
         return $this->mainWorkStation;
     }
@@ -182,7 +182,7 @@ class User extends BaseModel
     /**
      * @param string $mainWorkStation
      */
-    public function setMainWorkStation(string $mainWorkStation): void
+    public function setMainWorkStation($mainWorkStation)
     {
         $this->mainWorkStation = $mainWorkStation;
     }
@@ -190,7 +190,7 @@ class User extends BaseModel
     /**
      * @return Attendance[]
      */
-    public function getAttendanceSchedules(): array
+    public function getAttendanceSchedules()
     {
         return $this->attendanceSchedules;
     }
@@ -198,7 +198,7 @@ class User extends BaseModel
     /**
      * @param Attendance[] $attendanceSchedules
      */
-    public function setAttendanceSchedules(array $attendanceSchedules): void
+    public function setAttendanceSchedules($attendanceSchedules)
     {
         $this->attendanceSchedules = $attendanceSchedules;
     }
@@ -206,7 +206,7 @@ class User extends BaseModel
     /**
      * @return UserContract
      */
-    public function getCurrentUserContract(): UserContract
+    public function getCurrentUserContract()
     {
         return $this->currentUserContract;
     }
@@ -214,7 +214,7 @@ class User extends BaseModel
     /**
      * @param UserContract $currentUserContract
      */
-    public function setCurrentUserContract(UserContract $currentUserContract): void
+    public function setCurrentUserContract($currentUserContract)
     {
         $this->currentUserContract = $currentUserContract;
     }
@@ -222,7 +222,7 @@ class User extends BaseModel
     /**
      * @return UserContract[]
      */
-    public function getFutureUserContract(): array
+    public function getFutureUserContract()
     {
         return $this->futureUserContract;
     }
@@ -230,7 +230,7 @@ class User extends BaseModel
     /**
      * @param UserContract[] $futureUserContract
      */
-    public function setFutureUserContract(array $futureUserContract): void
+    public function setFutureUserContract($futureUserContract)
     {
         $this->futureUserContract = $futureUserContract;
     }

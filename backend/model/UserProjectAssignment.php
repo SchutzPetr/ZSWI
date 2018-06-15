@@ -32,7 +32,7 @@ class UserProjectAssignment implements JsonSerializable
     /**
      * @return int
      */
-    public function getUserId(): int
+    public function getUserId()
     {
         return $this->userId;
     }
@@ -40,7 +40,7 @@ class UserProjectAssignment implements JsonSerializable
     /**
      * @param int $userId
      */
-    public function setUserId(int $userId): void
+    public function setUserId($userId)
     {
         $this->userId = $userId;
     }
@@ -48,7 +48,7 @@ class UserProjectAssignment implements JsonSerializable
     /**
      * @return int
      */
-    public function getProjectId(): int
+    public function getProjectId()
     {
         return $this->projectId;
     }
@@ -56,7 +56,7 @@ class UserProjectAssignment implements JsonSerializable
     /**
      * @param int $projectId
      */
-    public function setProjectId(int $projectId): void
+    public function setProjectId($projectId)
     {
         $this->projectId = $projectId;
     }
@@ -64,7 +64,7 @@ class UserProjectAssignment implements JsonSerializable
     /**
      * @return string
      */
-    public function getActiveFrom(): string
+    public function getActiveFrom()
     {
         return $this->activeFrom;
     }
@@ -72,7 +72,7 @@ class UserProjectAssignment implements JsonSerializable
     /**
      * @param string $activeFrom
      */
-    public function setActiveFrom(string $activeFrom): void
+    public function setActiveFrom($activeFrom)
     {
         $this->activeFrom = $activeFrom;
     }
@@ -80,7 +80,7 @@ class UserProjectAssignment implements JsonSerializable
     /**
      * @return string
      */
-    public function getActiveTo(): string
+    public function getActiveTo()
     {
         return $this->activeTo;
     }
@@ -88,7 +88,7 @@ class UserProjectAssignment implements JsonSerializable
     /**
      * @param string $activeTo
      */
-    public function setActiveTo(string $activeTo): void
+    public function setActiveTo($activeTo)
     {
         $this->activeTo = $activeTo;
     }
@@ -96,7 +96,7 @@ class UserProjectAssignment implements JsonSerializable
     /**
      * @return float
      */
-    public function getObligation(): float
+    public function getObligation()
     {
         return $this->obligation;
     }
@@ -104,7 +104,7 @@ class UserProjectAssignment implements JsonSerializable
     /**
      * @param float $obligation
      */
-    public function setObligation(float $obligation): void
+    public function setObligation($obligation)
     {
         $this->obligation = $obligation;
     }
