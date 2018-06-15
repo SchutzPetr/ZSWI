@@ -6,8 +6,8 @@ import {IconButton, Paper, Tooltip, Typography} from "@material-ui/core/index";
 import ProjectSelect from "../autocomplete/SingleSelect";
 import Project from "../../entity/Project";
 import Suggestion from "../autocomplete/entity/Suggestion";
-import AddIcon from "@material-ui/icons/es/Add";
-import EditIcon from "@material-ui/icons/es/Edit";
+import AddIcon from "@material-ui/icons/Add";
+import EditIcon from "@material-ui/icons/Edit";
 import ProjectCreateModal from "../project_create_modal/ProjectCreateModal"
 
 class ProjectOverview extends React.Component {

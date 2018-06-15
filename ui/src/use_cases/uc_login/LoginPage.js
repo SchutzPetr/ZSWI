@@ -3,9 +3,9 @@ import PropTypes from "prop-types";
 
 import Calls from "../../Calls";
 import LinearProgressCentered from "../../components/LinearProgressCentered";
-import Grid from "@material-ui/core/es/Grid/Grid";
+import Grid from "@material-ui/core/Grid/Grid";
 import Login from "../../components/login/Login";
-import withStyles from "@material-ui/core/es/styles/withStyles";
+import withStyles from "@material-ui/core/styles/withStyles";
 import Styles from "./style/LoginPageStyle";
 import Authentication from "./../../Authentication";
 import User from "../../entity/User";

@@ -14,7 +14,7 @@ import {
     TableRow,
     Tooltip
 } from "@material-ui/core/index";
-import EditIcon from "@material-ui/icons/es/Edit";
+import EditIcon from "@material-ui/icons/Edit";
 import User from "../../entity/User";
 import Project from "../../entity/Project";
 import UserAssignProjectModal from "../user_assign_to_project_modal/UserAssignProjectModal";

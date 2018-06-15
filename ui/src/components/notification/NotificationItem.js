@@ -2,8 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import {withStyles} from "@material-ui/core/styles/index";
 import Styles from "./style/NotificationItemStyle";
-import IconButton from "@material-ui/core/es/IconButton/IconButton";
-import DeleteIcon from "@material-ui/icons/es/Delete"
+import IconButton from "@material-ui/core/IconButton/IconButton";
+import DeleteIcon from "@material-ui/icons/Delete"
 import {Link} from "react-router-dom";
 import {ListItem, ListItemSecondaryAction, ListItemText} from "@material-ui/core/index";
 

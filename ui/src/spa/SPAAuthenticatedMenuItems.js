@@ -5,14 +5,14 @@ import {ListItem, ListItemIcon, ListItemText, Divider} from "@material-ui/core/i
 import MailIcon from "@material-ui/icons/Mail";
 import DeleteIcon from "@material-ui/icons/Delete";
 import ReportIcon from "@material-ui/icons/Report";
-import Home from "@material-ui/icons/es/Home";
+import Home from "@material-ui/icons/Home";
 import {Link} from "react-router-dom";
-import ViewAgenda from "@material-ui/icons/es/ViewAgenda";
-import Share from "@material-ui/icons/es/Share";
-import EventBusy from "@material-ui/icons/es/EventBusy";
-import Settings from "@material-ui/icons/es/Settings";
-import SupervisorAccount from "@material-ui/icons/es/SupervisorAccount";
-import Work from "@material-ui/icons/es/Work";
+import ViewAgenda from "@material-ui/icons/ViewAgenda";
+import Share from "@material-ui/icons/Share";
+import EventBusy from "@material-ui/icons/EventBusy";
+import Settings from "@material-ui/icons/Settings";
+import SupervisorAccount from "@material-ui/icons/SupervisorAccount";
+import Work from "@material-ui/icons/Work";
 
 
 export let secretaryMenuItems = (classes) => {

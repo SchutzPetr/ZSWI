@@ -4,7 +4,7 @@ import AgendaTabs from "../../components/agenda/AgendaTabs";
 import LinearProgressCentered from "../../components/LinearProgressCentered";
 import UserDetail from "../../components/user_detail/UserDetail";
 import Styles from "./style/HomeStyle";
-import withStyles from "@material-ui/core/es/styles/withStyles";
+import withStyles from "@material-ui/core/styles/withStyles";
 import UserProject from "../../components/user_projects/UserProject";
 import {Grid} from "@material-ui/core/index";
 import User from "../../entity/User";

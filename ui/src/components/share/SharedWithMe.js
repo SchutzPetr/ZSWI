@@ -14,8 +14,8 @@ import {
     TableRow,
     Typography
 } from "@material-ui/core/index";
-import AccountCircle from "@material-ui/icons/es/AccountCircle";
-import Delete from "@material-ui/icons/es/Delete";
+import AccountCircle from "@material-ui/icons/AccountCircle";
+import Delete from "@material-ui/icons/Delete";
 
 class SharedWithMe extends React.Component {
 

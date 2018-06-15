@@ -194,6 +194,10 @@ AgendaTabs.propTypes = {
     user: PropTypes.instanceOf(User).isRequired,
     match: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
+    users: PropTypes.arrayOf(User)
+};
+AgendaTabs.defaultProps = {
+    mode: "USER",
 };
 
 export default withStyles(Style, {withTheme: true})(AgendaTabs);

@@ -17,7 +17,7 @@ import EnhancedTableToolbar from "./components/EnhancedTableToolbar";
 import EnhancedTableHead from "./components/EnhancedTableHead";
 import HolidayRowRecord from "../../entity/HolidayRowRecord";
 import moment from "moment/moment";
-import EditIcon from "@material-ui/icons/es/Edit";
+import EditIcon from "@material-ui/icons/Edit";
 import User from "../../entity/User";
 import LinearProgressCentered from "../LinearProgressCentered";
 import Calls from "../../Calls";

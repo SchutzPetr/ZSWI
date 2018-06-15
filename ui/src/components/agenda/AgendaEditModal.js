@@ -21,7 +21,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import CloseIcon from '@material-ui/icons/Close';
 import DayTimeSheet from "../../entity/DayTimeSheet";
 import Attendance from "../../entity/Attendance";
-import {FormControlLabel, Switch} from "@material-ui/core/es/index";
+import {FormControlLabel, Switch} from "@material-ui/core/index";
 import User from "../../entity/User";
 
 

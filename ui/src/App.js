@@ -17,17 +17,21 @@ const theme = createMuiTheme();
 
 class App extends React.Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
 
         moment.locale('cs');
 
         axios.defaults.baseURL = "localhost";
         axios.defaults.headers.post['Content-Type'] = 'application/json';
+
+        this.state = {
+            authenticated: Authentication.isAuthenticated()
+        };
     }
 
-    componentDidMount(){
-        Observer.registerListener("AuthenticationChangeEvent", ()=>{
+    componentDidMount() {
+        Observer.registerListener("AuthenticationChangeEvent", () => {
             this.setState({authenticated: Authentication.isAuthenticated()});
         });
 
@@ -46,9 +50,26 @@ class App extends React.Component {
         });
     }
 
-    state = {
-        authenticated: Authentication.isAuthenticated()
-    };
+    render3() {
+        return (
+            <MuiThemeProvider theme={theme}>
+                <MuiPickersUtilsProvider
+                    utils={MomentUtils}
+                    moment={moment}
+                    locale="cs"
+                >
+                    <Route path={"*"} exact={true}
+                           render={props => (
+                               Authentication.isAuthenticated() ?
+                                   <SPAAuthenticated authenticatedUser={this.state.authenticatedUser}
+                                                     match={props.match} history={props.history}/> :
+                                   <SPAAuthenticated authenticatedUser={this.state.authenticatedUser}
+                                                     match={props.match} history={props.history}/>
+                           )}/>
+                </MuiPickersUtilsProvider>
+            </MuiThemeProvider>
+        );
+    }
 
     render() {
         return (
@@ -60,24 +81,11 @@ class App extends React.Component {
                 >
                     <Route path={"*"} exact={true}
                            render={props => (
-                               Authentication.isAuthenticated() ? <SPAAuthenticated authenticatedUser={this.state.authenticatedUser} match={props.match} history={props.history}/> : <SPAAuthenticated authenticatedUser={this.state.authenticatedUser} match={props.match} history={props.history}/>
-                           )}/>
-                </MuiPickersUtilsProvider>
-            </MuiThemeProvider>
-        );
-    }
-
-    render2() {
-        return (
-            <MuiThemeProvider theme={theme}>
-                <MuiPickersUtilsProvider
-                    utils={MomentUtils}
-                    moment={moment}
-                    locale="cs"
-                >
-                    <Route path={"*"} exact={true}
-                           render={props => (
-                               Authentication.isAuthenticated() ? <SPAAuthenticated authenticatedUser={this.state.authenticatedUser} match={props.match} history={props.history}/> : <SPANotAuthenticated authenticatedUser={this.state.user} match={props.match} history={props.history}/>
+                               Authentication.isAuthenticated() ?
+                                   <SPAAuthenticated authenticatedUser={this.state.authenticatedUser}
+                                                     match={props.match} history={props.history}/> :
+                                   <SPANotAuthenticated authenticatedUser={this.state.user} match={props.match}
+                                                        history={props.history}/>
                            )}/>
                 </MuiPickersUtilsProvider>
             </MuiThemeProvider>

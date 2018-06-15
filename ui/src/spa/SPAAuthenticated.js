@@ -13,7 +13,7 @@ import AgendaOverview from "../use_cases/uc_agenda_overview/AgendaOverview";
 
 import {secretaryMenuItems} from "./SPAAuthenticatedMenuItems";
 import Home from "../use_cases/uc_home/Home";
-import Notifications from "@material-ui/icons/es/Notifications";
+import Notifications from "@material-ui/icons/Notifications";
 import NotificationPopover from "../components/notification/NotificationPopover";
 import Share from "../use_cases/uc_share/SharePage";
 import UserHolidayPage from "../use_cases/uc_user_holiday/UserHolidayPage";

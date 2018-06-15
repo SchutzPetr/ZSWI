@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles/index';
 import {IconButton, Toolbar, Tooltip, Typography} from "@material-ui/core/index";
 import Styles from "../style/EnhancedUserTableProjectAssignmentToolbarStyle";
-import AddIcon from "@material-ui/icons/es/Add";
+import AddIcon from "@material-ui/icons/Add";
 import Project from "../../../entity/Project";
 
 class EnhancedUserTableProjectAssignmentToolbar extends React.Component {

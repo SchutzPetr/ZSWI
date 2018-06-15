@@ -3,9 +3,10 @@ import PropTypes from "prop-types";
 import {withStyles} from "@material-ui/core/styles/index";
 import Styles from "./style/ShareStyle";
 import {Button, Card, CardContent, CardHeader} from "@material-ui/core/index";
-import ShareIcon from "@material-ui/icons/es/Share";
+import ShareIcon from "@material-ui/icons/Share";
 import UserMultipleSelect from "../autocomplete/UserMultipleSelect";
 import ProjectSelect from "../autocomplete/SingleSelect";
+import User from "../../entity/User";
 
 class Share extends React.Component {
 
@@ -49,7 +50,8 @@ class Share extends React.Component {
 
 Share.propTypes = {
     classes: PropTypes.object.isRequired,
-    paper: PropTypes.bool
+    paper: PropTypes.bool,
+    users: PropTypes.instanceOf(User)
 };
 
 export default withStyles(Styles, {withTheme: true})(Share);

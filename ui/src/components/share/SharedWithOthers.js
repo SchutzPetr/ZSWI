@@ -14,8 +14,8 @@ import {
     TableRow,
     Typography
 } from "@material-ui/core/index";
-import AccountCircle from "@material-ui/icons/es/AccountCircle";
-import Forward from "@material-ui/icons/es/Forward";
+import AccountCircle from "@material-ui/icons/AccountCircle";
+import Forward from "@material-ui/icons/Forward";
 
 class SharedWithOthers extends React.Component {
 

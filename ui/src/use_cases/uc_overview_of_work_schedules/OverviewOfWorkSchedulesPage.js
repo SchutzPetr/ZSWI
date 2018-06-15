@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import Calls from "../../Calls";
 import LinearProgressCentered from "../../components/LinearProgressCentered";
 import Styles from "./style/OverviewOfWorkSchedulesPageStyle";
-import withStyles from "@material-ui/core/es/styles/withStyles";
+import withStyles from "@material-ui/core/styles/withStyles";
 import OverviewOfWorkSchedules from "../../components/overview_of_work_schedules/OverviewOfWorkSchedules";
 
 class OverviewOfWorkSchedulesPage extends React.Component {

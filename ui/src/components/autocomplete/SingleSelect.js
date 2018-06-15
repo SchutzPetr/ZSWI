@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles/index';
-import ArrowDropDownIcon from '@material-ui/icons/es/ArrowDropDown';
-import CancelIcon from '@material-ui/icons/es/Cancel';
-import ArrowDropUpIcon from '@material-ui/icons/es/ArrowDropUp';
-import ClearIcon from '@material-ui/icons/es/Clear';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import CancelIcon from '@material-ui/icons/Cancel';
+import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
+import ClearIcon from '@material-ui/icons/Clear';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 import Styles from "./style/SingleSelectStyle";
