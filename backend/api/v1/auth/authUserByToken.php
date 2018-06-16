@@ -9,6 +9,7 @@ header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: Content-Type");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: GET");
+header("Access-Control-Allow-Headers: X-Auth-Token");
 
 include_once (__DIR__."/../FatalErrorHandler.php");
 include_once (__DIR__."/../../../service/AuthService.php");
@@ -20,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === "OPTIONS") {
 
 try {
     $object = new stdClass();
-    $object->token = AuthService::simpleLogin($_GET["login"], $_GET["password"]);
+    $object->token = AuthService::authUserByToken($_GET["token"]);
     echo json_encode($object);
 } catch (Exception $exception){
     header('HTTP/1.1 500 Internal Server Error');

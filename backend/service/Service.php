@@ -6,14 +6,23 @@
  * Time: 0:25
  */
 
-include_once (__DIR__."/../model/User.php");
+include_once(__DIR__ . "/../model/User.php");
 
 abstract class Service
 {
     /**
      * @return User
      */
-    public static function getUserFromContext(){
+    public static function getUserFromContext()
+    {
         return new User();
+    }
+
+    /**
+     * @return string|null
+     */
+    public static function getTokenFromHeader()
+    {
+        return $_SERVER["HTTP_X_AUTH_TOKEN"];
     }
 }

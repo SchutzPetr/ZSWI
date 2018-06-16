@@ -3,12 +3,6 @@
  * Created by PhpStorm.
  * User: Mari
  * Date: 14.06.2018
- * Time: 22:25
- */
-/**
- * Created by PhpStorm.
- * User: Mari
- * Date: 14.06.2018
  * Time: 22:21
  */
 header("Access-Control-Allow-Origin: *");

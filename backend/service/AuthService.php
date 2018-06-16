@@ -7,6 +7,7 @@ include_once(__DIR__ . "/../database/Database.php");
 include_once(__DIR__ . "/Service.php");
 include_once(__DIR__ . "/UserService.php");
 include_once(__DIR__ . "/../model/Attendance.php");
+include_once (__DIR__."/../model/User.php");
 include_once(__DIR__ . "/../vendor/netresearch/jsonmapper/src/JsonMapper.php");
 include_once(__DIR__ . "/../vendor/netresearch/jsonmapper/src/JsonMapper/Exception.php");
 
@@ -57,6 +58,43 @@ class AuthService extends Service
         }else{
             return $db_token;
         }
+    }
+
+    /**
+     * @param string $token
+     * @return User
+     * @throws UnauthorizedException
+     * @throws PermissionException
+     */
+    public static function findUserByToken($token){
+        if(Service::getTokenFromHeader() !== $token){
+            throw new PermissionException();
+        }
+        $query = "SELECT user_id FROM user_authentication WHERE token LIKE :token LIMIT 1;";
+
+        $preparedQuery = Database::getConnection()->prepare($query);
+        $preparedQuery->bindValue(":token", $token);
+        $preparedQuery->execute();
+        $result = $preparedQuery->fetch();
+
+        if(empty($result)){
+            throw new UnauthorizedException();
+        }
+        $user = User::findById($result["user_id"]);
+        if(is_null($user)){
+            throw new UnauthorizedException();
+        }
+        return $user;
+    }
+
+    /**
+     * @param string $token
+     * @return User
+     * @throws UnauthorizedException
+     * @throws PermissionException
+     */
+    public static function authUserByToken($token){
+        return self::findUserByToken($token);
     }
 
     public static function generateUUID()
