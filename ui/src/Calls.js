@@ -80,11 +80,35 @@ class Calls {
     }
 
     static getUserHolidayByUserIdAndYear(dataIn){
-        Calls._get("getUserHolidayByUserIdAndYear", dataIn)
+        Calls._get("getUserHolidayByUserIdAndYear", dataIn);
     }
 
     static authUserByToken(dataIn) {
-        Calls._get("authUserByToken", dataIn)
+        Calls._get("authUserByToken", dataIn);
+    }
+
+    static getSimpleUsers(dataIn) {
+        Calls._get("getSimpleUsers", dataIn);
+    }
+
+    static getSimpleUser(dataIn) {
+        Calls._get("getSimpleUser", dataIn);
+    }
+
+    static getAvailableUsers(dataIn) {
+        Calls._get("getAvailableUsers", dataIn);
+    }
+
+    static getSharedWithOthers(dataIn) {
+        Calls._get("getSharedWithOthers", dataIn);
+    }
+
+    static getSharedWithUserId(dataIn) {
+        Calls._get("getSharedWithUserId", dataIn);
+    }
+
+    static createShare(dataIn) {
+        Calls._post("createShare", dataIn);
     }
 }
 

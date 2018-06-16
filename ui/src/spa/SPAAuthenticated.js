@@ -15,7 +15,7 @@ import {secretaryMenuItems, userMenuItems} from "./SPAAuthenticatedMenuItems";
 import Home from "../use_cases/uc_home/Home";
 import Notifications from "@material-ui/icons/Notifications";
 import NotificationPopover from "../components/notification/NotificationPopover";
-import Share from "../use_cases/uc_share/SharePage";
+import SharePage from "../use_cases/uc_share/SharePage";
 import UserHolidayPage from "../use_cases/uc_user_holiday/UserHolidayPage";
 import ManageHolidayPage from "../use_cases/uc_manage_holidays/ManageHolidayPage";
 import ProjectOverviewPage from "../use_cases/uc_project_overview/ProjectOverviewPage";
@@ -65,7 +65,7 @@ class SPAAuthenticated extends React.Component {
                           )}/>
                    <Route path={"/share"} exact={true}
                           render={props => (
-                              <Share/>
+                              <SharePage authenticatedUser={this.props.authenticatedUser}/>
                           )}/>
                    <Route path={"/holiday/:year?"} exact={true}
                           render={props => (
@@ -86,7 +86,7 @@ class SPAAuthenticated extends React.Component {
                           )}/>
                    <Route path={"/share"} exact={true}
                           render={props => (
-                              <Share/>
+                              <SharePage authenticatedUser={this.props.authenticatedUser}/>
                           )}/>
                    <Route path={"/holiday/:year?"} exact={true}
                           render={props => (

@@ -6,6 +6,8 @@ const PROJECT_API = "/project/";
 const TIMESHEET_API = "/timesheet/";
 const DAYTIMESHEET_API = "/daytimesheet/";
 const USERHOLIDAY_API = "/usersholiday/";
+const SHARE_API = "/userShare/";
+const SIMPLE_USER_API = "/simpleuser/";
 
 
 const Client = {
@@ -15,8 +17,18 @@ const Client = {
                 return axios.get(USER_API + "findAll.php");
             case "getUser":
                 return axios.get(USER_API + "findById.php", {params: data});
+            case "getSimpleUsers":
+                return axios.get(SIMPLE_USER_API + "findAll.php");
+            case "getSimpleUser":
+                return axios.get(SIMPLE_USER_API + "findById.php", {params: data});
             case "authUserByToken":
                 return axios.get(AUTH_API + "authUserByToken.php", {params: data});
+            case "getAvailableUsers":
+                return axios.get(SHARE_API + "findAllAvailableUsers.php", {params: data});
+            case "getSharedWithOthers":
+                return axios.get(SHARE_API + "findAllSharedWithOthers.php", {params: data});
+            case "getSharedWithUserId":
+                return axios.get(SHARE_API + "findAllSharedWithUserId.php", {params: data});
             case "getProjects":
                 return axios.get(PROJECT_API + "findAll.php");
             case "getProject":
@@ -48,6 +60,8 @@ const Client = {
                 return axios.post(DAYTIMESHEET_API + "update.php", data);
             case "createUserHoliday":
                 return axios.post(USERHOLIDAY_API + "create.php", data);
+            case "createShare":
+                return axios.post(SHARE_API + "create.php", data);
             default:
                 throw `Url ${url} does not exists.`;
         }

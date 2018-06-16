@@ -16,8 +16,36 @@ import {
 } from "@material-ui/core/index";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import Forward from "@material-ui/icons/Forward";
+import SimpleUser from "../../entity/SimpleUser";
+import User from "../../entity/User";
+import Attendance from "../../entity/Attendance";
 
 class SharedWithOthers extends React.Component {
+
+    _getRows(){
+        return this.props.sharedWithOthers.map(value =>{
+
+            return (
+                <TableRow>
+                    <TableCell>
+                        <div className={this.props.classes.tableCellCenter}>
+                            <AccountCircle className={this.props.classes.accountCircle}/>
+                            <Typography variant={"body2"}>{value.displayFullName}</Typography>
+                        </div>
+                    </TableCell>
+                    <TableCell>
+                        <div className={this.props.classes.tableCellCenterJustifi}>
+                            <IconButton aria-label="Menu"
+                                        onClick={() => {
+                                        }}>
+                                <Forward/>
+                            </IconButton></div>
+                    </TableCell>
+                </TableRow>
+            );
+
+        });
+    }
 
     render() {
         return (
@@ -32,22 +60,7 @@ class SharedWithOthers extends React.Component {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            <TableRow>
-                                <TableCell>
-                                    <div className={this.props.classes.tableCellCenter}>
-                                        <AccountCircle className={this.props.classes.accountCircle}/>
-                                        <Typography variant={"body2"}>{"Petr Schutz"}</Typography>
-                                    </div>
-                                </TableCell>
-                                <TableCell>
-                                    <div className={this.props.classes.tableCellCenterJustifi}>
-                                        <IconButton aria-label="Menu"
-                                                    onClick={() => {
-                                                    }}>
-                                            <Forward/>
-                                        </IconButton></div>
-                                </TableCell>
-                            </TableRow>
+                            {this._getRows()}
                         </TableBody>
                     </Table>
                 </CardContent>
@@ -58,7 +71,13 @@ class SharedWithOthers extends React.Component {
 
 SharedWithOthers.propTypes = {
     classes: PropTypes.object.isRequired,
-    paper: PropTypes.bool
+    paper: PropTypes.bool,
+    sharedWithOthers: PropTypes.arrayOf(SimpleUser),
+    authenticatedUser: PropTypes.instanceOf(User)
+};
+
+SharedWithOthers.defaultProps = {
+    sharedWithOthers: [],
 };
 
 export default withStyles(Styles, {withTheme: true})(SharedWithOthers);

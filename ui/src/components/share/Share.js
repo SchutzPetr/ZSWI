@@ -4,30 +4,35 @@ import {withStyles} from "@material-ui/core/styles/index";
 import Styles from "./style/ShareStyle";
 import {Button, Card, CardContent, CardHeader} from "@material-ui/core/index";
 import ShareIcon from "@material-ui/icons/Share";
-import UserMultipleSelect from "../autocomplete/UserMultipleSelect";
-import ProjectSelect from "../autocomplete/SingleSelect";
+import SingleSelect from "../autocomplete/SingleSelect";
 import User from "../../entity/User";
+import SimpleUser from "../../entity/SimpleUser";
+import Suggestion from "../autocomplete/entity/Suggestion";
 
 class Share extends React.Component {
 
     state = {
-      selectedUsers: null,
-        selectedUsers2: null
+        selectedUser: null,
     };
 
-    handleShare = event => {
+    static mapSimpleUserToSuggestion(user) {
+        if (!user) {
+            return null;
+        }
+        return new Suggestion(user.id, user.displayFullName, user)
+    }
 
+    static mapSimpleUsersToSuggestion(user) {
+        return user.map(value => this.mapSimpleUserToSuggestion(value));
+    }
+
+    onShareClick = event =>{
+        this.props.onShareClick(this.state.selectedUser);
     };
 
     onSelectedUserChange = value => {
         this.setState({
-            selectedUsers: value,
-        });
-    };
-
-    onSelectedUserChange2 = value => {
-        this.setState({
-            selectedUsers2: value,
+            selectedUser: value ? value.data : null,
         });
     };
 
@@ -36,9 +41,10 @@ class Share extends React.Component {
             <Card className={this.props.classes.root}>
                 <CardHeader title="Nastavení sdílení"/>
                 <CardContent className={this.props.classes.shareCardContent}>
-                    <UserMultipleSelect onSelect={this.onSelectedUserChange} values={this.state.selectedUsers}/>
-                    <ProjectSelect onSelect={this.onSelectedUserChange2} values={this.state.selectedUsers2}/>
-                    <Button className={this.props.classes.shareButton} variant="raised" onClick={this.handleShare}>
+                    <SingleSelect value={Share.mapSimpleUserToSuggestion(this.state.selectedUser)}
+                                  suggestions={Share.mapSimpleUsersToSuggestion(this.props.availableUsers)}
+                                  onSelect={this.onSelectedUserChange}/>
+                    <Button className={this.props.classes.shareButton} variant="raised" onClick={this.onShareClick} disabled={!this.state.selectedUser}>
                         <ShareIcon className={this.props.classes.shareIcon}/>
                         Sdílet
                     </Button>
@@ -51,7 +57,13 @@ class Share extends React.Component {
 Share.propTypes = {
     classes: PropTypes.object.isRequired,
     paper: PropTypes.bool,
-    users: PropTypes.instanceOf(User)
+    availableUsers: PropTypes.arrayOf(SimpleUser),
+    authenticatedUser: PropTypes.instanceOf(User),
+    onShareClick: PropTypes.func.isRequired
+};
+
+Share.defaultProps = {
+    availableUsers: [],
 };
 
 export default withStyles(Styles, {withTheme: true})(Share);

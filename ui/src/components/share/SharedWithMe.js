@@ -16,8 +16,35 @@ import {
 } from "@material-ui/core/index";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import Delete from "@material-ui/icons/Delete";
+import SimpleUser from "../../entity/SimpleUser";
+import User from "../../entity/User";
 
 class SharedWithMe extends React.Component {
+
+    _getRows(){
+        return this.props.sharedWithUserId.map(value =>{
+
+            return (
+                <TableRow>
+                    <TableCell>
+                        <div className={this.props.classes.tableCellCenter}>
+                            <AccountCircle className={this.props.classes.accountCircle}/>
+                            <Typography variant={"body2"}>{value.displayFullName}</Typography>
+                        </div>
+                    </TableCell>
+                    <TableCell>
+                        <div className={this.props.classes.tableCellCenterJustifi}>
+                            <IconButton aria-label="Menu"
+                                        onClick={() => {
+                                        }}>
+                                <Delete/>
+                            </IconButton></div>
+                    </TableCell>
+                </TableRow>
+            );
+
+        });
+    }
 
     render() {
         return (
@@ -32,22 +59,7 @@ class SharedWithMe extends React.Component {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            <TableRow>
-                                <TableCell>
-                                    <div className={this.props.classes.tableCellCenter}>
-                                        <AccountCircle className={this.props.classes.accountCircle}/>
-                                        <Typography variant={"body2"}>{"Petr Schutz"}</Typography>
-                                    </div>
-                                </TableCell>
-                                <TableCell>
-                                    <div className={this.props.classes.tableCellCenterJustifi}>
-                                        <IconButton aria-label="Menu"
-                                                    onClick={() => {
-                                                    }}>
-                                            <Delete/>
-                                        </IconButton></div>
-                                </TableCell>
-                            </TableRow>
+                            {this._getRows()}
                         </TableBody>
                     </Table>
                 </CardContent>
@@ -58,7 +70,13 @@ class SharedWithMe extends React.Component {
 
 SharedWithMe.propTypes = {
     classes: PropTypes.object.isRequired,
-    paper: PropTypes.bool
+    paper: PropTypes.bool,
+    sharedWithUserId: PropTypes.arrayOf(SimpleUser),
+    authenticatedUser: PropTypes.instanceOf(User)
+};
+
+SharedWithMe.defaultProps = {
+    sharedWithUserId: [],
 };
 
 export default withStyles(Styles, {withTheme: true})(SharedWithMe);
