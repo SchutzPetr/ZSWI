@@ -18,13 +18,13 @@ class ShareService extends Service
 {
     /**
      * @param integer $userId
-     * @return integer [] array
+     * @return SimpleUser[]
      * @throws PermissionException
      * @throws UnauthorizedException
      */
     public static function findAllSharedWithUserId($userId)
     {
-        if(!Permission::hasPermission(self::getUserFromContext(), "USER_SHARING.FIND")){
+        if(!Permission::hasPermission(self::getUserFromContext(), "USER_SHARING.FIND", $userId)){
             throw new PermissionException();
         }
 
@@ -34,13 +34,13 @@ class ShareService extends Service
 
     /**
      * @param integer $userId
-     * @return integer [] array
+     * @return SimpleUser[]
      * @throws PermissionException
      * @throws UnauthorizedException
      */
     public static function findAllSharedWithOthers($userId)
     {
-	    if(!Permission::hasPermission(self::getUserFromContext(), "USER_SHARING.FIND")){
+	    if(!Permission::hasPermission(self::getUserFromContext(), "USER_SHARING.FIND", $userId)){
 		    throw new PermissionException();
 	    }
 
@@ -49,13 +49,13 @@ class ShareService extends Service
 
     /**
      * @param integer $userId
-     * @return integer [] array
+     * @return SimpleUser[]
      * @throws PermissionException
      * @throws UnauthorizedException
      */
     public static function findAllAvailableUsers($userId)
     {
-	    if(!Permission::hasPermission(self::getUserFromContext(), "USER_SHARING.FIND")){
+	    if(!Permission::hasPermission(self::getUserFromContext(), "USER_SHARING.FIND", $userId)){
 		    throw new PermissionException();
 	    }
 
@@ -69,7 +69,7 @@ class ShareService extends Service
      * @throws UnauthorizedException
      */
     public static function createShare($fromUserId, $toUserId){
-        if(!Permission::hasPermission(self::getUserFromContext(), "USER_SHARING.CREATE")){
+        if(!Permission::hasPermission(self::getUserFromContext(), "USER_SHARING.CREATE", $fromUserId)){
             throw new PermissionException();
         }
 
@@ -83,7 +83,7 @@ class ShareService extends Service
      * @throws UnauthorizedException
      */
     public static function delete($fromUserId, $toUserId){
-        if(!Permission::hasPermission(self::getUserFromContext(), "USER_SHARING.DELETE")){
+        if(!Permission::hasPermission(self::getUserFromContext(), "USER_SHARING.DELETE", $fromUserId)){
             throw new PermissionException();
         }
 

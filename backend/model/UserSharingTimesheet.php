@@ -7,6 +7,7 @@
  */
 
 include_once(__DIR__ . "/../database/Database.php");
+include_once(__DIR__ . "/SimpleUser.php");
 
 /**
  * Class UserSharingTimesheet
@@ -17,7 +18,7 @@ class UserSharingTimesheet
 
 	/***
 	 * @param integer $userId
-     * @return array $arrayOfUsersId
+     * @return array SimpleUser[]
 	 */
 	public static function findAllAvailableUsers($userId){
 		$query = "SELECT id FROM user  WHERE id !=:userId AND id NOT IN (SELECT share_to_id FROM user_sharing_timesheet WHERE sharing_user_id =:userId);";
@@ -31,12 +32,12 @@ class UserSharingTimesheet
 		foreach ($result as $var){
 			$arrayOfUsersId []= $var["id"];
 		}
-		return $arrayOfUsersId;
+		return SimpleUser::findAllByIds($arrayOfUsersId);
 	}
 
     /**
      * @param integer $userId
-     * @return array $arrayOfUsersId
+     * @return SimpleUser[]
      *
      * Komu já sdílím
      */
@@ -53,13 +54,13 @@ class UserSharingTimesheet
         foreach ($result as $var){
             $arrayOfUsersId []= $var["share_to_id"];
         }
-        return $arrayOfUsersId;
+        return SimpleUser::findAllByIds($arrayOfUsersId);
 
     }
 
     /**
      * @param integer $userId
-     * @return array $arrayOfUsersId
+     * @return SimpleUser[]
      * Kdo sdílí mně.
      */
     public static function findAllSharedWithOthers($userId)
@@ -75,7 +76,7 @@ class UserSharingTimesheet
         foreach ($result as $var){
             $arrayOfUsersId []= $var["sharing_user_id"];
         }
-        return $arrayOfUsersId;
+        return SimpleUser::findAllByIds($arrayOfUsersId);
     }
 
     /**

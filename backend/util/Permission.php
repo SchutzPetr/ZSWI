@@ -10,8 +10,7 @@ class Permission
 {
 
     private static $userPermission = array(
-        "USER.FIND",
-        "USER.FIND"
+        "SIMPLE_USER",
     );
 
     /*

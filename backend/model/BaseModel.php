@@ -87,9 +87,4 @@ abstract class BaseModel implements JsonSerializable
      * @return array
      */
     public static abstract function findAll();
-
-    /**
-     * @param BaseModel $entity
-     */
-    public static abstract function save($entity);
 }
