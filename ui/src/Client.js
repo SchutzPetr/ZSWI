@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API = "http://localhost/backend/api/v1";
+const API = "http://localhost/ZSWI/backend/api/v1";
 
 const USER_API = API + "/user/";
 const PROJECT_API = API + "/project/";
