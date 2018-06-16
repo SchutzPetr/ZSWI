@@ -32,7 +32,7 @@ class SPANotAuthenticated extends React.Component {
                 <main className={classes.content}>
                     <Route path={"/login"} exact={true}
                            render={props => (
-                               <LoginPage match={props.match} history={props.history}/>
+                               <LoginPage match={props.match} history={props.history} onLoginDone={this.props.onLoginDone}/>
                            )}/>
                 </main>
             </div>
@@ -44,7 +44,8 @@ SPANotAuthenticated.propTypes = {
     classes: PropTypes.object.isRequired,
     theme: PropTypes.object.isRequired,
     match: PropTypes.any.isRequired,
-    history: PropTypes.any.isRequired
+    history: PropTypes.any.isRequired,
+    onLoginDone: PropTypes.func.isRequired
 };
 
 export default withStyles(Styles, {withTheme: true})(SPANotAuthenticated);

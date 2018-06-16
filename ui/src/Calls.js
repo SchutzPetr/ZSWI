@@ -82,6 +82,10 @@ class Calls {
     static getUserHolidayByUserIdAndYear(dataIn){
         Calls._get("getUserHolidayByUserIdAndYear", dataIn)
     }
+
+    static authUserByToken(dataIn) {
+        Calls._get("authUserByToken", dataIn)
+    }
 }
 
 const calls = new Calls();

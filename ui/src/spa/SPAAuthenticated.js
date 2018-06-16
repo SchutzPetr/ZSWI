@@ -11,7 +11,7 @@ import {AppBar, Badge, Divider, Drawer, Hidden, IconButton, List, Toolbar, Typog
 import Styles from "./style/SPAAuthenticatedStyle";
 import AgendaOverview from "../use_cases/uc_agenda_overview/AgendaOverview";
 
-import {secretaryMenuItems} from "./SPAAuthenticatedMenuItems";
+import {secretaryMenuItems, userMenuItems} from "./SPAAuthenticatedMenuItems";
 import Home from "../use_cases/uc_home/Home";
 import Notifications from "@material-ui/icons/Notifications";
 import NotificationPopover from "../components/notification/NotificationPopover";
@@ -53,6 +53,67 @@ class SPAAuthenticated extends React.Component {
     };
 
    notificationButtonRef = null;
+
+   _routeSwitch(){
+       if(this.props.authenticatedUser.authority === "USER"){
+           return (
+               <Switch>
+
+                   <Route path={"/"} exact={true}
+                          render={props => (
+                              <Home authenticatedUser={this.props.authenticatedUser} match={props.match}/>
+                          )}/>
+                   <Route path={"/share"} exact={true}
+                          render={props => (
+                              <Share/>
+                          )}/>
+                   <Route path={"/holiday/:year?"} exact={true}
+                          render={props => (
+                              <UserHolidayPage authenticatedUser={this.props.authenticatedUser} match={props.match}/>
+                          )}/>
+               </Switch>
+           );
+       }else if(this.props.authenticatedUser.authority === "ADMIN" || this.props.authenticatedUser.authority === "SECRETARY"){
+           return (
+               <Switch>
+                   <Route path={"/"} exact={true}
+                          render={props => (
+                              <Home authenticatedUser={this.props.authenticatedUser} match={props.match}/>
+                          )}/>
+                   <Route path={"/agenda/:userId?"} exact={true}
+                          render={props => (
+                              <AgendaOverview history={props.history} match={props.match}/>
+                          )}/>
+                   <Route path={"/share"} exact={true}
+                          render={props => (
+                              <Share/>
+                          )}/>
+                   <Route path={"/holiday/:year?"} exact={true}
+                          render={props => (
+                              <UserHolidayPage authenticatedUser={this.props.authenticatedUser} match={props.match}/>
+                          )}/>
+                   <Route path={"/manage-holidays/:userId?/:year?"} exact={true}
+                          render={props => (
+                              <ManageHolidayPage match={props.match}/>
+                          )}/>
+                   <Route path={"/project-overview"} exact={true}
+                          render={props => (
+                              <ProjectOverviewPage match={props.match}/>
+                          )}/>
+                   <Route path={"/overview-of-work-schedules"} exact={true}
+                          render={props => (
+                              <OverviewOfWorkSchedulesPage match={props.match}/>
+                          )}/>
+                   <Route path={"/accounts"} exact={true}
+                          render={props => (
+                              <UserManagementPage match={props.match}/>
+                          )}/>
+               </Switch>
+           );
+       }else{
+           return null;
+       }
+   }
 
     render() {
         const {classes, theme} = this.props;
@@ -103,7 +164,7 @@ class SPAAuthenticated extends React.Component {
                             keepMounted: true, // Better open performance on mobile.
                         }}
                     >
-                        {secretaryMenuItems}
+                        {(this.props.authenticatedUser.authority === "ADMIN" || this.props.authenticatedUser.authority === "SECRETARY") ? secretaryMenuItems(classes) : userMenuItems(classes)}
                     </Drawer>
                 </Hidden>
                 <Hidden smDown implementation="css">
@@ -120,43 +181,10 @@ class SPAAuthenticated extends React.Component {
                             </IconButton>
                         </div>
                         <Divider/>
-                        <List>{secretaryMenuItems(classes)}</List>
+                        <List>{(this.props.authenticatedUser.authority === "ADMIN" || this.props.authenticatedUser.authority === "SECRETARY") ? secretaryMenuItems(classes) : userMenuItems(classes)}</List>
                     </Drawer>
                 </Hidden>
-                <Switch>
-                    <Route path={"/"} exact={true}
-                           render={props => (
-                               <Home authenticatedUser={this.props.authenticatedUser} match={props.match}/>
-                           )}/>
-                    <Route path={"/agenda/:userId?"} exact={true}
-                           render={props => (
-                               <AgendaOverview history={props.history} match={props.match}/>
-                           )}/>
-                    <Route path={"/share"} exact={true}
-                           render={props => (
-                               <Share/>
-                           )}/>
-                    <Route path={"/holiday/:year?"} exact={true}
-                           render={props => (
-                               <UserHolidayPage authenticatedUser={this.props.authenticatedUser} match={props.match}/>
-                           )}/>
-                    <Route path={"/manage-holidays/:userId?/:year?"} exact={true}
-                           render={props => (
-                               <ManageHolidayPage match={props.match}/>
-                           )}/>
-                    <Route path={"/project-overview"} exact={true}
-                           render={props => (
-                               <ProjectOverviewPage match={props.match}/>
-                           )}/>
-                    <Route path={"/overview-of-work-schedules"} exact={true}
-                           render={props => (
-                               <OverviewOfWorkSchedulesPage match={props.match}/>
-                           )}/>
-                    <Route path={"/accounts"} exact={true}
-                           render={props => (
-                               <UserManagementPage match={props.match}/>
-                           )}/>
-                </Switch>
+                {this._routeSwitch()}
             </div>
         );
     }

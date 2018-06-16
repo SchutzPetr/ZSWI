@@ -1,7 +1,6 @@
 import React from "react";
 import "./index.css";
 import Authentication from "./Authentication";
-import Observer from "./Observer";
 import SPAAuthenticated from "./spa/SPAAuthenticated";
 import {createMuiTheme, MuiThemeProvider} from "@material-ui/core/styles/index";
 import moment from 'moment';
@@ -22,30 +21,37 @@ class App extends React.Component {
 
         moment.locale('cs');
 
-        axios.defaults.baseURL = "localhost";
-        axios.defaults.headers.post['Content-Type'] = 'application/json';
+        fetch('./config.json').then(r => r.json()).then(json => {
+            axios.defaults.baseURL = json.API_URL;
+        });
+
+        axios.defaults.headers.post["Content-Type"] = "application/json";
 
         this.state = {
-            authenticated: Authentication.isAuthenticated()
+            authenticatedUser: null
         };
     }
 
-    componentDidMount() {
-        Observer.registerListener("AuthenticationChangeEvent", () => {
-            this.setState({authenticated: Authentication.isAuthenticated()});
-        });
-
-        Calls.getUser({
-            data: {id: 3},
-            done: (data) => {
+    onLoginDone(data) {
+        if (!data.token) {
+            return;
+        }
+        axios.defaults.headers.common["X-Auth-Token"] = data.token;
+        Calls.authUserByToken({
+            data: {token: data.token},
+            done: (userData) => {
                 this.setState((prevState) => {
+
+                    const user = User.map(userData.data);
+                    Authentication.user = user;
+
                     return {
-                        authenticatedUser: User.map(data.data),
+                        authenticatedUser: user,
                     }
                 });
             },
-            fail: (data) => {
-                this.setState({loadFeedback: "error"});
+            fail: (userData) => {
+                this.setState({authenticatedUser: null});
             }
         });
     }
@@ -85,7 +91,8 @@ class App extends React.Component {
                                    <SPAAuthenticated authenticatedUser={this.state.authenticatedUser}
                                                      match={props.match} history={props.history}/> :
                                    <SPANotAuthenticated authenticatedUser={this.state.user} match={props.match}
-                                                        history={props.history}/>
+                                                        history={props.history}
+                                                        onLoginDone={this.onLoginDone.bind(this)}/>
                            )}/>
                 </MuiPickersUtilsProvider>
             </MuiThemeProvider>

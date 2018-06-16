@@ -1,12 +1,11 @@
 import axios from 'axios';
 
-const API = "http://localhost/ZSWI/backend/api/v1";
-
-const USER_API = API + "/user/";
-const PROJECT_API = API + "/project/";
-const TIMESHEET_API = API + "/timesheet/";
-const DAYTIMESHEET_API = API + "/daytimesheet/";
-const USERHOLIDAY_API = API + "/usersholiday/";
+const AUTH_API = "/auth/";
+const USER_API = "/user/";
+const PROJECT_API = "/project/";
+const TIMESHEET_API = "/timesheet/";
+const DAYTIMESHEET_API = "/daytimesheet/";
+const USERHOLIDAY_API = "/usersholiday/";
 
 
 const Client = {
@@ -16,6 +15,8 @@ const Client = {
                 return axios.get(USER_API + "findAll.php");
             case "getUser":
                 return axios.get(USER_API + "findById.php", {params: data});
+            case "authUserByToken":
+                return axios.get(AUTH_API + "authUserByToken.php", {params: data});
             case "getProjects":
                 return axios.get(PROJECT_API + "findAll.php");
             case "getProject":
@@ -25,7 +26,7 @@ const Client = {
             case "getUserHolidayByUserIdAndYear":
                 return axios.get(USERHOLIDAY_API + "findAllByUserIdAndYear.php", {params: data});
             case "login":
-                return axios.get(USER_API + "user/user.ctrl.php?/user/login=" + JSON.stringify(data)); //todo:
+                return axios.get(AUTH_API + "authSimple.php", {params: data});
             case "getAssignUsersToProject":
                 return axios.get(PROJECT_API + "?/user/getAssignUsersToProject" + {params: data});
             default:

@@ -13,7 +13,6 @@ import User from "../../entity/User";
 class LoginPage extends React.Component {
 
     state = {
-        users: [],
         loadFeedback: "ready"
     };
 
@@ -22,13 +21,13 @@ class LoginPage extends React.Component {
         Calls.login({
             data: dataIn,
             done: (data) => {
-                Authentication.user = User.map(data.data);
+                this.props.onLoginDone(data.data);
                 this.setState({loadFeedback: "ready"}, () => {
                     this.props.history.push("/")
                 });
             },
             fail: (data) => {
-                this.setState({loadFeedback: "error"});
+                this.setState({loadFeedback: "ready"});
             }
         });
     };
@@ -66,7 +65,8 @@ class LoginPage extends React.Component {
 LoginPage.propTypes = {
     classes: PropTypes.object.isRequired,
     match: PropTypes.object.isRequired,
-    history: PropTypes.object.isRequired
+    history: PropTypes.object.isRequired,
+    onLoginDone: PropTypes.func.isRequired
 
 };
 

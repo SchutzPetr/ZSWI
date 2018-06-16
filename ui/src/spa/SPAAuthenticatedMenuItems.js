@@ -75,6 +75,29 @@ export let secretaryMenuItems = (classes) => {
         </div>
     )
 };
+export let userMenuItems = (classes) => {
+    return (<div>
+            <ListItem className={classes.listItem} button={true} component={Link} to={"/"}>
+                <ListItemIcon>
+                    <Home/>
+                </ListItemIcon>
+                <ListItemText primary={"Domů"}/>
+            </ListItem>
+            <ListItem className={classes.listItem} button={true} component={Link} to={"/share"}>
+                <ListItemIcon>
+                    <Share/>
+                </ListItemIcon>
+                <ListItemText primary={"Sdílet"}/>
+            </ListItem>
+            <ListItem className={classes.listItem} button={true} component={Link} to={"/holiday"}>
+                <ListItemIcon>
+                    <EventBusy/>
+                </ListItemIcon>
+                <ListItemText primary={"Dovolená"}/>
+            </ListItem>
+        </div>
+    )
+};
 export const otherMailFolderListItems = (
     <div>
         <ListItem button>
