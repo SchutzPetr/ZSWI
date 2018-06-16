@@ -110,6 +110,10 @@ class Calls {
     static createShare(dataIn) {
         Calls._post("createShare", dataIn);
     }
+
+    static deleteShare(dataIn) {
+        Calls._post("deleteShare", dataIn);
+    }
 }
 
 const calls = new Calls();

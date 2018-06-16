@@ -85,6 +85,22 @@ class SharePage extends React.Component {
         });
     };
 
+    onDeleteShare = toRemove => {
+        if (!toRemove) {
+            return;
+        }
+        Calls.deleteShare({
+            data: {from: this.props.authenticatedUser.id, to: toRemove.id},
+            done: () => {
+                this._fetchData()
+            },
+            fail: (data) => {
+                this.setState({loadFeedback: "error"});
+                //todo: error throw
+            }
+        });
+    };
+
     _getContend() {
         if (this.state.loadFeedback === "loading" || this.state.loadFeedback_1 === "loading" || this.state.loadFeedback_2 === "loading" || this.state.loadFeedback_3 === "loading") {
             return <LinearProgressCentered paper={false}/>
@@ -93,7 +109,7 @@ class SharePage extends React.Component {
                 <Grid className={this.props.classes.mainGrid} container={true} spacing={16}>
                     <Grid item={true} xs={12} sm={4}>
                         <SharedWithMe authenticatedUser={this.props.authenticatedUser}
-                                      sharedWithUserId={this.state.sharedWithUserId}/>
+                                      sharedWithUserId={this.state.sharedWithUserId} onDeleteShare={this.onDeleteShare}/>
                     </Grid>
                     <Grid item={true} xs={12} sm={4}>
                         <SharedWithOthers authenticatedUser={this.props.authenticatedUser}

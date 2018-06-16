@@ -62,6 +62,8 @@ const Client = {
                 return axios.post(USERHOLIDAY_API + "create.php", data);
             case "createShare":
                 return axios.post(SHARE_API + "create.php", data);
+            case "deleteShare":
+                return axios.post(SHARE_API + "delete.php", data);
             default:
                 throw `Url ${url} does not exists.`;
         }

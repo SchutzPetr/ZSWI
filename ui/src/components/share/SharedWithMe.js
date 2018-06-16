@@ -36,6 +36,7 @@ class SharedWithMe extends React.Component {
                         <div className={this.props.classes.tableCellCenterJustifi}>
                             <IconButton aria-label="Menu"
                                         onClick={() => {
+                                            this.props.onDeleteShare(value);
                                         }}>
                                 <Delete/>
                             </IconButton></div>
@@ -72,7 +73,8 @@ SharedWithMe.propTypes = {
     classes: PropTypes.object.isRequired,
     paper: PropTypes.bool,
     sharedWithUserId: PropTypes.arrayOf(SimpleUser),
-    authenticatedUser: PropTypes.instanceOf(User)
+    authenticatedUser: PropTypes.instanceOf(User),
+    onDeleteShare: PropTypes.func.isRequired
 };
 
 SharedWithMe.defaultProps = {
