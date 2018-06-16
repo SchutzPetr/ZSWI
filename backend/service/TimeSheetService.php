@@ -26,10 +26,11 @@ class TimeSheetService extends Service
      * @param DayTimeSheet[] $prev
      * @return TimeSheet
      * @throws PermissionException
+     * @throws UnauthorizedException
      */
     public static function findAllByUserIdAndYearAndMonth($userId, $month, $year, $prev = [])
     {
-        if (!Permission::hasPermission(self::getUserFromContext(), "TIME_SHEET.FIND")) {
+        if (!Permission::hasPermission(self::getUserFromContext(), "TIME_SHEET.FIND", $userId)) {
             throw new PermissionException();
         }
 
@@ -66,10 +67,11 @@ class TimeSheetService extends Service
      * @param $year integer
      * @return array
      * @throws PermissionException
+     * @throws UnauthorizedException
      */
     public static function generate($userId, $month, $year)
     {
-        if (!Permission::hasPermission(self::getUserFromContext(), "TIME_SHEET.GENERATE")) {
+        if (!Permission::hasPermission(self::getUserFromContext(), "TIME_SHEET.GENERATE", $userId)) {
             throw new PermissionException();
         }
 
@@ -93,10 +95,11 @@ class TimeSheetService extends Service
      * @param $userId integer
      * @param UserHoliday[] $holidays
      * @throws PermissionException
+     * @throws UnauthorizedException
      */
     public static function reGenerateForHoliday($userId, $holidays)
     {
-        if (!Permission::hasPermission(self::getUserFromContext(), "TIME_SHEET.GENERATE")) {
+        if (!Permission::hasPermission(self::getUserFromContext(), "TIME_SHEET.GENERATE", $userId)) {
             throw new PermissionException();
         }
 
@@ -140,10 +143,11 @@ class TimeSheetService extends Service
      * @param $holidays UserHoliday[]
      * @return DayTimeSheet
      * @throws PermissionException
+     * @throws UnauthorizedException
      */
     private static function generateForDay($userId, $day, $month, $year, $holidays)
     {
-        if (!Permission::hasPermission(self::getUserFromContext(), "TIME_SHEET.GENERATE")) {
+        if (!Permission::hasPermission(self::getUserFromContext(), "TIME_SHEET.GENERATE", $userId)) {
             throw new PermissionException();
         }
 
@@ -211,6 +215,7 @@ class TimeSheetService extends Service
     /**
      * @param DayTimeSheet $dayTimeSheet
      * @throws PermissionException
+     * @throws UnauthorizedException
      */
     public static function update($dayTimeSheet)
     {

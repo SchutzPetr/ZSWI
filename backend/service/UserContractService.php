@@ -21,6 +21,7 @@ class UserContractService extends Service
     /**
      * @param $userContract UserContract
      * @throws PermissionException
+     * @throws UnauthorizedException
      */
     public static function create($userContract){
         if(!Permission::hasPermission(self::getUserFromContext(), "USER_CONTRACT.CREATE")){
@@ -33,6 +34,7 @@ class UserContractService extends Service
     /**
      * @param $userContract UserContract
      * @throws PermissionException
+     * @throws UnauthorizedException
      */
     public static function update($userContract){
         if(!Permission::hasPermission(self::getUserFromContext(), "USER_CONTRACT.UPDATE")){
@@ -47,6 +49,7 @@ class UserContractService extends Service
      * @param $date string
      * @return UserContract
      * @throws PermissionException
+     * @throws UnauthorizedException
      */
     public static function findValidByDateAndUserId($userId, $date){
         if(!Permission::hasPermission(self::getUserFromContext(), "USER_CONTRACT.FIND")){

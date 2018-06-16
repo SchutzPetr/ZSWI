@@ -16,11 +16,12 @@ class NotificationService extends Service
 {
 
 
-	/**
-	 * @param $id integer
-	 * @return Notification
-	 * @throws PermissionException
-	 */
+    /**
+     * @param $id integer
+     * @return Notification
+     * @throws PermissionException
+     * @throws UnauthorizedException
+     */
 	public static function findById($id){
 		if(!Permission::hasPermission(self::getUserFromContext(), "NOTIFICATION.FIND")){
 			throw new PermissionException();
@@ -29,10 +30,11 @@ class NotificationService extends Service
 		return Notification::findById($id);
 	}
 
-	/**
-	 * @return Notification[]
-	 * @throws PermissionException
-	 */
+    /**
+     * @return Notification[]
+     * @throws PermissionException
+     * @throws UnauthorizedException
+     */
 	public static function findAll(){
 		if(!Permission::hasPermission(self::getUserFromContext(), "NOTIFICATION.FIND")){
 			throw new PermissionException();
@@ -41,10 +43,11 @@ class NotificationService extends Service
 		return Notification::findAll();
 	}
 
-	/**
-	 * @return Notification[]
-	 * @throws PermissionException
-	 */
+    /**
+     * @return Notification[]
+     * @throws PermissionException
+     * @throws UnauthorizedException
+     */
 	public static function findAllUnread(){
 		if(!Permission::hasPermission(self::getUserFromContext(), "NOTIFICATION.FIND")){
 			throw new PermissionException();
@@ -53,10 +56,11 @@ class NotificationService extends Service
 		return Notification::findAllUnread();
 	}
 
-	/**
-	 * @param Notification $notification
-	 * @throws PermissionException
-	 */
+    /**
+     * @param Notification $notification
+     * @throws PermissionException
+     * @throws UnauthorizedException
+     */
 	public static function create($notification){
 		if(!Permission::hasPermission(self::getUserFromContext(), "NOTIFICATION.CREATE")){
 			throw new PermissionException();
@@ -65,10 +69,11 @@ class NotificationService extends Service
 		Notification::save($notification);
 	}
 
-	/**
-	 * @param Notification $notification
-	 * @throws PermissionException
-	 */
+    /**
+     * @param Notification $notification
+     * @throws PermissionException
+     * @throws UnauthorizedException
+     */
 	public static function update($notification){
 		if(!Permission::hasPermission(self::getUserFromContext(), "NOTIFICATION.UPDATE")){
 			throw new PermissionException();

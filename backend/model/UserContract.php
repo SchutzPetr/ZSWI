@@ -204,9 +204,9 @@ class UserContract implements JsonSerializable
         return $instance;
     }
 
-    static function findCurrentAndAllFutureByUserIdAndDate($userId, $active_from)
+    static function findAllFutureByUserIdAndDate($userId, $active_from)
     {
-        $query = "(SELECT * FROM user_contract WHERE user_id = :user_id AND active_from <= :active_from ORDER BY active_from DESC LIMIT 1) UNION SELECT * FROM user_contract WHERE user_id = :user_id AND active_from > :active_from ORDER BY active_from;";
+        $query = "SELECT * FROM user_contract WHERE user_id = :user_id AND active_from > :active_from ORDER BY active_from;";
         $preparedQuery = Database::getConnection()->prepare($query);
         $preparedQuery->bindValue(":user_id", $userId);
         $preparedQuery->bindValue(":active_from", $active_from);

@@ -258,13 +258,8 @@ class User extends BaseModel
         self::setActive($row["is_active"]);
         self::setMainWorkStation($row["main_work_station"]);
         self::setAttendanceSchedules(Attendance::findLastByUserId(self::getId()));
-
-        $userContracts = UserContract::findCurrentAndAllFutureByUserIdAndDate(self::getId(), date("Y-m-d"));
-
-        if(!empty($userContracts)){
-            self::setCurrentUserContract($userContracts[0]);
-            self::setFutureUserContract(array_slice($userContracts, 1));
-        }
+        self::setCurrentUserContract(UserContract::findCurrentByUserId(self::getId()));
+        self::setFutureUserContract(UserContract::findAllFutureByUserIdAndDate(self::getId(), date("Y-m-d")));
     }
 
     /**
@@ -369,6 +364,15 @@ class User extends BaseModel
         $preparedQuery->bindValue(":authority", $user->getAuthority());
         $preparedQuery->bindValue(":isActive", $user->isActive(), PDO::PARAM_BOOL);
         $preparedQuery->bindValue(":mainWorkStation", $user->getMainWorkStation());
+
+        $preparedQuery->execute();
+
+        $user = self::findByOrion($user->getOrionLogin());
+
+        $query = "INSERT IGNORE user_authentication (user_id, password) VALUE (:user_id, :password);";
+        $preparedQuery = Database::getConnection()->prepare($query);
+        $preparedQuery->bindValue(":user_id", $user->getId());
+        $preparedQuery->bindValue(":password", $user->getOrionLogin() . date("Ymd"));
 
         $preparedQuery->execute();
 

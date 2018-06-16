@@ -7,15 +7,18 @@
  */
 
 include_once(__DIR__ . "/../model/User.php");
+include_once(__DIR__ . "/AuthService.php");
 
 abstract class Service
 {
     /**
      * @return User
+     * @throws PermissionException
+     * @throws UnauthorizedException
      */
     public static function getUserFromContext()
     {
-        return new User();
+        return AuthService::findUserByToken(self::getTokenFromHeader());
     }
 
     /**

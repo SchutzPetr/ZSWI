@@ -19,6 +19,7 @@ class UserProjectAssignmentService extends Service
     /**
      * @param Project $project
      * @throws PermissionException
+     * @throws UnauthorizedException
      */
     public static function create($project){
         if(!Permission::hasPermission(self::getUserFromContext(), "PROJECT.CREATE")){
@@ -31,6 +32,7 @@ class UserProjectAssignmentService extends Service
     /**
      * @param Project $project
      * @throws PermissionException
+     * @throws UnauthorizedException
      */
     public static function update($project){
         if(!Permission::hasPermission(self::getUserFromContext(), "PROJECT.UPDATE")){

@@ -23,13 +23,16 @@ include_once (__DIR__."/../vendor/autoload.php");
 class FileService extends Service
 {
 
-	/**
-	 * @param integer $month
-	 * @param integer $year
-	 * @param integer [] $arrayUsers
-	 * @return boolean
-	 * @throws PermissionException
-	 */
+    /**
+     * @param integer $month
+     * @param integer $year
+     * @param integer [] $arrayUsers
+     * @return boolean
+     * @throws PHPExcel_Exception
+     * @throws PHPExcel_Reader_Exception
+     * @throws PHPExcel_Writer_Exception
+     * @throws PermissionException
+     */
 	public static function generateReportForOneMonth($month, $year, $arrayUsers){
 		///https://nicknixer.ru/programmirovanie/sozdanie-excel-dokumenta-na-php-generaciya-xls-fajlov/
 		$document = new \PHPExcel();

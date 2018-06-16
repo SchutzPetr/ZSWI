@@ -17,11 +17,12 @@ include_once (__DIR__."/../vendor/netresearch/jsonmapper/src/JsonMapper/Exceptio
 class UserHolidayService extends Service
 {
 
-	/**
-	 * @param $id integer
-	 * @return UserHoliday
-	 * @throws PermissionException
-	 */
+    /**
+     * @param $id integer
+     * @return UserHoliday
+     * @throws PermissionException
+     * @throws UnauthorizedException
+     */
 	public static function findById($id){
 		if(!Permission::hasPermission(self::getUserFromContext(), "USER_HOLIDAY.FIND")){
 			throw new PermissionException();
@@ -30,40 +31,43 @@ class UserHolidayService extends Service
 		return UserHoliday::findById($id);
 	}
 
-	/***
-	 * @param $id
-	 * @return UserHoliday
-	 * @throws PermissionException
-	 */
+    /***
+     * @param $id
+     * @return UserHoliday
+     * @throws PermissionException
+     * @throws UnauthorizedException
+     */
 	public static function findByUserId($id){
-		if(!Permission::hasPermission(self::getUserFromContext(), "USER_HOLIDAY.FIND")){
+		if(!Permission::hasPermission(self::getUserFromContext(), "USER_HOLIDAY.FIND", $id)){
 			throw new PermissionException();
 		}
 		return UserHoliday::findByUserId($id);
 	}
 
-	/**
-	 * @param int $id
-	 * @param int $year
-	 * @return UserHoliday[]
- 	 * @throws PermissionException
-	 */
+    /**
+     * @param int $id
+     * @param int $year
+     * @return UserHoliday[]
+     * @throws PermissionException
+     * @throws UnauthorizedException
+     */
 	public static function findAllByUserIdAndYear($id, $year){
-		if(!Permission::hasPermission(self::getUserFromContext(), "USER_HOLIDAY.FIND")){
+		if(!Permission::hasPermission(self::getUserFromContext(), "USER_HOLIDAY.FIND", $id)){
 			throw new PermissionException();
 		}
 		return UserHoliday::findAllByUserIdAndYear($id, $year);
 	}
 
-	/**
-	 * @param int $id
-	 * @param int $year
-	 * @param int $month
-	 * @return UserHoliday[]
-	 * @throws PermissionException
-	 */
+    /**
+     * @param int $id
+     * @param int $year
+     * @param int $month
+     * @return UserHoliday[]
+     * @throws PermissionException
+     * @throws UnauthorizedException
+     */
 	public static function findAllByUserIdAndMonthAndYear($id, $year, $month){
-		if(!Permission::hasPermission(self::getUserFromContext(), "USER_HOLIDAY.FIND")){
+		if(!Permission::hasPermission(self::getUserFromContext(), "USER_HOLIDAY.FIND", $id)){
 			throw new PermissionException();
 		}
 		$usersHoliday = UserHoliday::findAllByUserIdAndMonthAndYear($id, $year, $month);
@@ -77,10 +81,11 @@ class UserHolidayService extends Service
 	}
 
 
-		/**
-	 * @return UserHoliday[]
-	 * @throws PermissionException
-	 */
+    /**
+     * @return UserHoliday[]
+     * @throws PermissionException
+     * @throws UnauthorizedException
+     */
 	public static function findAll(){
 		if(!Permission::hasPermission(self::getUserFromContext(), "USER_HOLIDAY.FIND")){
 			throw new PermissionException();
@@ -89,24 +94,26 @@ class UserHolidayService extends Service
 		return UserHoliday::findAll();
 	}
 
-	/**
-	 * @param UserHoliday $userHoliday
-	 * @throws PermissionException
-	 */
+    /**
+     * @param UserHoliday $userHoliday
+     * @throws PermissionException
+     * @throws UnauthorizedException
+     */
 	public static function create($userHoliday){
-		if(!Permission::hasPermission(self::getUserFromContext(), "USER_HOLIDAY.CREATE")){
+		if(!Permission::hasPermission(self::getUserFromContext(), "USER_HOLIDAY.CREATE",  $userHoliday->getUserId())){
 			throw new PermissionException();
 		}
 		UserHoliday::save($userHoliday);
         TimeSheetService::reGenerateForHoliday($userHoliday->getUserId(),array($userHoliday));
 	}
 
-	/**
-	 * @param UserHoliday $userHoliday
-	 * @throws PermissionException
-	 */
+    /**
+     * @param UserHoliday $userHoliday
+     * @throws PermissionException
+     * @throws UnauthorizedException
+     */
 	public static function update($userHoliday){
-		if(!Permission::hasPermission(self::getUserFromContext(), "USER_HOLIDAY.UPDATE")){
+		if(!Permission::hasPermission(self::getUserFromContext(), "USER_HOLIDAY.UPDATE", $userHoliday->getUserId())){
 			throw new PermissionException();
 		}
 
@@ -115,10 +122,11 @@ class UserHolidayService extends Service
 	}
 
 
-	/***
-	 * @param $id
-	 * @throws PermissionException
-	 */
+    /***
+     * @param $id
+     * @throws PermissionException
+     * @throws UnauthorizedException
+     */
 	public static function deleteById($id){
 		if(!Permission::hasPermission(self::getUserFromContext(), "USER_HOLIDAY.DELETE")){
 			throw new PermissionException();

@@ -9,6 +9,11 @@
 class Permission
 {
 
+    private static $userPermission = array(
+        "USER.FIND",
+        "USER.FIND"
+    );
+
     /*
      * USER.FIND
      * USER.CREATE
@@ -22,10 +27,20 @@ class Permission
     /**
      * @param User $user
      * @param string $permission
+     * @param integer $id
      * @return bool
      */
-    public static function hasPermission($user, $permission){
-        //todo: check permission
-        return true; // only for develop
+    public static function hasPermission($user, $permission, $id = null){
+        if(is_null($user)){
+            return false;
+        }
+        if($user->getAuthority() === "USER"){
+            if(!is_null($id) && intval($id) === intval($user->getId())){
+                return true;
+            }
+            return array_search($permission,  self::$userPermission);
+        }else{
+            return true;
+        }
     }
 }

@@ -20,6 +20,7 @@ class ShareService extends Service
      * @param integer $userId
      * @return integer [] array
      * @throws PermissionException
+     * @throws UnauthorizedException
      */
     public static function findAllSharedWithUserId($userId)
     {
@@ -35,6 +36,7 @@ class ShareService extends Service
      * @param integer $userId
      * @return integer [] array
      * @throws PermissionException
+     * @throws UnauthorizedException
      */
     public static function findAllSharedWithOthers($userId)
     {
@@ -45,11 +47,12 @@ class ShareService extends Service
 	    return UserSharingTimesheet::findAllSharedWithOthers($userId);
     }
 
-	/**
-	 * @param integer $userId
-	 * @return integer [] array
-	 * @throws PermissionException
-	 */
+    /**
+     * @param integer $userId
+     * @return integer [] array
+     * @throws PermissionException
+     * @throws UnauthorizedException
+     */
     public static function findAllAvailableUsers($userId)
     {
 	    if(!Permission::hasPermission(self::getUserFromContext(), "USER_SHARING.FIND")){
@@ -63,6 +66,7 @@ class ShareService extends Service
      * @param integer $fromUserId
      * @param integer $toUserId
      * @throws PermissionException
+     * @throws UnauthorizedException
      */
     public static function createShare($fromUserId, $toUserId){
         if(!Permission::hasPermission(self::getUserFromContext(), "USER_SHARING.CREATE")){
@@ -76,6 +80,7 @@ class ShareService extends Service
      * @param integer $fromUserId
      * @param integer $toUserId
      * @throws PermissionException
+     * @throws UnauthorizedException
      */
     public static function delete($fromUserId, $toUserId){
         if(!Permission::hasPermission(self::getUserFromContext(), "USER_SHARING.DELETE")){

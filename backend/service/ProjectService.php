@@ -23,6 +23,7 @@ class ProjectService extends Service
      * @param $id integer
      * @return Project
      * @throws PermissionException
+     * @throws UnauthorizedException
      */
     public static function findById($id){
         if(!Permission::hasPermission(self::getUserFromContext(), "PROJECT.FIND")){
@@ -35,6 +36,7 @@ class ProjectService extends Service
     /**
      * @return Project[]
      * @throws PermissionException
+     * @throws UnauthorizedException
      */
     public static function findAll(){
         if(!Permission::hasPermission(self::getUserFromContext(), "PROJECT.FIND")){
@@ -47,6 +49,7 @@ class ProjectService extends Service
     /**
      * @param Project $project
      * @throws PermissionException
+     * @throws UnauthorizedException
      */
     public static function create($project){
         if(!Permission::hasPermission(self::getUserFromContext(), "PROJECT.CREATE")){
@@ -59,6 +62,7 @@ class ProjectService extends Service
     /**
      * @param Project $project
      * @throws PermissionException
+     * @throws UnauthorizedException
      */
     public static function update($project){
         if(!Permission::hasPermission(self::getUserFromContext(), "PROJECT.UPDATE")){

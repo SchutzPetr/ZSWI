@@ -18,10 +18,11 @@ include_once (__DIR__."/../vendor/netresearch/jsonmapper/src/JsonMapper/Exceptio
 class ProjectAssignService extends Service
 {
 
-	/**
-	 * @param ProjectAssign $projectAssign
-	 * @throws PermissionException
-	 */
+    /**
+     * @param ProjectAssign $projectAssign
+     * @throws PermissionException
+     * @throws UnauthorizedException
+     */
 	public static function create($projectAssign){
 		if(!Permission::hasPermission(self::getUserFromContext(), "PROJECT_ASSIGN.CREATE")){
 			throw new PermissionException();
@@ -30,10 +31,11 @@ class ProjectAssignService extends Service
 		ProjectAssign::save($projectAssign);
 	}
 
-	/**
-	 * @param ProjectAssign $projectAssign
-	 * @throws PermissionException
-	 */
+    /**
+     * @param ProjectAssign $projectAssign
+     * @throws PermissionException
+     * @throws UnauthorizedException
+     */
 	public static function update($projectAssign){
 		if(!Permission::hasPermission(self::getUserFromContext(), "PROJECT_ASSIGN.UPDATE")){
 			throw new PermissionException();
@@ -42,11 +44,12 @@ class ProjectAssignService extends Service
 		ProjectAssign::save($projectAssign);
 	}
 
-	/***
-	 * @param int $userId
-	 * @return ProjectAssign [] array
-	 * @throws PermissionException
-	 */
+    /***
+     * @param int $userId
+     * @return ProjectAssign [] array
+     * @throws PermissionException
+     * @throws UnauthorizedException
+     */
 	public static function findAllByUserId($userId){
 		if(!Permission::hasPermission(self::getUserFromContext(), "PROJECT_ASSIGN.FIND")){
 			throw new PermissionException();
@@ -56,12 +59,13 @@ class ProjectAssignService extends Service
 	}
 
 
-	/***
-	 * @param int $userId
-	 * @param int $year
-	 * @return ProjectAssign [] array
-	 * @throws PermissionException
-	 */
+    /***
+     * @param int $userId
+     * @param int $year
+     * @return ProjectAssign [] array
+     * @throws PermissionException
+     * @throws UnauthorizedException
+     */
 	public static function findAllByUserIdAndYear($userId, $year){
 		if(!Permission::hasPermission(self::getUserFromContext(), "PROJECT_ASSIGN.FIND")){
 			throw new PermissionException();
@@ -70,14 +74,15 @@ class ProjectAssignService extends Service
 		return ProjectAssign::findAllByUserIdAndYear($userId, $year);
 	}
 
-	/***
-	 * @param int $userId
-	 * @param int $month
-	 * @param int $year
-	 *
-	 * @return ProjectAssign[] array
-	 * @throws PermissionException
-	 */
+    /***
+     * @param int $userId
+     * @param int $month
+     * @param int $year
+     *
+     * @return ProjectAssign[] array
+     * @throws PermissionException
+     * @throws UnauthorizedException
+     */
 	public static function findByUserIdAllActiveInMonthAndYear($userId, $month, $year){
 		if(!Permission::hasPermission(self::getUserFromContext(), "PROJECT_ASSIGN.FIND")){
 			throw new PermissionException();
@@ -86,13 +91,14 @@ class ProjectAssignService extends Service
 		return ProjectAssign::findByUserIdAllActiveInMonthAndYear($userId, $month, $year);
 	}
 
-	/***
-	 * @param int $userId
-	 * @param int $projectId
-	 *
-	 * @return ProjectAssign[] array
-	 * @throws PermissionException
-	 */
+    /***
+     * @param int $userId
+     * @param int $projectId
+     *
+     * @return ProjectAssign[] array
+     * @throws PermissionException
+     * @throws UnauthorizedException
+     */
 	public static function findAllByUserIdAndProjectId($userId, $projectId){
 		if(!Permission::hasPermission(self::getUserFromContext(), "PROJECT_ASSIGN.FIND")){
 			throw new PermissionException();

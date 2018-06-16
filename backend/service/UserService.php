@@ -22,6 +22,7 @@ class UserService extends Service
      * @param $id integer
      * @return User
      * @throws PermissionException
+     * @throws UnauthorizedException
      */
     public static function findById($id){
         if(!Permission::hasPermission(self::getUserFromContext(), "USER.FIND")){
@@ -35,6 +36,7 @@ class UserService extends Service
      * @param string $login
      * @return User
      * @throws PermissionException
+     * @throws UnauthorizedException
      */
     public static function findByLogin($login){
         if(!Permission::hasPermission(self::getUserFromContext(), "USER.FIND")){
@@ -48,6 +50,7 @@ class UserService extends Service
      * @param $id integer
      * @return array
      * @throws PermissionException
+     * @throws UnauthorizedException
      */
     public static function findByProjectId($id){
         if(!Permission::hasPermission(self::getUserFromContext(), "USER.FIND")){
@@ -60,6 +63,7 @@ class UserService extends Service
     /**
      * @return User[]
      * @throws PermissionException
+     * @throws UnauthorizedException
      */
     public static function findAll(){
         if(!Permission::hasPermission(self::getUserFromContext(), "USER.FIND")){
@@ -72,6 +76,7 @@ class UserService extends Service
     /**
      * @param $user User
      * @throws PermissionException
+     * @throws UnauthorizedException
      */
     public static function create($user){
         if(!Permission::hasPermission(self::getUserFromContext(), "USER.CREATE")){
@@ -90,6 +95,7 @@ class UserService extends Service
     /**
      * @param $user User
      * @throws PermissionException
+     * @throws UnauthorizedException
      */
     public static function update($user){
         if(!Permission::hasPermission(self::getUserFromContext(), "USER.UPDATE")){

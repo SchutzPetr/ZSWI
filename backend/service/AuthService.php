@@ -42,7 +42,7 @@ class AuthService extends Service
         $db_token = $result["token"];
         $db_valid = $result["valid"];
 
-        if(is_null($db_token) || strtotime($db_valid) >= strtotime("now") ){
+        if(is_null($db_token) || strtotime($db_valid) <= strtotime("now") ){
             $token = urlencode(password_hash(self::generateUUID(), PASSWORD_DEFAULT));
             $valid = date("Y-m-d",strtotime("+7 day"));
 
@@ -71,7 +71,6 @@ class AuthService extends Service
             throw new PermissionException();
         }
         $query = "SELECT user_id FROM user_authentication WHERE token LIKE :token LIMIT 1;";
-
         $preparedQuery = Database::getConnection()->prepare($query);
         $preparedQuery->bindValue(":token", $token);
         $preparedQuery->execute();
@@ -80,7 +79,7 @@ class AuthService extends Service
         if(empty($result)){
             throw new UnauthorizedException();
         }
-        $user = User::findById($result["user_id"]);
+        $user = User::findById(intval($result["user_id"]));
         if(is_null($user)){
             throw new UnauthorizedException();
         }

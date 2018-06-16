@@ -21,9 +21,10 @@ class AttendanceService extends Service
      * @param $userId integer
      * @return Attendance[]
      * @throws PermissionException
+     * @throws UnauthorizedException
      */
     public static function findLastByUserId($userId){
-        if(!Permission::hasPermission(self::getUserFromContext(), "ATTENDANCE.FIND")){
+        if(!Permission::hasPermission(self::getUserFromContext(), "ATTENDANCE.FIND", $userId)){
             throw new PermissionException();
         }
 
@@ -34,9 +35,10 @@ class AttendanceService extends Service
      * @param $userId integer
      * @return Attendance[]
      * @throws PermissionException
+     * @throws UnauthorizedException
      */
     public static function findAllByUserId($userId){
-        if(!Permission::hasPermission(self::getUserFromContext(), "ATTENDANCE.FIND")){
+        if(!Permission::hasPermission(self::getUserFromContext(), "ATTENDANCE.FIND", $userId)){
             throw new PermissionException();
         }
 
@@ -50,9 +52,10 @@ class AttendanceService extends Service
      * @param $year integer
      * @return Attendance
      * @throws PermissionException
+     * @throws UnauthorizedException
      */
     public static function findByUserIdAndDate($userId, $day, $month, $year){
-        if(!Permission::hasPermission(self::getUserFromContext(), "ATTENDANCE.FIND")){
+        if(!Permission::hasPermission(self::getUserFromContext(), "ATTENDANCE.FIND", $userId)){
             throw new PermissionException();
         }
 
@@ -63,6 +66,7 @@ class AttendanceService extends Service
      * @param $id integer
      * @return Attendance
      * @throws PermissionException
+     * @throws UnauthorizedException
      */
     public static function findById($id){
         if(!Permission::hasPermission(self::getUserFromContext(), "ATTENDANCE.FIND")){
@@ -75,6 +79,7 @@ class AttendanceService extends Service
     /**
      * @return Attendance[]
      * @throws PermissionException
+     * @throws UnauthorizedException
      */
     public static function findAll(){
         if(!Permission::hasPermission(self::getUserFromContext(), "ATTENDANCE.FIND")){
@@ -87,6 +92,7 @@ class AttendanceService extends Service
     /**
      * @param $attendance Attendance[]|Attendance
      * @throws PermissionException
+     * @throws UnauthorizedException
      */
     public static function create($attendance){
         if(!Permission::hasPermission(self::getUserFromContext(), "ATTENDANCE.CREATE")){
@@ -105,6 +111,7 @@ class AttendanceService extends Service
     /**
      * @param $attendance Attendance[]|Attendance
      * @throws PermissionException
+     * @throws UnauthorizedException
      */
     public static function update($attendance){
         if(!Permission::hasPermission(self::getUserFromContext(), "ATTENDANCE.CREATE")){
