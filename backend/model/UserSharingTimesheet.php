@@ -14,6 +14,26 @@ include_once(__DIR__ . "/../database/Database.php");
 class UserSharingTimesheet
 {
 
+
+	/***
+	 * @param integer $userId
+     * @return array $arrayOfUsersId
+	 */
+	public static function findAllAvailableUsers($userId){
+		$query = "SELECT id FROM user  WHERE id !=:userId AND id NOT IN (SELECT share_to_id FROM user_sharing_timesheet WHERE sharing_user_id =:userId);";
+		$preparedQuery = Database::getConnection()->prepare($query);
+		$preparedQuery->bindValue(":userId", $userId);
+		$preparedQuery->execute();
+		$result = $preparedQuery->fetchAll();
+
+		$arrayOfUsersId = array();
+
+		foreach ($result as $var){
+			$arrayOfUsersId []= $var["id"];
+		}
+		return $arrayOfUsersId;
+	}
+
     /**
      * @param integer $userId
      * @return array $arrayOfUsersId
@@ -60,28 +80,23 @@ class UserSharingTimesheet
 
     /**
      * @param integer $fromUserId
-     * @param integer[] $toUserIds
+     * @param integer $toUserId
      */
-    static function createShare($fromUserId, $toUserIds)
+    static function save($fromUserId, $toUserId)
     {
-
-        for($x=0;$x<count($toUserIds);$x++)
-        {
             $query = "INSERT INTO user_sharing_timesheet (sharing_user_id, share_to_id) value (:fromUserId, :toUserId) on duplicate key update sharing_user_id = :fromUserId, share_to_id= :toUserId;";
             $preparedQuery = Database::getConnection()->prepare($query);
             $preparedQuery->bindValue(":fromUserId", $fromUserId);
-            $preparedQuery->bindValue(":toUserId", $toUserIds[$x]);
+            $preparedQuery->bindValue(":toUserId", $toUserId);
 
             $preparedQuery->execute();
-        }
-
     }
 
     /**
      * @param integer $fromUserId
      * @param integer $toUserId
      */
-    static function deleteShare($fromUserId, $toUserId)
+    static function delete($fromUserId, $toUserId)
     {
         $query = "DELETE FROM user_sharing_timesheet WHERE sharing_user_id = :fromUserId AND  share_to_id = :toUserId;";
         $preparedQuery = Database::getConnection()->prepare($query);

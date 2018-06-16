@@ -5,17 +5,25 @@
  * Date: 14.06.2018
  * Time: 19:14
  */
+include_once (__DIR__."/../exception/PermissionException.php");
+include_once (__DIR__."/../util/Permission.php");
+include_once (__DIR__."/../util/Utils.php");
+include_once (__DIR__."/Service.php");
+include_once (__DIR__."/../model/UserSharingTimesheet.php");
+include_once (__DIR__."./../vendor/netresearch/jsonmapper/src/JsonMapper.php");
+include_once (__DIR__."/../vendor/netresearch/jsonmapper/src/JsonMapper/Exception.php");
 
-class ShareService
+
+class ShareService extends Service
 {
     /**
      * @param integer $userId
-     * @return UserSharingTimesheet
+     * @return integer [] array
      * @throws PermissionException
      */
     public static function findAllSharedWithUserId($userId)
     {
-        if(!Permission::hasPermission(self::getUserFromContext(), "USER_SHARING_TIMESHEET.FIND")){
+        if(!Permission::hasPermission(self::getUserFromContext(), "USER_SHARING.FIND")){
             throw new PermissionException();
         }
 
@@ -25,31 +33,30 @@ class ShareService
 
     /**
      * @param integer $userId
+     * @return integer [] array
+     * @throws PermissionException
      */
     public static function findAllSharedWithOthers($userId)
     {
+	    if(!Permission::hasPermission(self::getUserFromContext(), "USER_SHARING.FIND")){
+		    throw new PermissionException();
+	    }
 
+	    return UserSharingTimesheet::findAllSharedWithOthers($userId);
     }
 
-    /**
-     * @param integer $userId
-     */
+	/**
+	 * @param integer $userId
+	 * @return integer [] array
+	 * @throws PermissionException
+	 */
     public static function findAllAvailableUsers($userId)
     {
+	    if(!Permission::hasPermission(self::getUserFromContext(), "USER_SHARING.FIND")){
+		    throw new PermissionException();
+	    }
 
-    }
-
-    /**
-     * @param integer $fromUserId
-     * @param integer[] $toUserIds
-     * @throws PermissionException
-     */
-    public static function createShare($fromUserId, $toUserIds){
-        if(!Permission::hasPermission(self::getUserFromContext(), "USER_SHARING_TIMESHEET.CREATE")){
-            throw new PermissionException();
-        }
-
-        return UserSharingTimesheet::createShare($fromUserId, $toUserIds);
+	    return UserSharingTimesheet::findAllAvailableUsers($userId);
     }
 
     /**
@@ -57,11 +64,24 @@ class ShareService
      * @param integer $toUserId
      * @throws PermissionException
      */
-    public static function deleteShare($fromUserId, $toUserId){
-        if(!Permission::hasPermission(self::getUserFromContext(), "USER_SHARING_TIMESHEET.DELETE")){
+    public static function createShare($fromUserId, $toUserId){
+        if(!Permission::hasPermission(self::getUserFromContext(), "USER_SHARING.CREATE")){
             throw new PermissionException();
         }
 
-        return UserSharingTimesheet::deleteShare($fromUserId, $toUserId);
+        UserSharingTimesheet::save($fromUserId, $toUserId);
+    }
+
+    /**
+     * @param integer $fromUserId
+     * @param integer $toUserId
+     * @throws PermissionException
+     */
+    public static function delete($fromUserId, $toUserId){
+        if(!Permission::hasPermission(self::getUserFromContext(), "USER_SHARING.DELETE")){
+            throw new PermissionException();
+        }
+
+        UserSharingTimesheet::delete($fromUserId, $toUserId);
     }
 }
