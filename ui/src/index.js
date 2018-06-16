@@ -8,4 +8,3 @@ import moment from "moment"
 import "moment/locale/cs";
 
 ReactDOM.render(<Router><App/></Router>, document.getElementById("root"));
-registerServiceWorker();
