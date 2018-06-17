@@ -317,7 +317,7 @@ class Attendance extends BaseModel
         $preparedQuery->bindValue(":user_id", $attendance->getUserId());
         $preparedQuery->bindValue(":active_from", $attendance->getActiveFrom() == "" ? null : $attendance->getActiveFrom());
         $preparedQuery->bindValue(":day_in_week", $attendance->getDayInWeek());
-        $preparedQuery->bindValue(":enabled", $attendance->isEnabled());
+        $preparedQuery->bindValue(":enabled", (int)$attendance->isEnabled());
         $preparedQuery->bindValue(":first_part_from", $attendance->getFirstPartFrom());
         $preparedQuery->bindValue(":first_part_to", $attendance->getFirstPartTo());
         $preparedQuery->bindValue(":second_part_from", $attendance->getSecondPartFrom());
