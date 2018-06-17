@@ -39,31 +39,9 @@ class UserSharingTimesheet
      * @param integer $userId
      * @return SimpleUser[]
      *
-     * Komu já sdílím
+     * Kdo sdílí mě
      */
     public static function findAllSharedWithUserId($userId)
-    {
-        $query = "SELECT share_to_id FROM user_sharing_timesheet WHERE sharing_user_id = :userId;";
-        $preparedQuery = Database::getConnection()->prepare($query);
-        $preparedQuery->bindValue(":userId", $userId);
-        $preparedQuery->execute();
-        $result = $preparedQuery->fetchAll();
-
-        $arrayOfUsersId = array();
-
-        foreach ($result as $var){
-            $arrayOfUsersId []= $var["share_to_id"];
-        }
-        return SimpleUser::findAllByIds($arrayOfUsersId);
-
-    }
-
-    /**
-     * @param integer $userId
-     * @return SimpleUser[]
-     * Kdo sdílí mně.
-     */
-    public static function findAllSharedWithOthers($userId)
     {
         $query = "SELECT sharing_user_id FROM user_sharing_timesheet WHERE share_to_id = :userId";
         $preparedQuery = Database::getConnection()->prepare($query);
@@ -75,6 +53,28 @@ class UserSharingTimesheet
 
         foreach ($result as $var){
             $arrayOfUsersId []= $var["sharing_user_id"];
+        }
+        return SimpleUser::findAllByIds($arrayOfUsersId);
+    }
+
+    /**
+     * @param integer $userId
+     * @return SimpleUser[]
+     * Komu sdílím já.
+     */
+    public static function findAllSharedWithOthers($userId)
+    {
+
+        $query = "SELECT share_to_id FROM user_sharing_timesheet WHERE sharing_user_id = :userId;";
+        $preparedQuery = Database::getConnection()->prepare($query);
+        $preparedQuery->bindValue(":userId", $userId);
+        $preparedQuery->execute();
+        $result = $preparedQuery->fetchAll();
+
+        $arrayOfUsersId = array();
+
+        foreach ($result as $var){
+            $arrayOfUsersId []= $var["share_to_id"];
         }
         return SimpleUser::findAllByIds($arrayOfUsersId);
     }
