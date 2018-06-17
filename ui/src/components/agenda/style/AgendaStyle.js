@@ -55,6 +55,7 @@ const Styles = theme => ({
     tableCellDate:{
         padding: "2px 24px",
         borderBottom: "none",
+        minHeight: rowHeight,
         minWidth: 110
     },
     partTableCell: {

@@ -136,7 +136,7 @@ class AgendaTabs extends React.Component {
             if(timeSheet == null){
                 return  <Paper className={classes.loadingPaper}>EMPTY</Paper>
             }else{
-                return <Agenda user={this.props.user} timeSheet={timeSheet} onTimeSheetEdit={this.handleTimeSheetEdit.bind(this)}/>;
+                return <Agenda user={this.props.user} timeSheet={timeSheet} onTimeSheetEdit={this.handleTimeSheetEdit.bind(this)} mode={this.props.mode}/>;
             }
         } else {
             return  <Paper className={classes.loadingPaper}>ERROR</Paper>
@@ -194,7 +194,8 @@ AgendaTabs.propTypes = {
     user: PropTypes.instanceOf(User).isRequired,
     match: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
-    users: PropTypes.arrayOf(User)
+    users: PropTypes.arrayOf(User),
+    mode: PropTypes.string
 };
 AgendaTabs.defaultProps = {
     mode: "USER",

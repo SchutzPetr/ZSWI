@@ -74,7 +74,7 @@ class Agenda extends React.Component {
                                 svátek</TableCell>
                             <TableCell rowSpan={2} className={classes.centerHeaderText}>Služ. cesta, Práce mimo
                                 pracoviště</TableCell>
-                            <TableCell rowSpan={2}/>
+                            {this.props.mode === "USER" ? null : <TableCell rowSpan={2}/>}
                         </TableRow>
                         <TableRow className={classes.headerRow}>
                             <TableCell className={classes.headerBorder}>Od</TableCell>
@@ -93,7 +93,8 @@ class Agenda extends React.Component {
 
                             if (!dayTimeSheet) {
                                 return (
-                                    <TableRow key={`${index}-${value}`} className={this.getRowBackgroundColor(value, holiday)}>
+                                    <TableRow key={`${index}-${value}`}
+                                              className={this.getRowBackgroundColor(value, holiday)}>
                                         <TableCell
                                             className={classes.tableCell}>{moment(value).format("LL")}</TableCell>
                                         <TableCell className={classes.tableCellDate}/>
@@ -102,18 +103,22 @@ class Agenda extends React.Component {
                                         <TableCell className={classes.tableCell}/>
                                         <TableCell className={classes.tableCell}/>
                                         <TableCell className={classes.tableCell}/>
-                                        <TableCell className={classes.tableCell}>{holiday ? holiday.name : ""}</TableCell>
+                                        <TableCell
+                                            className={classes.tableCell}>{holiday ? holiday.name : ""}</TableCell>
                                         <TableCell className={classes.tableCell}/>
-                                        <TableCell className={`${classes.tableCell} ${classes.tableCellMenu}`}>
-                                            <IconButton className={classes.menuButton}
-                                                        aria-label="Menu"
-                                                        onClick={(event) => {
-                                                            let data = new DayTimeSheet();
-                                                            data.date = value;
-                                                            this.handleOpenEdit(event, data);
-                                                        }}>
-                                                <MoreVert className={classes.moreVert}/>
-                                            </IconButton></TableCell>
+                                        {this.props.mode === "USER" ? null :
+                                            <TableCell className={`${classes.tableCell} ${classes.tableCellMenu}`}>
+                                                <IconButton className={classes.menuButton}
+                                                            aria-label="Menu"
+                                                            onClick={(event) => {
+                                                                let data = new DayTimeSheet();
+                                                                data.date = value;
+                                                                this.handleOpenEdit(event, data);
+                                                            }}>
+                                                    <MoreVert className={classes.moreVert}/>
+                                                </IconButton>
+                                            </TableCell>
+                                        }
                                     </TableRow>
 
                                 );
@@ -148,15 +153,19 @@ class Agenda extends React.Component {
                                         <TableCell className={classes.partTableCell}>
                                             {secondPartDiff ? secondPartDiff + "h" : null}
                                         </TableCell>
-                                        <TableCell className={classes.tableCell}>{holiday ? holiday.name : ""}</TableCell>
+                                        <TableCell
+                                            className={classes.tableCell}>{holiday ? holiday.name : ""}</TableCell>
                                         <TableCell className={classes.tableCell}>{""}</TableCell>
-                                        <TableCell className={`${classes.tableCell} ${classes.tableCellMenu}`}>
-                                            <IconButton className={classes.menuButton} aria-label="Menu"
-                                                        onClick={(event) => {
-                                                            this.handleOpenEdit(event, dayTimeSheet);
-                                                        }}>
-                                                <MoreVert className={classes.moreVert}/>
-                                            </IconButton></TableCell>
+                                        {this.props.mode === "USER" ? null :
+                                            <TableCell className={`${classes.tableCell} ${classes.tableCellMenu}`}>
+                                                <IconButton className={classes.menuButton} aria-label="Menu"
+                                                            onClick={(event) => {
+                                                                this.handleOpenEdit(event, dayTimeSheet);
+                                                            }}>
+                                                    <MoreVert className={classes.moreVert}/>
+                                                </IconButton>
+                                            </TableCell>
+                                        }
                                     </TableRow>
 
                                 );
@@ -177,7 +186,11 @@ Agenda.propTypes = {
     classes: PropTypes.object.isRequired,
     timeSheet: PropTypes.instanceOf(TimeSheet),
     onTimeSheetEdit: PropTypes.func.isRequired,
-    user: PropTypes.instanceOf(User)
+    user: PropTypes.instanceOf(User),
+    mode: PropTypes.string
+};
+Agenda.defaultProps = {
+    mode: "USER",
 };
 
 export default withStyles(Style, {withTheme: true})(Agenda);

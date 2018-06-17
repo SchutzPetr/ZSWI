@@ -64,7 +64,7 @@ class AgendaOverview extends React.Component {
                         <UserDetail user={this.state.user}/>
                     </Grid>
                     <Grid item={true} xs={12} sm={9}>
-                        <AgendaTabs match={this.props.match} history={this.props.history} user={this.state.user}/>
+                        <AgendaTabs match={this.props.match} history={this.props.history} user={this.state.user} mode={"SECRETARY"}/>
                     </Grid>
                 </Grid>
             );
