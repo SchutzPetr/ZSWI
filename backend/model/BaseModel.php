@@ -76,15 +76,4 @@ abstract class BaseModel implements JsonSerializable
     {
         $this->id = $id;
     }
-
-    /**
-     * @param integer $id
-     * @return mixed
-     */
-    public static abstract function findById($id);
-
-    /**
-     * @return array
-     */
-    public static abstract function findAll();
 }

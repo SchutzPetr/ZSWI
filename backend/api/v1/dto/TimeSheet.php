@@ -6,7 +6,7 @@
  * Time: 22:33
  */
 
-include_once ( __DIR__ . "/../../../model/DayTimeSheet.php" );
+include_once(__DIR__ . "/../../../model/DayTimeSheet.php");
 
 class TimeSheet implements JsonSerializable
 {
@@ -28,7 +28,7 @@ class TimeSheet implements JsonSerializable
     /**
      * @return DayTimeSheet[]
      */
-    public function getDayTimeSheets(): array
+    public function getDayTimeSheets()
     {
         return $this->dayTimeSheets;
     }
@@ -36,7 +36,7 @@ class TimeSheet implements JsonSerializable
     /**
      * @param DayTimeSheet[] $dayTimeSheets
      */
-    public function setDayTimeSheets(array $dayTimeSheets): void
+    public function setDayTimeSheets($dayTimeSheets)
     {
         $this->dayTimeSheets = $dayTimeSheets;
     }
@@ -44,23 +44,7 @@ class TimeSheet implements JsonSerializable
     /**
      * @return int
      */
-    public function getMonth(): int
-    {
-        return $this->month;
-    }
-
-    /**
-     * @param int $month
-     */
-    public function setMonth(int $month): void
-    {
-        $this->month = $month;
-    }
-
-    /**
-     * @return int
-     */
-    public function getYear(): int
+    public function getYear()
     {
         return $this->year;
     }
@@ -68,9 +52,25 @@ class TimeSheet implements JsonSerializable
     /**
      * @param int $year
      */
-    public function setYear(int $year): void
+    public function setYear($year)
     {
         $this->year = $year;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMonth()
+    {
+        return $this->month;
+    }
+
+    /**
+     * @param int $month
+     */
+    public function setMonth($month)
+    {
+        $this->month = $month;
     }
 
     /**
