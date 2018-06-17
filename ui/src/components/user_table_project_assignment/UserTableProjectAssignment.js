@@ -118,6 +118,8 @@ class UserTableProjectAssignment extends React.Component {
             });
         }
         this.handleCloseEdit();
+
+        this._fetchData();
     };
 
     handleChangePage = (event, page) => {

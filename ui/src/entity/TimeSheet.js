@@ -2,6 +2,8 @@ import BaseEntity from "./BaseEntity";
 import moment from "moment/moment";
 import DayTimeSheet from "./DayTimeSheet";
 import Utils from "../other/Utils";
+import ProjectAssign from "./ProjectAssign";
+import PublicHoliday from "./PublicHoliday";
 
 class TimeSheet extends BaseEntity{
 
@@ -16,6 +18,8 @@ class TimeSheet extends BaseEntity{
         this._isNTIS = isNTIS || false;
         this._month = month || 0;
         this._year = 0;
+        this._projectAssign = [];
+        this._publicHolidays = [];
     }
 
     /**
@@ -56,6 +60,22 @@ class TimeSheet extends BaseEntity{
         this._year = value;
     }
 
+    get projectAssign() {
+        return this._projectAssign;
+    }
+
+    set projectAssign(value) {
+        this._projectAssign = value;
+    }
+
+    get publicHolidays() {
+        return this._publicHolidays;
+    }
+
+    set publicHolidays(value) {
+        this._publicHolidays = value;
+    }
+
     /**
      *
      * @param timeSheetDTO {*}
@@ -77,6 +97,9 @@ class TimeSheet extends BaseEntity{
         });
 
         timeSheet.dayTimeSheets = dayTimeSheets;
+
+        timeSheet.projectAssign = ProjectAssign.map(timeSheetDTO.projectAssign);
+        timeSheet.publicHolidays = PublicHoliday.map(timeSheetDTO.publicHolidays);
 
         return timeSheet;
     }

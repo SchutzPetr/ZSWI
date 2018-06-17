@@ -1,5 +1,7 @@
 import BaseEntity from "./BaseEntity";
 import moment from "moment";
+import Project from "./Project";
+import SimpleUser from "./SimpleUser";
 
 class ProjectAssign extends BaseEntity {
 
@@ -10,6 +12,8 @@ class ProjectAssign extends BaseEntity {
         this._activeFrom = new Date();
         this._activeTo = null;
         this._obligation = 0.0;
+        this._project = {};
+        this._user = {};
     }
 
     get projectId() {
@@ -52,6 +56,22 @@ class ProjectAssign extends BaseEntity {
         this._obligation = value;
     }
 
+    get project() {
+        return this._project;
+    }
+
+    set project(value) {
+        this._project = value;
+    }
+
+    get user() {
+        return this._user;
+    }
+
+    set user(value) {
+        this._user = value;
+    }
+
     clone() {
         return Object.assign(new ProjectAssign(), this);
     }
@@ -65,6 +85,8 @@ class ProjectAssign extends BaseEntity {
 
         projectAssign.activeFrom = moment(dto.activeFrom, "YYYY-MM-DD").toDate();
         projectAssign.activeTo = moment(dto.activeTo, "YYYY-MM-DD").toDate();
+        projectAssign.project = Project.map(dto.project);
+        projectAssign.user = SimpleUser.map(dto.simpleUser);
 
         return projectAssign;
     }

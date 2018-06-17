@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {withStyles} from "@material-ui/core/styles/index";
-import Style from "./style/AgendaTabsStyle";
+import Style from "./style/AgendaStyle";
 import {IconButton, Paper, Table, TableBody, TableCell, TableHead, TableRow} from "@material-ui/core/index";
 import moment from "moment";
 import MoreVert from "@material-ui/icons/MoreVert";
@@ -10,83 +10,6 @@ import TimeSheet from "../../entity/TimeSheet";
 import Utils from "../../other/Utils";
 import DayTimeSheet from "../../entity/DayTimeSheet";
 import User from "../../entity/User";
-
-const rowHeightHeader = 24;
-const rowHeight = 20;
-
-const styles = theme => ({
-    root: {
-        maxHeight: "calc(100vh - 115px)",
-        height: "calc(100vh - 115px)",
-        overflowX: "auto",
-    },
-    table: {
-        minWidth: 700,
-    },
-    part: {
-        borderBottom: "none",
-        textAlign: "center",
-        fontWeight: "bold",
-        borderLeft: "1px solid rgba(224, 224, 224, 1)",
-        borderRight: "1px solid rgba(224, 224, 224, 1)",
-    },
-    centerHeaderText: {
-        textAlign: "center",
-    },
-    saturday: {
-        height: rowHeight,
-        backgroundColor: "#f5eca7"
-    },
-    sunday: {
-        height: rowHeight,
-        backgroundColor: "#f6bdcc"
-    },
-    holiday: {
-        height: rowHeight,
-        backgroundColor: "#c9e5c7"
-    },
-    thuTue: {
-        height: rowHeight,
-        backgroundColor: "#fafafb"
-    },
-    defRow: {
-        height: rowHeight,
-    },
-    headerBorder: {
-        border: "1px solid rgba(224, 224, 224, 1)",
-        textAlign: "center",
-    },
-    headerLeftRight: {
-        borderLeft: "1px solid rgba(224, 224, 224, 1)",
-        borderRight: "1px solid rgba(224, 224, 224, 1)",
-    },
-    tableCell: {
-        paddingTop: 2,
-        paddingBottom: 2,
-        borderBottom: "none",
-    },
-    partTableCell: {
-        paddingTop: 2,
-        paddingBottom: 2,
-        borderBottom: "none",
-        textAlign: "center",
-    },
-    moreVert: {
-        height: 18,
-        width: 18,
-    },
-    menuButton: {
-        height: 20,
-        width: 20,
-    },
-    tableCellMenu: {
-        width: 32,
-    },
-    headerRow: {
-        height: rowHeightHeader,
-    }
-});
-
 
 class Agenda extends React.Component {
 
@@ -118,8 +41,10 @@ class Agenda extends React.Component {
         this.handleCloseEdit();
     };
 
-    getRowBackgroundColor(date) {
-        if (date.getDay() === 6) {
+    getRowBackgroundColor(date, holiday) {
+        if (holiday) {
+            return this.props.classes.holiday;
+        } else if (date.getDay() === 6) {
             return this.props.classes.saturday;
         } else if (date.getDay() === 0) {
             return this.props.classes.sunday;
@@ -131,6 +56,7 @@ class Agenda extends React.Component {
     }
 
     render() {
+
         const {classes, timeSheet} = this.props;
 
         const days = Utils.getDaysInMonth(timeSheet.month, timeSheet.year);
@@ -144,7 +70,10 @@ class Agenda extends React.Component {
                             <TableCell rowSpan={2} className={classes.centerHeaderText}>Datum</TableCell>
                             <TableCell colSpan={3} className={classes.part}>První část</TableCell>
                             <TableCell colSpan={3} className={classes.part}>Druhá část</TableCell>
-                            <TableCell rowSpan={2} className={classes.centerHeaderText}>Typ</TableCell>
+                            <TableCell rowSpan={2} className={classes.centerHeaderText}>Nemoc, OČR, Dovolená, Státní
+                                svátek</TableCell>
+                            <TableCell rowSpan={2} className={classes.centerHeaderText}>Služ. cesta, Práce mimo
+                                pracoviště</TableCell>
                             <TableCell rowSpan={2}/>
                         </TableRow>
                         <TableRow className={classes.headerRow}>
@@ -160,17 +89,20 @@ class Agenda extends React.Component {
                         {days.map((value, index) => {
                             const dayTimeSheet = dayTimeSheets[value.getDate()];
 
+                            const holiday = this.props.timeSheet.publicHolidays.find(valueH => value.getFullYear() === valueH.date.getFullYear() && value.getMonth() === valueH.date.getMonth() && value.getDate() === valueH.date.getDate())
+
                             if (!dayTimeSheet) {
                                 return (
-                                    <TableRow key={`${index}-${value}`} className={this.getRowBackgroundColor(value)}>
+                                    <TableRow key={`${index}-${value}`} className={this.getRowBackgroundColor(value, holiday)}>
                                         <TableCell
                                             className={classes.tableCell}>{moment(value).format("LL")}</TableCell>
+                                        <TableCell className={classes.tableCellDate}/>
                                         <TableCell className={classes.tableCell}/>
                                         <TableCell className={classes.tableCell}/>
                                         <TableCell className={classes.tableCell}/>
                                         <TableCell className={classes.tableCell}/>
                                         <TableCell className={classes.tableCell}/>
-                                        <TableCell className={classes.tableCell}/>
+                                        <TableCell className={classes.tableCell}>{holiday ? holiday.name : ""}</TableCell>
                                         <TableCell className={classes.tableCell}/>
                                         <TableCell className={`${classes.tableCell} ${classes.tableCellMenu}`}>
                                             <IconButton className={classes.menuButton}
@@ -197,7 +129,7 @@ class Agenda extends React.Component {
                                 return (
                                     <TableRow key={`${index}-${value}`} className={this.getRowBackgroundColor(value)}>
                                         <TableCell
-                                            className={classes.tableCell}>{moment(value).format("LL")}</TableCell>
+                                            className={classes.tableCellDate}>{moment(value).format("LL")}</TableCell>
                                         <TableCell className={classes.partTableCell}>
                                             {dayTimeSheet.firstPartFrom ? firstPartFrom.format("H:mm") : null}
                                         </TableCell>
@@ -216,6 +148,7 @@ class Agenda extends React.Component {
                                         <TableCell className={classes.partTableCell}>
                                             {secondPartDiff ? secondPartDiff + "h" : null}
                                         </TableCell>
+                                        <TableCell className={classes.tableCell}>{holiday ? holiday.name : ""}</TableCell>
                                         <TableCell className={classes.tableCell}>{""}</TableCell>
                                         <TableCell className={`${classes.tableCell} ${classes.tableCellMenu}`}>
                                             <IconButton className={classes.menuButton} aria-label="Menu"
@@ -247,4 +180,4 @@ Agenda.propTypes = {
     user: PropTypes.instanceOf(User)
 };
 
-export default withStyles(styles, {withTheme: true})(Agenda);
+export default withStyles(Style, {withTheme: true})(Agenda);
