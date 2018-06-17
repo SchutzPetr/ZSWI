@@ -152,7 +152,16 @@ class Holiday extends BaseModel
         $preparedQuery->bindValue(":day", $day);
 
         $preparedQuery->execute();
+        $result = $preparedQuery->fetch();
 
+        if(empty($result)){
+            return null;
+        }
+
+        $instance = new self();
+        $instance->fill($result);
+
+        return $instance;
     }
 
     /**

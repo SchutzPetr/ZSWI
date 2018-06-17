@@ -10,6 +10,7 @@ include_once(__DIR__ . "/../exception/PermissionException.php");
 include_once(__DIR__ . "/../util/Permission.php");
 include_once(__DIR__ . "/Service.php");
 include_once(__DIR__ . "/UserHolidayService.php");
+include_once(__DIR__ . "/HolidayService.php");
 include_once(__DIR__ . "/AttendanceService.php");
 include_once(__DIR__ . "/ProjectAssignService.php");
 include_once(__DIR__ . "/../model/DayTimeSheet.php");
@@ -155,16 +156,27 @@ class TimeSheetService extends Service
         $attendance = AttendanceService::findByUserIdAndDate($userId, $day, $month, $year);
         $holiday = array_key_exists(sprintf("%'.02d", $day), $holidays) ? $holidays[sprintf("%'.02d", $day)] : null;
 
-        $dayTimeSheet = new DayTimeSheet();
+        $publicHoliday = HolidayService::findByYearMonthAndDay($year, $month, $day);
+
+        $dayTimeSheet = DayTimeSheet::findByUserIdAndDate($userId, $day, $month, $year);
+        if($dayTimeSheet === null){
+            $dayTimeSheet = new DayTimeSheet();
+        }
         $dayTimeSheet->setDate(sprintf("%'.04d-%'.02d-%'.02d", $year, $month, $day));
         $dayTimeSheet->setUserId($userId);
 
-        if ($attendance === null) {
+        if ($attendance === null || !$attendance->isEnabled() || $publicHoliday !== null) {
             $dayTimeSheet->setFirstPartFrom(null);
             $dayTimeSheet->setFirstPartTo(null);
 
             $dayTimeSheet->setSecondPartFrom(null);
             $dayTimeSheet->setSecondPartTo(null);
+
+            if($publicHoliday){
+                $dayTimeSheet->setDayType("PUBLIC_HOLIDAY");
+            }
+
+            DayTimeSheet::save($dayTimeSheet);
 
             return $dayTimeSheet;
         }

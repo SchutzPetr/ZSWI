@@ -224,6 +224,10 @@ class DayTimeSheet implements JsonSerializable
 	    $preparedQuery->execute();
 	    $result = $preparedQuery->fetch();
 
+        if(empty($result)){
+            return null;
+        }
+
 	    $instance = new self();
 	    $instance->fill($result);
 
@@ -245,7 +249,6 @@ class DayTimeSheet implements JsonSerializable
         $preparedQuery->bindValue(":second_part_from", $dayTimeSheet->getSecondPartFrom());
         $preparedQuery->bindValue(":second_part_to", $dayTimeSheet->getSecondPartTo());
         $preparedQuery->bindValue(":day_type", $dayTimeSheet->getDayType());
-        echo $dayTimeSheet->getDayType();
 
         $preparedQuery->execute();
     }

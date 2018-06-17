@@ -11,6 +11,7 @@ class Permission
 
     private static $userPermission = array(
         "SIMPLE_USER",
+        "HOLIDAY.FIND"
     );
 
     /*

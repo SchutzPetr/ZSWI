@@ -51,7 +51,7 @@ class ProjectAssignService extends Service
      * @throws UnauthorizedException
      */
 	public static function findAllByUserId($userId){
-		if(!Permission::hasPermission(self::getUserFromContext(), "PROJECT_ASSIGN.FIND")){
+		if(!Permission::hasPermission(self::getUserFromContext(), "PROJECT_ASSIGN.FIND", $userId)){
 			throw new PermissionException();
 		}
 
@@ -98,7 +98,7 @@ class ProjectAssignService extends Service
      * @throws UnauthorizedException
      */
 	public static function findByUserIdAllActiveInMonthAndYear($userId, $month, $year){
-		if(!Permission::hasPermission(self::getUserFromContext(), "PROJECT_ASSIGN.FIND")){
+		if(!Permission::hasPermission(self::getUserFromContext(), "PROJECT_ASSIGN.FIND", $userId)){
 			throw new PermissionException();
 		}
 
