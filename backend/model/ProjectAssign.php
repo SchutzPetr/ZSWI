@@ -165,6 +165,7 @@ class ProjectAssign implements JsonSerializable
         self::setActiveFrom($row["active_from"]);
         self::setActiveTo($row["active_to"]);
         self::setObligation($row["obligation"]);
+
         self::setSimpleUser(SimpleUser::findById(self::getUserId()));
     }
 
