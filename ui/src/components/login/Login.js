@@ -4,7 +4,18 @@ import PropTypes from "prop-types";
 import Styles from "./style/LoginStyle"
 import classNames from 'classnames';
 import {withStyles} from "@material-ui/core/styles/index";
-import {Button, FormControl, IconButton, Input, InputAdornment, InputLabel, Paper} from "@material-ui/core/index";
+import {
+    Button,
+    FormControl,
+    IconButton,
+    Input,
+    InputAdornment,
+    InputLabel,
+    Paper,
+    FormHelperText,
+    FormControlLabel,
+    Switch
+} from "@material-ui/core/index";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import Visibility from "@material-ui/icons/Visibility";
 import AccountCircle from "@material-ui/icons/AccountCircle";
@@ -16,6 +27,7 @@ class Login extends React.Component {
         login: "",
         password: "",
         showPassword: false,
+        savePassword: false,
     };
 
     handleChange = prop => event => {
@@ -31,7 +43,7 @@ class Login extends React.Component {
     };
 
     handleLogin = event => {
-        this.props.onLogin({login: this.state.login, password: this.state.password}, event);
+        this.props.onLogin({login: this.state.login, password: this.state.password}, this.state.savePassword, event);
     };
 
     render() {
@@ -70,6 +82,22 @@ class Login extends React.Component {
                                 </IconButton>
                             </InputAdornment>
                         }
+                    />
+                </FormControl>
+                <FormControl className={classes.rememberSwitchWrapper} component={"div"}>
+                    <FormHelperText className={classes.rememberSwitchLabel}>{"Zapamatovat přihlášení"}</FormHelperText>
+                    <FormControlLabel
+                        className={classes.rememberSwitch}
+                        control={
+                            <Switch
+                                checked={this.state.savePassword}
+                                onChange={(event) => {
+                                    this.setState({savePassword: event.target.checked})
+                                }}
+                                value={"savePassword"}
+                            />
+                        }
+                        label={this.state.savePassword ? "Zapamatované" : "Nezapamatované"}
                     />
                 </FormControl>
                 <Button className={classes.loginButton} variant="raised" color="primary" onClick={this.handleLogin}>

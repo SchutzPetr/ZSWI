@@ -16,12 +16,12 @@ class LoginPage extends React.Component {
         loadFeedback: "ready"
     };
 
-    onLogin = (dataIn, event) => {
+    onLogin = (dataIn, savePassworda, event) => {
         this.setState({loadFeedback: "loading"});
         Calls.login({
             data: dataIn,
             done: (data) => {
-                this.props.onLoginDone(data.data);
+                this.props.onLoginDone(data.data, savePassworda);
                 this.setState({loadFeedback: "ready"}, () => {
                     this.props.history.push("/")
                 });
@@ -43,7 +43,7 @@ class LoginPage extends React.Component {
                       alignItems={"center"}
                       direction={"row"}
                       justify={"center"}>
-                    <Grid className={this.props.classes.secondGrid} item xs={12} sm={3}>
+                    <Grid className={this.props.classes.secondGrid} item xs={12} sm={4}>
                         <Login onLogin={this.onLogin}/>
                     </Grid>
                 </Grid>

@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import Styles from "./style/SPANotAuthenticatedStyle"
 import {withStyles} from "@material-ui/core/styles/index";
-import {Link, Route} from "react-router-dom";
+import {Link, Route, Switch} from "react-router-dom";
 import LoginPage from "../use_cases/uc_login/LoginPage";
 import {AppBar, Button, Toolbar, Typography} from "@material-ui/core/index";
 
@@ -29,12 +29,12 @@ class SPANotAuthenticated extends React.Component {
                                )}/>
                     </Toolbar>
                 </AppBar>
-                <main className={classes.content}>
+                <Switch>
                     <Route path={"/login"} exact={true}
                            render={props => (
                                <LoginPage match={props.match} history={props.history} onLoginDone={this.props.onLoginDone}/>
                            )}/>
-                </main>
+                </Switch>
             </div>
         );
     }
