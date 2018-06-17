@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+
+    table#t02 {
+        border: 2px solid black;
+    }
+
+    table#td01{
+        border: 1px solid black;
+    }
+
+    table#t01 th, td{
+        border: 1px solid black;
+    }
+
+    table#t01 th {
+        background-color: black;
+        color: white;
+    }
+
+</style>
+<body>
+<p style="text-align: center;">&nbsp;<strong>DOVOLENKA</strong></p>
+<table id="t02" style="height: 226px; width: 624px;">
+    <tbody>
+    <tr style="height: 22px;">
+        <td style="width: 457px; height: 22px;" colspan="4">Př&iacute;jmen&iacute;, jm&eacute;no, titul</td>
+        <td style="width: 387px; height: 22px;" colspan="3">Osobn&iacute; č&iacute;slo</td>
+    </tr>
+    <tr style="height: 23px;">
+        <td style="width: 457px; height: 23px;" colspan="4"><strong>{$name}</strong></td>
+        <td style="width: 387px; height: 23px;" colspan="3">&nbsp;</td>
+    </tr>
+    <tr style="height: 23px;">
+        <td style="width: 105px; height: 23px;">&Uacute;tvar</td>
+        <td style="width: 105px; height: 23px;"><strong>&nbsp;</strong></td>
+        <td style="width: 113px; height: 23px;">&nbsp;</td>
+        <td style="width: 134px; height: 23px;">&nbsp;</td>
+        <td style="width: 93px; height: 23px;" colspan="2">Č&iacute;slo &uacute;tvaru</td>
+        <td style="width: 159px; height: 23px;"><strong>{$number}</strong></td>
+    </tr>
+    <tr style="height: 43px;">
+        <td style="width: 457px; height: 43px;" colspan="4">ž&aacute;d&aacute; o dovolenou na zotavenou na kalend&aacute;řn&iacute; rok</td>
+        <td style="width: 93px; height: 43px;">&nbsp;</td>
+        <td style="width: 135px; height: 43px;">&nbsp;</td>
+        <td style="width: 159px; height: 43px;">&nbsp;</td>
+    </tr>
+    <tr style="height: 23px;">
+        <td style="width: 105px; height: 23px;">od</td>
+        <td style="width: 105px; height: 23px;">&nbsp;</td>
+        <td style="width: 113px; height: 23px;">do</td>
+        <td style="width: 134px; height: 23px;">&nbsp;</td>
+        <td style="width: 93px; height: 23px;">včetně, tj.</td>
+        <td style="width: 135px; height: 23px;">&nbsp;</td>
+        <td style="width: 159px; height: 23px;">pracovn&iacute;ch dnů</td>
+    </tr>
+    <tr style="height: 23px;">
+        <td style="width: 323px; height: 23px;" colspan="3">&nbsp;</td>
+        <td style="width: 521px; height: 23px;" colspan="4">&nbsp;</td>
+    </tr>
+    <tr style="height: 23px;">
+        <td style="width: 323px; height: 23px;" colspan="3">M&iacute;sto pobytu o dovolen&eacute;</td>
+        <td style="width: 134px; height: 23px;" colspan="4">&nbsp;</td>
+    </tr>
+    <tr style="height: 23px;">
+        <td style="width: 323px; height: 23px; text-align: center;" colspan="3"><span style="text-decoration: underline;">{$day}</span></td>
+        <td style="width: 134px; height: 23px;">&nbsp;</td>
+        <td style="width: 387px; height: 23px; text-align: center;" colspan="3">&nbsp;____________________</td>
+    </tr>
+    <tr style="height: 23px;">
+        <td style="width: 105px; text-align: center; height: 23px;" colspan="3"><em>Datum</em></td>
+        <td style="width: 134px; height: 23px;">&nbsp;</td>
+        <td style="width: 93px; text-align: center; height: 23px;" colspan="3"><em>Podpis pracovn&iacute;ka</em></td>
+    </tr>
+    </tbody>
+</table>
+<p>&nbsp;</p>
+<table  id="t01" style="height: 227px; width: 624px; " >
+    <tbody>
+    <tr style="height: 25px; border: 1px solid black; "  >
+        <td style="width: 236px; height: 25px; border: 1px ;" colspan="4" >&nbsp;</td>
+        <td style="width: 93px; height: 25px;">Datum</td>
+        <td style="width: 135px; height: 25px;">Ved. &Uacute;tvaru</td>
+        <td style="width: 159px; height: 25px;">Osobn&iacute; oddělen&iacute;</td>
+    </tr>
+    <tr style="height: 25px;">
+        <td style="width: 236px; height: 25px;" colspan="4">Schv&aacute;lil</td>
+        <td style="width: 93px; height: 25px;">&nbsp;</td>
+        <td style="width: 135px; height: 25px;">&nbsp;</td>
+        <td style="width: 159px; height: 25px;">&nbsp;</td>
+    </tr>
+    <tr style="height: 25px;">
+        <td style="width: 236px; height: 25px;" colspan="4">Skutečn&yacute; n&aacute;stup dovolen&eacute;</td>
+        <td style="width: 93px; height: 25px;">&nbsp;</td>
+        <td style="width: 135px; height: 25px;">&nbsp;</td>
+        <td style="width: 159px; height: 25px;">&nbsp;</td>
+    </tr>
+    <tr style="height: 43px;">
+        <td style="width: 236px; height: 43px;" colspan="4">N&aacute;stup do zaměstn&aacute;n&iacute; po dovolen&eacute;</td>
+        <td style="width: 93px; height: 43px;">&nbsp;</td>
+        <td style="width: 135px; height: 43px;">&nbsp;</td>
+        <td style="width: 159px; height: 43px;">&nbsp;</td>
+    </tr>
+    <tr style="height: 25px;">
+        <td style="width: 464px; height: 25px;" colspan="6">Z t&eacute;to dovolen&eacute; skutečně čerp&aacute;no&hellip;&hellip;&hellip;&hellip;&hellip;pracovn&iacute;ch dnů</td>
+        <td style="width: 159px; height: 25px;">&nbsp;</td>
+    </tr>
+    <tr style="height: 43px;">
+        <td style="width: 623px; height: 43px;" colspan="7">Pozn&aacute;mky o mzdov&yacute;ch n&aacute;roc&iacute;ch, neodevzdan&yacute;ch n&aacute;stroj&iacute;ch, pracovn&iacute;ch pomůck&aacute;ch aj. uveďte na rubu</td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

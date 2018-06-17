@@ -58,6 +58,20 @@ class ProjectAssignService extends Service
 		return ProjectAssign::findAllByUserId($userId);
 	}
 
+	/***
+	 * @param int $projectId
+	 * @return ProjectAssign [] array
+	 * @throws PermissionException
+	 * @throws UnauthorizedException
+	 */
+	public static function findAllByProjectId($projectId){
+		if(!Permission::hasPermission(self::getUserFromContext(), "PROJECT_ASSIGN.FIND")){
+			throw new PermissionException();
+		}
+
+		return ProjectAssign::findAllByProjectId($projectId);
+	}
+
 
     /***
      * @param int $userId
