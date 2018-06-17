@@ -12,12 +12,10 @@ header("Access-Control-Allow-Methods: GET");
 
 
 include_once(__DIR__ . "/../FatalErrorHandler.php");
+include_once(__DIR__ . "/../OptionSkipHandler.php");
 include_once(__DIR__ . "/../../../service/AuthService.php");
 include_once(__DIR__ . "/../../../exception/PermissionException.php");
 
-if ($_SERVER['REQUEST_METHOD'] === "OPTIONS") {
-    die();
-}
 
 try {
     echo json_encode(AuthService::authUserByToken($_GET["token"]));

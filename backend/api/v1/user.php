@@ -6,10 +6,12 @@
  * Time: 20:40
  */
 
-function create($data){
+function create($data)
+{
     return false;
 }
 
-function handleContactForm(){
+function handleContactForm()
+{
     echo "AHOJ";
 }
