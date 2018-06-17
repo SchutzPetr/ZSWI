@@ -59,6 +59,7 @@ class TimeSheetService extends Service
         }
 		$timeSheet->setProjectAssign(ProjectAssignService::findByUserIdAllActiveInMonthAndYear($userId, $month, $year));
         $timeSheet->setDayTimeSheets($dayTimeSheets);
+        $timeSheet->setPublicHolidays(HolidayService::findAllByMonthAndYear($year, $month));
 
         return $timeSheet;
     }
@@ -105,35 +106,14 @@ class TimeSheetService extends Service
             throw new PermissionException();
         }
 
-        $holidaysByYearAndMonth = array();
-
-        foreach ($holidays as $holiday) {
+        foreach ($holidays as $holiday){
             $time = strtotime($holiday->getDate());
 
             $year = date('Y', $time);
             $month = date('m', $time);
             $day = date('d', $time);
 
-            $array = array_key_exists($year . "-" . $month, $holidaysByYearAndMonth) ?
-                $holidaysByYearAndMonth[$year . "-" . $month] : array();
-
-            $array[$day] = $holiday;
-
-            $holidaysByYearAndMonth[$year . "-" . $month] = $array;
-        }
-
-        foreach ($holidaysByYearAndMonth as $key => $holidays) {
-            $time = strtotime($key);
-
-            $year = date('Y', $time);
-            $month = date('m', $time);
-
-            $number = cal_days_in_month(CAL_GREGORIAN, $month, $year);
-
-
-            for ($i = 1; $i <= $number; $i++) {
-                self::generateForDay($userId, $i, $month, $year, $holidays);
-            }
+            self::generateForDay($userId, $day, $month, $year, array(sprintf("%'.02d", $day) => $holiday));
         }
     }
 

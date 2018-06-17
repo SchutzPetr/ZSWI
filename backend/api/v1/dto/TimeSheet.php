@@ -22,6 +22,11 @@ class TimeSheet implements JsonSerializable
     private $projectAssign = [];
 
     /**
+     * @var Holiday[]
+     */
+    private $publicHolidays = [];
+
+    /**
      * @var int
      */
     private $year = 0;
@@ -93,6 +98,21 @@ class TimeSheet implements JsonSerializable
 		$this->projectAssign = $projectAssign;
 	}
 
+    /**
+     * @return Holiday[]
+     */
+    public function getPublicHolidays()
+    {
+        return $this->publicHolidays;
+    }
+
+    /**
+     * @param Holiday[] $publicHolidays
+     */
+    public function setPublicHolidays($publicHolidays)
+    {
+        $this->publicHolidays = $publicHolidays;
+    }
 
 
     /**
