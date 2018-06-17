@@ -7,6 +7,7 @@
  */
 
 include_once(__DIR__ . "/../../../model/DayTimeSheet.php");
+include_once(__DIR__ . "/../../../model/ProjectAssign.php");
 
 class TimeSheet implements JsonSerializable
 {
@@ -14,6 +15,11 @@ class TimeSheet implements JsonSerializable
      * @var DayTimeSheet[]
      */
     private $dayTimeSheets = [];
+
+	/**
+	 * @var ProjectAssign[]
+	 */
+    private $projectAssign = [];
 
     /**
      * @var int
@@ -72,6 +78,22 @@ class TimeSheet implements JsonSerializable
     {
         $this->month = $month;
     }
+
+	/**
+	 * @return ProjectAssign[]
+	 */
+	public function getProjectAssign() {
+		return $this->projectAssign;
+	}
+
+	/**
+	 * @param ProjectAssign[] $projectAssign
+	 */
+	public function setProjectAssign( $projectAssign ) {
+		$this->projectAssign = $projectAssign;
+	}
+
+
 
     /**
      * Specify data which should be serialized to JSON

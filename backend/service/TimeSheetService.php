@@ -11,6 +11,7 @@ include_once(__DIR__ . "/../util/Permission.php");
 include_once(__DIR__ . "/Service.php");
 include_once(__DIR__ . "/UserHolidayService.php");
 include_once(__DIR__ . "/AttendanceService.php");
+include_once(__DIR__ . "/ProjectAssignService.php");
 include_once(__DIR__ . "/../model/DayTimeSheet.php");
 include_once(__DIR__ . "/../vendor/netresearch/jsonmapper/src/JsonMapper.php");
 include_once (__DIR__."/../vendor/netresearch/jsonmapper/src/JsonMapper/Exception.php");
@@ -55,7 +56,7 @@ class TimeSheetService extends Service
             }
             return self::findAllByUserIdAndYearAndMonth($userId, $month, $year, $array);
         }
-
+		$timeSheet->setProjectAssign(ProjectAssignService::findByUserIdAllActiveInMonthAndYear($userId, $month, $year));
         $timeSheet->setDayTimeSheets($dayTimeSheets);
 
         return $timeSheet;
