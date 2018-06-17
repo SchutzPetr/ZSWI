@@ -33,7 +33,13 @@ class Authentication {
         }
     }
 
-
+    clearToken() {
+        if (typeof(Storage) !== "undefined") {
+            localStorage.removeItem("X-Auth-Token");
+        } else {
+            console.warn("Sorry! No Web Storage support..");
+        }
+    }
 }
 
 const authentication = new Authentication();

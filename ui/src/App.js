@@ -45,6 +45,12 @@ class App extends React.Component {
         this.authUserByToken(data.token);
     }
 
+    onLogout(){
+        Authentication.user = null;
+        Authentication.clearToken();
+        this.setState({authenticatedUser: null});
+    }
+
     authUserByToken(token){
         if (!token) {
             return;
@@ -112,7 +118,7 @@ class App extends React.Component {
                                } else {
                                    if (Authentication.isAuthenticated()) {
                                        return <SPAAuthenticated authenticatedUser={this.state.authenticatedUser}
-                                                                match={props.match} history={props.history}/>
+                                                                match={props.match} history={props.history} onLogout={this.onLogout.bind(this)}/>
                                    } else {
                                        return <SPANotAuthenticated authenticatedUser={this.state.user}
                                                                    match={props.match}

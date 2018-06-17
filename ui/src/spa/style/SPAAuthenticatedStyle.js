@@ -75,7 +75,10 @@ const Styles = theme => ({
         maxHeight: 48
     },
     notifiButton: {
-        margin: "0px 48px"
+        margin: "0 10px"
+    },
+    exitToAppButton:{
+        margin: "0 48px 0 10px"
     }
 });
 

@@ -1,9 +1,10 @@
 const Styles = theme => ({
-    container: {
+    form: {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         //flexWrap: 'wrap',
+        width: 500
     },
     row:{
         margin: "20px 10px",
@@ -23,6 +24,7 @@ const Styles = theme => ({
     },
     textField: {
         margin: theme.spacing.unit,
+        minWidth: 230,
     },
     formControl: {
         margin: theme.spacing.unit,

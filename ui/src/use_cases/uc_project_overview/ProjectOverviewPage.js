@@ -48,7 +48,6 @@ class ProjectOverviewPage extends React.Component {
         } else if (this.state.loadFeedback === "ready") {
             return (
                 <Grid className={this.props.classes.mainGrid}
-                      xs={12}
                       container={true} spacing={16}
                       alignItems={"center"}
                       direction={"row"}
@@ -60,8 +59,7 @@ class ProjectOverviewPage extends React.Component {
                                          onSaveOrEditProjectDone={this.handleSaveOrEditProjectDone}/>
                     </Grid>
                     <Grid item={true} xs={12} sm={8}>
-                        <UserTableProjectAssignment project={this.state.selectedProject} users={[]} onEditClick={() => {
-                        }}/>
+                        <UserTableProjectAssignment project={this.state.selectedProject} onEditClick={() => {}}/>
                     </Grid>
                 </Grid>
             );

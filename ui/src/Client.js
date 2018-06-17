@@ -3,6 +3,8 @@ import axios from 'axios';
 const AUTH_API = "/auth/";
 const USER_API = "/user/";
 const PROJECT_API = "/project/";
+const PROJECT_ASSIGN_API = "/projectAssign/";
+
 const TIMESHEET_API = "/timesheet/";
 const DAYTIMESHEET_API = "/daytimesheet/";
 const USERHOLIDAY_API = "/usersholiday/";
@@ -40,7 +42,7 @@ const Client = {
             case "login":
                 return axios.get(AUTH_API + "authSimple.php", {params: data});
             case "getAssignUsersToProject":
-                return axios.get(PROJECT_API + "?/user/getAssignUsersToProject" + {params: data});
+                return axios.get(PROJECT_ASSIGN_API + "findAllByProjectId.php", {params: data});
             default:
                 throw `Url ${url} does not exists.`;
         }
@@ -64,6 +66,10 @@ const Client = {
                 return axios.post(SHARE_API + "create.php", data);
             case "deleteShare":
                 return axios.post(SHARE_API + "delete.php", data);
+            case "createProjectAssign":
+                return axios.post(PROJECT_ASSIGN_API + "create.php", data);
+            case "updateProjectAssign":
+                return axios.post(PROJECT_ASSIGN_API + "update.php", data);
             default:
                 throw `Url ${url} does not exists.`;
         }

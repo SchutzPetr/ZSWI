@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles/index';
-import {Button, Dialog, DialogActions, DialogContent, DialogTitle, FormGroup} from '@material-ui/core/index';
+import {Button, Dialog, DialogActions, DialogContent, DialogTitle, FormGroup, TextField} from '@material-ui/core/index';
 import Calls from "../../Calls";
 import Styles from "./style/UserAssignProjectModalStyle";
 import Project from "../../entity/Project";
@@ -10,6 +10,7 @@ import Suggestion from "../autocomplete/entity/Suggestion";
 import User from "../../entity/User";
 import {DatePicker} from "material-ui-pickers";
 import SingleSelect from "../autocomplete/SingleSelect";
+import ProjectAssign from "../../entity/ProjectAssign";
 
 class UserAssignProjectModal extends React.Component {
 
@@ -23,23 +24,22 @@ class UserAssignProjectModal extends React.Component {
         return {
             project: nextProps.project,
             user: nextProps.user || null,
-            users: [],
+            toDate: nextProps.toDate || null,
+            fromDate: nextProps.fromDate || new Date(),
+            obligation: 0.0,
             loadFeedback: "ready",
-            suggestions: [],
-            toDate: null,
-            fromDate: new Date()
         };
     }
 
-    static mapUserToSuggestion(user) {
+    static mapSimpleUserToSuggestion(user) {
         if (!user) {
             return null;
         }
         return new Suggestion(user.id, user.displayFullName, user)
     }
 
-    static mapUsersToSuggestion(user) {
-        return user.map(value => this.mapUserToSuggestion(value));
+    static mapSimpleUsersToSuggestion(user) {
+        return user.map(value => this.mapSimpleUserToSuggestion(value));
     }
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -63,39 +63,35 @@ class UserAssignProjectModal extends React.Component {
     }
 
     handleSave = () => {
-        this.setState({loadFeedback: "loading"});
-        const fail = (data) => {
-            this.setState({loadFeedback: "error"});
-        };
-        /*if (this.props.projectToEdit) {
-            Calls.editProject({
-                data: this.state.project,
-                done: (data) => {
-                    this.props.onSaveDone();
-                },
-                fail: fail
-            });
-        } else {
-            Calls.createProject({
-                data: this.state.project,
-                done: (data) => {
-                    this.props.onSaveDone();
-                },
-                fail: fail
-            });
-        }*/
+        let projectAssign = new ProjectAssign();
+
+        projectAssign.projectId = this.props.project.id;
+        projectAssign.userId = this.state.user.id;
+        projectAssign.activeFrom = this.state.fromDate;
+        projectAssign.activeTo = this.state.toDate;
+        projectAssign.obligation = this.state.obligation;
+
+        this.props.onSave(projectAssign, !!this.props.user);
+    };
+
+    handleObligationChange = (event) => {
+        let value = event.target.value;
+        if (value < 0 || value > 1) {
+            return;
+        }
+        this.setState({obligation: value});
     };
 
 
     handleOnSelect = (value = []) => {
-        this.setState({users: value ? value.map(value1 => value1.data) : []});
+        this.setState({user: value ? value.data : null});
     };
 
     handleDateChange = (type) => (date) => {
         if (type === "FROM") {
-            this.setState({fromDate: date});
+            this.setState({fromDate: date ? date.toDate() : date});
         } else {
-            this.setState({toDate: date});
+            this.setState({toDate: date ? date.toDate() : date});
         }
     };
 
@@ -112,19 +108,14 @@ class UserAssignProjectModal extends React.Component {
             >
                 <DialogTitle>{this.props.projectToEdit ? "Editace úvazku" : "Vytvoření úvazku k projektu: " + this.props.project.projectName}</DialogTitle>
                 <DialogContent>
-                    <form className={classes.container}>
+                    <form className={classes.form}>
                         <FormGroup className={classes.row} row={true}>
-                            {this.props.user ?
-                                <SingleSelect value={UserAssignProjectModal.mapUserToSuggestion(this.props.users)}
-                                              suggestions={UserAssignProjectModal.mapUserToSuggestion(this.props.users)}
-                                              onSelect={()=>{}}
-                                              disabled={true}
+                            <SingleSelect value={UserAssignProjectModal.mapSimpleUserToSuggestion(this.state.user)}
+                                          suggestions={UserAssignProjectModal.mapSimpleUsersToSuggestion(this.props.users)}
+                                          onSelect={this.handleOnSelect}
+                                          disabled={this.props.user}
 
-                                /> : <MultipleSelect
-                                    suggestions={UserAssignProjectModal.mapUsersToSuggestion(this.state.suggestions)}
-                                    onSelect={this.handleOnSelect}
-                                    values={UserAssignProjectModal.mapUsersToSuggestion(this.state.users)}/>
-                            }
+                            />
                         </FormGroup>
                         <FormGroup row={true} className={classes.fullWidth}>
                             <DatePicker
@@ -136,6 +127,7 @@ class UserAssignProjectModal extends React.Component {
                                 // handle clearing outside => pass plain array if you are not controlling value outside
                                 mask={value => (value ? [/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/] : [])}
                                 value={this.state.fromDate}
+                                maxDate={this.state.toDate}
                                 onChange={this.handleDateChange("FROM")}
                                 animateYearScrolling={false}
                             />
@@ -148,8 +140,20 @@ class UserAssignProjectModal extends React.Component {
                                 // handle clearing outside => pass plain array if you are not controlling value outside
                                 mask={value => (value ? [/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/] : [])}
                                 value={this.state.toDate}
+                                clearable={true}
+                                minDate={this.state.fromDate}
                                 onChange={this.handleDateChange("TO")}
                                 animateYearScrolling={false}
+                            />
+                            <TextField
+                                className={classes.textField}
+                                required={true}
+                                id={"obligationNTIS"}
+                                label={"Velikost úvazku na projektu"}
+                                margin={"normal"}
+                                type={"number"}
+                                value={this.props.obligation}
+                                onChange={this.handleObligationChange}
                             />
                         </FormGroup>
                     </form>
@@ -167,6 +171,7 @@ class UserAssignProjectModal extends React.Component {
     }
 }
 
+
 UserAssignProjectModal.propTypes = {
     classes: PropTypes.object.isRequired,
     open: PropTypes.bool.isRequired,
@@ -174,6 +179,9 @@ UserAssignProjectModal.propTypes = {
     onSaveDone: PropTypes.func.isRequired,
     project: PropTypes.instanceOf(Project).isRequired,
     user: PropTypes.instanceOf(User),
+    users: PropTypes.arrayOf(User),
+    toDate: PropTypes.instanceOf(Date),
+    fromDate: PropTypes.instanceOf(Date),
 
 };
 

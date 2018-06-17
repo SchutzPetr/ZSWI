@@ -114,6 +114,14 @@ class Calls {
     static deleteShare(dataIn) {
         Calls._post("deleteShare", dataIn);
     }
+
+    static createProjectAssign(dataIn) {
+        Calls._post("createProjectAssign", dataIn);
+    }
+
+    static updateProjectAssign(dataIn) {
+        Calls._post("updateProjectAssign", dataIn);
+    }
 }
 
 const calls = new Calls();

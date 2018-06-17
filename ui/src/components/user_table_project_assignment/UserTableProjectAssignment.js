@@ -20,6 +20,8 @@ import Project from "../../entity/Project";
 import UserAssignProjectModal from "../user_assign_to_project_modal/UserAssignProjectModal";
 import LinearProgressCentered from "../LinearProgressCentered";
 import Calls from "../../Calls";
+import SimpleUser from "../../entity/SimpleUser";
+import ProjectAssign from "../../entity/ProjectAssign";
 
 class UserTableProjectAssignment extends React.Component {
 
@@ -30,13 +32,16 @@ class UserTableProjectAssignment extends React.Component {
             page: 0,
             rowsPerPage: props.rowsPerPage || 5,
             modalOpen: false,
-            modalData: null,
-            loadFeedback: "loading"
+            rowData: null,
+            loadFeedback: "ready",
+            loadFeedback_1: "loading",
+            loadFeedback_2: "loading",
+            assignUsers: []
         };
     }
 
     componentDidMount() {
-        this._fetchData(this.props.project);
+        this._fetchData();
     }
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -49,35 +54,69 @@ class UserTableProjectAssignment extends React.Component {
         return true;
     }
 
-    _fetchData(project) {
+    _fetchData(project = this.props.project) {
         if (!project) {
             return;
         }
-        this.setState({users: [], loadFeedback: "ready"});
-        /*Calls.getAssignUsersToProject({
-            data: project,
-            done: (data) => {
-                this.setState({users: User.map(data.data), loadFeedback: "ready"});
-            },
-            fail: (data) => {
-                this.setState({loadFeedback: "error"});
-                //todo: error throw
-            }
-        });*/
+        this.setState({loadFeedback_1: "loading", loadFeedback_2: "loading"}, () => {
+            Calls.getSimpleUsers({
+                data: {},
+                done: (data) => {
+                    this.setState({users: SimpleUser.map(data.data), loadFeedback_1: "ready"});
+                },
+                fail: (data) => {
+                    this.setState({loadFeedback_1: "error"});
+                    //todo: error throw
+                }
+            });
+            Calls.getAssignUsersToProject({
+                data: {id: project.id},
+                done: (data) => {
+                    this.setState({assignUsers: ProjectAssign.map(data.data), loadFeedback_2: "ready"});
+                },
+                fail: (data) => {
+                    this.setState({loadFeedback_2: "error"});
+                    //todo: error throw
+                }
+            });
+        });
     }
 
-    handleOpenEdit = modalData => event => {
+    handleOpenEdit = rowData => event => {
         this.setState({
             modalOpen: true,
-            modalData: modalData
+            rowData: rowData
         });
     };
 
     handleCloseEdit = () => {
-        this.setState({modalOpen: false, modalData: null});
+        this.setState({modalOpen: false, rowData: null});
     };
 
-    handleOnSaveDone = (project) => {
+    onSaveAssign = (project, update) => {
+        if(update){
+            Calls.updateProjectAssign({
+                data: project,
+                done: (data) => {
+                    this.setState({loadFeedback: "ready"});
+                },
+                fail: (data) => {
+                    this.setState({loadFeedback_2: "error"});
+                    //todo: error throw
+                }
+            });
+        }else{
+            Calls.createProjectAssign({
+                data: project,
+                done: (data) => {
+                    this.setState({loadFeedback: "ready"});
+                },
+                fail: (data) => {
+                    this.setState({loadFeedback_2: "error"});
+                    //todo: error throw
+                }
+            });
+        }
         this.handleCloseEdit();
     };
 
@@ -92,7 +131,7 @@ class UserTableProjectAssignment extends React.Component {
     render() {
         const {classes} = this.props;
         const {rowsPerPage, page} = this.state;
-        const emptyRows = rowsPerPage - Math.min(rowsPerPage, this.props.users.length - page * rowsPerPage);
+        const emptyRows = rowsPerPage - Math.min(rowsPerPage, this.state.assignUsers.length - page * rowsPerPage);
 
         if (!this.props.project) {
             return (
@@ -101,17 +140,17 @@ class UserTableProjectAssignment extends React.Component {
                 </Paper>
             );
         }
-        if (this.state.loadFeedback === "loading") {
+        if (this.state.loadFeedback === "loading" || this.state.loadFeedback_1 === "loading" || this.state.loadFeedback_2 === "loading") {
             return <LinearProgressCentered paper={false}/>
-        } else if (this.state.loadFeedback === "ready") {
+        } else if (this.state.loadFeedback === "ready" && this.state.loadFeedback_1 === "ready" && this.state.loadFeedback_2 === "ready") {
             return (
                 <Paper className={this.props.fullHeight ? classes.fullHeightRoot : classes.root}>
                     <EnhancedTableToolbar project={this.props.project} onAddClick={this.handleOpenEdit}/>
                     <div className={classes.tableWrapper}>
                         <Table className={classes.table}>
-                            <EnhancedTableHead rowCount={this.props.users.length}/>
+                            <EnhancedTableHead rowCount={this.state.assignUsers.length}/>
                             <TableBody>
-                                {this.props.users.map((user, index) => {
+                                {this.state.assignUsers.map((user, index) => {
                                     user = new User();
                                     return <TableRow key={`${index}-${user.orionLogin}`}>
                                         <TableCell>{user.displayFullName}</TableCell>
@@ -120,7 +159,7 @@ class UserTableProjectAssignment extends React.Component {
                                         <TableCell>{user.active}</TableCell>
                                         <TableCell>
                                             <Tooltip title="Editace">
-                                                <IconButton aria-label="Editace" onClick={this.props.onEditClick(user)}>
+                                                <IconButton aria-label="Editace" onClick={this.handleOpenEdit(user)}>
                                                     <EditIcon/>
                                                 </IconButton>
                                             </Tooltip>
@@ -137,7 +176,7 @@ class UserTableProjectAssignment extends React.Component {
                     </div>
                     <TablePagination
                         component={"div"}
-                        count={this.props.users.length}
+                        count={this.state.assignUsers.length}
                         rowsPerPage={rowsPerPage}
                         page={page}
                         rowsPerPageOptions={this.props.rowsPerPageOptions}
@@ -146,8 +185,11 @@ class UserTableProjectAssignment extends React.Component {
                         onChangePage={this.handleChangePage}
                         onChangeRowsPerPage={this.handleChangeRowsPerPage}
                     />
-                    <UserAssignProjectModal user={null} open={this.state.modalOpen} project={this.props.project}
-                                            onSaveDone={this.handleOnSaveDone} onClose={this.handleCloseEdit}/>
+                    <UserAssignProjectModal user={this.state.rowData}
+                                            users={this.state.users}
+                                            open={this.state.modalOpen}
+                                            project={this.props.project}
+                                            onSave={this.onSaveAssign} onClose={this.handleCloseEdit}/>
                 </Paper>
             );
         } else {
@@ -159,7 +201,6 @@ class UserTableProjectAssignment extends React.Component {
 UserTableProjectAssignment.propTypes = {
     classes: PropTypes.object,
     onEditClick: PropTypes.func.isRequired,
-    users: PropTypes.arrayOf(User),
     project: PropTypes.instanceOf(Project),
     fullHeight: PropTypes.bool,
     rowsPerPage: PropTypes.number,
