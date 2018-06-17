@@ -118,6 +118,7 @@ class UserHoliday extends BaseModel
 
     /**
      * @param int $id
+     *  @return UserHoliday[]
      */
     static function findByUserId($id)
     {
@@ -125,10 +126,17 @@ class UserHoliday extends BaseModel
         $preparedQuery = Database::getConnection()->prepare($query);
         $preparedQuery->bindValue(":id", $id);
         $preparedQuery->execute();
-        $result = $preparedQuery->fetch();
+	    $result = $preparedQuery->fetchAll();
 
-        $instance = new self();
-        $instance->fill($result);
+	    $arrayOfUserHoliday = array();
+
+	    foreach ($result as $var) {
+		    $instance = new self();
+		    $instance->fill($var);
+		    $arrayOfUserHoliday[] = $instance;
+
+	    }
+	    return $arrayOfUserHoliday;
 
     }
 
