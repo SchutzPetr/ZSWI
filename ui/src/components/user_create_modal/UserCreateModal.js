@@ -268,19 +268,19 @@ class UserCreateModal extends React.Component {
                                 </Select>
                             </FormControl>
                             <FormControl className={classes.statusSwitchWrapper} component={"div"}>
-                                <FormHelperText className={classes.statusSwitchLabel}>{"Status uživatele"}</FormHelperText>
-                                <FormControlLabel
-                                    className={classes.statusSwitch}
-                                    control={
-                                        <Switch
-                                            checked={this.state.user.active}
-                                            onChange={this.handleChangeUserSwitch}
-                                            value={"active"}
-                                        />
-                                    }
-                                    label={"Aktivní"}
-                                />
-                            </FormControl>
+                            <FormHelperText className={classes.statusSwitchLabel}>{"Status uživatele"}</FormHelperText>
+                            <FormControlLabel
+                                className={classes.statusSwitch}
+                                control={
+                                    <Switch
+                                        checked={this.state.user.active}
+                                        onChange={this.handleChangeUserSwitch}
+                                        value={"active"}
+                                    />
+                                }
+                                label={"Aktivní"}
+                            />
+                        </FormControl>
                         </div>
                         <UserContractContent handleChangeCurrent={this.handleChangeUserContract} currentUserContract={this.state.currentUserContract} futureUserContract={[new UserContract()]}/>
                         <Typography className={classes.timePickerTitle} variant={"headline"}>Docházka</Typography>

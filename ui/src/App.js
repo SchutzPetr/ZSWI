@@ -38,14 +38,20 @@ class App extends React.Component {
         });
     }
 
-    onLoginDone(data) {
+    onLoginDone(data, savePassworda) {
         if (!data.token) {
             return;
         }
-        this.authUserByToken(data.token);
+        this.authUserByToken(data.token, savePassworda);
     }
 
-    authUserByToken(token){
+    onLogout(){
+        Authentication.user = null;
+        Authentication.clearToken();
+        this.setState({authenticatedUser: null});
+    }
+
+    authUserByToken(token, savePassworda = false){
         if (!token) {
             return;
         }
@@ -57,7 +63,9 @@ class App extends React.Component {
 
                     const user = User.map(userData.data);
                     Authentication.user = user;
-                    Authentication.saveToken(token);
+                    if(savePassworda){
+                        Authentication.saveToken(token);
+                    }
 
                     return {
                         authenticatedUser: user,
@@ -112,7 +120,7 @@ class App extends React.Component {
                                } else {
                                    if (Authentication.isAuthenticated()) {
                                        return <SPAAuthenticated authenticatedUser={this.state.authenticatedUser}
-                                                                match={props.match} history={props.history}/>
+                                                                match={props.match} history={props.history} onLogout={this.onLogout.bind(this)}/>
                                    } else {
                                        return <SPANotAuthenticated authenticatedUser={this.state.user}
                                                                    match={props.match}

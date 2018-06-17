@@ -6,7 +6,18 @@ import classNames from "classnames";
 
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import {AppBar, Badge, Divider, Drawer, Hidden, IconButton, List, Toolbar, Typography} from "@material-ui/core/index";
+import {
+    AppBar,
+    Badge,
+    Divider,
+    Drawer,
+    Hidden,
+    IconButton,
+    List,
+    Toolbar,
+    Typography,
+    Tooltip
+} from "@material-ui/core/index";
 
 import Styles from "./style/SPAAuthenticatedStyle";
 import AgendaOverview from "../use_cases/uc_agenda_overview/AgendaOverview";
@@ -14,6 +25,7 @@ import AgendaOverview from "../use_cases/uc_agenda_overview/AgendaOverview";
 import {secretaryMenuItems, userMenuItems} from "./SPAAuthenticatedMenuItems";
 import Home from "../use_cases/uc_home/Home";
 import Notifications from "@material-ui/icons/Notifications";
+import ExitToApp from "@material-ui/icons/ExitToApp";
 import NotificationPopover from "../components/notification/NotificationPopover";
 import SharePage from "../use_cases/uc_share/SharePage";
 import UserHolidayPage from "../use_cases/uc_user_holiday/UserHolidayPage";
@@ -52,68 +64,68 @@ class SPAAuthenticated extends React.Component {
         });
     };
 
-   notificationButtonRef = null;
+    notificationButtonRef = null;
 
-   _routeSwitch(){
-       if(this.props.authenticatedUser.authority === "USER"){
-           return (
-               <Switch>
+    _routeSwitch() {
+        if (this.props.authenticatedUser.authority === "USER") {
+            return (
+                <Switch>
 
-                   <Route path={"/"} exact={true}
-                          render={props => (
-                              <Home authenticatedUser={this.props.authenticatedUser} match={props.match}/>
-                          )}/>
-                   <Route path={"/share"} exact={true}
-                          render={props => (
-                              <SharePage authenticatedUser={this.props.authenticatedUser}/>
-                          )}/>
-                   <Route path={"/holiday/:year?"} exact={true}
-                          render={props => (
-                              <UserHolidayPage authenticatedUser={this.props.authenticatedUser} match={props.match}/>
-                          )}/>
-               </Switch>
-           );
-       }else if(this.props.authenticatedUser.authority === "ADMIN" || this.props.authenticatedUser.authority === "SECRETARY"){
-           return (
-               <Switch>
-                   <Route path={"/"} exact={true}
-                          render={props => (
-                              <Home authenticatedUser={this.props.authenticatedUser} match={props.match}/>
-                          )}/>
-                   <Route path={"/agenda/:userId?"} exact={true}
-                          render={props => (
-                              <AgendaOverview history={props.history} match={props.match}/>
-                          )}/>
-                   <Route path={"/share"} exact={true}
-                          render={props => (
-                              <SharePage authenticatedUser={this.props.authenticatedUser}/>
-                          )}/>
-                   <Route path={"/holiday/:year?"} exact={true}
-                          render={props => (
-                              <UserHolidayPage authenticatedUser={this.props.authenticatedUser} match={props.match}/>
-                          )}/>
-                   <Route path={"/manage-holidays/:userId?/:year?"} exact={true}
-                          render={props => (
-                              <ManageHolidayPage match={props.match}/>
-                          )}/>
-                   <Route path={"/project-overview"} exact={true}
-                          render={props => (
-                              <ProjectOverviewPage match={props.match}/>
-                          )}/>
-                   <Route path={"/overview-of-work-schedules"} exact={true}
-                          render={props => (
-                              <OverviewOfWorkSchedulesPage match={props.match}/>
-                          )}/>
-                   <Route path={"/accounts"} exact={true}
-                          render={props => (
-                              <UserManagementPage match={props.match}/>
-                          )}/>
-               </Switch>
-           );
-       }else{
-           return null;
-       }
-   }
+                    <Route path={"/"} exact={true}
+                           render={props => (
+                               <Home authenticatedUser={this.props.authenticatedUser} match={props.match}/>
+                           )}/>
+                    <Route path={"/share"} exact={true}
+                           render={props => (
+                               <SharePage authenticatedUser={this.props.authenticatedUser}/>
+                           )}/>
+                    <Route path={"/holiday/:year?"} exact={true}
+                           render={props => (
+                               <UserHolidayPage authenticatedUser={this.props.authenticatedUser} match={props.match}/>
+                           )}/>
+                </Switch>
+            );
+        } else if (this.props.authenticatedUser.authority === "ADMIN" || this.props.authenticatedUser.authority === "SECRETARY") {
+            return (
+                <Switch>
+                    <Route path={"/"} exact={true}
+                           render={props => (
+                               <Home authenticatedUser={this.props.authenticatedUser} match={props.match}/>
+                           )}/>
+                    <Route path={"/agenda/:userId?"} exact={true}
+                           render={props => (
+                               <AgendaOverview history={props.history} match={props.match}/>
+                           )}/>
+                    <Route path={"/share"} exact={true}
+                           render={props => (
+                               <SharePage authenticatedUser={this.props.authenticatedUser}/>
+                           )}/>
+                    <Route path={"/holiday/:year?"} exact={true}
+                           render={props => (
+                               <UserHolidayPage authenticatedUser={this.props.authenticatedUser} match={props.match}/>
+                           )}/>
+                    <Route path={"/manage-holidays/:userId?/:year?"} exact={true}
+                           render={props => (
+                               <ManageHolidayPage match={props.match}/>
+                           )}/>
+                    <Route path={"/project-overview"} exact={true}
+                           render={props => (
+                               <ProjectOverviewPage match={props.match}/>
+                           )}/>
+                    <Route path={"/overview-of-work-schedules"} exact={true}
+                           render={props => (
+                               <OverviewOfWorkSchedulesPage match={props.match}/>
+                           )}/>
+                    <Route path={"/accounts"} exact={true}
+                           render={props => (
+                               <UserManagementPage match={props.match}/>
+                           )}/>
+                </Switch>
+            );
+        } else {
+            return null;
+        }
+    }
 
     render() {
         const {classes, theme} = this.props;
@@ -136,21 +148,34 @@ class SPAAuthenticated extends React.Component {
                         <Typography variant="title" color="inherit" className={classes.flex}>
                             Správce docházky
                         </Typography>
-                        <IconButton color="inherit"
-                                    className={classes.notifiButton}
-                                    buttonRef={node => {
-                                        this.notificationButtonRef = node;
-                                    }}
-                                    onClick={this.onNotificationPopoverOpen}>
-                            {this.state.notifi ?
-                                <Badge color="secondary" badgeContent={this.state.notifi}>
-                                    <Notifications/>
-                                </Badge> :
-                                <Notifications/>}
-                        </IconButton>
+                        <Tooltip title={"Zobrazit notifikace"}>
+                            <IconButton color="inherit"
+                                        className={classes.notifiButton}
+                                        buttonRef={node => {
+                                            this.notificationButtonRef = node;
+                                        }}
+                                        onClick={this.onNotificationPopoverOpen}>
+                                {this.state.notifi ?
+                                    <Badge color="secondary" badgeContent={this.state.notifi}>
+                                        <Notifications/>
+                                    </Badge> :
+                                    <Notifications/>}
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip title={"Odhlásit"}>
+                            <IconButton
+                                color={"inherit"}
+                                aria-label={"Odhlásit"}
+                                onClick={this.props.onLogout}
+                                className={classNames(classes.exitToAppButton)}
+                            >
+                                <ExitToApp/>
+                            </IconButton>
+                        </Tooltip>
                     </Toolbar>
                 </AppBar>
-                <NotificationPopover open={this.state.notificationPopoverOpen} buttonRef={this.notificationButtonRef} onClose={this.onNotificationPopoverClose}/>
+                <NotificationPopover open={this.state.notificationPopoverOpen} buttonRef={this.notificationButtonRef}
+                                     onClose={this.onNotificationPopoverClose}/>
                 <Hidden mdUp>
                     <Drawer
                         variant="temporary"
@@ -195,6 +220,7 @@ SPAAuthenticated.propTypes = {
     theme: PropTypes.object.isRequired,
     match: PropTypes.any.isRequired,
     history: PropTypes.any.isRequired,
+    onLogout: PropTypes.func.isRequired,
     authenticatedUser: PropTypes.instanceOf(User)
 };
 

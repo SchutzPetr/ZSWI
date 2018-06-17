@@ -3,15 +3,13 @@ import SharedStyles from "../../shared/style/SharedStyle";
 const Styles = theme => ({
     mainContainer: {
         ...SharedStyles(theme).mainContainer,
-        overflowY: "scroll",
-        top: 0
     },
-    mainGrid: {
-        height: "100%",
+    mainGrid:{
         padding: theme.spacing.unit * 1,
     },
-    secondGrid: {
-    }
+    divider: {
+        height: 8,
+    },
 });
 
 export default Styles;

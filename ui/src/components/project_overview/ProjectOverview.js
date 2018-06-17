@@ -95,10 +95,15 @@ class ProjectOverview extends React.Component {
 ProjectOverview.propTypes = {
     classes: PropTypes.object.isRequired,
     theme: PropTypes.object.isRequired,
-    project: PropTypes.instanceOf(Project).isRequired,
-    projects: PropTypes.arrayOf(Project).isRequired,
+    project: PropTypes.instanceOf(Project),
+    projects: PropTypes.arrayOf(Project),
     onChangeProject: PropTypes.func.isRequired,
     onSaveOrEditProjectDone: PropTypes.func.isRequired,
+};
+
+ProjectOverview.defaultProps = {
+    project: null,
+    projects: []
 };
 
 export default withStyles(Styles, {withTheme: true})(ProjectOverview);
