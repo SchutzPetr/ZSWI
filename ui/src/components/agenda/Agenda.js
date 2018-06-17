@@ -35,11 +35,15 @@ const styles = theme => ({
     },
     saturday: {
         height: rowHeight,
-        backgroundColor: "#dcbd31"
+        backgroundColor: "#f5eca7"
     },
     sunday: {
         height: rowHeight,
-        backgroundColor: "#dc143c"
+        backgroundColor: "#f6bdcc"
+    },
+    holiday: {
+        height: rowHeight,
+        backgroundColor: "#c9e5c7"
     },
     thuTue: {
         height: rowHeight,
