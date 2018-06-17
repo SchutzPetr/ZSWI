@@ -98,7 +98,7 @@ class Attendance extends BaseEntity {
         attendance.id = attendanceDTO.id;
         attendance.userId = attendanceDTO.userId;
         attendance.dayInWeek = attendanceDTO.dayInWeek;
-        attendance.enabled = attendanceDTO.enabled;
+        attendance.enabled = !!Number(attendanceDTO.enabled);
         attendance.activeFrom = moment(attendanceDTO.activeFrom, "YYYY-MM-DD HH:mm:ss").toDate();
         attendance.firstPartFrom = attendanceDTO.firstPartFrom ? moment(attendanceDTO.firstPartFrom, "HH:mm:ss").toDate() : null;
         attendance.firstPartTo = attendanceDTO.firstPartTo ? moment(attendanceDTO.firstPartTo, "HH:mm:ss").toDate() : null;

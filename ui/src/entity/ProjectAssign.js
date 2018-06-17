@@ -82,6 +82,7 @@ class ProjectAssign extends BaseEntity {
         }
 
         let projectAssign = Object.assign(new ProjectAssign(), dto);
+        projectAssign.simpleUser = null;
 
         projectAssign.activeFrom = moment(dto.activeFrom, "YYYY-MM-DD").toDate();
         projectAssign.activeTo = moment(dto.activeTo, "YYYY-MM-DD").toDate();

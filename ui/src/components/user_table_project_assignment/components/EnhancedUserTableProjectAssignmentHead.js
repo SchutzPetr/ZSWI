@@ -6,9 +6,9 @@ import Styles from "../style/EnhancedUserTableProjectAssignmentHeadStyle";
 
 const columnDataNew = [
     {id: 'displayName', disablePadding: false, label: "Jméno a příjmení"},
-    {id: 'mainWorkStation', disablePadding: false, label: "Pracovní umístění"},
-    {id: 'role', disablePadding: false, label: "Role"},
-    {id: 'status', disablePadding: false, label: "Status"},
+    {id: 'activeFrom', disablePadding: false, label: "Od"},
+    {id: 'activeTo', disablePadding: false, label: "Do"},
+    {id: 'obligation', disablePadding: false, label: "Velikost úvazku"},
 ];
 
 class EnhancedUserTableProjectAssignmentHead extends React.Component {

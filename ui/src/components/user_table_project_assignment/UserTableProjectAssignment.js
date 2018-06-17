@@ -22,6 +22,7 @@ import LinearProgressCentered from "../LinearProgressCentered";
 import Calls from "../../Calls";
 import SimpleUser from "../../entity/SimpleUser";
 import ProjectAssign from "../../entity/ProjectAssign";
+import moment from "moment";
 
 class UserTableProjectAssignment extends React.Component {
 
@@ -152,16 +153,15 @@ class UserTableProjectAssignment extends React.Component {
                         <Table className={classes.table}>
                             <EnhancedTableHead rowCount={this.state.assignUsers.length}/>
                             <TableBody>
-                                {this.state.assignUsers.map((user, index) => {
-                                    user = new User();
-                                    return <TableRow key={`${index}-${user.orionLogin}`}>
-                                        <TableCell>{user.displayFullName}</TableCell>
-                                        <TableCell>{user.mainWorkStation}</TableCell>
-                                        <TableCell>{user.role}</TableCell>
-                                        <TableCell>{user.active}</TableCell>
+                                {this.state.assignUsers.map((projectAssign, index) => {
+                                    return <TableRow key={`${index}-${projectAssign.user.orionLogin}`}>
+                                        <TableCell>{projectAssign.user.displayFullName}</TableCell>
+                                        <TableCell>{moment(projectAssign.activeFrom).format("LL")}</TableCell>
+                                        <TableCell>{projectAssign.activeFrom ? moment(projectAssign.activeFrom).format("LL") : null}</TableCell>
+                                        <TableCell>{projectAssign.obligation}</TableCell>
                                         <TableCell>
                                             <Tooltip title="Editace">
-                                                <IconButton aria-label="Editace" onClick={this.handleOpenEdit(user)}>
+                                                <IconButton aria-label="Editace" onClick={this.handleOpenEdit(projectAssign)}>
                                                     <EditIcon/>
                                                 </IconButton>
                                             </Tooltip>
