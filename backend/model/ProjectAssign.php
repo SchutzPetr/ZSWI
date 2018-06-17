@@ -7,6 +7,7 @@
  */
 
 include_once(__DIR__ . "/Project.php");
+include_once(__DIR__ . "/SimpleUser.php");
 
 
 class ProjectAssign implements JsonSerializable
@@ -36,6 +37,25 @@ class ProjectAssign implements JsonSerializable
      * @var Project|null
      */
     private $project = "";
+
+	/***
+	 * @var SimpleUser| null
+	 */
+	private $simpleUser = "";
+
+	/**
+	 * @return null|SimpleUser
+	 */
+	public function getSimpleUser() {
+		return $this->simpleUser;
+	}
+
+	/**
+	 * @param null|SimpleUser $simpleUser
+	 */
+	public function setSimpleUser( $simpleUser ) {
+		$this->simpleUser = $simpleUser;
+	}
 
     /**
      * @return string
@@ -145,6 +165,7 @@ class ProjectAssign implements JsonSerializable
         self::setActiveFrom($row["active_from"]);
         self::setActiveTo($row["active_to"]);
         self::setObligation($row["obligation"]);
+        self::setSimpleUser(SimpleUser::findById(self::getUserId()));
     }
 
     /***
@@ -290,7 +311,9 @@ OR (YEAR(active_to) >=:year AND MONTH(active_to) >=:month));';
      */
     static function save($projectAssign)
     {
-        $query = "insert into user_assigned_to_project (user_id, project_id, active_from, active_to, obligation) value (:user_id, :project_id, :active_from, :active_to, :obligation) on duplicate key update active_from = :active_from, active_to = :active_to, obligation = :obligation;";
+        $query = "insert into user_assigned_to_project (user_id, project_id, active_from, active_to, obligation)
+ value (:user_id, :project_id, :active_from, :active_to, :obligation) 
+ on duplicate key update active_from = :active_from, active_to = :active_to, obligation = :obligation;";
         $preparedQuery = Database::getConnection()->prepare($query);
         $preparedQuery->bindValue(":user_id", $projectAssign->getUserId());
         $preparedQuery->bindValue(":project_id", $projectAssign->getProjectId());
