@@ -61,7 +61,7 @@ class UserManagementPage extends React.Component {
                       alignItems={"center"}
                       direction={"row"}
                       justify={"center"}>
-                    <Grid className={this.props.classes.secondGrid} item={true} xs={12} sm={8}>
+                    <Grid className={this.props.classes.secondGrid} item={true} xs={12} sm={11}>
                         <UserTable users={this.state.users} onEditClick={this.handleOpenEdit}/>
                         <UserCreateModal open={this.state.modalOpen} onSaveDone={this.handleOnSaveEditDone}
                                          onClose={this.handleCloseEdit} userToEdit={this.state.modalData}/>
