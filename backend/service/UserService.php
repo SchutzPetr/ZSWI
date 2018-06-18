@@ -25,7 +25,7 @@ class UserService extends Service
      * @throws UnauthorizedException
      */
     public static function findById($id){
-        if(!Permission::hasPermission(self::getUserFromContext(), "USER.FIND")){
+        if(!Permission::hasPermission(self::getUserFromContext(), "USER.FIND", $id)){
             throw new PermissionException();
         }
 

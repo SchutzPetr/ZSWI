@@ -42,8 +42,9 @@ class Permission
             if(!is_null($id) && intval($id) === intval($user->getId())){
                 return true;
             }
-            if(!is_null($id) && ($permission === "TIME_SHEET.FIND" || $permission === "TIME_SHEET.GENERATE")){
-                $simple = ShareService::findShareByFromIdAndToId($user->getId(), $id);
+            if(!is_null($id) && ($permission === "TIME_SHEET.FIND" || $permission === "TIME_SHEET.GENERATE" ||
+                    $permission === "USER.FIND" || $permission === "PROJECT_ASSIGN.FIND")){
+                $simple = ShareService::findShareByFromIdAndToId($id, $user->getId());
                 if($simple === null){
                     return false;
                 }else{
