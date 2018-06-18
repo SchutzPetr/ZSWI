@@ -10,6 +10,7 @@ import UserTimeSheets from "../../entity/UserTimeSheets";
 import User from "../../entity/User";
 import Calls from "../../Calls";
 import TimeSheet from "../../entity/TimeSheet";
+import SimpleUser from "../../entity/SimpleUser";
 
 class AgendaTabs extends React.Component {
 
@@ -191,7 +192,10 @@ class AgendaTabs extends React.Component {
 
 AgendaTabs.propTypes = {
     classes: PropTypes.object.isRequired,
-    user: PropTypes.instanceOf(User).isRequired,
+    user: PropTypes.oneOfType([
+        PropTypes.instanceOf(User),
+        PropTypes.instanceOf(SimpleUser)
+    ]),
     match: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
     users: PropTypes.arrayOf(User),

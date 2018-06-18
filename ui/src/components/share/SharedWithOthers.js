@@ -15,15 +15,15 @@ import {
     Typography
 } from "@material-ui/core/index";
 import AccountCircle from "@material-ui/icons/AccountCircle";
-import Forward from "@material-ui/icons/Forward";
+import Delete from "@material-ui/icons/Delete";
 import SimpleUser from "../../entity/SimpleUser";
 import User from "../../entity/User";
-import Attendance from "../../entity/Attendance";
+import {Link} from "react-router-dom";
 
 class SharedWithOthers extends React.Component {
 
     _getRows(){
-        return this.props.sharedWithOthers.map(value =>{
+        return this.props.sharedWithUserId.map(value =>{
 
             return (
                 <TableRow>
@@ -35,10 +35,11 @@ class SharedWithOthers extends React.Component {
                     </TableCell>
                     <TableCell>
                         <div className={this.props.classes.tableCellCenterJustifi}>
-                            <IconButton aria-label="Menu"
+                            <IconButton aria-label={"Menu"}
                                         onClick={() => {
+                                            this.props.onDeleteShare(value);
                                         }}>
-                                <Forward/>
+                                <Delete/>
                             </IconButton></div>
                     </TableCell>
                 </TableRow>
@@ -50,13 +51,13 @@ class SharedWithOthers extends React.Component {
     render() {
         return (
             <Card className={this.props.classes.root}>
-                <CardHeader title="Sdíleno se mnou"/>
+                <CardHeader title={"Sdíleno ostatním"}/>
                 <CardContent>
                     <Table className={this.props.classes.table}>
                         <TableHead>
                             <TableRow>
                                 <TableCell className={this.props.classes.tableHeaderFirst}>{"Jméno uživatele"}</TableCell>
-                                <TableCell className={this.props.classes.tableHeaderSecond}>{"Přejít na výkaz"}</TableCell>
+                                <TableCell className={this.props.classes.tableHeaderSecond}>{"Zrušit sdílení"}</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -72,12 +73,13 @@ class SharedWithOthers extends React.Component {
 SharedWithOthers.propTypes = {
     classes: PropTypes.object.isRequired,
     paper: PropTypes.bool,
-    sharedWithOthers: PropTypes.arrayOf(SimpleUser),
-    authenticatedUser: PropTypes.instanceOf(User)
+    sharedWithUserId: PropTypes.arrayOf(SimpleUser),
+    authenticatedUser: PropTypes.instanceOf(User),
+    onDeleteShare: PropTypes.func.isRequired
 };
 
 SharedWithOthers.defaultProps = {
-    sharedWithOthers: [],
+    sharedWithUserId: [],
 };
 
 export default withStyles(Styles, {withTheme: true})(SharedWithOthers);

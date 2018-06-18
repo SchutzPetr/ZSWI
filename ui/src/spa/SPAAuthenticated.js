@@ -34,6 +34,7 @@ import ProjectOverviewPage from "../use_cases/uc_project_overview/ProjectOvervie
 import OverviewOfWorkSchedulesPage from "../use_cases/uc_overview_of_work_schedules/OverviewOfWorkSchedulesPage";
 import UserManagementPage from "../use_cases/uc_user_management/UserManagementPage";
 import User from "../entity/User";
+import SharedAgendaOverviewPage from "../use_cases/uc_shared_agenda_overview/SharedAgendaOverviewPage";
 
 
 class SPAAuthenticated extends React.Component {
@@ -82,6 +83,10 @@ class SPAAuthenticated extends React.Component {
                     <Route path={"/holiday/:year?"} exact={true}
                            render={props => (
                                <UserHolidayPage authenticatedUser={this.props.authenticatedUser} match={props.match}/>
+                           )}/>
+                    <Route path={"/shared-agenda/:userId"} exct={true}
+                           render={props => (
+                               <SharedAgendaOverviewPage match={props.match}/>
                            )}/>
                 </Switch>
             );

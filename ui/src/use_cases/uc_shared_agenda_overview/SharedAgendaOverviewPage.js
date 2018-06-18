@@ -5,16 +5,50 @@ import LinearProgressCentered from "../../components/LinearProgressCentered";
 import UserDetail from "../../components/user_detail/UserDetail";
 import Styles from "./style/SharedAgendaOverviewPageStyle";
 import withStyles from "@material-ui/core/styles/withStyles";
-import UserProject from "../../components/user_projects/UserProject";
 import {Grid} from "@material-ui/core/index";
 import User from "../../entity/User";
+import Calls from "../../Calls";
 
 
 class SharedAgendaOverviewPage extends React.Component {
 
-    state = {
-        loadFeedback: "ready"
-    };
+    constructor(props) {
+        super(props);
+
+        this.state = SharedAgendaOverviewPage.getDerivedStateFromProps(props, {});
+    }
+
+    static getDerivedStateFromProps(nextProps, prevState) {
+        return {
+            user: null,
+            userId: nextProps.match.params.userId,
+            loadFeedback: "loading"
+        };
+    }
+
+
+    componentDidMount() {
+        this._fetchData();
+    }
+
+    _fetchData() {
+        if(!this.props.match || !this.props.match.params || !this.props.match.params.userId){
+            this.setState({loadFeedback: "error"});
+            return;
+        }
+        Calls.getUser({
+            data: {id: this.props.match.params.userId},
+            done: (data) => {
+                this.setState({loadFeedback: "ready", user: User.map(data.data)});
+            },
+            fail: (data) => {
+                this.setState({loadFeedback: "error"});
+                //todo: error throw
+            }
+
+        });
+
+    }
 
     _getContend() {
         if (this.state.loadFeedback === "loading") {
@@ -23,13 +57,10 @@ class SharedAgendaOverviewPage extends React.Component {
             return (
                 <Grid className={this.props.classes.mainGrid} container={true} spacing={16}>
                     <Grid item={true} xs={12} sm={3}>
-                        <UserDetail user={this.props.authenticatedUser}/>
-                        <div className={this.props.classes.divider}/>
-                        <UserProject/>
+                        <UserDetail user={this.state.user}/>
                     </Grid>
                     <Grid item={true} xs={12} sm={9}>
-                        <AgendaTabs match={this.props.match} history={this.props.history}
-                                    user={this.props.authenticatedUser}/>
+                        <AgendaTabs match={this.props.match} history={this.props.history} user={this.state.user} mode={"USER"}/>
                     </Grid>
                 </Grid>
             );

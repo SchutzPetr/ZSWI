@@ -5,6 +5,7 @@ import Styles from "./style/UserDetailStyle";
 import {Card, CardContent, CardHeader, Typography} from "@material-ui/core/index";
 import User from "../../entity/User";
 import Authentication from "./../../Authentication";
+import SimpleUser from "../../entity/SimpleUser";
 
 class UserDetail extends React.Component {
 
@@ -52,7 +53,10 @@ class UserDetail extends React.Component {
 UserDetail.propTypes = {
     classes: PropTypes.object.isRequired,
     paper: PropTypes.bool,
-    user: PropTypes.instanceOf(User),
+    user: PropTypes.oneOfType([
+        PropTypes.instanceOf(User),
+        PropTypes.instanceOf(SimpleUser)
+    ]),
 };
 
 UserDetail.defaultProps= {
