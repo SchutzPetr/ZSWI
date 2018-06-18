@@ -132,7 +132,7 @@ class Agenda extends React.Component {
                                 const secondPartDiff = dayTimeSheet.secondPartFrom && dayTimeSheet.secondPartTo ? secondPartTo.diff(secondPartFrom, "hours", true) : null;
 
                                 return (
-                                    <TableRow key={`${index}-${value}`} className={this.getRowBackgroundColor(value)}>
+                                    <TableRow key={`${index}-${value}`} className={this.getRowBackgroundColor(value, holiday)}>
                                         <TableCell
                                             className={classes.tableCellDate}>{moment(value).format("LL")}</TableCell>
                                         <TableCell className={classes.partTableCell}>
