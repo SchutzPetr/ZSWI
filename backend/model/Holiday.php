@@ -13,7 +13,7 @@ class Holiday extends BaseModel
 
 
     /**
-     * @var DateTime
+     * @var string
      */
     private $day = "";
     /**
@@ -23,7 +23,7 @@ class Holiday extends BaseModel
 
 
     /**
-     * @return DateTime
+     * @return string
      */
     public function getDay()
     {
@@ -31,7 +31,7 @@ class Holiday extends BaseModel
     }
 
     /**
-     * @param DateTime $day
+     * @param string $day
      */
     public function setDay($day)
     {

@@ -31,8 +31,6 @@ class Permission
      * @param string $permission
      * @param integer $id
      * @return bool
-     * @throws PermissionException
-     * @throws UnauthorizedException
      */
     public static function hasPermission($user, $permission, $id = null){
         if(is_null($user)){
@@ -46,7 +44,7 @@ class Permission
                     $permission === "USER.FIND" || $permission === "PROJECT_ASSIGN.FIND")){
                 $simple = ShareService::findShareByFromIdAndToId($id, $user->getId());
                 if($simple === null){
-                    return false;
+                    return in_array($permission,  self::$userPermission);
                 }else{
                     return true;
                 }
