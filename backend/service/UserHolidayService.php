@@ -102,6 +102,7 @@ class UserHolidayService extends Service
     /**
      * @param UserHoliday[]|UserHoliday $userHolidays
      * @throws PermissionException
+     * @throws Exception
      * @throws UnauthorizedException
      */
 	public static function create($userHolidays){
@@ -128,8 +129,10 @@ class UserHolidayService extends Service
                 $notifi->setDescription($simpleUser->displayFullName() . " si vytvořil dovolenou na" .
                     $userHolidays[0]->getDate() . ".");
             }
-
 		    foreach ($userHolidays as $holiday){
+            	if(UserHoliday::findByUserIdAndDate($userHolidays->getUserId(), $userHolidays->getDate())->getDate() !== null){
+		            throw new Exception();
+	            }
                 UserHoliday::save($holiday);
             }
             Notification::save($notifi);
@@ -140,7 +143,9 @@ class UserHolidayService extends Service
             if(!Permission::hasPermission(self::getUserFromContext(), "USER_HOLIDAY.CREATE",  $userHolidays->getUserId())){
                 throw new PermissionException();
             }
-
+	        if(UserHoliday::findByUserIdAndDate($userHolidays->getUserId(), $userHolidays->getDate())->getDate() !== null){
+		        throw new Exception();
+	        }
             $simpleUser = SimpleUserService::findById($userHolidays->getUserId());
 
             $notifi = new Notification();

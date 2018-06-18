@@ -227,6 +227,22 @@ class UserHoliday extends BaseModel
         $preparedQuery->execute();
     }
 
+
+	static function findByUserIdAndDate($id, $date)
+	{
+		$query = "SELECT * FROM user_holiday WHERE user_id = :id AND date =:date;";
+		$preparedQuery = Database::getConnection()->prepare($query);
+		$preparedQuery->bindValue(":id", $id);
+		$preparedQuery->bindValue(":date", $date);
+		$preparedQuery->execute();
+		$result = $preparedQuery->fetch();
+
+		$instance = new self();
+		$instance->fill($result);
+
+		return $instance;
+	}
+
     /**
      * Specify data which should be serialized to JSON
      * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
