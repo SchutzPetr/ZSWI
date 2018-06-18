@@ -64,11 +64,10 @@ class HolidayTable extends React.Component {
     };
 
     handleCloseHolidayCreateModal = () => {
-        this.setState({modalOpen: false});
+        this.setState({modalOpen: false, modalData: null});
     };
 
     handleOpenHolidayCreateModal = () => {
-        debugger;
         this.setState({modalOpen: true});
     };
 
@@ -80,7 +79,6 @@ class HolidayTable extends React.Component {
     };
 
     _handleSaveHolidayCreateModal = (userHolidays, edit) => {
-        debugger;
         if (edit) {
             Calls.updateUserHoliday({
                 data: userHolidays,

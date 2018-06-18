@@ -65,7 +65,7 @@ class HolidayService extends Service
 			throw new PermissionException();
 		}
 
-		return HolidayService::findAll();
+		return Holiday::findAll();
 	}
 
     /***
@@ -89,7 +89,7 @@ class HolidayService extends Service
      * @param $year integer
      * @param $month integer
      * @param $day integer
-     * Holiday []
+     * @return Holiday|null
      * @throws PermissionException
      * @throws UnauthorizedException
      */

@@ -24,8 +24,9 @@ class Database
             return self::$conn;
         }
         try {
-            self::$conn = new PDO("mysql:host=" . self::$host . ";dbname=" . self::$db_name . ";port=" . self::$port, self::$username, self::$password);
-            self::$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            self::$conn = new PDO("mysql:host=" . self::$host . ";dbname=" . self::$db_name . ";port=" . self::$port,
+                self::$username, self::$password, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8",
+                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
             //self::$conn->exec("SELECT 1;"); s tímto nefunguje!
         } catch (PDOException $exception) {
             echo "Connection error: " . $exception->getMessage();
