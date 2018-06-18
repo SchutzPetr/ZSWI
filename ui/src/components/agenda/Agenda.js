@@ -11,6 +11,15 @@ import Utils from "../../other/Utils";
 import DayTimeSheet from "../../entity/DayTimeSheet";
 import User from "../../entity/User";
 
+const dayTypes = {
+    SICKNESS: "Nemoc",
+    FAMILY_MEMBER_CARE: "OČR",
+    HOLIDAY: "Dovolená",
+    PUBLIC_HOLIDAY: "Státní svátek",
+    BUSINESS_TRIP: "Služební cesta",
+    WORK_OUTSIDE_WORKSPACE: "Práce mimo pracoviště",
+};
+
 class Agenda extends React.Component {
 
     constructor(props) {
@@ -52,6 +61,28 @@ class Agenda extends React.Component {
             return this.props.classes.thuTue;
         } else {
             return this.props.classes.defRow;
+        }
+    }
+
+    static getDayType1(dayTimeSheet, holiday) {
+        let dayType = dayTimeSheet.dayType;
+
+        if (dayType === "SICKNESS" || dayType === "FAMILY_MEMBER_CARE" || dayType === "PUBLIC_HOLIDAY") {
+            return holiday ? holiday.name : dayTypes[dayType];
+        } else if (dayType === "HOLIDAY_FIRST_PART_OF_DAY" || dayType === "HOLIDAY_SECOND_PART_OF_DAY" || dayType === "HOLIDAY_ALL_DAY") {
+            return dayTypes["HOLIDAY"];
+        } else {
+            return null;
+        }
+    }
+
+    static getDayType2(dayTimeSheet, holiday) {
+        let dayType = dayTimeSheet.dayType;
+
+        if (dayType === "BUSINESS_TRIP" || dayType === "WORK_OUTSIDE_WORKSPACE") {
+            return dayTypes[dayType];
+        } else {
+            return null;
         }
     }
 
@@ -132,7 +163,8 @@ class Agenda extends React.Component {
                                 const secondPartDiff = dayTimeSheet.secondPartFrom && dayTimeSheet.secondPartTo ? secondPartTo.diff(secondPartFrom, "hours", true) : null;
 
                                 return (
-                                    <TableRow key={`${index}-${value}`} className={this.getRowBackgroundColor(value, holiday)}>
+                                    <TableRow key={`${index}-${value}`}
+                                              className={this.getRowBackgroundColor(value, holiday)}>
                                         <TableCell
                                             className={classes.tableCellDate}>{moment(value).format("LL")}</TableCell>
                                         <TableCell className={classes.partTableCell}>
@@ -154,8 +186,9 @@ class Agenda extends React.Component {
                                             {secondPartDiff ? secondPartDiff + "h" : null}
                                         </TableCell>
                                         <TableCell
-                                            className={classes.tableCell}>{holiday ? holiday.name : ""}</TableCell>
-                                        <TableCell className={classes.tableCell}>{""}</TableCell>
+                                            className={classes.partTableCell}>{Agenda.getDayType1(dayTimeSheet, holiday)}</TableCell>
+                                        <TableCell
+                                            className={classes.partTableCell}>{Agenda.getDayType2(dayTimeSheet, holiday)}</TableCell>
                                         {this.props.mode === "USER" ? null :
                                             <TableCell className={`${classes.tableCell} ${classes.tableCellMenu}`}>
                                                 <IconButton className={classes.menuButton} aria-label="Menu"
