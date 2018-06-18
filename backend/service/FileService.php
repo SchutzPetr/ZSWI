@@ -194,7 +194,6 @@ class FileService extends Service
 				      ->getStartColor()
 				      ->setRGB("f4eb42");
 			}
-
 			// Перекидываем указатель на следующую строку
 			$startLine++;
 			$sheet->setCellValueByColumnAndRow(array_search('A', $alphabet), $startLine, 'Datum');
@@ -233,58 +232,73 @@ class FileService extends Service
 			for($day = 1; $day<$lastDayInMonth; $day++){
 				$d = mktime(0, 0, 0, $month, $day, $year);
 				$sheet->setCellValueByColumnAndRow(array_search('A', $alphabet), $startLine+$day, date("d.m.Y", $d));
+
 				$arrayForOneLine = DayTimeSheet::findByUserIdAndDate($user->getId(), $day, $month, $year);
+//				echo '<pre>'; print_r($arrayForOneLine); echo '</pre>';
+
 				if($arrayForOneLine != null) {
 					$sheet->setCellValueByColumnAndRow(array_search('B', $alphabet), $startLine+$day, $arrayForOneLine->getDate());
 					if($arrayForOneLine->getDate()!= null || $arrayForOneLine->getDate()!= ""){
 						$sheet->setCellValueByColumnAndRow(array_search('C', $alphabet), $startLine+$day, date('w', strtotime($arrayForOneLine->getDate())));
 					}
-					$sheet->setCellValueByColumnAndRow(array_search('D', $alphabet), $startLine+$day, $arrayForOneLine->getFirstPartFrom());
-					$sheet->setCellValueByColumnAndRow(array_search('E', $alphabet), $startLine+$day, $arrayForOneLine->getFirstPartTo());
-					$timestamp1 = strtotime($arrayForOneLine->getFirstPartFrom());
-					$timestamp2 = strtotime($arrayForOneLine->getFirstPartTo());
-					$time = (date('H', $timestamp2)-date('H', $timestamp1));
-					$time += (date('i', $timestamp2) - date('i', $timestamp1))/60;
-					if(strpos($arrayForOneLine->getDayType(), "nemoc") !== false
-					   || strpos($arrayForOneLine->getDayType(), "OČR") !== false
+
+                    if($arrayForOneLine->getFirstPartFrom() != null){
+                        //first part
+	                    $sheet->setCellValueByColumnAndRow(array_search('D', $alphabet), $startLine+$day, $arrayForOneLine->getFirstPartFrom());
+	                    $sheet->setCellValueByColumnAndRow(array_search('E', $alphabet), $startLine+$day, $arrayForOneLine->getFirstPartTo());
+	                    $timestamp1 = strtotime($arrayForOneLine->getFirstPartFrom());
+	                    $timestamp2 = strtotime($arrayForOneLine->getFirstPartTo());
+	                    $time = (date('H', $timestamp2)-date('H', $timestamp1));
+	                    $time += (date('i', $timestamp2) - date('i', $timestamp1))/60;
+	                    if(strpos($arrayForOneLine->getDayType(), "nemoc") !== false
+	                       || strpos($arrayForOneLine->getDayType(), "OČR") !== false
 //					   || strpos($arrayForOneLine->getDayType(), "tek") !== false
-					){
-						$sickHours+=$time;
-					}else if(strpos($arrayForOneLine->getDayType(), "dovolen") !== false){
-						$holidaysHours +=$time;
-					}else{
-						$workingHourInMonth+=$time;
-					}
-					$sheet->setCellValueByColumnAndRow(array_search('F', $alphabet), $startLine+$day, $time);
+	                    ){
+		                    $sickHours+=$time;
+	                    }else if(strpos($arrayForOneLine->getDayType(), "dovolen") !== false){
+		                    $holidaysHours +=$time;
+	                    }else{
+		                    $workingHourInMonth+=$time;
+	                    }
+	                    $sheet->setCellValueByColumnAndRow(array_search('F', $alphabet), $startLine+$day, $time);
 
-					$sheet->setCellValueByColumnAndRow(array_search('G', $alphabet), $startLine+$day, $arrayForOneLine->getFirstPartTo());
-					$sheet->setCellValueByColumnAndRow(array_search('H', $alphabet), $startLine+$day, $arrayForOneLine->getSecondPartFrom());
-					$timestamp1 = strtotime($arrayForOneLine->getFirstPartTo());
-					$timestamp2 = strtotime($arrayForOneLine->getSecondPartFrom());
-					$time = (date('H', $timestamp2)-date('H', $timestamp1));
-					$time += (date('i', $timestamp2) - date('i', $timestamp1))/60;
+	                    //pausa
+                        if($arrayForOneLine->getSecondPartFrom() != null){
+	                        $sheet->setCellValueByColumnAndRow(array_search('G', $alphabet), $startLine+$day, $arrayForOneLine->getFirstPartTo());
+	                        $sheet->setCellValueByColumnAndRow(array_search('H', $alphabet), $startLine+$day, $arrayForOneLine->getSecondPartFrom());
+	                        $timestamp1 = strtotime($arrayForOneLine->getFirstPartTo());
+	                        $timestamp2 = strtotime($arrayForOneLine->getSecondPartFrom());
+	                        $time = (date('H', $timestamp2)-date('H', $timestamp1));
+	                        $time += (date('i', $timestamp2) - date('i', $timestamp1))/60;
 
-					$sheet->setCellValueByColumnAndRow(array_search('I', $alphabet), $startLine+$day, $time);
+	                        $sheet->setCellValueByColumnAndRow(array_search('I', $alphabet), $startLine+$day, $time);
+                        }
 
 
-					$sheet->setCellValueByColumnAndRow(array_search('J', $alphabet), $startLine+$day, $arrayForOneLine->getSecondPartFrom());
-					$sheet->setCellValueByColumnAndRow(array_search('K', $alphabet), $startLine+$day, $arrayForOneLine->getSecondPartTo());
-					$timestamp1 = strtotime($arrayForOneLine->getSecondPartFrom());
-					$timestamp2 = strtotime($arrayForOneLine->getSecondPartTo());
-					$time = (date('H', $timestamp2)-date('H', $timestamp1));
-					$time += (date('i', $timestamp2) - date('i', $timestamp1))/60;
-					if(strpos($arrayForOneLine->getDayType(), "nemoc") !== false
-					   || strpos($arrayForOneLine->getDayType(), "OČR") !== false
+                    }
+
+                    if($arrayForOneLine->getSecondPartFrom() != null){
+	                    $sheet->setCellValueByColumnAndRow(array_search('J', $alphabet), $startLine+$day, $arrayForOneLine->getSecondPartFrom());
+	                    $sheet->setCellValueByColumnAndRow(array_search('K', $alphabet), $startLine+$day, $arrayForOneLine->getSecondPartTo());
+	                    $timestamp1 = strtotime($arrayForOneLine->getSecondPartFrom());
+	                    $timestamp2 = strtotime($arrayForOneLine->getSecondPartTo());
+	                    $time = (date('H', $timestamp2)-date('H', $timestamp1));
+	                    $time += (date('i', $timestamp2) - date('i', $timestamp1))/60;
+	                    if(strpos($arrayForOneLine->getDayType(), "nemoc") !== false
+	                       || strpos($arrayForOneLine->getDayType(), "OČR") !== false
 //					   || strpos($arrayForOneLine->getDayType(), "tek") !== false
-					){
-						$sickHours+=$time;
-					}else if(strpos($arrayForOneLine->getDayType(), "dovolen") !== false){
-						$holidaysHours +=$time;
-					}else{
-						$workingHourInMonth+=$time;
-					}
+	                    ){
+		                    $sickHours+=$time;
+	                    }else if(strpos($arrayForOneLine->getDayType(), "dovolen") !== false){
+		                    $holidaysHours +=$time;
+	                    }else{
+		                    $workingHourInMonth+=$time;
+	                    }
 
-					$sheet->setCellValueByColumnAndRow(array_search('L', $alphabet), $startLine+$day, $time);
+	                    $sheet->setCellValueByColumnAndRow(array_search('L', $alphabet), $startLine+$day, $time);
+
+                    }
+
 
 
 					if(strpos($arrayForOneLine->getDayType(), "nemoc") !== false
@@ -295,35 +309,33 @@ class FileService extends Service
 					}else if(strpos($arrayForOneLine->getDayType(), "cesta") !== false){
 						$sheet->setCellValueByColumnAndRow(array_search('R', $alphabet), $startLine+$day, $arrayForOneLine->getDayType());
 					}else{
+
 						$sheet->setCellValueByColumnAndRow(array_search('R', $alphabet), $startLine+$day, $arrayForOneLine->getDayType());
-						$attendance = AttendanceService::findByUserIdAndDate($user->getId(), $day, $month, $year);
-						$timestamp1 = strtotime($attendance->getFirstPartFrom());
-						$timestamp2 = strtotime($attendance->getFirstPartTo());
-						$time = (date('H', $timestamp2)-date('H', $timestamp1));
-						$time += (date('i', $timestamp2) - date('i', $timestamp1))/60;
-						$nationalHoliday+=$time;
-						$timestamp1 = strtotime($attendance->getSecondPartFrom());
-						$timestamp2 = strtotime($attendance->getSecondPartTo());
-						$time = (date('H', $timestamp2)-date('H', $timestamp1));
-						$time += (date('i', $timestamp2) - date('i', $timestamp1))/60;
-						$nationalHoliday+=$time;
 					}
 				}else{
-					$attendance = AttendanceService::findByUserIdAndDate($user->getId(), $day, $month, $year);
-					$timestamp1 = strtotime($attendance->getFirstPartFrom());
-					$timestamp2 = strtotime($attendance->getFirstPartTo());
-					$time = (date('H', $timestamp2)-date('H', $timestamp1));
-					$time += (date('i', $timestamp2) - date('i', $timestamp1))/60;
-					$nationalHoliday+=$time;
-					$timestamp1 = strtotime($attendance->getSecondPartFrom());
-					$timestamp2 = strtotime($attendance->getSecondPartTo());
-					$time = (date('H', $timestamp2)-date('H', $timestamp1));
-					$time += (date('i', $timestamp2) - date('i', $timestamp1))/60;
-					$nationalHoliday+=$time;
+					if(date("d.m.Y", $d) >= 1 && date("d.m.Y", $d) <=5){
+						$attendance = AttendanceService::findByUserIdAndDate($user->getId(), $day, $month, $year);
+
+						if($attendance != null){
+							if($attendance->getFirstPartFrom() != null){
+								$timestamp1 = strtotime($attendance->getFirstPartFrom());
+								$timestamp2 = strtotime($attendance->getFirstPartTo());
+								$time = (date('H', $timestamp2)-date('H', $timestamp1));
+								$time += (date('i', $timestamp2) - date('i', $timestamp1))/60;
+								$nationalHoliday+=$time;
+							}
+							if($attendance->getSecondPartFrom() != null){
+								$timestamp1 = strtotime($attendance->getSecondPartFrom());
+								$timestamp2 = strtotime($attendance->getSecondPartTo());
+								$time = (date('H', $timestamp2)-date('H', $timestamp1));
+								$time += (date('i', $timestamp2) - date('i', $timestamp1))/60;
+								$nationalHoliday+=$time;
+							}
+						}
+                    }
 				}
 
 			}
-			echo $user;
 			$sheet->setCellValueByColumnAndRow(array_search('A', $alphabet), 36, "Evidence ostatních skutečností o náhradních a placených dobách je vedena standardním způsobem");
 			$startLine = 38;
 			$sheet->setCellValueByColumnAndRow(array_search('F', $alphabet), $startLine, "Celkem:");
@@ -341,7 +353,7 @@ class FileService extends Service
 				$sheet->setCellValueByColumnAndRow(array_search("F", $alphabet)+$i+1, $startLine+7, $workingHourInMonth*$percent); // Celkem disponibilní fond bez přestávek
 				$indexForFrame = array_search("F", $alphabet)+$i+1;
 			}
-			$indexForFrame+=2;
+//			$indexForFrame+=2;
 
 			$startLine= 39;
 			$arrayForTableDownTable  = array("Celkem odpracováno hodin", "Fond prac. doby za státní svátky", "Celkem se státními svátky",
