@@ -89,4 +89,17 @@ class ShareService extends Service
 
         UserSharingTimesheet::delete($fromUserId, $toUserId);
     }
+
+    /**
+     * @param integer $fromUserId
+     * @param integer $toUserId
+     * @return SimpleUser
+     */
+    public static function findShareByFromIdAndToId($fromUserId, $toUserId){
+        /*if(!Permission::hasPermission(self::getUserFromContext(), "USER_SHARING.DELETE", $fromUserId)){
+            throw new PermissionException();
+        }*///Není potřeba ->m pouze vnitřní funkce
+
+        return UserSharingTimesheet::findShareByFromIdAndToId($fromUserId, $toUserId);
+    }
 }

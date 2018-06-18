@@ -169,6 +169,10 @@ class SimpleUser extends BaseModel
         $preparedQuery->execute();
         $result = $preparedQuery->fetch();
 
+        if(empty($result)){
+            return null;
+        }
+
         $instance = new self();
         $instance->fill($result);
 

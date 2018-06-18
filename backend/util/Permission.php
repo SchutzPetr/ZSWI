@@ -6,12 +6,14 @@
  * Time: 17:32
  */
 
+include_once(__DIR__ . "/../service/ShareService.php");
+
 class Permission
 {
 
     private static $userPermission = array(
-        "SIMPLE_USER",
-        "HOLIDAY.FIND"
+        "SIMPLE_USER.FIND",
+        "HOLIDAY.FIND",
     );
 
     /*
@@ -29,6 +31,8 @@ class Permission
      * @param string $permission
      * @param integer $id
      * @return bool
+     * @throws PermissionException
+     * @throws UnauthorizedException
      */
     public static function hasPermission($user, $permission, $id = null){
         if(is_null($user)){
@@ -38,7 +42,19 @@ class Permission
             if(!is_null($id) && intval($id) === intval($user->getId())){
                 return true;
             }
-            return array_search($permission,  self::$userPermission);
+            if(!is_null($id) && ($permission === "TIME_SHEET.FIND" || $permission === "TIME_SHEET.GENERATE")){
+                $simple = ShareService::findShareByFromIdAndToId($user->getId(), $id);
+                if($simple === null){
+                    return false;
+                }else{
+                    return true;
+                }
+            }
+
+            if(!is_null($id) && intval($id) === intval($user->getId())){
+                return true;
+            }
+            return in_array($permission,  self::$userPermission);
         }else{
             return true;
         }

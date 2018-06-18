@@ -79,6 +79,24 @@ class UserSharingTimesheet
         return SimpleUser::findAllByIds($arrayOfUsersId);
     }
 
+
+    /**
+     * @param integer $fromUserId
+     * @param integer $toUserId
+     * @return SimpleUser
+     */
+    public static function findShareByFromIdAndToId($fromUserId, $toUserId){
+        $query = "SELECT share_to_id FROM user_sharing_timesheet WHERE sharing_user_id = :fromUserId  AND share_to_id = :toUserId;";
+        $preparedQuery = Database::getConnection()->prepare($query);
+        $preparedQuery->bindValue(":fromUserId", $fromUserId);
+        $preparedQuery->bindValue(":toUserId", $toUserId);
+        $preparedQuery->execute();
+        $result = $preparedQuery->fetch();
+
+        return SimpleUser::findById($result["share_to_id"]);
+
+    }
+
     /**
      * @param integer $fromUserId
      * @param integer $toUserId
