@@ -5,8 +5,6 @@ import Style from "./style/AgendaTabsStyle";
 import moment from "moment";
 import {Button, LinearProgress, Paper, Tab, Tabs} from "@material-ui/core/index";
 import Agenda from "./Agenda";
-import Utils from "../../other/Utils";
-import UserTimeSheets from "../../entity/UserTimeSheets";
 import User from "../../entity/User";
 import Calls from "../../Calls";
 import TimeSheet from "../../entity/TimeSheet";
@@ -23,7 +21,7 @@ class AgendaTabs extends React.Component {
             timeSheets: [],
             loadFeedback: "ready",
             year: new Date().getFullYear(),
-            month: new Date().getMonth()
+            month: new Date().getMonth(),
         };
     }
 
@@ -80,10 +78,12 @@ class AgendaTabs extends React.Component {
         Calls.getUserTimeSheet({
             data: {userId: this.props.user.id, month: month + 1, year: year},
             done: (data) => {
-                this.setState(prevState => {
+                this.setState((prevState, props) => {
                     let timeSheets = prevState.timeSheets.map(value => Object.assign(new TimeSheet(), value));
 
                     timeSheets[month] = TimeSheet.map(data.data);
+
+                    props.onTimeSheetChange(timeSheets[month], month, year);
 
                     return {
                         timeSheets: timeSheets,
@@ -205,7 +205,8 @@ AgendaTabs.propTypes = {
     match: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
     users: PropTypes.arrayOf(User),
-    mode: PropTypes.string
+    mode: PropTypes.string,
+    onTimeSheetChange: PropTypes.func.isRequired
 };
 AgendaTabs.defaultProps = {
     mode: "USER",

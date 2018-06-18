@@ -9,6 +9,7 @@ import SimpleUser from "../../entity/SimpleUser";
 import Config from "./../../Config";
 import SharedVariable from "./../../SharedVariable";
 import Calls from "../../Calls";
+import TimeSheet from "../../entity/TimeSheet";
 
 class UserDetail extends React.Component {
 
@@ -16,11 +17,11 @@ class UserDetail extends React.Component {
         let user = this.props.user;
 
         if (!user) {
-            return (<Card className={this.props.classes.empty}/>)
+            return (<Card className={this.props.mode === "USER" ? this.props.classes.emptyU : this.props.classes.empty}/>)
         }
 
         return (
-            <Card>
+            <Card className={this.props.mode === "USER" ? this.props.classes.cardU : this.props.classes.card}>
                 <CardHeader title={user.displayFullName}/>
                 <CardContent>
                     <div className={this.props.classes.row}>
@@ -80,7 +81,7 @@ UserDetail.propTypes = {
         PropTypes.instanceOf(User),
         PropTypes.instanceOf(SimpleUser)
     ]),
-    mode: PropTypes.string
+    mode: PropTypes.string,
 };
 
 UserDetail.defaultProps = {

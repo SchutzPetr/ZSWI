@@ -26,7 +26,7 @@ class HolidayCreateModal extends React.Component {
 
         this.state = {
             holidayDateFrom: props.edit ? props.edit.date : new Date(),
-            holidayDateTo: null,
+            holidayDateTo: props.edit ? props.edit.date : new Date(),
             openSelect: false,
             holidayType: "ALL_DAY"
         };
@@ -35,7 +35,7 @@ class HolidayCreateModal extends React.Component {
     static getDerivedStateFromProps(nextProps, prevState) {
         return {
             holidayDateFrom: nextProps.edit ? nextProps.edit.date : new Date(),
-            holidayDateTo: null,
+            holidayDateTo: nextProps.edit ? nextProps.edit.date : new Date(),
             openSelect: false,
             holidayType: nextProps.edit ? nextProps.edit.type : "ALL_DAY"
         };
@@ -63,6 +63,7 @@ class HolidayCreateModal extends React.Component {
     };
 
     handleSave = () => {
+        debugger;
         if (this.props.edit) {
             let userHoliday = this.props.edit;
             userHoliday.userId = this.props.user.id;
@@ -72,7 +73,8 @@ class HolidayCreateModal extends React.Component {
             this.props.onSave(userHoliday, true)
         } else {
             let holidays = [];
-            for (let day = new Date(this.state.holidayDateFrom); day <= this.state.holidayDateTo; day.setDate(day.getDate() + 1)) {
+
+            for (let day = new Date(new Date(this.state.holidayDateFrom).setHours(0, 0, 0, 0)); day <=  new Date(new Date(this.state.holidayDateTo).setHours(0, 0, 0, 0)); day.setDate(day.getDate() + 1)) {
                 if (day.getDay() === 6 || day.getDate() === 0) {
                     continue;
                 }
@@ -132,8 +134,8 @@ class HolidayCreateModal extends React.Component {
                                 value={this.state.holidayDateTo}
                                 onChange={this.handleDateChange("holidayDateTo")}
                                 animateYearScrolling={false}
-                                minDate={this.state.holidayDateTo}
-                                maxDate={moment(this.state.holidayDateTo).add(2, "M").toDate()}
+                                minDate={this.state.holidayDateFrom}
+                                maxDate={moment(this.state.holidayDateFrom).add(2, "M").toDate()}
                             />
                         </div>
                         <FormControl className={this.props.classes.formControl}>

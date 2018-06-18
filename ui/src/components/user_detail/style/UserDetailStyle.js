@@ -13,7 +13,16 @@ const Styles = theme => ({
         //padding: theme.spacing.unit,
     },
     empty:{
-        height: 200
+        height: 309
+    },
+    emptyU:{
+        height: 248
+    },
+    card:{
+        height: 309
+    },
+    cardU:{
+        height: 248
     },
     generateButton:{
         width: "100%",

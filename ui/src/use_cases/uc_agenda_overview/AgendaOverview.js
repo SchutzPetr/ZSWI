@@ -5,11 +5,11 @@ import AgendaTabs from "../../components/agenda/AgendaTabs";
 import Calls from "../../Calls";
 import LinearProgressCentered from "../../components/LinearProgressCentered";
 import Grid from "@material-ui/core/Grid/Grid";
-import Styles from "../uc_home/style/HomeStyle";
+import Styles from "./style/AgendaOverviewStyle";
 import withStyles from "@material-ui/core/styles/withStyles";
 import User from "../../entity/User";
-import Authentication from "../../Authentication";
 import UserDetail from "../../components/user_detail/UserDetail";
+import UserProject from "../../components/user_projects/UserProject";
 
 class AgendaOverview extends React.Component {
 
@@ -23,7 +23,10 @@ class AgendaOverview extends React.Component {
         return {
             users: prevState.users || [],
             user: nextProps.match.params.userId && prevState.users ? prevState.users.find(x => x.id === nextProps.match.params.userId) : null,
-            loadFeedback: "ready"
+            loadFeedback: "ready",
+            timeSheets: null,
+            month: null,
+            year: null
         };
     }
 
@@ -52,6 +55,10 @@ class AgendaOverview extends React.Component {
         });
     }
 
+    onTimeSheetChange = (timeSheets, month, year) => {
+        this.setState({timeSheets: timeSheets, month: month, year: year});
+    };
+
     _getContend() {
         if (this.state.loadFeedback === "loading") {
             return <LinearProgressCentered paper={false}/>
@@ -61,10 +68,12 @@ class AgendaOverview extends React.Component {
                     <Grid item={true} xs={12} sm={3}>
                         <UserList match={this.props.match} history={this.props.history} user={this.state.user} users={this.state.users}/>
                         <div className={this.props.classes.divider}/>
-                        <UserDetail user={this.state.user} mode={"SECRETARY"}/>
+                        <UserDetail user={this.state.user} mode={"SECRETARY"} timeSheet={this.state.timeSheets}/>
+                        <div className={this.props.classes.divider}/>
+                        <UserProject timeSheet={this.state.timeSheets} user={this.state.user} rootClass={this.props.classes.projectRoot}/>
                     </Grid>
                     <Grid item={true} xs={12} sm={9}>
-                        <AgendaTabs match={this.props.match} history={this.props.history} user={this.state.user} mode={"SECRETARY"}/>
+                        <AgendaTabs match={this.props.match} history={this.props.history} user={this.state.user} mode={"SECRETARY"} onTimeSheetChange={this.onTimeSheetChange}/>
                     </Grid>
                 </Grid>
             );
