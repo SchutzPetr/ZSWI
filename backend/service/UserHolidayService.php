@@ -9,9 +9,13 @@ include_once (__DIR__."/../exception/PermissionException.php");
 include_once (__DIR__."/../util/Permission.php");
 include_once (__DIR__."/Service.php");
 include_once (__DIR__."/TimeSheetService.php");
+include_once (__DIR__."/SimpleUserService.php");
+include_once (__DIR__."/NotificationService.php");
 include_once (__DIR__."/../model/Notification.php");
 include_once (__DIR__."/../model/UserHoliday.php");
 include_once (__DIR__."/../model/DayTimeSheet.php");
+include_once (__DIR__."/../model/Notification.php");
+
 include_once (__DIR__."./../vendor/netresearch/jsonmapper/src/JsonMapper.php");
 include_once (__DIR__."/../vendor/netresearch/jsonmapper/src/JsonMapper/Exception.php");
 
@@ -96,17 +100,61 @@ class UserHolidayService extends Service
 	}
 
     /**
-     * @param UserHoliday $userHoliday
+     * @param UserHoliday[]|UserHoliday $userHolidays
      * @throws PermissionException
      * @throws UnauthorizedException
      */
-	public static function create($userHoliday){
-		if(!Permission::hasPermission(self::getUserFromContext(), "USER_HOLIDAY.CREATE",  $userHoliday->getUserId())){
-			throw new PermissionException();
-		}
-		UserHoliday::save($userHoliday);
-        TimeSheetService::reGenerateForHoliday($userHoliday->getUserId(),array($userHoliday));
+	public static function create($userHolidays){
+        if(is_array($userHolidays)){
+            if(!Permission::hasPermission(self::getUserFromContext(), "USER_HOLIDAY.CREATE",
+                $userHolidays[0]->getUserId())){
+                throw new PermissionException();
+            }
+            if(sizeof($userHolidays) > 1){
+                $first = $userHolidays[0];
+                $last = $userHolidays[sizeof($userHolidays)-1];
+
+                $simpleUser = SimpleUserService::findById($userHolidays[0]->getUserId());
+
+                $notifi = new Notification();
+                $notifi->setTitle("Vytvoření dovolené");
+                $notifi->setDescription($simpleUser->displayFullName() . " si vytvořil dovolenou od " .
+                    $first->getDate() . " do " . $last->getDate() . ".");
+            }else{
+                $simpleUser = SimpleUserService::findById($userHolidays[0]->getUserId());
+
+                $notifi = new Notification();
+                $notifi->setTitle("Vytvoření dovolené");
+                $notifi->setDescription($simpleUser->displayFullName() . " si vytvořil dovolenou na" .
+                    $userHolidays[0]->getDate() . ".");
+            }
+
+		    foreach ($userHolidays as $holiday){
+                UserHoliday::save($holiday);
+            }
+            Notification::save($notifi);
+
+            TimeSheetService::reGenerateForHoliday($userHolidays[0]->getUserId(),$userHolidays);
+
+        }else{
+            if(!Permission::hasPermission(self::getUserFromContext(), "USER_HOLIDAY.CREATE",  $userHolidays->getUserId())){
+                throw new PermissionException();
+            }
+
+            $simpleUser = SimpleUserService::findById($userHolidays->getUserId());
+
+            $notifi = new Notification();
+            $notifi->setTitle("Vytvoření dovolené");
+            $notifi->setDescription($simpleUser->displayFullName() . " si vytvořil dovolenou na" .
+                $userHolidays->getDate() . ".");
+
+            UserHoliday::save($userHolidays);
+            Notification::save($notifi);
+            TimeSheetService::reGenerateForHoliday($userHolidays->getUserId(),array($userHolidays));
+        }
+
 	}
+
 
     /**
      * @param UserHoliday $userHoliday
@@ -119,6 +167,16 @@ class UserHolidayService extends Service
 		}
 
 		UserHoliday::save($userHoliday);
+
+        $simpleUser = SimpleUserService::findById($userHoliday->getUserId());
+
+        $notifi = new Notification();
+        $notifi->setTitle("Aktualizace dovolené");
+        $notifi->setDescription($simpleUser->displayFullName() . " si aktualizoval dovolenou pro den " .
+            $userHoliday->getDate() . ".");
+
+        Notification::save($notifi);
+
         TimeSheetService::reGenerateForHoliday($userHoliday->getUserId(),array($userHoliday));
 	}
 
@@ -129,16 +187,30 @@ class UserHolidayService extends Service
      * @throws UnauthorizedException
      */
 	public static function deleteById($id){
-		if(!Permission::hasPermission(self::getUserFromContext(), "USER_HOLIDAY.DELETE")){
+        $userHoliday = self::findById($id);
+
+		if(!Permission::hasPermission(self::getUserFromContext(), "USER_HOLIDAY.DELETE", $userHoliday->getUserId())){
 			throw new PermissionException();
 		}
-		$userHoliday = self::findById($id);
-		$day = date("d", $userHoliday->getDate());
-		$month = date('m', $userHoliday->getDate());
-		$year = date('Y', $userHoliday->getDate());
+
+		$day = date("d", strtotime($userHoliday->getDate()));
+		$month = date('m', strtotime($userHoliday->getDate()));
+		$year = date('Y', strtotime($userHoliday->getDate()));
 		$dayTimeSheet =	DayTimeSheet::findByUserIdAndDate($userHoliday->getUserId(), $day, $month, $year);
-		$dayTimeSheet->setDayType(NULL);
-		DayTimeSheet::save($dayTimeSheet);
+
+		if($dayTimeSheet !== null){
+            $dayTimeSheet->setDayType(NULL);
+            DayTimeSheet::save($dayTimeSheet);
+        }
+
+        $simpleUser = SimpleUserService::findById($userHoliday->getUserId());
+
+        $notifi = new Notification();
+        $notifi->setTitle("Smazání dovolené");
+        $notifi->setDescription($simpleUser->displayFullName() . " si smazal dovolenou pro den " .
+            $userHoliday->getDate() . ".");
+
+        Notification::save($notifi);
 
 		UserHoliday::deleteById($id);
 	}
@@ -153,4 +225,14 @@ class UserHolidayService extends Service
 		$userHoliday = $mapper->map(json_decode($jsonUserHoliday), new UserHoliday());
 		return $userHoliday;
 	}
+
+    /**
+     * @param $jsonHoliday string
+     * @return UserHoliday[]|object[]
+     */
+    public static function jsonHolidayArrayDecode( $jsonHoliday){
+        $mapper = new JsonMapper();
+        $holidays = $mapper->mapArray(json_decode($jsonHoliday), array(), 'UserHoliday');
+        return $holidays;
+    }
 }

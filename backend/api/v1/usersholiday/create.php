@@ -28,7 +28,7 @@ if (substr($data, 0, 1) === "\"" && substr($data, strlen("\"") * -1) == "\"") {
     $data = json_decode($data);
 }
 try {
-    $holiday = UserHolidayService::jsonUserHolidayDecode($data);
+    $holiday = UserHolidayService::jsonHolidayArrayDecode($data);
     UserHolidayService::create($holiday);
 } catch (PermissionException $permissionException) {
     header("HTTP/1.1 401 Unauthorized");

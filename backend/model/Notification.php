@@ -29,7 +29,7 @@ class Notification extends BaseModel
     /**
      * @var int
      */
-    private $shown = "";
+    private $shown = 0;
 
     /**
      * @param string $title
