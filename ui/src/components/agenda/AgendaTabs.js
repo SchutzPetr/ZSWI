@@ -11,6 +11,8 @@ import User from "../../entity/User";
 import Calls from "../../Calls";
 import TimeSheet from "../../entity/TimeSheet";
 import SimpleUser from "../../entity/SimpleUser";
+import SharedVariable from "./../../SharedVariable";
+
 
 class AgendaTabs extends React.Component {
 
@@ -36,27 +38,29 @@ class AgendaTabs extends React.Component {
         this.loadTimeSheet(this.state.month, this.state.year);
     }
 
-    shouldComponentUpdate(newProps, newState, nextContext){
+    shouldComponentUpdate(newProps, newState, nextContext) {
         return true;
     }
 
-    componentDidUpdate(prevProps, prevState, prevContext){
-        if(prevProps.user !== this.props.user) {
+    componentDidUpdate(prevProps, prevState, prevContext) {
+        if (prevProps.user !== this.props.user) {
             this.loadTimeSheet(this.state.month, this.state.year, true);
-        }else if(prevProps.user && this.props.user && prevProps.user.id !== this.props.user.id){
+        } else if (prevProps.user && this.props.user && prevProps.user.id !== this.props.user.id) {
             this.loadTimeSheet(this.state.month, this.state.year);
         }
     }
 
     changeMonth(event, value) {
+        SharedVariable.TIMESHEAT_MONTH = value;
         this.setState({
-            month: value
+            month: value,
         }, () => {
             this.loadTimeSheet(value, this.state.year)
         });
     }
 
     handleChangeYear = year => event => {
+        SharedVariable.TIMESHEAT_YEAR = year;
         this.setState({
             year: year
         }, () => {
@@ -65,18 +69,18 @@ class AgendaTabs extends React.Component {
     };
 
     loadTimeSheet(month, year, clear) {
-        if(!this.props.user){
+        if (!this.props.user) {
             return;
         }
-        if(clear){
+        if (clear) {
             this.setState({loadFeedback: "loading", timeSheets: []});
-        }else{
+        } else {
             this.setState({loadFeedback: "loading"});
         }
         Calls.getUserTimeSheet({
             data: {userId: this.props.user.id, month: month + 1, year: year},
             done: (data) => {
-                this.setState(prevState =>{
+                this.setState(prevState => {
                     let timeSheets = prevState.timeSheets.map(value => Object.assign(new TimeSheet(), value));
 
                     timeSheets[month] = TimeSheet.map(data.data);
@@ -134,15 +138,17 @@ class AgendaTabs extends React.Component {
         if (this.state.loadFeedback === "loading") {
             return <Paper className={classes.loadingPaper}><LinearProgress className={classes.loading}/></Paper>
         } else if (this.state.loadFeedback === "ready") {
-            if(timeSheet == null){
-                return  <Paper className={classes.loadingPaper}>EMPTY</Paper>
-            }else{
-                return <Agenda user={this.props.user} timeSheet={timeSheet} onTimeSheetEdit={this.handleTimeSheetEdit.bind(this)} mode={this.props.mode}/>;
+            if (timeSheet == null) {
+                return <Paper className={classes.loadingPaper}>EMPTY</Paper>
+            } else {
+                return <Agenda user={this.props.user} timeSheet={timeSheet}
+                               onTimeSheetEdit={this.handleTimeSheetEdit.bind(this)} mode={this.props.mode}/>;
             }
         } else {
-            return  <Paper className={classes.loadingPaper}>ERROR</Paper>
+            return <Paper className={classes.loadingPaper}>ERROR</Paper>
         }
     }
+
     render() {
         const {classes} = this.props;
 

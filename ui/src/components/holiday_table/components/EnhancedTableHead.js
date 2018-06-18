@@ -35,6 +35,7 @@ class EnhancedTableHead extends React.Component {
                         );
                     }, this)}
                     <TableCell className={this.props.classes.edit}/>
+                    <TableCell className={this.props.classes.delete}/>
                 </TableRow>
             </TableHead>
         );

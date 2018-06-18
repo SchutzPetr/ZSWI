@@ -57,7 +57,7 @@ class SharedAgendaOverviewPage extends React.Component {
             return (
                 <Grid className={this.props.classes.mainGrid} container={true} spacing={16}>
                     <Grid item={true} xs={12} sm={3}>
-                        <UserDetail user={this.state.user}/>
+                        <UserDetail user={this.state.user} mode={"USER"}/>
                     </Grid>
                     <Grid item={true} xs={12} sm={9}>
                         <AgendaTabs match={this.props.match} history={this.props.history} user={this.state.user} mode={"USER"}/>

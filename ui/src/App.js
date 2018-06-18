@@ -1,6 +1,7 @@
 import React from "react";
 import "./index.css";
 import Authentication from "./Authentication";
+import Config from "./Config";
 import SPAAuthenticated from "./spa/SPAAuthenticated";
 import {createMuiTheme, MuiThemeProvider} from "@material-ui/core/styles/index";
 import moment from 'moment';
@@ -34,6 +35,9 @@ class App extends React.Component {
             if(Authentication.getToken()){
                 this.authUserByToken(Authentication.getToken());
             }
+            Config.API_URL = json.API_URL;
+            Config.VERSION = json.VERSION;
+
             this.setState({config: json});
         });
     }

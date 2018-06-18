@@ -17,13 +17,29 @@ import {
 import {DatePicker} from "material-ui-pickers";
 import UserHoliday from "../../entity/UserHoliday";
 import User from "../../entity/User";
+import moment from "moment";
 
 class HolidayCreateModal extends React.Component {
-    state = {
-        holidayDate: new Date(),
-        openSelect: false,
-        holidayType: "ALL_DAY"
-    };
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            holidayDateFrom: props.edit ? props.edit.date : new Date(),
+            holidayDateTo: null,
+            openSelect: false,
+            holidayType: "ALL_DAY"
+        };
+    }
+
+    static getDerivedStateFromProps(nextProps, prevState) {
+        return {
+            holidayDateFrom: nextProps.edit ? nextProps.edit.date : new Date(),
+            holidayDateTo: null,
+            openSelect: false,
+            holidayType: nextProps.edit ? nextProps.edit.type : "ALL_DAY"
+        };
+    }
 
     handleChange = event => {
         this.setState({holidayType: event.target.value});
@@ -38,17 +54,38 @@ class HolidayCreateModal extends React.Component {
         this.setState({openSelect: false});
     };
 
-    handleDateChange = (date) => {
-        this.setState({holidayDate: date});
+    handleDateChange = name => (date) => {
+        if (name === "holidayDateFrom") {
+            this.setState({holidayDateFrom: date ? date.toDate() : null});
+        } else {
+            this.setState({holidayDateTo: date ? date.toDate() : null});
+        }
     };
 
     handleSave = () => {
-        const userHoliday = new UserHoliday();
-        userHoliday.userId = this.props.user.id;
-        userHoliday.date = this.state.holidayDate;
-        userHoliday.type = this.state.holidayType;
+        if (this.props.edit) {
+            let userHoliday = this.props.edit;
+            userHoliday.userId = this.props.user.id;
+            userHoliday.date = new Date(this.state.holidayDateFrom);
+            userHoliday.type = this.state.holidayType;
 
-        this.props.onSave(userHoliday)
+            this.props.onSave(userHoliday, true)
+        } else {
+            let holidays = [];
+            for (let day = new Date(this.state.holidayDateFrom); day <= this.state.holidayDateTo; day.setDate(day.getDate() + 1)) {
+                if (day.getDay() === 6 || day.getDate() === 0) {
+                    continue;
+                }
+
+                let userHoliday = new UserHoliday();
+                userHoliday.userId = this.props.user.id;
+                userHoliday.date = new Date(day);
+                userHoliday.type = this.state.holidayType;
+
+                holidays.push(userHoliday);
+            }
+            this.props.onSave(holidays, false)
+        }
     };
 
     render() {
@@ -78,10 +115,25 @@ class HolidayCreateModal extends React.Component {
                                 placeholder={"10/10/2018"}
                                 // handle clearing outside => pass plain array if you are not controlling value outside
                                 mask={value => (value ? [/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/] : [])}
-                                value={this.state.holidayDate}
-                                onChange={this.handleDateChange}
+                                value={this.state.holidayDateFrom}
+                                onChange={this.handleDateChange("holidayDateFrom")}
                                 animateYearScrolling={false}
                                 minDate={minDate}
+                            />
+                            <DatePicker
+                                keyboard
+                                label={"Datum"}
+                                format={"DD/MM/YYYY"}
+                                placeholder={"10/10/2018"}
+                                disabled={this.props.edit}
+                                clearable={true}
+                                // handle clearing outside => pass plain array if you are not controlling value outside
+                                mask={value => (value ? [/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/] : [])}
+                                value={this.state.holidayDateTo}
+                                onChange={this.handleDateChange("holidayDateTo")}
+                                animateYearScrolling={false}
+                                minDate={this.state.holidayDateTo}
+                                maxDate={moment(this.state.holidayDateTo).add(2, "M").toDate()}
                             />
                         </div>
                         <FormControl className={this.props.classes.formControl}>
@@ -122,7 +174,7 @@ HolidayCreateModal.propTypes = {
     open: PropTypes.bool,
     onClose: PropTypes.func.isRequired,
     onSave: PropTypes.func.isRequired,
-    edit: PropTypes.bool,
+    edit: PropTypes.instanceOf(UserHoliday),
     minDate: PropTypes.bool,
     user: PropTypes.instanceOf(User),
 };

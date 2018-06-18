@@ -79,6 +79,14 @@ class Calls {
         Calls._post("createUserHoliday", dataIn);
     }
 
+    static updateUserHoliday(dataIn) {
+        Calls._post("updateUserHoliday", dataIn);
+    }
+
+    static deleteUserHoliday(dataIn) {
+        Calls._get("deleteUserHoliday", dataIn);
+    }
+
     static getUserHolidayByUserIdAndYear(dataIn){
         Calls._get("getUserHolidayByUserIdAndYear", dataIn);
     }
@@ -121,6 +129,10 @@ class Calls {
 
     static updateProjectAssign(dataIn) {
         Calls._post("updateProjectAssign", dataIn);
+    }
+
+    static getFileReportExcel(dataIn) {
+        Calls._get("getFileReportExcel", dataIn);
     }
 }
 

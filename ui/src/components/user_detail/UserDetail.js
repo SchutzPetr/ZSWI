@@ -2,17 +2,20 @@ import React from "react";
 import PropTypes from "prop-types";
 import {withStyles} from "@material-ui/core/styles/index";
 import Styles from "./style/UserDetailStyle";
-import {Card, CardContent, CardHeader, Typography} from "@material-ui/core/index";
+import {Card, CardContent, CardHeader, Typography, Button} from "@material-ui/core/index";
 import User from "../../entity/User";
 import Authentication from "./../../Authentication";
 import SimpleUser from "../../entity/SimpleUser";
+import Config from "./../../Config";
+import SharedVariable from "./../../SharedVariable";
+import Calls from "../../Calls";
 
 class UserDetail extends React.Component {
 
     render() {
         let user = this.props.user;
 
-        if(!user){
+        if (!user) {
             return (<Card className={this.props.classes.empty}/>)
         }
 
@@ -44,6 +47,26 @@ class UserDetail extends React.Component {
                         <Typography variant={"body2"}>Zbývá dovolené:</Typography>
                         <Typography variant={"body1"}>NTIS</Typography>
                     </div>
+                    {this.props.mode === "SECRETARY" || this.props.mode === "ADMIN" ?
+                        <Button variant="contained" color="primary"
+                                onClick={() => {
+                                    Calls.getFileReportExcel({
+                                        data: {
+                                            month: SharedVariable.TIMESHEAT_MONTH,
+                                            year: SharedVariable.TIMESHEAT_YEAR,
+                                            users: [user.id]
+                                        },
+                                        done: (data) => {
+                                        },
+                                        fail: (data) => {
+                                        }
+                                    })
+                                }}
+                                className={this.props.classes.generateButton}>
+                            Generuj excel
+                        </Button>
+                        : null
+                    }
                 </CardContent>
             </Card>
         )
@@ -57,10 +80,12 @@ UserDetail.propTypes = {
         PropTypes.instanceOf(User),
         PropTypes.instanceOf(SimpleUser)
     ]),
+    mode: PropTypes.string
 };
 
-UserDetail.defaultProps= {
+UserDetail.defaultProps = {
     user: Authentication.user,
+    mode: "USER",
 };
 
 export default withStyles(Styles, {withTheme: true})(UserDetail);

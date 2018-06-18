@@ -17,7 +17,6 @@ import {FormControl, InputLabel, MenuItem, Select} from "@material-ui/core/index
 class EnhancedTableToolbar extends React.Component {
 
     state = {
-        holidayCreateModal: false,
         year: 2018
     };
 
@@ -50,22 +49,14 @@ class EnhancedTableToolbar extends React.Component {
         }
     };
 
-    handleCloseHolidayCreateModal = () => {
-        this.setState({holidayCreateModal: false});
-    };
-
-    handleOpenHolidayCreateModal = () => {
-        this.setState({holidayCreateModal: true});
-    };
-
     handleChangeYear(event) {
-        if(this.props.mode === "USER"){
+        if (this.props.mode === "USER") {
             if (event) {
                 this.props.history.push(`/holiday/${event.target.value}`);
             } else {
                 this.props.history.push(`/holiday/${new Date().getFullYear()}`);
             }
-        }else{
+        } else {
             if (event) {
                 this.props.history.push(`/manage-holidays/${this.props.user ? this.props.user.id : null}/${event.target.value}`);
             } else {
@@ -124,20 +115,13 @@ class EnhancedTableToolbar extends React.Component {
                         <Tooltip title={this.props.user ? "Přidat dovolenou" : "Nejprve vyber uživatele"}>
                             <div>
                                 <IconButton aria-label={"Přidat dovolenou"} disabled={!this.props.user}
-                                            onClick={this.handleOpenHolidayCreateModal}>
+                                            onClick={this.props.handleOpenHolidayCreateModal}>
                                     <AddIcon/>
                                 </IconButton>
                             </div>
                         </Tooltip>
                     )}
                 </div>
-                <HolidayCreateModal open={this.state.holidayCreateModal}
-                                    user={this.props.user}
-                                    onClose={this.handleCloseHolidayCreateModal}
-                                    onSave={(userHoliday) => {
-                                        this.handleCloseHolidayCreateModal();
-                                        this.props.onSave(userHoliday);
-                                    }}/>
             </Toolbar>
         )
     }
@@ -147,10 +131,10 @@ EnhancedTableToolbar.propTypes = {
     classes: PropTypes.object,
     numSelected: PropTypes.number.isRequired,
     onDeleteSelected: PropTypes.func.isRequired,
+    handleOpenHolidayCreateModal: PropTypes.func.isRequired,
     users: PropTypes.arrayOf(User).isRequired,
     user: PropTypes.instanceOf(User),
     year: PropTypes.number,
-    onSave: PropTypes.func.isRequired,
     mode: PropTypes.string,
 };
 

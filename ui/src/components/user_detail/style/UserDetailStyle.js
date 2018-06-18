@@ -14,6 +14,10 @@ const Styles = theme => ({
     },
     empty:{
         height: 200
+    },
+    generateButton:{
+        width: "100%",
+        marginTop: 25
     }
 });
 

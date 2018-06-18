@@ -18,9 +18,12 @@ import EnhancedTableHead from "./components/EnhancedTableHead";
 import HolidayRowRecord from "../../entity/HolidayRowRecord";
 import moment from "moment/moment";
 import EditIcon from "@material-ui/icons/Edit";
+import DeleteIcon from "@material-ui/icons/Delete";
+
 import User from "../../entity/User";
 import LinearProgressCentered from "../LinearProgressCentered";
 import Calls from "../../Calls";
+import HolidayCreateModal from "../holiday_create_modal/HolidayCreateModal";
 
 class HolidayTable extends React.Component {
     constructor(props, context) {
@@ -30,8 +33,9 @@ class HolidayTable extends React.Component {
             selected: [],
             page: 0,
             rowsPerPage: props.rowsPerPage || 5,
-            holidayCreateModal: false,
-            loadFeedback: "ready"
+            loadFeedback: "ready",
+            modalOpen: false,
+            modalData: null
         };
     }
 
@@ -51,17 +55,45 @@ class HolidayTable extends React.Component {
         this.props.onSelectAllChange(value);
     };
 
-    onDeleteSelected = () => {
-
-    };
-
-    _handleSaveHolidayCreateModal = userHoliday => {
-
-        Calls.createUserHoliday({
-            data: userHoliday,
+    onDeleteSelected = (userHolidays) => {
+        Calls.deleteUserHoliday({
+            data: {id: userHolidays.id},
             done: this.props.onSaveDone,
             fail: this.props.onSaveDone,
         });
+    };
+
+    handleCloseHolidayCreateModal = () => {
+        this.setState({modalOpen: false});
+    };
+
+    handleOpenHolidayCreateModal = () => {
+        debugger;
+        this.setState({modalOpen: true});
+    };
+
+    handleOpenEdit = modalData => event => {
+        this.setState({
+            modalOpen: true,
+            modalData: modalData
+        });
+    };
+
+    _handleSaveHolidayCreateModal = (userHolidays, edit) => {
+        debugger;
+        if (edit) {
+            Calls.updateUserHoliday({
+                data: userHolidays,
+                done: this.props.onSaveDone,
+                fail: this.props.onSaveDone,
+            });
+        } else {
+            Calls.createUserHoliday({
+                data: userHolidays,
+                done: this.props.onSaveDone,
+                fail: this.props.onSaveDone,
+            });
+        }
     };
 
     _tableBody(rowsPerPage, page, emptyRows, numSelected) {
@@ -122,10 +154,10 @@ class HolidayTable extends React.Component {
             <Paper className={this.props.fullHeight ? classes.fullHeightRoot : classes.root}>
                 <EnhancedTableToolbar numSelected={numSelected}
                                       onDeleteSelected={this.onDeleteSelected}
+                                      handleOpenHolidayCreateModal={this.handleOpenHolidayCreateModal}
                                       user={this.props.user}
                                       year={this.props.year}
                                       users={this.props.users}
-                                      onSave={this._handleSaveHolidayCreateModal}
                                       mode={this.props.mode}
                 />
                 <div className={classes.tableWrapper}>
@@ -157,8 +189,18 @@ class HolidayTable extends React.Component {
                                             onClick={event => this.onSelectChange(event, values, !values.isSelected)}>{values.type}</TableCell>
                                         <TableCell>
                                             <Tooltip title="Editace">
-                                                <IconButton aria-label="Editace">
+                                                <IconButton aria-label="Editace" onClick={this.handleOpenEdit(values)}>
                                                     <EditIcon/>
+                                                </IconButton>
+                                            </Tooltip>
+                                        </TableCell>
+                                        <TableCell>
+                                            <Tooltip title="Odstranění">
+                                                <IconButton aria-label="Odstranění"
+                                                            onClick={() => {
+                                                                this.onDeleteSelected(values)
+                                                            }}>
+                                                    <DeleteIcon/>
                                                 </IconButton>
                                             </Tooltip>
                                         </TableCell>
@@ -184,6 +226,14 @@ class HolidayTable extends React.Component {
                     onChangePage={this.handleChangePage}
                     onChangeRowsPerPage={this.handleChangeRowsPerPage}
                 />
+                <HolidayCreateModal open={this.state.modalOpen}
+                                    user={this.props.user}
+                                    edit={this.state.modalData}
+                                    onClose={this.handleCloseHolidayCreateModal}
+                                    onSave={(userHoliday, edit) => {
+                                        this._handleSaveHolidayCreateModal(userHoliday, edit);
+                                        this.handleCloseHolidayCreateModal();
+                                    }}/>
             </Paper>
         );
     }

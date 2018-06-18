@@ -10,6 +10,8 @@ const DAYTIMESHEET_API = "/daytimesheet/";
 const USERHOLIDAY_API = "/usersholiday/";
 const SHARE_API = "/userShare/";
 const SIMPLE_USER_API = "/simpleuser/";
+const FILE_REPORT_API = "/filereport/";
+
 
 
 const Client = {
@@ -43,6 +45,10 @@ const Client = {
                 return axios.get(AUTH_API + "authSimple.php", {params: data});
             case "getAssignUsersToProject":
                 return axios.get(PROJECT_ASSIGN_API + "findAllByProjectId.php", {params: data});
+            case "getFileReportExcel":
+                return axios.get(FILE_REPORT_API + "createByMonthAndYear.php", {params: data});
+            case "deleteUserHoliday":
+                return axios.get(USERHOLIDAY_API + "deleteById.php", {params: data});
             default:
                 throw `Url ${url} does not exists.`;
         }
@@ -62,6 +68,8 @@ const Client = {
                 return axios.post(DAYTIMESHEET_API + "update.php", data);
             case "createUserHoliday":
                 return axios.post(USERHOLIDAY_API + "create.php", data);
+            case "updateUserHoliday":
+                return axios.post(USERHOLIDAY_API + "update.php", data);
             case "createShare":
                 return axios.post(SHARE_API + "create.php", data);
             case "deleteShare":
