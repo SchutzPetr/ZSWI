@@ -235,7 +235,6 @@ class FileService extends Service
 					$sheet->setCellValueByColumnAndRow(array_search('A', $alphabet), $startLine+$day, date("d.m.Y", $d));
 
 					$arrayForOneLine = DayTimeSheet::findByUserIdAndDate($user->getId(), $day, $month, $year);
-//				echo '<pre>'; print_r($arrayForOneLine); echo '</pre>';
 
 					if($arrayForOneLine != null) {
 						$sheet->setCellValueByColumnAndRow(array_search('B', $alphabet), $startLine+$day, $arrayForOneLine->getDate());
@@ -251,13 +250,16 @@ class FileService extends Service
 							$timestamp2 = strtotime($arrayForOneLine->getFirstPartTo());
 							$time = (date('H', $timestamp2)-date('H', $timestamp1));
 							$time += (date('i', $timestamp2) - date('i', $timestamp1))/60;
-							if(strpos($arrayForOneLine->getDayType(), "nemoc") !== false
-							   || strpos($arrayForOneLine->getDayType(), "OČR") !== false
+
+							if(strpos($arrayForOneLine->getDayType(), "SICKNESS") !== false
+							   || strpos($arrayForOneLine->getDayType(), "FAMILY_MEMBER_CARE") !== false
 //					   || strpos($arrayForOneLine->getDayType(), "tek") !== false
 							){
 								$sickHours+=$time;
-							}else if(strpos($arrayForOneLine->getDayType(), "dovolen") !== false){
-								$holidaysHours +=$time;
+							}else if(strpos($arrayForOneLine->getDayType(), "HOLIDAY") !== false){
+							    if(strpos($arrayForOneLine->getDayType(), "PUBLIC_HOLIDAY") === false){
+								    $holidaysHours +=$time;
+                                }
 							}else{
 								$workingHourInMonth+=$time;
 							}
@@ -285,13 +287,16 @@ class FileService extends Service
 							$timestamp2 = strtotime($arrayForOneLine->getSecondPartTo());
 							$time = (date('H', $timestamp2)-date('H', $timestamp1));
 							$time += (date('i', $timestamp2) - date('i', $timestamp1))/60;
-							if(strpos($arrayForOneLine->getDayType(), "nemoc") !== false
-							   || strpos($arrayForOneLine->getDayType(), "OČR") !== false
+
+							if(strpos($arrayForOneLine->getDayType(), "SICKNESS") !== false
+							   || strpos($arrayForOneLine->getDayType(), "FAMILY_MEMBER_CARE") !== false
 //					   || strpos($arrayForOneLine->getDayType(), "tek") !== false
 							){
 								$sickHours+=$time;
-							}else if(strpos($arrayForOneLine->getDayType(), "dovolen") !== false){
-								$holidaysHours +=$time;
+							}else if(strpos($arrayForOneLine->getDayType(), "HOLIDAY") !== false){
+								if(strpos($arrayForOneLine->getDayType(), "PUBLIC_HOLIDAY") === false){
+									$holidaysHours +=$time;
+								}
 							}else{
 								$workingHourInMonth+=$time;
 							}
@@ -302,16 +307,18 @@ class FileService extends Service
 
 
 
-						if(strpos($arrayForOneLine->getDayType(), "nemoc") !== false
-						   || strpos($arrayForOneLine->getDayType(), "dovolen") !== false
-						   || strpos($arrayForOneLine->getDayType(), "OČR") !== false
+						if(strpos($arrayForOneLine->getDayType(), "SICKNESS") !== false
+						   || (strpos($arrayForOneLine->getDayType(), "HOLIDAY") !== false && strpos($arrayForOneLine->getDayType(), "PUBLIC_HOLIDAY") === false)
+						   || strpos($arrayForOneLine->getDayType(), "FAMILY_MEMBER_CARE") !== false
 						){
-							$sheet->setCellValueByColumnAndRow(array_search('Q', $alphabet), $startLine+$day, $arrayForOneLine->getDayType());
-						}else if(strpos($arrayForOneLine->getDayType(), "cesta") !== false){
-							$sheet->setCellValueByColumnAndRow(array_search('R', $alphabet), $startLine+$day, $arrayForOneLine->getDayType());
+							$sheet->setCellValueByColumnAndRow(array_search('P', $alphabet), $startLine+$day, self::
+                            getCzechNameDateType($arrayForOneLine->getDayType()));
+						}else if(strpos($arrayForOneLine->getDayType(), "BUSINESS_TRIP") !== false ||
+						         strpos($arrayForOneLine->getDayType(), "WORK_OUTSIDE_WORKSPACE") !== false){
+							$sheet->setCellValueByColumnAndRow(array_search('Q', $alphabet), $startLine+$day, self::getCzechNameDateType($arrayForOneLine->getDayType()));
 						}else{
 
-							$sheet->setCellValueByColumnAndRow(array_search('R', $alphabet), $startLine+$day, $arrayForOneLine->getDayType());
+							$sheet->setCellValueByColumnAndRow(array_search('Q', $alphabet), $startLine+$day, self::getCzechNameDateType($arrayForOneLine->getDayType()));
 						}
 					}else{
 						if(date("d.m.Y", $d) >= 1 && date("d.m.Y", $d) <=5){
@@ -341,7 +348,7 @@ class FileService extends Service
 				$startLine = 38;
 				$sheet->setCellValueByColumnAndRow(array_search('F', $alphabet), $startLine, "Celkem:");
 				$projects = ProjectAssignService::findByUserIdAllActiveInMonthAndYear($user->getId(), $month, $year);
-				$indexForFrame = 0;
+//				$indexForFrame = 0;
 				for($i = 1; $i<=count($projects); $i++){
 					$percent = $projects[$i-1]->getObligation();
 					$sheet->setCellValueByColumnAndRow(array_search('F', $alphabet)+$i+1, $startLine, $projects[$i-1]->getProject()->getProjectNameShort());
@@ -352,7 +359,7 @@ class FileService extends Service
 					$sheet->setCellValueByColumnAndRow(array_search("F", $alphabet)+$i+1, $startLine+5, $sickHours*$percent); //Nemocenská, OČR (přepočt. na hod.)
 					$sheet->setCellValueByColumnAndRow(array_search("F", $alphabet)+$i+1, $startLine+6, ($sickHours+$holidaysHours+$workingHourInMonth+$nationalHoliday)*$percent); //Celkem k proplacení
 					$sheet->setCellValueByColumnAndRow(array_search("F", $alphabet)+$i+1, $startLine+7, $workingHourInMonth*$percent); // Celkem disponibilní fond bez přestávek
-					$indexForFrame = array_search("F", $alphabet)+$i+1;
+//					$indexForFrame = array_search("F", $alphabet)+$i+1;
 				}
 //			$indexForFrame+=2;
 
@@ -388,6 +395,7 @@ class FileService extends Service
 			}
 
 		}
+//		throw new PermissionException();
 		$document->removeSheetByIndex($document->getSheetCount()-1);
 
 		/****
@@ -420,6 +428,31 @@ class FileService extends Service
 
 		return true;
 	}
+
+	/****
+	 * @param $day
+	 *
+	 * @return string
+	 */
+	public static function getCzechNameDateType($day){
+		if(empty($day)){
+		    return " ";
+        }
+	    switch ($day){
+            case (strpos($day, "SICKNESS") !== false): return "Nemoc";
+            break;
+            case (strpos($day, "FAMILY_MEMBER_CARE") !== false) : return "OČR";
+	            break;
+		    case (strpos($day, "BUSINESS_TRIP") !== false) : return "Služební cesta";
+			    break;
+		    case (strpos($day, "WORK_OUTSIDE_WORKSPACE") !== false) : return "Práce mimo pracoviště";
+			    break;
+		    case (strpos($day, "HOLIDAY") !== false && strpos($day, "PUBLIC_HOLIDAY") === false): return "Dovolená";
+			    break;
+            default: return "  ";
+        }
+
+    }
 
 
 }
