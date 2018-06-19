@@ -105,6 +105,26 @@ class UserHoliday extends BaseModel
         return $instance;
     }
 
+	/***
+	 * @param int $id
+	 * @param string $date
+	 *
+	 * @return UserHoliday
+	 */
+    static function finByUserIdAndDate($id, $date){
+	    $query = "SELECT * FROM user_holiday WHERE user_id = :id AND date=:date;";
+	    $preparedQuery = Database::getConnection()->prepare($query);
+	    $preparedQuery->bindValue(":id", $id);
+	    $preparedQuery->bindValue(":date", $date);
+	    $preparedQuery->execute();
+	    $result = $preparedQuery->fetch();
+
+	    $instance = new self();
+	    $instance->fill($result);
+
+	    return $instance;
+    }
+
     /**
      * @param int $id
      */

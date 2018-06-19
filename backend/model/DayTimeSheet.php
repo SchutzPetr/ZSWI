@@ -215,8 +215,26 @@ class DayTimeSheet implements JsonSerializable
         return $arrayOfDayTimeSheets;
     }
 
+	/***
+	 * @param int $userId
+	 * @param int $day
+	 * @param int $month
+	 * @param int $year
+	 *
+	 * @return DayTimeSheet|null
+	 */
     static function findByUserIdAndDate($userId, $day, $month, $year){
     	$date = DateTime::createFromFormat("Y-m-d", $year."-".$month."-".$day);
+	    return self::findByUserIdAndDateString($userId, $date);
+    }
+
+	/***
+	 * @param int $userId
+	 * @param DateTime $date
+	 *
+	 * @return DayTimeSheet|null
+	 */
+    static function findByUserIdAndDateString($userId, $date){
 	    $query = "SELECT * FROM day_time_sheet WHERE user_id = :user_id and date=:date;";
 	    $preparedQuery = Database::getConnection()->prepare($query);
 	    $preparedQuery->bindValue(":user_id", $userId);
@@ -224,15 +242,14 @@ class DayTimeSheet implements JsonSerializable
 	    $preparedQuery->execute();
 	    $result = $preparedQuery->fetch();
 
-        if(empty($result)){
-            return null;
-        }
+	    if(empty($result)){
+		    return null;
+	    }
 
 	    $instance = new self();
 	    $instance->fill($result);
 
 	    return $instance;
-
     }
 
     /**

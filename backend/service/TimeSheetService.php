@@ -212,6 +212,13 @@ class TimeSheetService extends Service
             throw new PermissionException();
         }
 
+        $oldDTS = DayTimeSheet::findByUserIdAndDateString($dayTimeSheet->getUserId(), DateTime::createFromFormat("Y-m-d", $dayTimeSheet->getDate()));
+        if((strpos($oldDTS->getDayType(), "HOLIDAY") !== false && strpos($oldDTS->getDayType(), "PUBLIC_HOLIDAY") === false)
+               && strpos($dayTimeSheet->getDayType(), "HOLIDAY") === false ){
+        	$userHoliday = UserHoliday::findByUserIdAndDate($dayTimeSheet->getUserId(), $dayTimeSheet->getDate());
+        	UserHolidayService::deleteById($userHoliday->getId());
+        }
+        
         DayTimeSheet::save($dayTimeSheet);
     }
 
