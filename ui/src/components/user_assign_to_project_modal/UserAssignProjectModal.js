@@ -22,11 +22,12 @@ class UserAssignProjectModal extends React.Component {
 
     static getDerivedStateFromProps(nextProps, prevState) {
         return {
-            project: nextProps.project,
-            user: nextProps.user || null,
-            toDate: nextProps.toDate || null,
-            fromDate: nextProps.fromDate || new Date(),
-            obligation: 0.0,
+            projectAssign: nextProps.projectAssign || null,
+            project: nextProps.projectAssign ? nextProps.projectAssign.project : nextProps.project || null,
+            user: nextProps.projectAssign ? nextProps.projectAssign.user : null,
+            toDate: nextProps.projectAssign ? nextProps.projectAssign.activeTo : null,
+            fromDate: nextProps.projectAssign ? nextProps.projectAssign.activeFrom : new Date(),
+            obligation: nextProps.projectAssign ? nextProps.projectAssign.obligation : 0.0,
             loadFeedback: "ready",
         };
     }
@@ -152,7 +153,7 @@ class UserAssignProjectModal extends React.Component {
                                 label={"Velikost úvazku na projektu"}
                                 margin={"normal"}
                                 type={"number"}
-                                value={this.props.obligation}
+                                value={this.state.obligation}
                                 onChange={this.handleObligationChange}
                             />
                         </FormGroup>
@@ -182,6 +183,7 @@ UserAssignProjectModal.propTypes = {
     users: PropTypes.arrayOf(User),
     toDate: PropTypes.instanceOf(Date),
     fromDate: PropTypes.instanceOf(Date),
+    projectAssign: PropTypes.instanceOf(ProjectAssign)
 
 };
 

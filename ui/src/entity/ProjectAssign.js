@@ -85,7 +85,7 @@ class ProjectAssign extends BaseEntity {
         projectAssign.simpleUser = null;
 
         projectAssign.activeFrom = moment(dto.activeFrom, "YYYY-MM-DD").toDate();
-        projectAssign.activeTo = moment(dto.activeTo, "YYYY-MM-DD").toDate();
+        projectAssign.activeTo = dto.activeTo ? moment(dto.activeTo, "YYYY-MM-DD").toDate() : null;
         projectAssign.project = Project.map(dto.project);
         projectAssign.user = SimpleUser.map(dto.simpleUser);
 
@@ -97,7 +97,7 @@ class ProjectAssign extends BaseEntity {
         let projectAssignDTO = super.toJSON();
 
         projectAssignDTO.activeFrom = this.activeFrom ? moment(this.activeFrom, "YYYY-MM-DD").format("YYYY-MM-DD") : null;
-        projectAssignDTO.activeTo = this.activeTo  ? moment(this.activeTo, "YYYY-MM-DD").format("YYYY-MM-DD") : null;
+        projectAssignDTO.activeTo = this.activeTo ? moment(this.activeTo, "YYYY-MM-DD").format("YYYY-MM-DD") : null;
 
         return projectAssignDTO;
     }

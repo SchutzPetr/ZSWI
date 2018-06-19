@@ -187,7 +187,7 @@ class UserTableProjectAssignment extends React.Component {
                         onChangePage={this.handleChangePage}
                         onChangeRowsPerPage={this.handleChangeRowsPerPage}
                     />
-                    <UserAssignProjectModal user={this.state.rowData}
+                    <UserAssignProjectModal projectAssign={this.state.rowData}
                                             users={this.state.users}
                                             open={this.state.modalOpen}
                                             project={this.props.project}
