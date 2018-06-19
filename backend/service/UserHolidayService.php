@@ -165,6 +165,7 @@ class UserHolidayService extends Service
     /**
      * @param UserHoliday $userHoliday
      * @throws PermissionException
+     * @throws Exception
      * @throws UnauthorizedException
      */
 	public static function update($userHoliday){
@@ -172,6 +173,25 @@ class UserHolidayService extends Service
 			throw new PermissionException();
 		}
 
+		$oldUserHoliday = UserHolidayService::findById($userHoliday->getId());
+
+		if($oldUserHoliday->getDate()  !== $userHoliday->getDate()){
+			///control if in new date have object UserHoliday
+			if(UserHoliday::findByUserIdAndDate($userHoliday->getUserId(), $userHoliday->getDate())->getDate() !== null){
+				throw new Exception();
+			}
+			$oldDayTimeSheete = DayTimeSheet::findByUserIdAndDateString($userHoliday->getId(), DateTime::createFromFormat("Y-m-d", $userHoliday->getDate()));
+			$attendance = Attendance::findByUserIdAndDateString($userHoliday->getId(), DateTime::createFromFormat("Y-m-d", $userHoliday->getDate())->format("Y-m-d"));
+			if($attendance!= null){
+				$oldDayTimeSheete->setFirstPartFrom($attendance->getFirstPartFrom());
+				$oldDayTimeSheete->setFirstPartTo($attendance->getFirstPartTo());
+				$oldDayTimeSheete->setSecondPartFrom($attendance->getSecondPartFrom());
+				$oldDayTimeSheete->setSecondPartTo($attendance->getSecondPartTo());
+				$oldDayTimeSheete->setDayType(NULL);
+				DayTimeSheet::save($oldDayTimeSheete);
+			}
+
+		}
 		UserHoliday::save($userHoliday);
 
         $simpleUser = SimpleUserService::findById($userHoliday->getUserId());

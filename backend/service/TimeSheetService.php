@@ -218,7 +218,6 @@ class TimeSheetService extends Service
         	$userHoliday = UserHoliday::findByUserIdAndDate($dayTimeSheet->getUserId(), $dayTimeSheet->getDate());
         	UserHolidayService::deleteById($userHoliday->getId());
         }
-        
         DayTimeSheet::save($dayTimeSheet);
     }
 
