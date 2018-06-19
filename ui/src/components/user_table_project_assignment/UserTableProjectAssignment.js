@@ -95,22 +95,26 @@ class UserTableProjectAssignment extends React.Component {
     };
 
     onSaveAssign = (project, update) => {
-        if(update){
+        if (update) {
             Calls.updateProjectAssign({
                 data: project,
                 done: (data) => {
-                    this.setState({loadFeedback: "ready"});
+                    this.setState({loadFeedback: "ready"}, () => {
+                        this._fetchData()
+                    });
                 },
                 fail: (data) => {
                     this.setState({loadFeedback_2: "error"});
                     //todo: error throw
                 }
             });
-        }else{
+        } else {
             Calls.createProjectAssign({
                 data: project,
                 done: (data) => {
-                    this.setState({loadFeedback: "ready"});
+                    this.setState({loadFeedback: "ready"}, () => {
+                        this._fetchData()
+                    });
                 },
                 fail: (data) => {
                     this.setState({loadFeedback_2: "error"});
@@ -161,7 +165,8 @@ class UserTableProjectAssignment extends React.Component {
                                         <TableCell>{projectAssign.obligation}</TableCell>
                                         <TableCell>
                                             <Tooltip title="Editace">
-                                                <IconButton aria-label="Editace" onClick={this.handleOpenEdit(projectAssign)}>
+                                                <IconButton aria-label="Editace"
+                                                            onClick={this.handleOpenEdit(projectAssign)}>
                                                     <EditIcon/>
                                                 </IconButton>
                                             </Tooltip>
