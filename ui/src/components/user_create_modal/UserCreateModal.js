@@ -28,6 +28,8 @@ import Styles from "./style/UserCreateModalStyle";
 import UserContract from "../../entity/UserContract";
 import moment from "moment/moment";
 import {DatePicker} from "material-ui-pickers";
+import UserHolidaySettingsContent from "./components/UserHolidaySettingsContent";
+import UserHolidaySettings from "../../entity/UserHolidaySettings";
 
 class UserCreateModal extends React.Component {
 
@@ -43,6 +45,8 @@ class UserCreateModal extends React.Component {
             user: user,
             attendanceSchedules: user.attendanceSchedules,
             currentUserContract: user.currentUserContract,
+            userHolidaySettings: user.userHolidaySettings && user.userHolidaySettings.length > 0 ? user.userHolidaySettings : [new UserHolidaySettings(user.id, new Date().getFullYear())],
+            userHolidaySettingsYear: new Date().getFullYear(),
             loadFeedback: "ready",
         };
     }
@@ -59,7 +63,7 @@ class UserCreateModal extends React.Component {
                 this.state.attendanceSchedules[`${i}`].firstPartTo < this.state.attendanceSchedules[`${i}`].secondPartFrom &&
                 this.state.attendanceSchedules[`${i}`].secondPartFrom < this.state.attendanceSchedules[`${i}`].secondPartTo;
 
-            if(!result){
+            if (!result) {
                 return false;
             }
         }
@@ -78,8 +82,9 @@ class UserCreateModal extends React.Component {
         };
 
         let user = this.state.user;
-        user.attendanceSchedules =  this.state.attendanceSchedules;
+        user.attendanceSchedules = this.state.attendanceSchedules;
         user.currentUserContract = this.state.currentUserContract;
+        user.userHolidaySettings = this.state.userHolidaySettings;
 
         if (this.props.userToEdit) {
             Calls.updateUser({
@@ -127,12 +132,12 @@ class UserCreateModal extends React.Component {
 
     handleChangeUserContract = name => event => {
         let value;
-        if(name === "obligationKIV" || name === "obligationNTIS"){
+        if (name === "obligationKIV" || name === "obligationNTIS") {
             value = event.target.value;
             if (value < 0 || value > 1) {
                 return;
             }
-        }else{
+        } else {
             value = event;
         }
         this.setState((prevState) => {
@@ -152,9 +157,9 @@ class UserCreateModal extends React.Component {
                 let attendanceSchedules = Object.assign({}, prevState.attendanceSchedules);
                 let attendance = Object.assign(new Attendance(), prevState.attendanceSchedules[dayInWeek]);
 
-                if(value){
+                if (value) {
                     attendance[name] = value.toDate();
-                }else{
+                } else {
                     attendance[name] = new Attendance()[name];
                 }
                 attendanceSchedules[dayInWeek] = attendance;
@@ -177,6 +182,40 @@ class UserCreateModal extends React.Component {
                 }
             });
         }
+    };
+
+    onHolidayDaysChange = year => (event) => {
+        const value = event.target.value;
+        this.setState((prevState) => {
+            let array = UserHolidaySettings.map(prevState.userHolidaySettings);
+            let index = prevState.userHolidaySettings.findIndex((value => value.year === year));
+
+            if (index > -1) {
+                array[index].days = value;
+            }
+
+            return {
+                userHolidaySettings: array,
+                userHolidaySettingsYear: year
+            }
+        });
+    };
+
+    onYearChange = (event) => {
+        const value = event.target.value;
+        this.setState((prevState) => {
+            let array = UserHolidaySettings.map(prevState.userHolidaySettings);
+            let index = prevState.userHolidaySettings.findIndex((value => value.year === value));
+
+            if (index < 0) {
+                array.push(new UserHolidaySettings(this.state.user.id, value))
+            }
+
+            return {
+                userHolidaySettings: array,
+                userHolidaySettingsYear: value
+            }
+        });
     };
 
     render() {
@@ -268,21 +307,27 @@ class UserCreateModal extends React.Component {
                                 </Select>
                             </FormControl>
                             <FormControl className={classes.statusSwitchWrapper} component={"div"}>
-                            <FormHelperText className={classes.statusSwitchLabel}>{"Status uživatele"}</FormHelperText>
-                            <FormControlLabel
-                                className={classes.statusSwitch}
-                                control={
-                                    <Switch
-                                        checked={this.state.user.active}
-                                        onChange={this.handleChangeUserSwitch}
-                                        value={"active"}
-                                    />
-                                }
-                                label={"Aktivní"}
-                            />
-                        </FormControl>
+                                <FormHelperText
+                                    className={classes.statusSwitchLabel}>{"Status uživatele"}</FormHelperText>
+                                <FormControlLabel
+                                    className={classes.statusSwitch}
+                                    control={
+                                        <Switch
+                                            checked={this.state.user.active}
+                                            onChange={this.handleChangeUserSwitch}
+                                            value={"active"}
+                                        />
+                                    }
+                                    label={"Aktivní"}
+                                />
+                            </FormControl>
                         </div>
-                        <UserContractContent handleChangeCurrent={this.handleChangeUserContract} currentUserContract={this.state.currentUserContract} futureUserContract={[new UserContract()]}/>
+                        <UserHolidaySettingsContent
+                            userHolidaySetting={this.state.userHolidaySettings.find((value => value.year === this.state.userHolidaySettingsYear))}
+                            onHolidayDaysChange={this.onHolidayDaysChange} onYearChange={this.onYearChange}/>
+                        <UserContractContent handleChangeCurrent={this.handleChangeUserContract}
+                                             currentUserContract={this.state.currentUserContract}
+                                             futureUserContract={[new UserContract()]}/>
                         <Typography className={classes.timePickerTitle} variant={"headline"}>Docházka</Typography>
                         <AttendanceDayContent attendance={this.state.attendanceSchedules["1"]} title={"Pondělí"}
                                               handleChange={this.handleChangeAttendance} dayInWeek={1}/>
