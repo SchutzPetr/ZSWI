@@ -26,5 +26,6 @@ try {
 } catch (Exception $exception) {
     header('HTTP/1.1 500 Internal Server Error');
     header('Content-Type: application/json; charset=UTF-8');
+    header('X-Error-Message: ' . $exception->getMessage(), true, 500);
     die(json_encode($exception));
 }
