@@ -11,6 +11,7 @@ include_once(__DIR__ . "/../database/Database.php");
 include_once(__DIR__ . "/BaseModel.php");
 include_once(__DIR__ . "/Attendance.php");
 include_once(__DIR__ . "/UserContract.php");
+include_once(__DIR__ . "/UserHolidaySettings.php");
 
 class User extends BaseModel
 {
@@ -58,6 +59,11 @@ class User extends BaseModel
      * @var UserContract[]
      */
     private $futureUserContract = array();
+
+    /**
+     * @var UserHolidaySettings[]
+     */
+    private $userHolidaySettings = array();
 
     /**
      * @return string
@@ -236,6 +242,23 @@ class User extends BaseModel
     }
 
     /**
+     * @return UserHolidaySettings[]
+     */
+    public function getUserHolidaySettings()
+    {
+        return $this->userHolidaySettings;
+    }
+
+    /**
+     * @param UserHolidaySettings[] $userHolidaySettings
+     */
+    public function setUserHolidaySettings($userHolidaySettings)
+    {
+        $this->userHolidaySettings = $userHolidaySettings;
+    }
+
+
+    /**
      * @return string
      */
     public function displayFullName()
@@ -260,6 +283,7 @@ class User extends BaseModel
         self::setAttendanceSchedules(Attendance::findLastByUserId(self::getId()));
         self::setCurrentUserContract(UserContract::findCurrentByUserId(self::getId()));
         self::setFutureUserContract(UserContract::findAllFutureByUserIdAndDate(self::getId(), date("Y-m-d")));
+        self::setUserHolidaySettings(UserHolidaySettings::findByUserId(self::getId()));
     }
 
     /**
@@ -367,7 +391,7 @@ class User extends BaseModel
 
         $preparedQuery->execute();
 
-        $user = self::findByOrion($user->getOrionLogin());
+        $userInstance = self::findByOrion($user->getOrionLogin());
 
         $query = "INSERT IGNORE user_authentication (user_id, password) VALUE (:user_id, :password);";
         $preparedQuery = Database::getConnection()->prepare($query);
@@ -376,8 +400,18 @@ class User extends BaseModel
 
         $preparedQuery->execute();
 
+        if (is_array($user->getUserHolidaySettings())) {
+            foreach ($user->getUserHolidaySettings() as $userHolidaySetting) {
+                if ($user->getId() == -1) {
+                    $userHolidaySetting->setUserId($userInstance->getId());
+                } elseif ($user->getId() !== $userHolidaySetting->getUserId()) {
+                    continue;
+                }
+                UserHolidaySettings::save($userHolidaySetting);
+            }
+        }
 
-        return self::findByOrion($user->getOrionLogin());
+        return $userInstance;
     }
 
     /**
