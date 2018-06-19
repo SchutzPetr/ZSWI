@@ -13,7 +13,6 @@ const SIMPLE_USER_API = "/simpleuser/";
 const FILE_REPORT_API = "/filereport/";
 
 
-
 const Client = {
     get(url, data) {
         switch (url) {
@@ -46,7 +45,10 @@ const Client = {
             case "getAssignUsersToProject":
                 return axios.get(PROJECT_ASSIGN_API + "findAllByProjectId.php", {params: data});
             case "getFileReportExcel":
-                return axios.get(FILE_REPORT_API + "createByMonthAndYear.php", {params: data});
+                return axios.get(FILE_REPORT_API + "createByMonthAndYear.php", {
+                    params: data,
+                    responseType: "arraybuffer"
+                });
             case "deleteUserHoliday":
                 return axios.get(USERHOLIDAY_API + "deleteById.php", {params: data});
             default:
