@@ -10,6 +10,11 @@ const Styles = theme => ({
     divider: {
         height: 8,
     },
+    projectRoot: {
+        maxHeight: `calc(100vh - 450px)`,
+        height: `calc(100vh - 450px)`,
+        overflow: "auto",
+    },
 });
 
 export default Styles;

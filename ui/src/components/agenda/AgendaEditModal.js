@@ -12,7 +12,11 @@ import {
     ExpansionPanel,
     ExpansionPanelDetails,
     ExpansionPanelSummary,
+    FormControl,
     FormControlLabel,
+    InputLabel,
+    MenuItem,
+    Select,
     Switch
 } from "@material-ui/core/index";
 
@@ -20,41 +24,14 @@ import {TimePicker} from 'material-ui-pickers';
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import DayTimeSheet from "../../entity/DayTimeSheet";
 import User from "../../entity/User";
+import Style from "./style/AgendaEditModalStyle";
 
-
-function getModalStyle() {
-    return {
-        top: `50%`,
-        left: `50%`,
-        transform: `translate(-50%, -50%)`,
-    };
-}
-
-const styles = theme => ({
-    paper: {
-        position: "absolute",
-        width: theme.spacing.unit * 50,
-        backgroundColor: theme.palette.background.paper,
-        boxShadow: theme.shadows[5],
-        padding: theme.spacing.unit * 4,
-    },
-    snackbar: {
-        position: 'absolute',
-    },
-    snackbarClose: {
-        width: theme.spacing.unit * 4,
-        height: theme.spacing.unit * 4,
-    },
-    expansionPanelDetails: {
-        display: "flex",
-        width: "100%",
-        flexWrap: "wrap",
-        //alignItems: "center",
-    },
-    switchEnable: {
-        width: "100%"
-    }
-});
+const dayTypes = {
+    SICKNESS: "Nemoc",
+    FAMILY_MEMBER_CARE: "OČR",
+    BUSINESS_TRIP: "Služební cesta",
+    WORK_OUTSIDE_WORKSPACE: "Práce mimo pracoviště",
+};
 
 class AgendaEditModal extends React.Component {
 
@@ -244,6 +221,10 @@ class AgendaEditModal extends React.Component {
 
     }
 
+    handleChangeDayType = event => {
+        this.setState({dayType: event.target.value});
+    };
+
     _getMinDate(name) {
         if (name === "firstPartFrom") {
             return new Date(new Date().setHours(0, 0, 0, 0));
@@ -419,10 +400,22 @@ class AgendaEditModal extends React.Component {
                                 atd...</Typography>
                         </ExpansionPanelSummary>
                         <ExpansionPanelDetails>
-                            <Typography>
-                                Nunc vitae orci ultricies, auctor nunc in, volutpat nisl. Integer sit amet egestas
-                                eros, vitae egestas augue. Duis vel est augue.
-                            </Typography>
+                            <FormControl className={classes.formControl}>
+                                <InputLabel htmlFor="main-workstation-simple">{"Typ dne"}</InputLabel>
+                                <Select
+                                    value={this.state.dayType}
+                                    className={classes.select}
+                                    onChange={this.handleChangeDayType}
+                                    inputProps={{
+                                        name: 'dayType',
+                                        id: 'day-type',
+                                    }}
+                                >
+                                    {Object.keys(dayTypes).map(value => (
+                                        <MenuItem value={value}>{dayTypes[value]}</MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
                         </ExpansionPanelDetails>
                     </ExpansionPanel>
                 </DialogContent>
@@ -444,4 +437,4 @@ AgendaEditModal.propTypes = {
     handleOnSave: PropTypes.func.isRequired
 };
 
-export default withStyles(styles, {withTheme: true})(AgendaEditModal);
+export default withStyles(Style, {withTheme: true})(AgendaEditModal);

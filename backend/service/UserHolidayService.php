@@ -130,7 +130,7 @@ class UserHolidayService extends Service
                     $userHolidays[0]->getDate() . ".");
             }
 		    foreach ($userHolidays as $holiday){
-            	if(UserHoliday::findByUserIdAndDate($userHolidays->getUserId(), $userHolidays->getDate())->getDate() !== null){
+            	if(UserHoliday::findByUserIdAndDate($holiday->getUserId(), $holiday->getDate())->getDate() !== null){
 		            throw new Exception();
 	            }
                 UserHoliday::save($holiday);

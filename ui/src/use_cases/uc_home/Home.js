@@ -13,7 +13,14 @@ import User from "../../entity/User";
 class Home extends React.Component {
 
     state = {
-        loadFeedback: "ready"
+        loadFeedback: "ready",
+        timeSheets: null,
+        month: null,
+        year: null
+    };
+
+    onTimeSheetChange = (timeSheets, month, year) => {
+        this.setState({timeSheets: timeSheets, month: month, year: year});
     };
 
     _getContend() {
@@ -22,14 +29,14 @@ class Home extends React.Component {
         } else if (this.state.loadFeedback === "ready") {
             return (
                 <Grid className={this.props.classes.mainGrid} container={true} spacing={16}>
-                    <Grid item={true} xs={12} sm={3}>
+                    <Grid item={true} xs={12} sm={5}>
                         <UserDetail user={this.props.authenticatedUser} mode={"USER"}/>
                         <div className={this.props.classes.divider}/>
-                        <UserProject/>
+                        <UserProject timeSheet={this.state.timeSheets} user={this.props.authenticatedUser}/>
                     </Grid>
-                    <Grid item={true} xs={12} sm={9}>
+                    <Grid item={true} xs={12} sm={7}>
                         <AgendaTabs match={this.props.match} history={this.props.history}
-                                    user={this.props.authenticatedUser} mode={"USER"}/>
+                                    user={this.props.authenticatedUser} mode={"USER"} onTimeSheetChange={this.onTimeSheetChange}/>
                     </Grid>
                 </Grid>
             );

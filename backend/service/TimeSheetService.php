@@ -100,12 +100,8 @@ class TimeSheetService extends Service
      * @throws PermissionException
      * @throws UnauthorizedException
      */
-    public static function reGenerateForHoliday($userId, $holidays)
+    static function reGenerateForHoliday($userId, $holidays)
     {
-        if (!Permission::hasPermission(self::getUserFromContext(), "TIME_SHEET.GENERATE", $userId)) {
-            throw new PermissionException();
-        }
-
         foreach ($holidays as $holiday){
             $time = strtotime($holiday->getDate());
 

@@ -8,6 +8,7 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import {Grid} from "@material-ui/core/index";
 import User from "../../entity/User";
 import Calls from "../../Calls";
+import UserProject from "../../components/user_projects/UserProject";
 
 
 class SharedAgendaOverviewPage extends React.Component {
@@ -22,7 +23,10 @@ class SharedAgendaOverviewPage extends React.Component {
         return {
             user: null,
             userId: nextProps.match.params.userId,
-            loadFeedback: "loading"
+            loadFeedback: "loading",
+            timeSheets: null,
+            month: null,
+            year: null
         };
     }
 
@@ -50,6 +54,10 @@ class SharedAgendaOverviewPage extends React.Component {
 
     }
 
+    onTimeSheetChange = (timeSheets, month, year) => {
+        this.setState({timeSheets: timeSheets, month: month, year: year});
+    };
+
     _getContend() {
         if (this.state.loadFeedback === "loading") {
             return <LinearProgressCentered paper={false}/>
@@ -58,9 +66,11 @@ class SharedAgendaOverviewPage extends React.Component {
                 <Grid className={this.props.classes.mainGrid} container={true} spacing={16}>
                     <Grid item={true} xs={12} sm={3}>
                         <UserDetail user={this.state.user} mode={"USER"}/>
+                        <div className={this.props.classes.divider}/>
+                        <UserProject timeSheet={this.state.timeSheets} user={this.state.user}/>
                     </Grid>
                     <Grid item={true} xs={12} sm={9}>
-                        <AgendaTabs match={this.props.match} history={this.props.history} user={this.state.user} mode={"USER"}/>
+                        <AgendaTabs match={this.props.match} history={this.props.history} user={this.state.user} mode={"USER"} onTimeSheetChange={this.onTimeSheetChange}/>
                     </Grid>
                 </Grid>
             );
