@@ -120,74 +120,74 @@ class UserProject extends React.Component {
                             <TableRow>
                                 <TableCell
                                     className={this.props.classes.titleCell}>{"Celkem odpracováno hodin"}</TableCell>
-                                <TableCell className={this.props.classes.titleCell2}>{sum}</TableCell>
+                                <TableCell className={this.props.classes.titleCell2}>{(Math.round((sum)* 100) / 100)}</TableCell>
                                 {this.props.timeSheet.projectAssign.map((value) => {
                                     return <TableCell
-                                        className={this.props.classes.titleCell2}>{sum * Number(value.obligation)}</TableCell>
+                                        className={this.props.classes.titleCell2}>{(Math.round((sum * Number(value.obligation))* 100) / 100)}</TableCell>
                                 })}
                             </TableRow>
                             <TableRow>
                                 <TableCell
                                     className={this.props.classes.titleCell}>{"Fond prac. doby za státní svátky"}</TableCell>
-                                <TableCell className={this.props.classes.titleCell2}>{sumPublicHoliday}</TableCell>
+                                <TableCell className={this.props.classes.titleCell2}>{(Math.round((sumPublicHoliday)* 100) / 100)}</TableCell>
                                 {this.props.timeSheet.projectAssign.map((value) => {
                                     return <TableCell
-                                        className={this.props.classes.titleCell2}>{sumPublicHoliday * Number(value.obligation)}</TableCell>
+                                        className={this.props.classes.titleCell2}>{(Math.round((sumPublicHoliday * Number(value.obligation))* 100) / 100)}</TableCell>
                                 })}
                             </TableRow>
                             <TableRow>
                                 <TableCell
                                     className={this.props.classes.titleCell}>{"Celkem se státními svátky"}</TableCell>
                                 <TableCell
-                                    className={this.props.classes.titleCell2}>{sumPublicHoliday + sum}</TableCell>
+                                    className={this.props.classes.titleCell2}>{(Math.round((sumPublicHoliday + sum)* 100) / 100)}</TableCell>
                                 {this.props.timeSheet.projectAssign.map((value) => {
                                     return <TableCell
-                                        className={this.props.classes.titleCell2}>{(sumPublicHoliday + sum) * Number(value.obligation)}</TableCell>
+                                        className={this.props.classes.titleCell2}>{((Math.round((sumPublicHoliday + sum) * Number(value.obligation))* 100) / 100)}</TableCell>
                                 })}
                             </TableRow>
                             <TableRow>
                                 <TableCell
                                     className={this.props.classes.titleCell}>{"Dovolená přepočtená na hodiny"}</TableCell>
-                                <TableCell className={this.props.classes.titleCell2}>{sumHoliday}</TableCell>
+                                <TableCell className={this.props.classes.titleCell2}>{(Math.round((sumHoliday)* 100) / 100)}</TableCell>
                                 {this.props.timeSheet.projectAssign.map((value) => {
                                     return <TableCell
-                                        className={this.props.classes.titleCell2}>{sumHoliday * Number(value.obligation)}</TableCell>
+                                        className={this.props.classes.titleCell2}>{(Math.round((sumHoliday * Number(value.obligation))* 100) / 100)}</TableCell>
                                 })}
                             </TableRow>
                             <TableRow>
                                 <TableCell
                                     className={this.props.classes.titleCell}>{"Celkem se státními svátky i dovolenou"}</TableCell>
-                                <TableCell className={this.props.classes.titleCell2}>{(sumPublicHoliday + sumHoliday + sum)}</TableCell>
+                                <TableCell className={this.props.classes.titleCell2}>{(Math.round(((sumPublicHoliday + sumHoliday + sum))* 100) / 100)}</TableCell>
                                 {this.props.timeSheet.projectAssign.map((value) => {
                                     return <TableCell
-                                        className={this.props.classes.titleCell2}>{(sumPublicHoliday + sumHoliday + sum) * Number(value.obligation)}</TableCell>
+                                        className={this.props.classes.titleCell2}>{(Math.round(((sumPublicHoliday + sumHoliday + sum) * Number(value.obligation))* 100) / 100)}</TableCell>
                                 })}
                             </TableRow>
                             <TableRow>
                                 <TableCell
                                     className={this.props.classes.titleCell}>{"Nemocenská, OČR (počet dnů)"}</TableCell>
-                                <TableCell className={this.props.classes.titleCell2}>{sumFamilyMemberCareAndSickness}</TableCell>
+                                <TableCell className={this.props.classes.titleCell2}>{(Math.round((sumFamilyMemberCareAndSickness)* 100) / 100)}</TableCell>
                                 {this.props.timeSheet.projectAssign.map((value) => {
                                     return <TableCell
-                                        className={this.props.classes.titleCell2}>{sumFamilyMemberCareAndSickness * Number(value.obligation)}</TableCell>
+                                        className={this.props.classes.titleCell2}>{(Math.round((sumFamilyMemberCareAndSickness * Number(value.obligation))* 100) / 100)}</TableCell>
                                 })}
                             </TableRow>
                             <TableRow>
                                 <TableCell
                                     className={this.props.classes.titleCell}>{"Nemocenská, OČR (přepočteno na hodiny)"}</TableCell>
-                                <TableCell className={this.props.classes.titleCell2}>{(sumFamilyMemberCareAndSickness * userDay)}</TableCell>
+                                <TableCell className={this.props.classes.titleCell2}>{(Math.round(((sumFamilyMemberCareAndSickness * userDay))* 100) / 100)}</TableCell>
                                 {this.props.timeSheet.projectAssign.map((value) => {
                                     return <TableCell
-                                        className={this.props.classes.titleCell2}>{(sumFamilyMemberCareAndSickness * userDay) * Number(value.obligation)}</TableCell>
+                                        className={this.props.classes.titleCell2}>{(Math.round(((sumFamilyMemberCareAndSickness * userDay) * Number(value.obligation))* 100) / 100)}</TableCell>
                                 })}
                             </TableRow>
                             <TableRow>
                                 <TableCell
                                     className={this.props.classes.titleCell}>{"Celkem disponibilní fond bez přestávek"}</TableCell>
-                                <TableCell className={this.props.classes.titleCell2}>{sumFond}</TableCell>
+                                <TableCell className={this.props.classes.titleCell2}>{(Math.round((sumFond)* 100) / 100)}</TableCell>
                                 {this.props.timeSheet.projectAssign.map((value) => {
                                     return <TableCell
-                                        className={this.props.classes.titleCell2}>{sumFond * Number(value.obligation)}</TableCell>
+                                        className={this.props.classes.titleCell2}>{(Math.round((sumFond * Number(value.obligation))* 100) / 100)}</TableCell>
                                 })}
                             </TableRow>
                         </TableBody>
