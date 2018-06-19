@@ -18,6 +18,9 @@ const dayTypes = {
     PUBLIC_HOLIDAY: "Státní svátek",
     BUSINESS_TRIP: "Služební cesta",
     WORK_OUTSIDE_WORKSPACE: "Práce mimo pracoviště",
+    HOLIDAY_FIRST_PART_OF_DAY: "Dovolená",
+    HOLIDAY_SECOND_PART_OF_DAY: "Dovolená",
+    HOLIDAY_ALL_DAY: "Dovolená",
 };
 
 class Agenda extends React.Component {

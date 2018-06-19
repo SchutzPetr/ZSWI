@@ -14,6 +14,7 @@ const Styles = theme => ({
       padding: "0 5px"
     },
     titleCell:{
+        minWidth: 150,
         padding: "0 5px",
         border: "1px solid rgba(224, 224, 224, 1)"
     },
@@ -22,6 +23,8 @@ const Styles = theme => ({
         textAlign: "center"
     },
     titleCell2:{
+        minWidth: 25,
+        maxWidth: 30,
         padding: "0 5px",
         border: "1px solid rgba(224, 224, 224, 1)",
         textAlign: "center"
