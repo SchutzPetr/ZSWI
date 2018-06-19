@@ -25,6 +25,11 @@ class UserHolidaySettings implements JsonSerializable
     private $days = 0;
 
     /**
+     * @var int
+     */
+    private $exhausted = 0;
+
+    /**
      * @return int
      */
     public function getUserId()
@@ -73,6 +78,24 @@ class UserHolidaySettings implements JsonSerializable
     }
 
     /**
+     * @return int
+     */
+    public function getExhausted()
+    {
+        return $this->exhausted;
+    }
+
+    /**
+     * @param int $exhausted
+     */
+    public function setExhausted($exhausted)
+    {
+        $this->exhausted = $exhausted;
+    }
+
+
+
+    /**
      * @param $row
      */
     private function fill($row)
@@ -104,6 +127,34 @@ class UserHolidaySettings implements JsonSerializable
 
         }
         return $arrayOfUserHolidaySettings;
+    }
+
+    /**
+     * @param integer $user_id
+     * @param integer $year
+     * @param integer $value
+     */
+    static function increment($user_id, $year, $value){
+        $query = "UPDATE user_holiday_settings SET exhausted = exhausted + :value WHERE user_id = :user_id AND year = :year;";
+        $preparedQuery = Database::getConnection()->prepare($query);
+        $preparedQuery->bindValue(":user_id", $user_id);
+        $preparedQuery->bindValue(":year", $year);
+        $preparedQuery->bindValue(":value", $value);
+        $preparedQuery->execute();
+    }
+
+    /**
+     * @param integer $user_id
+     * @param integer $year
+     * @param integer $value
+     */
+    static function decrement($user_id, $year, $value){
+        $query = "UPDATE user_holiday_settings SET exhausted = exhausted - :value WHERE user_id = :user_id AND year = :year;";
+        $preparedQuery = Database::getConnection()->prepare($query);
+        $preparedQuery->bindValue(":user_id", $user_id);
+        $preparedQuery->bindValue(":year", $year);
+        $preparedQuery->bindValue(":value", $value);
+        $preparedQuery->execute();
     }
 
 

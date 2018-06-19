@@ -395,8 +395,8 @@ class User extends BaseModel
 
         $query = "INSERT IGNORE user_authentication (user_id, password) VALUE (:user_id, :password);";
         $preparedQuery = Database::getConnection()->prepare($query);
-        $preparedQuery->bindValue(":user_id", $user->getId());
-        $preparedQuery->bindValue(":password", password_hash(date("Ymd") . $user->getOrionLogin(), PASSWORD_DEFAULT));
+        $preparedQuery->bindValue(":user_id", $userInstance->getId());
+        $preparedQuery->bindValue(":password", password_hash(date("Ymd") . $userInstance->getOrionLogin(), PASSWORD_DEFAULT));
 
         $preparedQuery->execute();
 
