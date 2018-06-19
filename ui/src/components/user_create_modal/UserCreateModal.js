@@ -31,6 +31,17 @@ import {DatePicker} from "material-ui-pickers";
 import UserHolidaySettingsContent from "./components/UserHolidaySettingsContent";
 import UserHolidaySettings from "../../entity/UserHolidaySettings";
 
+
+function generateYears(user) {
+    let x = [];
+
+    for (let i = new Date().getFullYear(); i < 2050; i++) {
+        x.push(new UserHolidaySettings(user.id, i));
+    }
+
+    return x;
+}
+
 class UserCreateModal extends React.Component {
 
     constructor(props) {
@@ -45,7 +56,7 @@ class UserCreateModal extends React.Component {
             user: user,
             attendanceSchedules: user.attendanceSchedules,
             currentUserContract: user.currentUserContract,
-            userHolidaySettings: user.userHolidaySettings && user.userHolidaySettings.length > 0 ? user.userHolidaySettings : [new UserHolidaySettings(user.id, new Date().getFullYear())],
+            userHolidaySettings: user.userHolidaySettings && user.userHolidaySettings.length > 0 ? user.userHolidaySettings : generateYears(user),
             userHolidaySettingsYear: new Date().getFullYear(),
             loadFeedback: "ready",
         };
