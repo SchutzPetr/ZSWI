@@ -54,7 +54,7 @@ class UserDetail extends React.Component {
 
                                     Calls.getFileReportExcel({
                                         data: {
-                                            month: SharedVariable.TIMESHEAT_MONTH,
+                                            month: SharedVariable.TIMESHEAT_MONTH + 1,
                                             year: SharedVariable.TIMESHEAT_YEAR,
                                             users: [user.id]
                                         },
