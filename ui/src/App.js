@@ -44,11 +44,11 @@ class App extends React.Component {
         });
     }
 
-    onLoginDone(data, savePassworda) {
+    onLoginDone(data, savePasswords) {
         if (!data.token) {
             return;
         }
-        this.authUserByToken(data.token, savePassworda);
+        this.authUserByToken(data.token, savePasswords);
     }
 
     onLogout() {
@@ -57,7 +57,7 @@ class App extends React.Component {
         this.setState({authenticatedUser: null});
     }
 
-    authUserByToken(token, savePassworda = false) {
+    authUserByToken(token, savePasswords = false) {
         if (!token) {
             return;
         }
@@ -69,7 +69,7 @@ class App extends React.Component {
 
                     const user = User.map(userData.data);
                     Authentication.user = user;
-                    if (savePassworda) {
+                    if (savePasswords) {
                         Authentication.saveToken(token);
                     }
 
