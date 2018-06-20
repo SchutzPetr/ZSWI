@@ -105,24 +105,25 @@ class UserHoliday extends BaseModel
         return $instance;
     }
 
-	/***
-	 * @param int $id
-	 * @param string $date
-	 *
-	 * @return UserHoliday
-	 */
-    static function finByUserIdAndDate($id, $date){
-	    $query = "SELECT * FROM user_holiday WHERE user_id = :id AND date=:date;";
-	    $preparedQuery = Database::getConnection()->prepare($query);
-	    $preparedQuery->bindValue(":id", $id);
-	    $preparedQuery->bindValue(":date", $date);
-	    $preparedQuery->execute();
-	    $result = $preparedQuery->fetch();
+    /***
+     * @param int $id
+     * @param string $date
+     *
+     * @return UserHoliday
+     */
+    static function finByUserIdAndDate($id, $date)
+    {
+        $query = "SELECT * FROM user_holiday WHERE user_id = :id AND date=:date;";
+        $preparedQuery = Database::getConnection()->prepare($query);
+        $preparedQuery->bindValue(":id", $id);
+        $preparedQuery->bindValue(":date", $date);
+        $preparedQuery->execute();
+        $result = $preparedQuery->fetch();
 
-	    $instance = new self();
-	    $instance->fill($result);
+        $instance = new self();
+        $instance->fill($result);
 
-	    return $instance;
+        return $instance;
     }
 
     /**
@@ -138,7 +139,7 @@ class UserHoliday extends BaseModel
 
     /**
      * @param int $id
-     *  @return UserHoliday[]
+     * @return UserHoliday[]
      */
     static function findByUserId($id)
     {
@@ -146,17 +147,17 @@ class UserHoliday extends BaseModel
         $preparedQuery = Database::getConnection()->prepare($query);
         $preparedQuery->bindValue(":id", $id);
         $preparedQuery->execute();
-	    $result = $preparedQuery->fetchAll();
+        $result = $preparedQuery->fetchAll();
 
-	    $arrayOfUserHoliday = array();
+        $arrayOfUserHoliday = array();
 
-	    foreach ($result as $var) {
-		    $instance = new self();
-		    $instance->fill($var);
-		    $arrayOfUserHoliday[] = $instance;
+        foreach ($result as $var) {
+            $instance = new self();
+            $instance->fill($var);
+            $arrayOfUserHoliday[] = $instance;
 
-	    }
-	    return $arrayOfUserHoliday;
+        }
+        return $arrayOfUserHoliday;
 
     }
 
@@ -248,20 +249,20 @@ class UserHoliday extends BaseModel
     }
 
 
-	static function findByUserIdAndDate($id, $date)
-	{
-		$query = "SELECT * FROM user_holiday WHERE user_id = :id AND date =:date;";
-		$preparedQuery = Database::getConnection()->prepare($query);
-		$preparedQuery->bindValue(":id", $id);
-		$preparedQuery->bindValue(":date", $date);
-		$preparedQuery->execute();
-		$result = $preparedQuery->fetch();
+    static function findByUserIdAndDate($id, $date)
+    {
+        $query = "SELECT * FROM user_holiday WHERE user_id = :id AND date =:date;";
+        $preparedQuery = Database::getConnection()->prepare($query);
+        $preparedQuery->bindValue(":id", $id);
+        $preparedQuery->bindValue(":date", $date);
+        $preparedQuery->execute();
+        $result = $preparedQuery->fetch();
 
-		$instance = new self();
-		$instance->fill($result);
+        $instance = new self();
+        $instance->fill($result);
 
-		return $instance;
-	}
+        return $instance;
+    }
 
     /**
      * Specify data which should be serialized to JSON

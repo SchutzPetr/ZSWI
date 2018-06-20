@@ -5,13 +5,13 @@
  * Date: 14.06.2018
  * Time: 19:14
  */
-include_once (__DIR__."/../exception/PermissionException.php");
-include_once (__DIR__."/../util/Permission.php");
-include_once (__DIR__."/../util/Utils.php");
-include_once (__DIR__."/Service.php");
-include_once (__DIR__."/../model/UserSharingTimesheet.php");
-include_once (__DIR__."./../vendor/netresearch/jsonmapper/src/JsonMapper.php");
-include_once (__DIR__."/../vendor/netresearch/jsonmapper/src/JsonMapper/Exception.php");
+include_once(__DIR__ . "/../exception/PermissionException.php");
+include_once(__DIR__ . "/../util/Permission.php");
+include_once(__DIR__ . "/../util/Utils.php");
+include_once(__DIR__ . "/Service.php");
+include_once(__DIR__ . "/../model/UserSharingTimesheet.php");
+include_once(__DIR__ . "./../vendor/netresearch/jsonmapper/src/JsonMapper.php");
+include_once(__DIR__ . "/../vendor/netresearch/jsonmapper/src/JsonMapper/Exception.php");
 
 
 class ShareService extends Service
@@ -24,7 +24,7 @@ class ShareService extends Service
      */
     public static function findAllSharedWithUserId($userId)
     {
-        if(!Permission::hasPermission(self::getUserFromContext(), "USER_SHARING.FIND", $userId)){
+        if (!Permission::hasPermission(self::getUserFromContext(), "USER_SHARING.FIND", $userId)) {
             throw new PermissionException();
         }
 
@@ -40,11 +40,11 @@ class ShareService extends Service
      */
     public static function findAllSharedWithOthers($userId)
     {
-	    if(!Permission::hasPermission(self::getUserFromContext(), "USER_SHARING.FIND", $userId)){
-		    throw new PermissionException();
-	    }
+        if (!Permission::hasPermission(self::getUserFromContext(), "USER_SHARING.FIND", $userId)) {
+            throw new PermissionException();
+        }
 
-	    return UserSharingTimesheet::findAllSharedWithOthers($userId);
+        return UserSharingTimesheet::findAllSharedWithOthers($userId);
     }
 
     /**
@@ -55,11 +55,11 @@ class ShareService extends Service
      */
     public static function findAllAvailableUsers($userId)
     {
-	    if(!Permission::hasPermission(self::getUserFromContext(), "USER_SHARING.FIND", $userId)){
-		    throw new PermissionException();
-	    }
+        if (!Permission::hasPermission(self::getUserFromContext(), "USER_SHARING.FIND", $userId)) {
+            throw new PermissionException();
+        }
 
-	    return UserSharingTimesheet::findAllAvailableUsers($userId);
+        return UserSharingTimesheet::findAllAvailableUsers($userId);
     }
 
     /**
@@ -68,8 +68,9 @@ class ShareService extends Service
      * @throws PermissionException
      * @throws UnauthorizedException
      */
-    public static function createShare($fromUserId, $toUserId){
-        if(!Permission::hasPermission(self::getUserFromContext(), "USER_SHARING.CREATE", $fromUserId)){
+    public static function createShare($fromUserId, $toUserId)
+    {
+        if (!Permission::hasPermission(self::getUserFromContext(), "USER_SHARING.CREATE", $fromUserId)) {
             throw new PermissionException();
         }
 
@@ -82,8 +83,9 @@ class ShareService extends Service
      * @throws PermissionException
      * @throws UnauthorizedException
      */
-    public static function delete($fromUserId, $toUserId){
-        if(!Permission::hasPermission(self::getUserFromContext(), "USER_SHARING.DELETE", $fromUserId)){
+    public static function delete($fromUserId, $toUserId)
+    {
+        if (!Permission::hasPermission(self::getUserFromContext(), "USER_SHARING.DELETE", $fromUserId)) {
             throw new PermissionException();
         }
 
@@ -95,7 +97,8 @@ class ShareService extends Service
      * @param integer $toUserId
      * @return SimpleUser
      */
-    public static function findShareByFromIdAndToId($fromUserId, $toUserId){
+    public static function findShareByFromIdAndToId($fromUserId, $toUserId)
+    {
         /*if(!Permission::hasPermission(self::getUserFromContext(), "USER_SHARING.DELETE", $fromUserId)){
             throw new PermissionException();
         }*///Není potřeba ->m pouze vnitřní funkce

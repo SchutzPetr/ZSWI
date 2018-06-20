@@ -169,7 +169,7 @@ class SimpleUser extends BaseModel
         $preparedQuery->execute();
         $result = $preparedQuery->fetch();
 
-        if(empty($result)){
+        if (empty($result)) {
             return null;
         }
 
@@ -249,15 +249,15 @@ class SimpleUser extends BaseModel
      */
     static function findAllByIds($ids)
     {
-        if(empty($ids)){
+        if (empty($ids)) {
             return array();
         }
         $clause = implode(',', array_fill(0, count($ids), '?'));
 
-        $preparedQuery = Database::getConnection()->prepare("SELECT * FROM user WHERE id IN ("  . $clause . ");");
+        $preparedQuery = Database::getConnection()->prepare("SELECT * FROM user WHERE id IN (" . $clause . ");");
 
         for ($i = 1; $i <= sizeof($ids); $i++) {
-            $preparedQuery->bindParam($i, $ids[$i-1]);
+            $preparedQuery->bindParam($i, $ids[$i - 1]);
         }
 
         $preparedQuery->execute();

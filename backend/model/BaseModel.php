@@ -6,7 +6,6 @@
  * Date: 11.05.2018
  * Time: 21:58
  */
-
 abstract class BaseModel implements JsonSerializable
 {
 

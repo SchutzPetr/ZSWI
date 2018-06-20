@@ -94,7 +94,6 @@ class UserHolidaySettings implements JsonSerializable
     }
 
 
-
     /**
      * @param $row
      */
@@ -134,7 +133,8 @@ class UserHolidaySettings implements JsonSerializable
      * @param integer $year
      * @param integer $value
      */
-    static function increment($user_id, $year, $value){
+    static function increment($user_id, $year, $value)
+    {
         $query = "UPDATE user_holiday_settings SET exhausted = exhausted + :value WHERE user_id = :user_id AND year = :year;";
         $preparedQuery = Database::getConnection()->prepare($query);
         $preparedQuery->bindValue(":user_id", $user_id);
@@ -148,7 +148,8 @@ class UserHolidaySettings implements JsonSerializable
      * @param integer $year
      * @param integer $value
      */
-    static function decrement($user_id, $year, $value){
+    static function decrement($user_id, $year, $value)
+    {
         $query = "UPDATE user_holiday_settings SET exhausted = exhausted - :value WHERE user_id = :user_id AND year = :year;";
         $preparedQuery = Database::getConnection()->prepare($query);
         $preparedQuery->bindValue(":user_id", $user_id);
@@ -171,7 +172,6 @@ class UserHolidaySettings implements JsonSerializable
 
         $preparedQuery->execute();
     }
-
 
 
     /**

@@ -7,7 +7,7 @@ include_once(__DIR__ . "/../database/Database.php");
 include_once(__DIR__ . "/Service.php");
 include_once(__DIR__ . "/UserService.php");
 include_once(__DIR__ . "/../model/Attendance.php");
-include_once (__DIR__."/../model/User.php");
+include_once(__DIR__ . "/../model/User.php");
 include_once(__DIR__ . "/../vendor/netresearch/jsonmapper/src/JsonMapper.php");
 include_once(__DIR__ . "/../vendor/netresearch/jsonmapper/src/JsonMapper/Exception.php");
 
@@ -25,26 +25,26 @@ class AuthService extends Service
 
         $query = "SELECT user_id, password, token, valid FROM user_authentication WHERE user_id = (SELECT id FROM user WHERE orion_login = :login) LIMIT 1;";
 
-		$preparedQuery = Database::getConnection()->prepare($query);
-		$preparedQuery->bindValue(":login", $login);
-		$preparedQuery->execute();
-		$result = $preparedQuery->fetch();
+        $preparedQuery = Database::getConnection()->prepare($query);
+        $preparedQuery->bindValue(":login", $login);
+        $preparedQuery->execute();
+        $result = $preparedQuery->fetch();
 
-		if(empty($result)){
+        if (empty($result)) {
             throw new UnauthorizedException();
         }
 
-		if(!password_verify($password,$result["password"])){
-		    throw new UnauthorizedException();
+        if (!password_verify($password, $result["password"])) {
+            throw new UnauthorizedException();
         }
 
         $db_user_id = $result["user_id"];
         $db_token = $result["token"];
         $db_valid = $result["valid"];
 
-        if(is_null($db_token) || strtotime($db_valid) <= strtotime("now") ){
+        if (is_null($db_token) || strtotime($db_valid) <= strtotime("now")) {
             $token = urlencode(password_hash(self::generateUUID(), PASSWORD_DEFAULT));
-            $valid = date("Y-m-d",strtotime("+7 day"));
+            $valid = date("Y-m-d", strtotime("+7 day"));
 
             $query = "UPDATE user_authentication SET token = :token, valid = :valid WHERE user_id = :user_id;";
             $preparedQuery = Database::getConnection()->prepare($query);
@@ -55,7 +55,7 @@ class AuthService extends Service
             $preparedQuery->execute();
 
             return $token;
-        }else{
+        } else {
             return $db_token;
         }
     }
@@ -66,8 +66,9 @@ class AuthService extends Service
      * @throws UnauthorizedException
      * @throws PermissionException
      */
-    public static function findUserByToken($token){
-        if(Service::getTokenFromHeader() !== $token){
+    public static function findUserByToken($token)
+    {
+        if (Service::getTokenFromHeader() !== $token) {
             throw new PermissionException();
         }
         $query = "SELECT user_id FROM user_authentication WHERE token LIKE :token LIMIT 1;";
@@ -76,11 +77,11 @@ class AuthService extends Service
         $preparedQuery->execute();
         $result = $preparedQuery->fetch();
 
-        if(empty($result)){
+        if (empty($result)) {
             throw new UnauthorizedException();
         }
         $user = User::findById(intval($result["user_id"]));
-        if(is_null($user)){
+        if (is_null($user)) {
             throw new UnauthorizedException();
         }
         return $user;
@@ -92,7 +93,8 @@ class AuthService extends Service
      * @throws UnauthorizedException
      * @throws PermissionException
      */
-    public static function authUserByToken($token){
+    public static function authUserByToken($token)
+    {
         return self::findUserByToken($token);
     }
 

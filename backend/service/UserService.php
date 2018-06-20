@@ -7,14 +7,14 @@
  */
 
 
-include_once (__DIR__."/../exception/PermissionException.php");
-include_once (__DIR__."/../util/Permission.php");
-include_once (__DIR__."/Service.php");
-include_once (__DIR__."/AttendanceService.php");
-include_once (__DIR__."/UserContractService.php");
-include_once (__DIR__."/../model/User.php");
-include_once (__DIR__."/../vendor/netresearch/jsonmapper/src/JsonMapper.php");
-include_once (__DIR__."/../vendor/netresearch/jsonmapper/src/JsonMapper/Exception.php");
+include_once(__DIR__ . "/../exception/PermissionException.php");
+include_once(__DIR__ . "/../util/Permission.php");
+include_once(__DIR__ . "/Service.php");
+include_once(__DIR__ . "/AttendanceService.php");
+include_once(__DIR__ . "/UserContractService.php");
+include_once(__DIR__ . "/../model/User.php");
+include_once(__DIR__ . "/../vendor/netresearch/jsonmapper/src/JsonMapper.php");
+include_once(__DIR__ . "/../vendor/netresearch/jsonmapper/src/JsonMapper/Exception.php");
 
 class UserService extends Service
 {
@@ -24,8 +24,9 @@ class UserService extends Service
      * @throws PermissionException
      * @throws UnauthorizedException
      */
-    public static function findById($id){
-        if(!Permission::hasPermission(self::getUserFromContext(), "USER.FIND", $id)){
+    public static function findById($id)
+    {
+        if (!Permission::hasPermission(self::getUserFromContext(), "USER.FIND", $id)) {
             throw new PermissionException();
         }
 
@@ -38,8 +39,9 @@ class UserService extends Service
      * @throws PermissionException
      * @throws UnauthorizedException
      */
-    public static function findByLogin($login){
-        if(!Permission::hasPermission(self::getUserFromContext(), "USER.FIND")){
+    public static function findByLogin($login)
+    {
+        if (!Permission::hasPermission(self::getUserFromContext(), "USER.FIND")) {
             throw new PermissionException();
         }
 
@@ -52,8 +54,9 @@ class UserService extends Service
      * @throws PermissionException
      * @throws UnauthorizedException
      */
-    public static function findByProjectId($id){
-        if(!Permission::hasPermission(self::getUserFromContext(), "USER.FIND")){
+    public static function findByProjectId($id)
+    {
+        if (!Permission::hasPermission(self::getUserFromContext(), "USER.FIND")) {
             throw new PermissionException();
         }
 
@@ -65,8 +68,9 @@ class UserService extends Service
      * @throws PermissionException
      * @throws UnauthorizedException
      */
-    public static function findAll(){
-        if(!Permission::hasPermission(self::getUserFromContext(), "USER.FIND")){
+    public static function findAll()
+    {
+        if (!Permission::hasPermission(self::getUserFromContext(), "USER.FIND")) {
             throw new PermissionException();
         }
 
@@ -78,8 +82,23 @@ class UserService extends Service
      * @throws PermissionException
      * @throws UnauthorizedException
      */
-    public static function create($user){
-        if(!Permission::hasPermission(self::getUserFromContext(), "USER.CREATE")){
+    public static function delete($user)
+    {
+        if (!Permission::hasPermission(self::getUserFromContext(), "USER.DELETE")) {
+            throw new PermissionException();
+        }
+
+        User::delete($user);
+    }
+
+    /**
+     * @param $user User
+     * @throws PermissionException
+     * @throws UnauthorizedException
+     */
+    public static function create($user)
+    {
+        if (!Permission::hasPermission(self::getUserFromContext(), "USER.CREATE")) {
             throw new PermissionException();
         }
 
@@ -97,8 +116,9 @@ class UserService extends Service
      * @throws PermissionException
      * @throws UnauthorizedException
      */
-    public static function update($user){
-        if(!Permission::hasPermission(self::getUserFromContext(), "USER.UPDATE")){
+    public static function update($user)
+    {
+        if (!Permission::hasPermission(self::getUserFromContext(), "USER.UPDATE")) {
             throw new PermissionException();
         }
 
@@ -107,10 +127,10 @@ class UserService extends Service
             $var->setUserId($updatedUser->getId());
         }
         AttendanceService::update($user->getAttendanceSchedules());
-        if($user->getCurrentUserContract()->getUserId() === -1){
+        if ($user->getCurrentUserContract()->getUserId() === -1) {
             $user->getCurrentUserContract()->setUserId($updatedUser->getId());
             UserContractService::create($user->getCurrentUserContract());
-        }else{
+        } else {
             UserContractService::update($user->getCurrentUserContract());
         }
         foreach ($user->getFutureUserContract() as $contract) {
@@ -124,7 +144,8 @@ class UserService extends Service
      * @return User|object
      * @throws JsonMapper_Exception
      */
-    public static function jsonUserDecode($jsonUser){
+    public static function jsonUserDecode($jsonUser)
+    {
         $mapper = new JsonMapper();
         $user = $mapper->map(json_decode($jsonUser), new User());
         return $user;

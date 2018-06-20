@@ -130,7 +130,7 @@ class AttendanceService extends Service
         if (is_array($attendance)) {
             $min = $attendance[1];
             foreach ($attendance as $item) {
-                if(strtotime($min->getActiveFrom() > strftime($item->getActiveFrom()))){
+                if (strtotime($min->getActiveFrom() > strftime($item->getActiveFrom()))) {
                     $min = $item;
                 }
                 Attendance::save($item);

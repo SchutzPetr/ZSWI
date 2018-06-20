@@ -127,7 +127,8 @@ class UserProjectAssignment implements JsonSerializable
      * @param $workStation integer
      * @return UserProjectAssignment[]
      */
-    static function findAllUserIdActiveFromWorkStation($userId, $activeFrom, $workStation){
+    static function findAllUserIdActiveFromWorkStation($userId, $activeFrom, $workStation)
+    {
         $query = "SELECT * FROM user_assigned_to_project WHERE user_id = :user_id AND user_id = :active_from AND user_id = :work_station;";
         $preparedQuery = Database::getConnection()->prepare($query);
         $preparedQuery->bindValue(":user_id", $userId);

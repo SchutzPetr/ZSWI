@@ -6,12 +6,12 @@
  * Time: 0:13
  */
 
-include_once (__DIR__."../exception/PermissionException.php");
-include_once (__DIR__."../util/Permission.php");
-include_once (__DIR__."/Service.php");
-include_once (__DIR__."../model/Project.php");
-include_once (__DIR__."./../vendor/netresearch/jsonmapper/src/JsonMapper.php");
-include_once (__DIR__."/../vendor/netresearch/jsonmapper/src/JsonMapper/Exception.php");
+include_once(__DIR__ . "../exception/PermissionException.php");
+include_once(__DIR__ . "../util/Permission.php");
+include_once(__DIR__ . "/Service.php");
+include_once(__DIR__ . "../model/Project.php");
+include_once(__DIR__ . "./../vendor/netresearch/jsonmapper/src/JsonMapper.php");
+include_once(__DIR__ . "/../vendor/netresearch/jsonmapper/src/JsonMapper/Exception.php");
 
 class UserProjectAssignmentService extends Service
 {
@@ -21,8 +21,9 @@ class UserProjectAssignmentService extends Service
      * @throws PermissionException
      * @throws UnauthorizedException
      */
-    public static function create($project){
-        if(!Permission::hasPermission(self::getUserFromContext(), "PROJECT.CREATE")){
+    public static function create($project)
+    {
+        if (!Permission::hasPermission(self::getUserFromContext(), "PROJECT.CREATE")) {
             throw new PermissionException();
         }
 
@@ -34,8 +35,9 @@ class UserProjectAssignmentService extends Service
      * @throws PermissionException
      * @throws UnauthorizedException
      */
-    public static function update($project){
-        if(!Permission::hasPermission(self::getUserFromContext(), "PROJECT.UPDATE")){
+    public static function update($project)
+    {
+        if (!Permission::hasPermission(self::getUserFromContext(), "PROJECT.UPDATE")) {
             throw new PermissionException();
         }
 

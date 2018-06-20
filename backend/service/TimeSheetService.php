@@ -15,7 +15,7 @@ include_once(__DIR__ . "/AttendanceService.php");
 include_once(__DIR__ . "/ProjectAssignService.php");
 include_once(__DIR__ . "/../model/DayTimeSheet.php");
 include_once(__DIR__ . "/../vendor/netresearch/jsonmapper/src/JsonMapper.php");
-include_once (__DIR__."/../vendor/netresearch/jsonmapper/src/JsonMapper/Exception.php");
+include_once(__DIR__ . "/../vendor/netresearch/jsonmapper/src/JsonMapper/Exception.php");
 include_once(__DIR__ . "/../api/v1/dto/TimeSheet.php");
 
 class TimeSheetService extends Service
@@ -57,7 +57,7 @@ class TimeSheetService extends Service
             }
             return self::findAllByUserIdAndYearAndMonth($userId, $month, $year, $array);
         }
-		$timeSheet->setProjectAssign(ProjectAssignService::findByUserIdAllActiveInMonthAndYear($userId, $month, $year));
+        $timeSheet->setProjectAssign(ProjectAssignService::findByUserIdAllActiveInMonthAndYear($userId, $month, $year));
         $timeSheet->setDayTimeSheets($dayTimeSheets);
         $timeSheet->setPublicHolidays(HolidayService::findAllByMonthAndYear($year, $month));
 
@@ -102,7 +102,7 @@ class TimeSheetService extends Service
      */
     static function reGenerateForHoliday($userId, $holidays)
     {
-        foreach ($holidays as $holiday){
+        foreach ($holidays as $holiday) {
             $time = strtotime($holiday->getDate());
 
             $year = date('Y', $time);
@@ -135,7 +135,7 @@ class TimeSheetService extends Service
         $publicHoliday = HolidayService::findByYearMonthAndDay($year, $month, $day);
 
         $dayTimeSheet = DayTimeSheet::findByUserIdAndDate($userId, $day, $month, $year);
-        if($dayTimeSheet === null){
+        if ($dayTimeSheet === null) {
             $dayTimeSheet = new DayTimeSheet();
         }
         $dayTimeSheet->setDate(sprintf("%'.04d-%'.02d-%'.02d", $year, $month, $day));
@@ -148,7 +148,7 @@ class TimeSheetService extends Service
             $dayTimeSheet->setSecondPartFrom(null);
             $dayTimeSheet->setSecondPartTo(null);
 
-            if($publicHoliday){
+            if ($publicHoliday) {
                 $dayTimeSheet->setDayType("PUBLIC_HOLIDAY");
             }
 
@@ -213,10 +213,10 @@ class TimeSheetService extends Service
         }
 
         $oldDTS = DayTimeSheet::findByUserIdAndDateString($dayTimeSheet->getUserId(), DateTime::createFromFormat("Y-m-d", $dayTimeSheet->getDate()));
-        if((strpos($oldDTS->getDayType(), "HOLIDAY") !== false && strpos($oldDTS->getDayType(), "PUBLIC_HOLIDAY") === false)
-               && strpos($dayTimeSheet->getDayType(), "HOLIDAY") === false ){
-        	$userHoliday = UserHoliday::findByUserIdAndDate($dayTimeSheet->getUserId(), $dayTimeSheet->getDate());
-        	UserHolidayService::deleteById($userHoliday->getId());
+        if ((strpos($oldDTS->getDayType(), "HOLIDAY") !== false && strpos($oldDTS->getDayType(), "PUBLIC_HOLIDAY") === false)
+            && strpos($dayTimeSheet->getDayType(), "HOLIDAY") === false) {
+            $userHoliday = UserHoliday::findByUserIdAndDate($dayTimeSheet->getUserId(), $dayTimeSheet->getDate());
+            UserHolidayService::deleteById($userHoliday->getId());
         }
         DayTimeSheet::save($dayTimeSheet);
     }

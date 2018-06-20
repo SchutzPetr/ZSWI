@@ -38,24 +38,26 @@ class ProjectAssign implements JsonSerializable
      */
     private $project = "";
 
-	/***
-	 * @var SimpleUser| null
-	 */
-	private $simpleUser = "";
+    /***
+     * @var SimpleUser| null
+     */
+    private $simpleUser = "";
 
-	/**
-	 * @return null|SimpleUser
-	 */
-	public function getSimpleUser() {
-		return $this->simpleUser;
-	}
+    /**
+     * @return null|SimpleUser
+     */
+    public function getSimpleUser()
+    {
+        return $this->simpleUser;
+    }
 
-	/**
-	 * @param null|SimpleUser $simpleUser
-	 */
-	public function setSimpleUser( $simpleUser ) {
-		$this->simpleUser = $simpleUser;
-	}
+    /**
+     * @param null|SimpleUser $simpleUser
+     */
+    public function setSimpleUser($simpleUser)
+    {
+        $this->simpleUser = $simpleUser;
+    }
 
     /**
      * @return string
@@ -202,28 +204,29 @@ class ProjectAssign implements JsonSerializable
         return $arrayOfProjects;
     }
 
-	/***
-	 * @param int $projectId
-	 *
-	 * @return ProjectAssign [] array
-	 */
-    public static function findAllByProjectId($projectId){
-	    $query = 'SELECT * FROM user_assigned_to_project WHERE project_id=:project_id;';
-	    $preparedQuery = Database::getConnection()->prepare($query);
-	    $preparedQuery->bindValue(":project_id", $projectId);
-	    $preparedQuery->execute();
-	    $result = $preparedQuery->fetchAll();
-	    $arrayOfProjects = array();
+    /***
+     * @param int $projectId
+     *
+     * @return ProjectAssign [] array
+     */
+    public static function findAllByProjectId($projectId)
+    {
+        $query = 'SELECT * FROM user_assigned_to_project WHERE project_id=:project_id;';
+        $preparedQuery = Database::getConnection()->prepare($query);
+        $preparedQuery->bindValue(":project_id", $projectId);
+        $preparedQuery->execute();
+        $result = $preparedQuery->fetchAll();
+        $arrayOfProjects = array();
 
-	    foreach ($result as $var) {
-		    $instance = new self();
+        foreach ($result as $var) {
+            $instance = new self();
 
-		    $instance->fill($var);
-		    $instance->addProject(Project::findById($instance->getProjectId()));
-		    $arrayOfProjects[] = $instance;
-	    }
+            $instance->fill($var);
+            $instance->addProject(Project::findById($instance->getProjectId()));
+            $arrayOfProjects[] = $instance;
+        }
 
-	    return $arrayOfProjects;
+        return $arrayOfProjects;
     }
 
 
