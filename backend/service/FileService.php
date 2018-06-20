@@ -175,19 +175,19 @@ class FileService extends Service
 				// Вставляем заголовок в "F1"
 				$sheet->setCellValueByColumnAndRow(array_search('F', $alphabet), $startLine, $user->getName()." ".$user->getLastName());//$user_data['name']
 				// Объединяем ячейки "F1:K1"
-				$document->getActiveSheet()->mergeCellsByColumnAndRow(array_search('F', $alphabet), $startLine, array_search('K', $alphabet), $startLine);
+				$document->getActiveSheet()->mergeCellsByColumnAndRow(array_search('F', $alphabet), $startLine, array_search('I', $alphabet), $startLine);
 				// Вставляем заголовок в "L1"
-				$sheet->setCellValueByColumnAndRow(array_search('L', $alphabet), $startLine, "FAV");
+				$sheet->setCellValueByColumnAndRow(array_search('J', $alphabet), $startLine, "FAV");
 				// Объединяем ячейки "L1:O1"
-				$document->getActiveSheet()->mergeCellsByColumnAndRow(array_search('L', $alphabet), $startLine, array_search('O', $alphabet), $startLine);
+				$document->getActiveSheet()->mergeCellsByColumnAndRow(array_search('J', $alphabet), $startLine, array_search('K', $alphabet), $startLine);
 				// Вставляем заголовок в "P1"
-				$sheet->setCellValueByColumnAndRow(array_search('P', $alphabet), $startLine, "KIV");
+				$sheet->setCellValueByColumnAndRow(array_search('L', $alphabet), $startLine, "KIV");
 				// Объединяем ячейки "P1:Q1"
-				$document->getActiveSheet()->mergeCellsByColumnAndRow(array_search('P', $alphabet), $startLine,
-					array_search('Q', $alphabet), $startLine);
+				$document->getActiveSheet()->mergeCellsByColumnAndRow(array_search('L', $alphabet), $startLine,
+					array_search('N', $alphabet), $startLine);
 				//// Формируем шапку
 
-				for($i = 0; $i<array_search('R', $alphabet); $i++) {
+				for($i = 0; $i<array_search('O', $alphabet); $i++) {
 					// Красим ячейку
 					$sheet->getStyleByColumnAndRow($i, 1)
 					      ->getFill()
@@ -209,17 +209,17 @@ class FileService extends Service
 				$sheet->setCellValueByColumnAndRow(array_search('J', $alphabet), $startLine, 'Druhá část');
 				// Объединяем ячейки "J2:L2"
 				$document->getActiveSheet()->mergeCellsByColumnAndRow(array_search('J', $alphabet), $startLine, array_search('L', $alphabet), $startLine);
-				$sheet->setCellValueByColumnAndRow(array_search('J', $alphabet), $startLine, 'Třetí část');
+//				$sheet->setCellValueByColumnAndRow(array_search('J', $alphabet), $startLine, 'Třetí část');
 				// Объединяем ячейки "M2:O2"
-				$document->getActiveSheet()->mergeCellsByColumnAndRow(array_search('M', $alphabet), $startLine, array_search('O', $alphabet), $startLine);
-				$sheet->setCellValueByColumnAndRow(array_search('P', $alphabet), $startLine, 'Nemoc, OČR, Dovolená, Státní svátek');
-				$document->getActiveSheet()->mergeCellsByColumnAndRow(array_search('P', $alphabet), $startLine, array_search('P', $alphabet), $startLine+1);
-				$sheet->setCellValueByColumnAndRow(array_search('Q', $alphabet), $startLine, 'Služ. cesta, Práce mimo pracoviště');
-				$document->getActiveSheet()->mergeCellsByColumnAndRow(array_search('Q', $alphabet), $startLine, array_search('Q', $alphabet), $startLine+1);
+//				$document->getActiveSheet()->mergeCellsByColumnAndRow(array_search('M', $alphabet), $startLine, array_search('O', $alphabet), $startLine);
+				$sheet->setCellValueByColumnAndRow(array_search('M', $alphabet), $startLine, 'Nemoc, OČR, Dovolená, Státní svátek');
+				$document->getActiveSheet()->mergeCellsByColumnAndRow(array_search('M', $alphabet), $startLine, array_search('M', $alphabet), $startLine+1);
+				$sheet->setCellValueByColumnAndRow(array_search('N', $alphabet), $startLine, 'Služ. cesta, Práce mimo pracoviště');
+				$document->getActiveSheet()->mergeCellsByColumnAndRow(array_search('N', $alphabet), $startLine, array_search('N', $alphabet), $startLine+1);
 
 				// Перекидываем указатель на следующую строку
 				$startLine++;
-				for( $i = 3; $i<array_search('O', $alphabet); $i+=3){
+				for( $i = 3; $i<array_search('L', $alphabet); $i+=3){
 					$sheet->setCellValueByColumnAndRow($i, $startLine, 'Od');
 					$sheet->setCellValueByColumnAndRow($i+1, $startLine, 'Do');
 					$sheet->setCellValueByColumnAndRow($i+2, $startLine, 'T');
@@ -232,116 +232,120 @@ class FileService extends Service
 
 				for($day = 1; $day<$lastDayInMonth; $day++){
 					$d = mktime(0, 0, 0, $month, $day, $year);
-					$sheet->setCellValueByColumnAndRow(array_search('A', $alphabet), $startLine+$day, date("d.m.Y", $d));
+					if(date('w', strtotime($d))>0 && date('w', strtotime($d))<6){
+						$sheet->setCellValueByColumnAndRow(array_search('A', $alphabet), $startLine+$day, date("d.m.Y", $d));
 
-					$arrayForOneLine = DayTimeSheet::findByUserIdAndDate($user->getId(), $day, $month, $year);
+						$arrayForOneLine = DayTimeSheet::findByUserIdAndDate($user->getId(), $day, $month, $year);
 
-					if($arrayForOneLine != null) {
-						$sheet->setCellValueByColumnAndRow(array_search('B', $alphabet), $startLine+$day, $arrayForOneLine->getDate());
-						if($arrayForOneLine->getDate()!= null || $arrayForOneLine->getDate()!= ""){
-							$sheet->setCellValueByColumnAndRow(array_search('C', $alphabet), $startLine+$day, date('w', strtotime($arrayForOneLine->getDate())));
-						}
-
-						if($arrayForOneLine->getFirstPartFrom() != null){
-							//first part
-							$sheet->setCellValueByColumnAndRow(array_search('D', $alphabet), $startLine+$day, $arrayForOneLine->getFirstPartFrom());
-							$sheet->setCellValueByColumnAndRow(array_search('E', $alphabet), $startLine+$day, $arrayForOneLine->getFirstPartTo());
-							$timestamp1 = strtotime($arrayForOneLine->getFirstPartFrom());
-							$timestamp2 = strtotime($arrayForOneLine->getFirstPartTo());
-							$time = (date('H', $timestamp2)-date('H', $timestamp1));
-							$time += (date('i', $timestamp2) - date('i', $timestamp1))/60;
-
-							if(strpos($arrayForOneLine->getDayType(), "SICKNESS") !== false
-							   || strpos($arrayForOneLine->getDayType(), "FAMILY_MEMBER_CARE") !== false
-//					   || strpos($arrayForOneLine->getDayType(), "tek") !== false
-							){
-								$sickHours+=$time;
-							}else if(strpos($arrayForOneLine->getDayType(), "HOLIDAY") !== false){
-							    if(strpos($arrayForOneLine->getDayType(), "PUBLIC_HOLIDAY") === false){
-								    $holidaysHours +=$time;
-                                }
-							}else{
-								$workingHourInMonth+=$time;
+						if($arrayForOneLine != null) {
+							$sheet->setCellValueByColumnAndRow(array_search('B', $alphabet), $startLine+$day, $arrayForOneLine->getDate());
+							if($arrayForOneLine->getDate()!= null || $arrayForOneLine->getDate()!= ""){
+								$sheet->setCellValueByColumnAndRow(array_search('C', $alphabet), $startLine+$day, date('w', strtotime($arrayForOneLine->getDate())));
 							}
-							$sheet->setCellValueByColumnAndRow(array_search('F', $alphabet), $startLine+$day, $time);
 
-							//pausa
-							if($arrayForOneLine->getSecondPartFrom() != null){
-								$sheet->setCellValueByColumnAndRow(array_search('G', $alphabet), $startLine+$day, $arrayForOneLine->getFirstPartTo());
-								$sheet->setCellValueByColumnAndRow(array_search('H', $alphabet), $startLine+$day, $arrayForOneLine->getSecondPartFrom());
-								$timestamp1 = strtotime($arrayForOneLine->getFirstPartTo());
-								$timestamp2 = strtotime($arrayForOneLine->getSecondPartFrom());
+							if($arrayForOneLine->getFirstPartFrom() != null){
+								//first part
+								$sheet->setCellValueByColumnAndRow(array_search('D', $alphabet), $startLine+$day, date('H:i',strtotime($arrayForOneLine->getFirstPartFrom())));
+								$sheet->setCellValueByColumnAndRow(array_search('E', $alphabet), $startLine+$day, date('H:i',strtotime($arrayForOneLine->getFirstPartTo())));
+								$timestamp1 = strtotime($arrayForOneLine->getFirstPartFrom());
+								$timestamp2 = strtotime($arrayForOneLine->getFirstPartTo());
 								$time = (date('H', $timestamp2)-date('H', $timestamp1));
 								$time += (date('i', $timestamp2) - date('i', $timestamp1))/60;
 
-								$sheet->setCellValueByColumnAndRow(array_search('I', $alphabet), $startLine+$day, $time);
+								if(strpos($arrayForOneLine->getDayType(), "SICKNESS") !== false
+								   || strpos($arrayForOneLine->getDayType(), "FAMILY_MEMBER_CARE") !== false
+//					   || strpos($arrayForOneLine->getDayType(), "tek") !== false
+								){
+									$sickHours+=$time;
+								}else if(strpos($arrayForOneLine->getDayType(), "HOLIDAY") !== false){
+									if(strpos($arrayForOneLine->getDayType(), "PUBLIC_HOLIDAY") === false){
+										$holidaysHours +=$time;
+									}
+								}else{
+									$workingHourInMonth+=$time;
+								}
+								$sheet->setCellValueByColumnAndRow(array_search('F', $alphabet), $startLine+$day, $time);
+
+								//pausa
+								if($arrayForOneLine->getSecondPartFrom() != null){
+									$sheet->setCellValueByColumnAndRow(array_search('G', $alphabet), $startLine+$day, date('H:i',strtotime($arrayForOneLine->getFirstPartTo())));
+									$sheet->setCellValueByColumnAndRow(array_search('H', $alphabet), $startLine+$day, date('H:i',strtotime($arrayForOneLine->getSecondPartFrom())));
+									$timestamp1 = strtotime($arrayForOneLine->getFirstPartTo());
+									$timestamp2 = strtotime($arrayForOneLine->getSecondPartFrom());
+									$time = (date('H', $timestamp2)-date('H', $timestamp1));
+									$time += (date('i', $timestamp2) - date('i', $timestamp1))/60;
+
+									$sheet->setCellValueByColumnAndRow(array_search('I', $alphabet), $startLine+$day, $time);
+								}
+
+
 							}
 
+							if($arrayForOneLine->getSecondPartFrom() != null){
+								$sheet->setCellValueByColumnAndRow(array_search('J', $alphabet), $startLine+$day, date('H:i',strtotime($arrayForOneLine->getSecondPartFrom())));
+								$sheet->setCellValueByColumnAndRow(array_search('K', $alphabet), $startLine+$day, date('H:i',strtotime($arrayForOneLine->getSecondPartTo())));
+								$timestamp1 = strtotime($arrayForOneLine->getSecondPartFrom());
+								$timestamp2 = strtotime($arrayForOneLine->getSecondPartTo());
+								$time = (date('H', $timestamp2)-date('H', $timestamp1));
+								$time += (date('i', $timestamp2) - date('i', $timestamp1))/60;
 
-						}
+								if(strpos($arrayForOneLine->getDayType(), "SICKNESS") !== false
+								   || strpos($arrayForOneLine->getDayType(), "FAMILY_MEMBER_CARE") !== false
+//					   || strpos($arrayForOneLine->getDayType(), "tek") !== false
+								){
+									$sickHours+=$time;
+								}else if(strpos($arrayForOneLine->getDayType(), "HOLIDAY") !== false){
+									if(strpos($arrayForOneLine->getDayType(), "PUBLIC_HOLIDAY") === false){
+										$holidaysHours +=$time;
+									}
+								}else{
+									$workingHourInMonth+=$time;
+								}
 
-						if($arrayForOneLine->getSecondPartFrom() != null){
-							$sheet->setCellValueByColumnAndRow(array_search('J', $alphabet), $startLine+$day, $arrayForOneLine->getSecondPartFrom());
-							$sheet->setCellValueByColumnAndRow(array_search('K', $alphabet), $startLine+$day, $arrayForOneLine->getSecondPartTo());
-							$timestamp1 = strtotime($arrayForOneLine->getSecondPartFrom());
-							$timestamp2 = strtotime($arrayForOneLine->getSecondPartTo());
-							$time = (date('H', $timestamp2)-date('H', $timestamp1));
-							$time += (date('i', $timestamp2) - date('i', $timestamp1))/60;
+								$sheet->setCellValueByColumnAndRow(array_search('L', $alphabet), $startLine+$day, $time);
+
+							}
 
 							if(strpos($arrayForOneLine->getDayType(), "SICKNESS") !== false
+							   || (strpos($arrayForOneLine->getDayType(), "HOLIDAY") !== false && strpos($arrayForOneLine->getDayType(), "PUBLIC_HOLIDAY") === false)
 							   || strpos($arrayForOneLine->getDayType(), "FAMILY_MEMBER_CARE") !== false
-//					   || strpos($arrayForOneLine->getDayType(), "tek") !== false
 							){
-								$sickHours+=$time;
-							}else if(strpos($arrayForOneLine->getDayType(), "HOLIDAY") !== false){
-								if(strpos($arrayForOneLine->getDayType(), "PUBLIC_HOLIDAY") === false){
-									$holidaysHours +=$time;
-								}
+								$sheet->setCellValueByColumnAndRow(array_search('M', $alphabet), $startLine+$day, self::
+								getCzechNameDateType($arrayForOneLine->getDayType()));
+							}else if(strpos($arrayForOneLine->getDayType(), "BUSINESS_TRIP") !== false ||
+							         strpos($arrayForOneLine->getDayType(), "WORK_OUTSIDE_WORKSPACE") !== false){
+								$sheet->setCellValueByColumnAndRow(array_search('N', $alphabet), $startLine+$day, self::getCzechNameDateType($arrayForOneLine->getDayType()));
 							}else{
-								$workingHourInMonth+=$time;
+
+								$sheet->setCellValueByColumnAndRow(array_search('N', $alphabet), $startLine+$day, self::getCzechNameDateType($arrayForOneLine->getDayType()));
 							}
-
-							$sheet->setCellValueByColumnAndRow(array_search('L', $alphabet), $startLine+$day, $time);
-
-						}
-
-
-
-						if(strpos($arrayForOneLine->getDayType(), "SICKNESS") !== false
-						   || (strpos($arrayForOneLine->getDayType(), "HOLIDAY") !== false && strpos($arrayForOneLine->getDayType(), "PUBLIC_HOLIDAY") === false)
-						   || strpos($arrayForOneLine->getDayType(), "FAMILY_MEMBER_CARE") !== false
-						){
-							$sheet->setCellValueByColumnAndRow(array_search('P', $alphabet), $startLine+$day, self::
-                            getCzechNameDateType($arrayForOneLine->getDayType()));
-						}else if(strpos($arrayForOneLine->getDayType(), "BUSINESS_TRIP") !== false ||
-						         strpos($arrayForOneLine->getDayType(), "WORK_OUTSIDE_WORKSPACE") !== false){
-							$sheet->setCellValueByColumnAndRow(array_search('Q', $alphabet), $startLine+$day, self::getCzechNameDateType($arrayForOneLine->getDayType()));
 						}else{
+						    if(Holiday::findByYearMonthAndDay($year, $month, $d) != null){
+						        $attendance = AttendanceService::findByUserIdAndDate($user->getId(), $day, $month, $year);
 
-							$sheet->setCellValueByColumnAndRow(array_search('Q', $alphabet), $startLine+$day, self::getCzechNameDateType($arrayForOneLine->getDayType()));
-						}
-					}else{
-						if(date("d.m.Y", $d) >= 1 && date("d.m.Y", $d) <=5){
-							$attendance = AttendanceService::findByUserIdAndDate($user->getId(), $day, $month, $year);
+						        if($attendance != null){
+						            if($attendance->getFirstPartFrom() != null){
+						                $timestamp1 = strtotime($attendance->getFirstPartFrom());
+						                $timestamp2 = strtotime($attendance->getFirstPartTo());
+						                $time = (date('H', $timestamp2)-date('H', $timestamp1));
+						                $time += (date('i', $timestamp2) - date('i', $timestamp1))/60;
+						                $nationalHoliday+=$time;
+						            }
+						            if($attendance->getSecondPartFrom() != null){
+						                $timestamp1 = strtotime($attendance->getSecondPartFrom());
+						                $timestamp2 = strtotime($attendance->getSecondPartTo());
+						                $time = (date('H', $timestamp2)-date('H', $timestamp1));
+						                $time += (date('i', $timestamp2) - date('i', $timestamp1))/60;
+						                $nationalHoliday+=$time;
+						            }
+						        }
+							    $sheet->setCellValueByColumnAndRow(array_search('M', $alphabet), $startLine+$day, "Státní svátek");
+						    }
 
-							if($attendance != null){
-								if($attendance->getFirstPartFrom() != null){
-									$timestamp1 = strtotime($attendance->getFirstPartFrom());
-									$timestamp2 = strtotime($attendance->getFirstPartTo());
-									$time = (date('H', $timestamp2)-date('H', $timestamp1));
-									$time += (date('i', $timestamp2) - date('i', $timestamp1))/60;
-									$nationalHoliday+=$time;
-								}
-								if($attendance->getSecondPartFrom() != null){
-									$timestamp1 = strtotime($attendance->getSecondPartFrom());
-									$timestamp2 = strtotime($attendance->getSecondPartTo());
-									$time = (date('H', $timestamp2)-date('H', $timestamp1));
-									$time += (date('i', $timestamp2) - date('i', $timestamp1))/60;
-									$nationalHoliday+=$time;
-								}
-							}
 						}
-					}
+                    }
+
+
 
 				}
 				$sheet->setCellValueByColumnAndRow(array_search('A', $alphabet), 36, "Evidence ostatních skutečností o náhradních a placených dobách je vedena standardním způsobem");
@@ -383,13 +387,23 @@ class FileService extends Service
 				$border_style= array('borders' => array('allborders' => array('style' =>
 					                                                              PHPExcel_Style_Border::BORDER_MEDIUM,'color' => array('argb' => '000000'),)));
 
-				$sheet->getStyle("A1:R2")->applyFromArray($border_style);
+				$sheet->getStyle("A1:N3")->applyFromArray($border_style);
 				$sheet->getStyle("A".$startLine.":F".($startLine+6))->applyFromArray($border_style);
+
+				$document->getActiveSheet()->mergeCellsByColumnAndRow(array_search('K', $alphabet), 38, array_search('N', $alphabet), 39);
+				$document->getActiveSheet()->mergeCellsByColumnAndRow(array_search('K', $alphabet), 40, array_search('N', $alphabet), 40);
+				$sheet->setCellValueByColumnAndRow(array_search('K', $alphabet), 40, $user->getName()." ".$user->getLastName());
+				$sheet->getStyle('K38:N40')->applyFromArray($border_style);
+
+				$document->getActiveSheet()->mergeCellsByColumnAndRow(array_search('K', $alphabet), 42, array_search('N', $alphabet), 43);
+				$document->getActiveSheet()->mergeCellsByColumnAndRow(array_search('K', $alphabet), 44, array_search('N', $alphabet), 44);
+				$sheet->setCellValueByColumnAndRow(array_search('K', $alphabet), 44, 'Vedouci');
+				$sheet->getStyle('K42:N44')->applyFromArray($border_style);
 
 				$border_style= array('borders' => array('allborders' => array('style' =>
 					                                                              PHPExcel_Style_Border::BORDER_THIN,'color' => array('argb' => '000000'),)));
 
-				$sheet->getStyle("A4:Q35")->applyFromArray($border_style);
+				$sheet->getStyle("A4:N35")->applyFromArray($border_style);
 
 
 			}
