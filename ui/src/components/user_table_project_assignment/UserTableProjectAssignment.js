@@ -95,22 +95,26 @@ class UserTableProjectAssignment extends React.Component {
     };
 
     onSaveAssign = (project, update) => {
-        if(update){
+        if (update) {
             Calls.updateProjectAssign({
                 data: project,
                 done: (data) => {
-                    this.setState({loadFeedback: "ready"});
+                    this.setState({loadFeedback: "ready"}, () => {
+                        this._fetchData()
+                    });
                 },
                 fail: (data) => {
                     this.setState({loadFeedback_2: "error"});
                     //todo: error throw
                 }
             });
-        }else{
+        } else {
             Calls.createProjectAssign({
                 data: project,
                 done: (data) => {
-                    this.setState({loadFeedback: "ready"});
+                    this.setState({loadFeedback: "ready"}, () => {
+                        this._fetchData()
+                    });
                 },
                 fail: (data) => {
                     this.setState({loadFeedback_2: "error"});
@@ -153,15 +157,16 @@ class UserTableProjectAssignment extends React.Component {
                         <Table className={classes.table}>
                             <EnhancedTableHead rowCount={this.state.assignUsers.length}/>
                             <TableBody>
-                                {this.state.assignUsers.map((projectAssign, index) => {
+                                {this.state.assignUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((projectAssign, index) => {
                                     return <TableRow key={`${index}-${projectAssign.user.orionLogin}`}>
                                         <TableCell>{projectAssign.user.displayFullName}</TableCell>
                                         <TableCell>{moment(projectAssign.activeFrom).format("LL")}</TableCell>
-                                        <TableCell>{projectAssign.activeFrom ? moment(projectAssign.activeFrom).format("LL") : null}</TableCell>
+                                        <TableCell>{projectAssign.activeTo ? moment(projectAssign.activeTo).format("LL") : null}</TableCell>
                                         <TableCell>{projectAssign.obligation}</TableCell>
                                         <TableCell>
                                             <Tooltip title="Editace">
-                                                <IconButton aria-label="Editace" onClick={this.handleOpenEdit(projectAssign)}>
+                                                <IconButton aria-label="Editace"
+                                                            onClick={this.handleOpenEdit(projectAssign)}>
                                                     <EditIcon/>
                                                 </IconButton>
                                             </Tooltip>
@@ -187,7 +192,7 @@ class UserTableProjectAssignment extends React.Component {
                         onChangePage={this.handleChangePage}
                         onChangeRowsPerPage={this.handleChangeRowsPerPage}
                     />
-                    <UserAssignProjectModal user={this.state.rowData}
+                    <UserAssignProjectModal projectAssign={this.state.rowData}
                                             users={this.state.users}
                                             open={this.state.modalOpen}
                                             project={this.props.project}

@@ -416,6 +416,7 @@ class FileService extends Service
 		$objWriter = \PHPExcel_IOFactory::createWriter($document, 'Excel5');
 		$fileName = (__DIR__."/files/").date('d-m-Y').".xls";
 		$objWriter->save($fileName);
+		chmod($fileName, 0777);
 
 		$finfo = finfo_open(FILEINFO_MIME_TYPE);
 		header('Content-Type: '.finfo_file($finfo, $fileName));

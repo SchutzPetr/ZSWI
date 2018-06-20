@@ -12,6 +12,7 @@ include_once (__DIR__."/TimeSheetService.php");
 include_once (__DIR__."/SimpleUserService.php");
 include_once (__DIR__."/NotificationService.php");
 include_once (__DIR__."/../model/Notification.php");
+include_once (__DIR__."/../model/Attendance.php");
 include_once (__DIR__."/../model/UserHoliday.php");
 include_once (__DIR__."/../model/DayTimeSheet.php");
 include_once (__DIR__."/../model/Notification.php");
@@ -164,6 +165,7 @@ class UserHolidayService extends Service
     /**
      * @param UserHoliday $userHoliday
      * @throws PermissionException
+     * @throws Exception
      * @throws UnauthorizedException
      */
 	public static function update($userHoliday){
@@ -171,6 +173,25 @@ class UserHolidayService extends Service
 			throw new PermissionException();
 		}
 
+		$oldUserHoliday = UserHolidayService::findById($userHoliday->getId());
+
+		if($oldUserHoliday->getDate()  !== $userHoliday->getDate()){
+			///control if in new date have object UserHoliday
+			if(UserHoliday::findByUserIdAndDate($userHoliday->getUserId(), $userHoliday->getDate())->getDate() !== null){
+				throw new Exception();
+			}
+			$oldDayTimeSheete = DayTimeSheet::findByUserIdAndDateString($userHoliday->getId(), DateTime::createFromFormat("Y-m-d", $userHoliday->getDate()));
+			$attendance = Attendance::findByUserIdAndDateString($userHoliday->getId(), DateTime::createFromFormat("Y-m-d", $userHoliday->getDate())->format("Y-m-d"));
+			if($attendance!= null){
+				$oldDayTimeSheete->setFirstPartFrom($attendance->getFirstPartFrom());
+				$oldDayTimeSheete->setFirstPartTo($attendance->getFirstPartTo());
+				$oldDayTimeSheete->setSecondPartFrom($attendance->getSecondPartFrom());
+				$oldDayTimeSheete->setSecondPartTo($attendance->getSecondPartTo());
+				$oldDayTimeSheete->setDayType(NULL);
+				DayTimeSheet::save($oldDayTimeSheete);
+			}
+
+		}
 		UserHoliday::save($userHoliday);
 
         $simpleUser = SimpleUserService::findById($userHoliday->getUserId());
@@ -204,7 +225,12 @@ class UserHolidayService extends Service
 		$dayTimeSheet =	DayTimeSheet::findByUserIdAndDate($userHoliday->getUserId(), $day, $month, $year);
 
 		if($dayTimeSheet !== null){
-            $dayTimeSheet->setDayType(NULL);
+			$attendance = Attendance::findByUserIdAndDate($userHoliday->getUserId(), $day, $month, $year);
+			$dayTimeSheet->setFirstPartFrom($attendance->getFirstPartFrom());
+			$dayTimeSheet->setFirstPartTo($attendance->getFirstPartTo());
+			$dayTimeSheet->setSecondPartFrom($attendance->getSecondPartFrom());
+			$dayTimeSheet->setSecondPartTo($attendance->getSecondPartTo());
+			$dayTimeSheet->setDayType(NULL);
             DayTimeSheet::save($dayTimeSheet);
         }
 

@@ -1,6 +1,7 @@
 import Attendance from "./Attendance";
 import BaseEntity from "./BaseEntity";
 import UserContract from "./UserContract";
+import UserHolidaySettings from "./UserHolidaySettings";
 
 class User extends BaseEntity{
 
@@ -25,6 +26,7 @@ class User extends BaseEntity{
         };
         this._currentUserContract = new UserContract();
         this._futureUserContract = [];
+        this._userHolidaySettings = [];
     }
 
     get id() {
@@ -147,6 +149,20 @@ class User extends BaseEntity{
     }
 
     /**
+     * @returns {UserHolidaySettings[]}
+     */
+    get userHolidaySettings() {
+        return this._userHolidaySettings;
+    }
+
+    /**
+     * @param value {UserHolidaySettings[]}
+     */
+    set userHolidaySettings(value) {
+        this._userHolidaySettings = value;
+    }
+
+    /**
      * @returns {string}
      */
     get displayFullName() {
@@ -176,6 +192,8 @@ class User extends BaseEntity{
                 user.attendanceSchedules[key] =  Attendance.map(userDTO.attendanceSchedules[key]);
             }
         }
+
+        user.userHolidaySettings = UserHolidaySettings.map(userDTO.userHolidaySettings);
 
         return user;
     }

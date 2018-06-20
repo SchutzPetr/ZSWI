@@ -29,12 +29,12 @@ class Home extends React.Component {
         } else if (this.state.loadFeedback === "ready") {
             return (
                 <Grid className={this.props.classes.mainGrid} container={true} spacing={16}>
-                    <Grid item={true} xs={12} sm={5}>
+                    <Grid item={true} xs={12} sm={3}>
                         <UserDetail user={this.props.authenticatedUser} mode={"USER"}/>
                         <div className={this.props.classes.divider}/>
                         <UserProject timeSheet={this.state.timeSheets} user={this.props.authenticatedUser}/>
                     </Grid>
-                    <Grid item={true} xs={12} sm={7}>
+                    <Grid item={true} xs={12} sm={9}>
                         <AgendaTabs match={this.props.match} history={this.props.history}
                                     user={this.props.authenticatedUser} mode={"USER"} onTimeSheetChange={this.onTimeSheetChange}/>
                     </Grid>

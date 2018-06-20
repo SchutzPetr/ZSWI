@@ -160,8 +160,8 @@ class ProjectAssign implements JsonSerializable
      */
     private function fill($row)
     {
-        self::setProjectId($row["user_id"]);
-        self::setUserId($row["project_id"]);
+        self::setProjectId($row["project_id"]);
+        self::setUserId($row["user_id"]);
         self::setActiveFrom($row["active_from"]);
         self::setActiveTo($row["active_to"]);
         self::setObligation($row["obligation"]);

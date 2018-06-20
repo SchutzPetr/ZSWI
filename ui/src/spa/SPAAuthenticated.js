@@ -86,7 +86,7 @@ class SPAAuthenticated extends React.Component {
                            )}/>
                     <Route path={"/shared-agenda/:userId"} exct={true}
                            render={props => (
-                               <SharedAgendaOverviewPage match={props.match}/>
+                               <SharedAgendaOverviewPage match={props.match} menuOpen={this.state.open}/>
                            )}/>
                 </Switch>
             );
@@ -95,11 +95,11 @@ class SPAAuthenticated extends React.Component {
                 <Switch>
                     <Route path={"/"} exact={true}
                            render={props => (
-                               <Home authenticatedUser={this.props.authenticatedUser} match={props.match}/>
+                               <Home authenticatedUser={this.props.authenticatedUser} match={props.match} menuOpen={this.state.open}/>
                            )}/>
                     <Route path={"/agenda/:userId?"} exact={true}
                            render={props => (
-                               <AgendaOverview history={props.history} match={props.match}/>
+                               <AgendaOverview history={props.history} match={props.match} menuOpen={this.state.open}/>
                            )}/>
                     <Route path={"/share"} exact={true}
                            render={props => (
@@ -124,6 +124,10 @@ class SPAAuthenticated extends React.Component {
                     <Route path={"/accounts"} exact={true}
                            render={props => (
                                <UserManagementPage match={props.match}/>
+                           )}/>
+                    <Route path={"/shared-agenda/:userId"} exct={true}
+                           render={props => (
+                               <SharedAgendaOverviewPage match={props.match} menuOpen={this.state.open}/>
                            )}/>
                 </Switch>
             );
