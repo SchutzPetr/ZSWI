@@ -193,7 +193,7 @@ class FileService extends Service
 					      ->getFill()
 					      ->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)
 					      ->getStartColor()
-					      ->setRGB("f4eb42");
+					      ->setRGB("#C9E5C7");
 				}
 				// Перекидываем указатель на следующую строку
 				$startLine++;
