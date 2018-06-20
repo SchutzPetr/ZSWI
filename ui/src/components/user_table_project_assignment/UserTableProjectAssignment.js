@@ -157,7 +157,7 @@ class UserTableProjectAssignment extends React.Component {
                         <Table className={classes.table}>
                             <EnhancedTableHead rowCount={this.state.assignUsers.length}/>
                             <TableBody>
-                                {this.state.assignUsers.map((projectAssign, index) => {
+                                {this.state.assignUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((projectAssign, index) => {
                                     return <TableRow key={`${index}-${projectAssign.user.orionLogin}`}>
                                         <TableCell>{projectAssign.user.displayFullName}</TableCell>
                                         <TableCell>{moment(projectAssign.activeFrom).format("LL")}</TableCell>
