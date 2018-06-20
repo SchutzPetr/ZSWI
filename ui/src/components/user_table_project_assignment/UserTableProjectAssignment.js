@@ -161,7 +161,7 @@ class UserTableProjectAssignment extends React.Component {
                                     return <TableRow key={`${index}-${projectAssign.user.orionLogin}`}>
                                         <TableCell>{projectAssign.user.displayFullName}</TableCell>
                                         <TableCell>{moment(projectAssign.activeFrom).format("LL")}</TableCell>
-                                        <TableCell>{projectAssign.activeFrom ? moment(projectAssign.activeFrom).format("LL") : null}</TableCell>
+                                        <TableCell>{projectAssign.activeTo ? moment(projectAssign.activeTo).format("LL") : null}</TableCell>
                                         <TableCell>{projectAssign.obligation}</TableCell>
                                         <TableCell>
                                             <Tooltip title="Editace">
