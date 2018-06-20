@@ -91,7 +91,7 @@ class EnhancedTableToolbar extends React.Component {
                                       onSelect={this.handleSelect} disabled={this.props.mode === "USER"}/>
                     </div>
                     <FormControl className={classes.formControl}>
-                        <InputLabel htmlFor="age-simple">Age</InputLabel>
+                        <InputLabel htmlFor="age-simple">Rok</InputLabel>
                         <Select
                             value={this.props.year}
                             onChange={this.handleChangeYear.bind(this)}
