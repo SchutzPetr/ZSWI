@@ -4,6 +4,12 @@ const Styles = theme => ({
         maxHeight: "100%",
         height: "100%",
     },
+    fullPage: {
+        maxHeight: "100vh",
+        height: "100vh",
+        width: "100vw",
+        maxWidth: "100vw"
+    },
     linearLoading: {
         top: "50%",
         left: "50%",
