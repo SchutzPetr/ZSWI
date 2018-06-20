@@ -6,6 +6,7 @@ import IconButton from "@material-ui/core/IconButton/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete"
 import {Link} from "react-router-dom";
 import {ListItem, ListItemSecondaryAction, ListItemText} from "@material-ui/core/index";
+import Notification from "../../entity/Notification";
 
 class NotificationItem extends React.Component {
 
@@ -13,7 +14,7 @@ class NotificationItem extends React.Component {
 
         let listItemProps;
 
-        if(this.props.link){
+        if(this.props.notification.link){
             listItemProps = {
                 button: true,
                 component: Link,
@@ -24,8 +25,8 @@ class NotificationItem extends React.Component {
         return (
             <ListItem {...listItemProps}>
                 <ListItemText
-                    primary={this.props.title}
-                    secondary={this.props.description}
+                    primary={this.props.notification.title}
+                    secondary={this.props.notification.description}
                 />
                 <ListItemSecondaryAction>
                     <IconButton aria-label="Delete">
@@ -39,11 +40,7 @@ class NotificationItem extends React.Component {
 
 NotificationItem.propTypes = {
     classes: PropTypes.object.isRequired,
-    title: PropTypes.string.isRequired,
-    description: PropTypes.string,
-    link: PropTypes.string,
-    onDelete: PropTypes.func.isRequired,
-    onClick: PropTypes.func.isRequired,
+    notification: PropTypes.instanceOf(Notification).isRequired,
 };
 
 export default withStyles(Styles, {withTheme: true})(NotificationItem);

@@ -11,6 +11,7 @@ const USERHOLIDAY_API = "/usersholiday/";
 const SHARE_API = "/userShare/";
 const SIMPLE_USER_API = "/simpleuser/";
 const FILE_REPORT_API = "/filereport/";
+const NOTIFI_API = "/notification/";
 
 
 const Client = {
@@ -44,6 +45,8 @@ const Client = {
                 return axios.get(AUTH_API + "authSimple.php", {params: data});
             case "getAssignUsersToProject":
                 return axios.get(PROJECT_ASSIGN_API + "findAllByProjectId.php", {params: data});
+            case "getAllNotification":
+                return axios.get(NOTIFI_API + "findAll.php", {params: data});
             case "getFileReportExcel":
                 return axios.get(FILE_REPORT_API + "createByMonthAndYear.php", {
                     params: data,
@@ -76,6 +79,8 @@ const Client = {
                 return axios.post(SHARE_API + "create.php", data);
             case "deleteShare":
                 return axios.post(SHARE_API + "delete.php", data);
+            case "deleteUser":
+                return axios.post(USER_API + "delete.php", data);
             case "createProjectAssign":
                 return axios.post(PROJECT_ASSIGN_API + "create.php", data);
             case "updateProjectAssign":

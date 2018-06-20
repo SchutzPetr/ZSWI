@@ -35,15 +35,39 @@ import OverviewOfWorkSchedulesPage from "../use_cases/uc_overview_of_work_schedu
 import UserManagementPage from "../use_cases/uc_user_management/UserManagementPage";
 import User from "../entity/User";
 import SharedAgendaOverviewPage from "../use_cases/uc_shared_agenda_overview/SharedAgendaOverviewPage";
+import Notification from "../entity/Notification";
+import Calls from "../Calls";
 
 
 class SPAAuthenticated extends React.Component {
 
-    state = {
-        open: false,
-        notifi: 5,
-        notificationPopoverOpen: false
-    };
+    constructor(props){
+        super(props);
+
+        this.state = {
+            open: false,
+            notifications: [],
+            notificationPopoverOpen: false
+        };
+    }
+
+    componentDidMount(){
+        this._fetch();
+    }
+
+    _fetch(){
+
+        Calls.getAllNotification({
+            data: {}, //todo: year
+            done: (data) => {
+                this.setState({notifications: Notification.map(data.data), loadFeedback: "ready"});
+            },
+            fail: (data) => {
+                this.setState({loadFeedback: "error"});
+                //todo: error throw
+            }
+        });
+    }
 
     handleDrawerOpen = () => {
         this.setState({open: true});
@@ -164,8 +188,8 @@ class SPAAuthenticated extends React.Component {
                                             this.notificationButtonRef = node;
                                         }}
                                         onClick={this.onNotificationPopoverOpen}>
-                                {this.state.notifi ?
-                                    <Badge color="secondary" badgeContent={this.state.notifi}>
+                                {this.state.notifications && this.state.notifications.length > 0 ?
+                                    <Badge color="secondary" badgeContent={this.state.notifications.length}>
                                         <Notifications/>
                                     </Badge> :
                                     <Notifications/>}
@@ -184,7 +208,7 @@ class SPAAuthenticated extends React.Component {
                     </Toolbar>
                 </AppBar>
                 <NotificationPopover open={this.state.notificationPopoverOpen} buttonRef={this.notificationButtonRef}
-                                     onClose={this.onNotificationPopoverClose}/>
+                                     onClose={this.onNotificationPopoverClose} notifications={this.state.notifications}/>
                 <Hidden mdUp>
                     <Drawer
                         variant="temporary"

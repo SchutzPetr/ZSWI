@@ -16,6 +16,7 @@ import {
 } from "@material-ui/core/index";
 import EditIcon from "@material-ui/icons/Edit";
 import User from "../../entity/User";
+import Delete from "@material-ui/icons/Delete";
 
 class UserTable extends React.Component {
 
@@ -25,6 +26,8 @@ class UserTable extends React.Component {
         this.state = {
             page: 0,
             rowsPerPage: props.rowsPerPage || 5,
+            penConfirmValue: null,
+            openConfirm: false
         };
     }
 
@@ -61,6 +64,14 @@ class UserTable extends React.Component {
                                             </IconButton>
                                         </Tooltip>
                                     </TableCell>
+                                    <TableCell>
+                                        <Tooltip title={"Odebrání uživatele"}>
+                                            <IconButton aria-label={"Odebrání uživatele"}
+                                                        onClick={this.props.onDeleteClick(user)}>
+                                                <Delete/>
+                                            </IconButton>
+                                        </Tooltip>
+                                    </TableCell>
                                 </TableRow>
                             })}
                             {emptyRows > 0 && (
@@ -90,6 +101,7 @@ class UserTable extends React.Component {
 UserTable.propTypes = {
     classes: PropTypes.object,
     onEditClick: PropTypes.func.isRequired,
+    onDeleteClick: PropTypes.func.isRequired,
     users: PropTypes.arrayOf(User).isRequired,
     fullHeight: PropTypes.bool,
     rowsPerPage: PropTypes.number,

@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {Paper} from "@material-ui/core/index";
+import {Paper, Typography} from "@material-ui/core/index";
 import {withStyles} from "@material-ui/core/styles/index";
 import Style from "./style/UserListStyle";
 
@@ -49,6 +49,7 @@ class UserList extends React.Component {
         return (
             <Paper>
                 <div className={this.props.classes.filterWrapper}>
+                    <Typography className={this.props.classes.typography} variant={"headline"}>{"Vyberte uživatele"}</Typography>
                     <SingleSelect value={UserList.mapUserToSuggestion(this.props.user)}
                                   suggestions={UserList.mapUsersToSuggestion(this.props.users)}
                                   onSelect={this.handleSelect}/>

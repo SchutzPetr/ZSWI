@@ -26,7 +26,7 @@ const Styles = theme => ({
     },
     sunday: {
         height: rowHeight,
-        backgroundColor: "#f6bdcc"
+        backgroundColor: "#f5eca7"
     },
     holiday: {
         height: rowHeight,

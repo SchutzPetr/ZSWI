@@ -139,7 +139,7 @@ class AgendaTabs extends React.Component {
             return <Paper className={classes.loadingPaper}><LinearProgress className={classes.loading}/></Paper>
         } else if (this.state.loadFeedback === "ready") {
             if (timeSheet == null) {
-                return <Paper className={classes.loadingPaper}>EMPTY</Paper>
+                return <Paper className={classes.loadingPaper}></Paper>
             } else {
                 return <Agenda user={this.props.user} timeSheet={timeSheet}
                                onTimeSheetEdit={this.handleTimeSheetEdit.bind(this)} mode={this.props.mode}/>;

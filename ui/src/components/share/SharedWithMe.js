@@ -18,7 +18,6 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import Forward from "@material-ui/icons/Forward";
 import SimpleUser from "../../entity/SimpleUser";
 import User from "../../entity/User";
-import Attendance from "../../entity/Attendance";
 import {Link} from "react-router-dom";
 
 class SharedWithMe extends React.Component {
@@ -36,7 +35,7 @@ class SharedWithMe extends React.Component {
                     </TableCell>
                     <TableCell>
                         <div className={this.props.classes.tableCellCenterJustifi}>
-                            <IconButton aria-label={"Menu"}
+                            <IconButton aria-label={"Odebrání dovolené"}
                                         component={Link} to={`/shared-agenda/${value.id}`}>
                                 <Forward/>
                             </IconButton></div>

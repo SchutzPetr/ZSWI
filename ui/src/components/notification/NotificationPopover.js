@@ -4,8 +4,13 @@ import {withStyles} from "@material-ui/core/styles/index";
 import Styles from "./style/NotificationPopoverStyle";
 import {List, Popover, Typography} from "@material-ui/core/index";
 import NotificationItem from "./NotificationItem";
+import Notification from "../../entity/Notification";
 
 class NotificationPopover extends React.Component {
+
+    constructor(props){
+        super(props);
+    }
 
     render() {
         return (
@@ -29,20 +34,9 @@ class NotificationPopover extends React.Component {
                     </div>
                     <div className={this.props.classes.content}>
                         <List>
-                            <NotificationItem title={"test"} description={"sss"} onClick={()=>{}} onDelete={()=>{}} link={"http://localhost:3000/holiday"}/>
-                            <NotificationItem title={"test"} description={"sss"} onClick={()=>{}} onDelete={()=>{}}/>
-                            <NotificationItem title={"test"} description={"sss"} onClick={()=>{}} onDelete={()=>{}}/>
-                            <NotificationItem title={"test"} description={"sss"} onClick={()=>{}} onDelete={()=>{}}/>
-                            <NotificationItem title={"test"} description={"sss"} onClick={()=>{}} onDelete={()=>{}}/>
-                            <NotificationItem title={"test"} description={"sss"} onClick={()=>{}} onDelete={()=>{}}/>
-                            <NotificationItem title={"test"} description={"sss"} onClick={()=>{}} onDelete={()=>{}}/>
-                            <NotificationItem title={"test"} description={"sss"} onClick={()=>{}} onDelete={()=>{}}/>
-                            <NotificationItem title={"test"} description={"sss"} onClick={()=>{}} onDelete={()=>{}}/>
-                            <NotificationItem title={"test"} description={"sss"} onClick={()=>{}} onDelete={()=>{}}/>
-                            <NotificationItem title={"test"} description={"sss"} onClick={()=>{}} onDelete={()=>{}}/>
-                            <NotificationItem title={"test"} description={"sss"} onClick={()=>{}} onDelete={()=>{}}/>
-                            <NotificationItem title={"test"} description={"sss"} onClick={()=>{}} onDelete={()=>{}}/>
-                            <NotificationItem title={"test"} description={"sss"} onClick={()=>{}} onDelete={()=>{}}/>
+                            {this.props.notifications.map(value => {
+                                return <NotificationItem key={`NotificationItem-${value.id}`} notification={value}/>
+                            })};
                         </List>
                     </div>
                 </div>
@@ -55,7 +49,8 @@ NotificationPopover.propTypes = {
     classes: PropTypes.object.isRequired,
     open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
-    buttonRef: PropTypes.any
+    buttonRef: PropTypes.any,
+    notifications: PropTypes.arrayOf(Notification)
 };
 
 export default withStyles(Styles, {withTheme: true})(NotificationPopover);

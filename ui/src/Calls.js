@@ -134,6 +134,14 @@ class Calls {
     static getFileReportExcel(dataIn) {
         Calls._get("getFileReportExcel", dataIn);
     }
+
+    static getAllNotification(dataIn) {
+        Calls._get("getAllNotification", dataIn);
+    }
+
+    static deleteUser(dataIn) {
+        Calls._post("deleteUser", dataIn);
+    }
 }
 
 const calls = new Calls();

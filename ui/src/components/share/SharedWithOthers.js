@@ -18,12 +18,22 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import Delete from "@material-ui/icons/Delete";
 import SimpleUser from "../../entity/SimpleUser";
 import User from "../../entity/User";
-import {Link} from "react-router-dom";
+import ConfirmationDialog from "../confirm/ConfirmationDialog";
 
 class SharedWithOthers extends React.Component {
 
-    _getRows(){
-        return this.props.sharedWithUserId.map(value =>{
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            openConfirmValue: null,
+            openConfirm: false,
+
+        };
+    }
+
+    _getRows() {
+        return this.props.sharedWithUserId.map(value => {
 
             return (
                 <TableRow>
@@ -37,11 +47,24 @@ class SharedWithOthers extends React.Component {
                         <div className={this.props.classes.tableCellCenterJustifi}>
                             <IconButton aria-label={"Menu"}
                                         onClick={() => {
-                                            this.props.onDeleteShare(value);
+                                            this.setState({openConfirm: true, openConfirmValue: value});
                                         }}>
                                 <Delete/>
-                            </IconButton></div>
+                            </IconButton>
+                        </div>
                     </TableCell>
+                    <ConfirmationDialog
+                        classes={{}}
+                        title={"Smazání dovolené"}
+                        text={"Přejete si smazat dovolenou?"}
+                        open={this.state.openConfirm}
+                        onCancel={() => {
+                            this.props.onDeleteShare(value);
+                            this.setState({openConfirm: false, openConfirmValue: null});
+                        }}
+                        onConfirm={this.onDeleteSelected}
+                        value={this.state.openConfirmValue}
+                    />
                 </TableRow>
             );
 
@@ -56,8 +79,10 @@ class SharedWithOthers extends React.Component {
                     <Table className={this.props.classes.table}>
                         <TableHead>
                             <TableRow>
-                                <TableCell className={this.props.classes.tableHeaderFirst}>{"Jméno uživatele"}</TableCell>
-                                <TableCell className={this.props.classes.tableHeaderSecond}>{"Zrušit sdílení"}</TableCell>
+                                <TableCell
+                                    className={this.props.classes.tableHeaderFirst}>{"Jméno uživatele"}</TableCell>
+                                <TableCell
+                                    className={this.props.classes.tableHeaderSecond}>{"Zrušit sdílení"}</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>

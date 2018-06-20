@@ -10,7 +10,7 @@ import {
     TableCell,
     TablePagination,
     TableRow,
-    Tooltip
+    Tooltip,
 } from '@material-ui/core/index';
 import Styles from "./style/HolidayTableStyle";
 import EnhancedTableToolbar from "./components/EnhancedTableToolbar";
@@ -24,6 +24,7 @@ import User from "../../entity/User";
 import LinearProgressCentered from "../LinearProgressCentered";
 import Calls from "../../Calls";
 import HolidayCreateModal from "../holiday_create_modal/HolidayCreateModal";
+import ConfirmationDialog from "../confirm/ConfirmationDialog";
 
 class HolidayTable extends React.Component {
     constructor(props, context) {
@@ -35,7 +36,9 @@ class HolidayTable extends React.Component {
             rowsPerPage: props.rowsPerPage || 5,
             loadFeedback: "ready",
             modalOpen: false,
-            modalData: null
+            modalData: null,
+            openConfirmValue: null,
+            openConfirm: false
         };
     }
 
@@ -61,6 +64,7 @@ class HolidayTable extends React.Component {
             done: this.props.onSaveDone,
             fail: this.props.onSaveDone,
         });
+        this.setState({openConfirm: false, openConfirmValue: null});
     };
 
     handleCloseHolidayCreateModal = () => {
@@ -196,7 +200,10 @@ class HolidayTable extends React.Component {
                                             <Tooltip title="Odstranění">
                                                 <IconButton aria-label="Odstranění"
                                                             onClick={() => {
-                                                                this.onDeleteSelected(values)
+                                                                this.setState({
+                                                                    openConfirm: true,
+                                                                    openConfirmValue: values
+                                                                });
                                                             }}>
                                                     <DeleteIcon/>
                                                 </IconButton>
@@ -223,6 +230,18 @@ class HolidayTable extends React.Component {
                     nextIconButtonProps={{'aria-label': 'Next Page'}}
                     onChangePage={this.handleChangePage}
                     onChangeRowsPerPage={this.handleChangeRowsPerPage}
+                />
+                <ConfirmationDialog
+                    classes={{
+                    }}
+                    title={"Smazání dovolené"}
+                    text={"Přejete si smazat dovolenou?"}
+                    open={this.state.openConfirm}
+                    onCancel={() => {
+                        this.setState({openConfirm: false, openConfirmValue: null});
+                    }}
+                    onConfirm={this.onDeleteSelected}
+                    value={this.state.openConfirmValue}
                 />
                 <HolidayCreateModal open={this.state.modalOpen}
                                     user={this.props.user}

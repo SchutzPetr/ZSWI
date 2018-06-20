@@ -14,6 +14,9 @@ const Styles = theme => ({
         backgroundColor: "inherit",
         padding: 0,
     },
+    typography:{
+        width: "100%",
+    },
     input: {
         width: "100%",
         margin: theme.spacing.unit,
@@ -21,6 +24,7 @@ const Styles = theme => ({
     },
     filterWrapper: {
         display: "flex",
+        flexDirection: "column",
         alignItems: "center",
         justifyContent: "space-between",
         padding: "5px 16px",

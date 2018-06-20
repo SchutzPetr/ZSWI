@@ -8,6 +8,7 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import UserCreateModal from "../../components/user_create_modal/UserCreateModal";
 import UserTable from "../../components/user_table/UserTable";
 import User from "../../entity/User";
+import ConfirmationDialog from "../../components/confirm/ConfirmationDialog";
 
 class UserManagementPage extends React.Component {
 
@@ -15,7 +16,9 @@ class UserManagementPage extends React.Component {
         users: [],
         loadFeedback: "loading",
         modalOpen: false,
-        modalData: null
+        modalData: null,
+        penConfirmValue: null,
+        openConfirm: false
     };
 
     componentDidMount() {
@@ -42,6 +45,24 @@ class UserManagementPage extends React.Component {
         });
     };
 
+    onDeleteUserClick = user => event => {
+        this.setState({openConfirm: true, openConfirmValue: user});
+    };
+
+    onDeleteUser = user => {
+        Calls.deleteUser({
+            data: user,
+            done: (data) => {
+                this._fetchData();
+                this.setState({openConfirm: false, openConfirmValue: null});
+            },
+            fail: (data) => {
+                this.setState({loadFeedback: "error"});
+                //todo: error throw
+            }
+        });
+    };
+
     handleCloseEdit = () => {
         this.setState({modalOpen: false, modalData: null});
     };
@@ -62,9 +83,20 @@ class UserManagementPage extends React.Component {
                       direction={"row"}
                       justify={"center"}>
                     <Grid className={this.props.classes.secondGrid} item={true} xs={12} sm={11}>
-                        <UserTable users={this.state.users} onEditClick={this.handleOpenEdit}/>
+                        <UserTable users={this.state.users} onEditClick={this.handleOpenEdit}
+                                   onDeleteClick={this.onDeleteUserClick}/>
                         <UserCreateModal open={this.state.modalOpen} onSaveDone={this.handleOnSaveEditDone}
                                          onClose={this.handleCloseEdit} userToEdit={this.state.modalData}/>
+                        <ConfirmationDialog
+                            title={"Smazání uživatele"}
+                            text={"Přejete si smazat uživatele?"}
+                            open={this.state.openConfirm}
+                            onCancel={() => {
+                                this.setState({openConfirm: false, openConfirmValue: null});
+                            }}
+                            onConfirm={this.onDeleteUser}
+                            value={this.state.openConfirmValue}
+                        />
                     </Grid>
                 </Grid>
             );

@@ -54,12 +54,6 @@ export let secretaryMenuItems = (classes) => {
                 </ListItemIcon>
                 <ListItemText primary="Správa projektů"/>
             </ListItem>
-            <ListItem className={classes.listItem} button={true} component={Link} to={"/overview-of-work-schedules"}>
-                <ListItemIcon>
-                    <ViewAgenda/>
-                </ListItemIcon>
-                <ListItemText primary="Přehled úvazků"/>
-            </ListItem>
             <ListItem className={classes.listItem} button={true} component={Link} to={"/accounts"}>
                 <ListItemIcon>
                     <SupervisorAccount/>
