@@ -9,10 +9,11 @@ import MomentUtils from 'material-ui-pickers/utils/moment-utils';
 import {MuiPickersUtilsProvider} from "material-ui-pickers";
 import axios from 'axios';
 import SPANotAuthenticated from "./spa/SPANotAuthenticated";
-import {BrowserRouter as Router, Route} from "react-router-dom";
+import {Route} from "react-router-dom";
 import Calls from "./Calls";
 import User from "./entity/User";
 import LinearProgressCentered from "./components/LinearProgressCentered";
+import PropTypes from "prop-types";
 
 const theme = createMuiTheme();
 
@@ -24,24 +25,16 @@ class App extends React.Component {
         moment.locale('cs');
 
         axios.defaults.headers.post["Content-Type"] = "application/json";
+        axios.defaults.baseURL = props.config.API_URL;
+
+        Config.API_URL = props.config.API_URL;
+        Config.VERSION = props.config.VERSION;
+        Config.APP_DIRECTORY = props.config.APP_DIRECTORY;
 
         this.state = {
-            authenticatedUser: null
+            config: props.config,
+            authenticatedUser:null
         };
-    }
-
-    componentDidMount() {
-        fetch(`${document.baseURI}/config.json`).then(r => r.json()).then(json => {
-            axios.defaults.baseURL = json.API_URL;
-            if (Authentication.getToken()) {
-                this.authUserByToken(Authentication.getToken());
-            }
-            Config.API_URL = json.API_URL;
-            Config.VERSION = json.VERSION;
-            Config.APP_DIRECTORY = json.APP_DIRECTORY;
-
-            this.setState({config: json});
-        });
     }
 
     onLoginDone(data, savePasswords) {
@@ -86,35 +79,37 @@ class App extends React.Component {
 
     render() {
         return (
-            <Router baseName={`${this.state.config ? this.state.config.APP_DIRECTORY : ""}`}>
-                <MuiThemeProvider theme={theme}>
-                    <MuiPickersUtilsProvider
-                        utils={MomentUtils}
-                        moment={moment}
-                        locale={"cs"}
-                    >
-                        <Route path={"*"} exact={true}
-                               render={props => {
-                                   if (!this.state.config) {
-                                       return <LinearProgressCentered fullPage={true}/>;
+            <MuiThemeProvider theme={theme}>
+                <MuiPickersUtilsProvider
+                    utils={MomentUtils}
+                    moment={moment}
+                    locale={"cs"}
+                >
+                    <Route path={"*"} exact={true}
+                           render={props => {
+                               if (!this.state.config) {
+                                   return <LinearProgressCentered fullPage={true}/>;
+                               } else {
+                                   if (Authentication.isAuthenticated()) {
+                                       return <SPAAuthenticated authenticatedUser={this.state.authenticatedUser}
+                                                                match={props.match} history={props.history}
+                                                                onLogout={this.onLogout.bind(this)}/>
                                    } else {
-                                       if (Authentication.isAuthenticated()) {
-                                           return <SPAAuthenticated authenticatedUser={this.state.authenticatedUser}
-                                                                    match={props.match} history={props.history}
-                                                                    onLogout={this.onLogout.bind(this)}/>
-                                       } else {
-                                           return <SPANotAuthenticated authenticatedUser={this.state.user}
-                                                                       match={props.match}
-                                                                       history={props.history}
-                                                                       onLoginDone={this.onLoginDone.bind(this)}/>
-                                       }
+                                       return <SPANotAuthenticated authenticatedUser={this.state.user}
+                                                                   match={props.match}
+                                                                   history={props.history}
+                                                                   onLoginDone={this.onLoginDone.bind(this)}/>
                                    }
-                               }}/>
-                    </MuiPickersUtilsProvider>
-                </MuiThemeProvider>
-            </Router>
+                               }
+                           }}/>
+                </MuiPickersUtilsProvider>
+            </MuiThemeProvider>
         );
     }
 }
+
+SPAAuthenticated.propTypes = {
+    config: PropTypes.object.isRequired,
+};
 
 export default App;
