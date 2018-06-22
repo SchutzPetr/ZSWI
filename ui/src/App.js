@@ -33,8 +33,13 @@ class App extends React.Component {
 
         this.state = {
             config: props.config,
-            authenticatedUser:null
+            authenticatedUser: null,
+            token: !!Authentication.getToken()
         };
+    }
+
+    componentDidMount(){
+        this.authUserByToken(Authentication.getToken());
     }
 
     onLoginDone(data, savePasswords) {
@@ -72,7 +77,8 @@ class App extends React.Component {
                 });
             },
             fail: (userData) => {
-                this.setState({authenticatedUser: null});
+                Authentication.clearToken();
+                this.setState({authenticatedUser: null, token: !!Authentication.getToken()});
             }
         });
     }
@@ -87,7 +93,7 @@ class App extends React.Component {
                 >
                     <Route path={"*"} exact={true}
                            render={props => {
-                               if (!this.state.config) {
+                               if (!this.state.config || (this.state.token && this.state.authenticatedUser === null)) {
                                    return <LinearProgressCentered fullPage={true}/>;
                                } else {
                                    if (Authentication.isAuthenticated()) {
