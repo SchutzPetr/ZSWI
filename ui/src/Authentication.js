@@ -24,7 +24,7 @@ class Authentication {
         }
     }
 
-    getSessionToken(token){
+    getSessionToken(){
         if (typeof(Storage) !== "undefined") {
             sessionStorage.getItem("X-Auth-Token");
         } else {
