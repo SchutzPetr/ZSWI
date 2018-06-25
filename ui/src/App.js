@@ -39,13 +39,15 @@ class App extends React.Component {
     }
 
     componentDidMount(){
-        this.authUserByToken(Authentication.getToken());
+        const token = Authentication.getSessionToken();
+        this.authUserByToken(token ? token : Authentication.getToken());
     }
 
     onLoginDone(data, savePasswords) {
         if (!data.token) {
             return;
         }
+        Authentication.saveSessionToken(data.token);
         this.authUserByToken(data.token, savePasswords);
     }
 
