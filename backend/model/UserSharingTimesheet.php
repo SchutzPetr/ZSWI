@@ -16,24 +16,25 @@ class UserSharingTimesheet
 {
 
 
-	/***
-	 * @param integer $userId
+    /***
+     * @param integer $userId
      * @return array SimpleUser[]
-	 */
-	public static function findAllAvailableUsers($userId){
-		$query = "SELECT id FROM user  WHERE id !=:userId AND id NOT IN (SELECT share_to_id FROM user_sharing_timesheet WHERE sharing_user_id =:userId);";
-		$preparedQuery = Database::getConnection()->prepare($query);
-		$preparedQuery->bindValue(":userId", $userId);
-		$preparedQuery->execute();
-		$result = $preparedQuery->fetchAll();
+     */
+    public static function findAllAvailableUsers($userId)
+    {
+        $query = "SELECT id FROM user  WHERE id !=:userId AND id NOT IN (SELECT share_to_id FROM user_sharing_timesheet WHERE sharing_user_id =:userId);";
+        $preparedQuery = Database::getConnection()->prepare($query);
+        $preparedQuery->bindValue(":userId", $userId);
+        $preparedQuery->execute();
+        $result = $preparedQuery->fetchAll();
 
-		$arrayOfUsersId = array();
+        $arrayOfUsersId = array();
 
-		foreach ($result as $var){
-			$arrayOfUsersId []= $var["id"];
-		}
-		return SimpleUser::findAllByIds($arrayOfUsersId);
-	}
+        foreach ($result as $var) {
+            $arrayOfUsersId [] = $var["id"];
+        }
+        return SimpleUser::findAllByIds($arrayOfUsersId);
+    }
 
     /**
      * @param integer $userId
@@ -51,8 +52,8 @@ class UserSharingTimesheet
 
         $arrayOfUsersId = array();
 
-        foreach ($result as $var){
-            $arrayOfUsersId []= $var["sharing_user_id"];
+        foreach ($result as $var) {
+            $arrayOfUsersId [] = $var["sharing_user_id"];
         }
         return SimpleUser::findAllByIds($arrayOfUsersId);
     }
@@ -73,8 +74,8 @@ class UserSharingTimesheet
 
         $arrayOfUsersId = array();
 
-        foreach ($result as $var){
-            $arrayOfUsersId []= $var["share_to_id"];
+        foreach ($result as $var) {
+            $arrayOfUsersId [] = $var["share_to_id"];
         }
         return SimpleUser::findAllByIds($arrayOfUsersId);
     }
@@ -85,7 +86,8 @@ class UserSharingTimesheet
      * @param integer $toUserId
      * @return SimpleUser
      */
-    public static function findShareByFromIdAndToId($fromUserId, $toUserId){
+    public static function findShareByFromIdAndToId($fromUserId, $toUserId)
+    {
         $query = "SELECT share_to_id FROM user_sharing_timesheet WHERE sharing_user_id = :fromUserId  AND share_to_id = :toUserId;";
         $preparedQuery = Database::getConnection()->prepare($query);
         $preparedQuery->bindValue(":fromUserId", $fromUserId);
@@ -103,12 +105,12 @@ class UserSharingTimesheet
      */
     static function save($fromUserId, $toUserId)
     {
-            $query = "INSERT INTO user_sharing_timesheet (sharing_user_id, share_to_id) value (:fromUserId, :toUserId) on duplicate key update sharing_user_id = :fromUserId, share_to_id= :toUserId;";
-            $preparedQuery = Database::getConnection()->prepare($query);
-            $preparedQuery->bindValue(":fromUserId", $fromUserId);
-            $preparedQuery->bindValue(":toUserId", $toUserId);
+        $query = "INSERT INTO user_sharing_timesheet (sharing_user_id, share_to_id) value (:fromUserId, :toUserId) on duplicate key update sharing_user_id = :fromUserId, share_to_id= :toUserId;";
+        $preparedQuery = Database::getConnection()->prepare($query);
+        $preparedQuery->bindValue(":fromUserId", $fromUserId);
+        $preparedQuery->bindValue(":toUserId", $toUserId);
 
-            $preparedQuery->execute();
+        $preparedQuery->execute();
     }
 
     /**

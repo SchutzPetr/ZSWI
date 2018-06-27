@@ -5,20 +5,20 @@
  * Date: 06.06.2018
  * Time: 17:24
  */
-include_once (__DIR__."/../exception/PermissionException.php");
-include_once (__DIR__."/../util/Permission.php");
-include_once (__DIR__."/Service.php");
-include_once (__DIR__."/TimeSheetService.php");
-include_once (__DIR__."/SimpleUserService.php");
-include_once (__DIR__."/NotificationService.php");
-include_once (__DIR__."/../model/Notification.php");
-include_once (__DIR__."/../model/Attendance.php");
-include_once (__DIR__."/../model/UserHoliday.php");
-include_once (__DIR__."/../model/DayTimeSheet.php");
-include_once (__DIR__."/../model/Notification.php");
+include_once(__DIR__ . "/../exception/PermissionException.php");
+include_once(__DIR__ . "/../util/Permission.php");
+include_once(__DIR__ . "/Service.php");
+include_once(__DIR__ . "/TimeSheetService.php");
+include_once(__DIR__ . "/SimpleUserService.php");
+include_once(__DIR__ . "/NotificationService.php");
+include_once(__DIR__ . "/../model/Notification.php");
+include_once(__DIR__ . "/../model/Attendance.php");
+include_once(__DIR__ . "/../model/UserHoliday.php");
+include_once(__DIR__ . "/../model/DayTimeSheet.php");
+include_once(__DIR__ . "/../model/Notification.php");
 
-include_once (__DIR__."./../vendor/netresearch/jsonmapper/src/JsonMapper.php");
-include_once (__DIR__."/../vendor/netresearch/jsonmapper/src/JsonMapper/Exception.php");
+include_once(__DIR__ . "./../vendor/netresearch/jsonmapper/src/JsonMapper.php");
+include_once(__DIR__ . "/../vendor/netresearch/jsonmapper/src/JsonMapper/Exception.php");
 
 class UserHolidayService extends Service
 {
@@ -29,13 +29,14 @@ class UserHolidayService extends Service
      * @throws PermissionException
      * @throws UnauthorizedException
      */
-	public static function findById($id){
-		if(!Permission::hasPermission(self::getUserFromContext(), "USER_HOLIDAY.FIND")){
-			throw new PermissionException();
-		}
+    public static function findById($id)
+    {
+        if (!Permission::hasPermission(self::getUserFromContext(), "USER_HOLIDAY.FIND")) {
+            throw new PermissionException();
+        }
 
-		return UserHoliday::findById($id);
-	}
+        return UserHoliday::findById($id);
+    }
 
     /***
      * @param $id
@@ -43,12 +44,13 @@ class UserHolidayService extends Service
      * @throws PermissionException
      * @throws UnauthorizedException
      */
-	public static function findByUserId($id){
-		if(!Permission::hasPermission(self::getUserFromContext(), "USER_HOLIDAY.FIND", $id)){
-			throw new PermissionException();
-		}
-		return UserHoliday::findByUserId($id);
-	}
+    public static function findByUserId($id)
+    {
+        if (!Permission::hasPermission(self::getUserFromContext(), "USER_HOLIDAY.FIND", $id)) {
+            throw new PermissionException();
+        }
+        return UserHoliday::findByUserId($id);
+    }
 
     /**
      * @param int $id
@@ -57,12 +59,13 @@ class UserHolidayService extends Service
      * @throws PermissionException
      * @throws UnauthorizedException
      */
-	public static function findAllByUserIdAndYear($id, $year){
-		if(!Permission::hasPermission(self::getUserFromContext(), "USER_HOLIDAY.FIND", $id)){
-			throw new PermissionException();
-		}
-		return UserHoliday::findAllByUserIdAndYear($id, $year);
-	}
+    public static function findAllByUserIdAndYear($id, $year)
+    {
+        if (!Permission::hasPermission(self::getUserFromContext(), "USER_HOLIDAY.FIND", $id)) {
+            throw new PermissionException();
+        }
+        return UserHoliday::findAllByUserIdAndYear($id, $year);
+    }
 
     /**
      * @param int $id
@@ -72,19 +75,20 @@ class UserHolidayService extends Service
      * @throws PermissionException
      * @throws UnauthorizedException
      */
-	public static function findAllByUserIdAndMonthAndYear($id, $year, $month){
-		if(!Permission::hasPermission(self::getUserFromContext(), "USER_HOLIDAY.FIND", $id)){
-			throw new PermissionException();
-		}
-		$usersHoliday = UserHoliday::findAllByUserIdAndMonthAndYear($id, $year, $month);
-		$usersHolidayArray = array();
-		foreach ($usersHoliday as $holiday){
-			$day = date("d", $holiday->getDate());
-			$usersHolidayArray[$day] = $holiday;
-		}
-		return $usersHolidayArray;
+    public static function findAllByUserIdAndMonthAndYear($id, $year, $month)
+    {
+        if (!Permission::hasPermission(self::getUserFromContext(), "USER_HOLIDAY.FIND", $id)) {
+            throw new PermissionException();
+        }
+        $usersHoliday = UserHoliday::findAllByUserIdAndMonthAndYear($id, $year, $month);
+        $usersHolidayArray = array();
+        foreach ($usersHoliday as $holiday) {
+            $day = date("d", $holiday->getDate());
+            $usersHolidayArray[$day] = $holiday;
+        }
+        return $usersHolidayArray;
 
-	}
+    }
 
 
     /**
@@ -92,13 +96,14 @@ class UserHolidayService extends Service
      * @throws PermissionException
      * @throws UnauthorizedException
      */
-	public static function findAll(){
-		if(!Permission::hasPermission(self::getUserFromContext(), "USER_HOLIDAY.FIND")){
-			throw new PermissionException();
-		}
+    public static function findAll()
+    {
+        if (!Permission::hasPermission(self::getUserFromContext(), "USER_HOLIDAY.FIND")) {
+            throw new PermissionException();
+        }
 
-		return UserHoliday::findAll();
-	}
+        return UserHoliday::findAll();
+    }
 
     /**
      * @param UserHoliday[]|UserHoliday $userHolidays
@@ -106,15 +111,16 @@ class UserHolidayService extends Service
      * @throws Exception
      * @throws UnauthorizedException
      */
-	public static function create($userHolidays){
-        if(is_array($userHolidays)){
-            if(!Permission::hasPermission(self::getUserFromContext(), "USER_HOLIDAY.CREATE",
-                $userHolidays[0]->getUserId())){
+    public static function create($userHolidays)
+    {
+        if (is_array($userHolidays)) {
+            if (!Permission::hasPermission(self::getUserFromContext(), "USER_HOLIDAY.CREATE",
+                $userHolidays[0]->getUserId())) {
                 throw new PermissionException();
             }
-            if(sizeof($userHolidays) > 1){
+            if (sizeof($userHolidays) > 1) {
                 $first = $userHolidays[0];
-                $last = $userHolidays[sizeof($userHolidays)-1];
+                $last = $userHolidays[sizeof($userHolidays) - 1];
 
                 $simpleUser = SimpleUserService::findById($userHolidays[0]->getUserId());
 
@@ -122,7 +128,7 @@ class UserHolidayService extends Service
                 $notifi->setTitle("Vytvoření dovolené");
                 $notifi->setDescription($simpleUser->displayFullName() . " si vytvořil dovolenou od " .
                     $first->getDate() . " do " . $last->getDate() . ".");
-            }else{
+            } else {
                 $simpleUser = SimpleUserService::findById($userHolidays[0]->getUserId());
 
                 $notifi = new Notification();
@@ -130,23 +136,23 @@ class UserHolidayService extends Service
                 $notifi->setDescription($simpleUser->displayFullName() . " si vytvořil dovolenou na" .
                     $userHolidays[0]->getDate() . ".");
             }
-		    foreach ($userHolidays as $holiday){
-            	if(UserHoliday::findByUserIdAndDate($holiday->getUserId(), $holiday->getDate())->getDate() !== null){
-		            throw new Exception();
-	            }
+            foreach ($userHolidays as $holiday) {
+                if (UserHoliday::findByUserIdAndDate($holiday->getUserId(), $holiday->getDate())->getDate() !== null) {
+                    throw new Exception();
+                }
                 UserHoliday::save($holiday);
             }
             Notification::save($notifi);
 
-            TimeSheetService::reGenerateForHoliday($userHolidays[0]->getUserId(),$userHolidays);
+            TimeSheetService::reGenerateForHoliday($userHolidays[0]->getUserId(), $userHolidays);
 
-        }else{
-            if(!Permission::hasPermission(self::getUserFromContext(), "USER_HOLIDAY.CREATE",  $userHolidays->getUserId())){
+        } else {
+            if (!Permission::hasPermission(self::getUserFromContext(), "USER_HOLIDAY.CREATE", $userHolidays->getUserId())) {
                 throw new PermissionException();
             }
-	        if(UserHoliday::findByUserIdAndDate($userHolidays->getUserId(), $userHolidays->getDate())->getDate() !== null){
-		        throw new Exception();
-	        }
+            if (UserHoliday::findByUserIdAndDate($userHolidays->getUserId(), $userHolidays->getDate())->getDate() !== null) {
+                throw new Exception();
+            }
             $simpleUser = SimpleUserService::findById($userHolidays->getUserId());
 
             $notifi = new Notification();
@@ -156,10 +162,10 @@ class UserHolidayService extends Service
 
             UserHoliday::save($userHolidays);
             Notification::save($notifi);
-            TimeSheetService::reGenerateForHoliday($userHolidays->getUserId(),array($userHolidays));
+            TimeSheetService::reGenerateForHoliday($userHolidays->getUserId(), array($userHolidays));
         }
 
-	}
+    }
 
 
     /**
@@ -168,31 +174,32 @@ class UserHolidayService extends Service
      * @throws Exception
      * @throws UnauthorizedException
      */
-	public static function update($userHoliday){
-		if(!Permission::hasPermission(self::getUserFromContext(), "USER_HOLIDAY.UPDATE", $userHoliday->getUserId())){
-			throw new PermissionException();
-		}
+    public static function update($userHoliday)
+    {
+        if (!Permission::hasPermission(self::getUserFromContext(), "USER_HOLIDAY.UPDATE", $userHoliday->getUserId())) {
+            throw new PermissionException();
+        }
 
-		$oldUserHoliday = UserHolidayService::findById($userHoliday->getId());
+        $oldUserHoliday = UserHolidayService::findById($userHoliday->getId());
 
-		if($oldUserHoliday->getDate()  !== $userHoliday->getDate()){
-			///control if in new date have object UserHoliday
-			if(UserHoliday::findByUserIdAndDate($userHoliday->getUserId(), $userHoliday->getDate())->getDate() !== null){
-				throw new Exception();
-			}
-			$oldDayTimeSheete = DayTimeSheet::findByUserIdAndDateString($userHoliday->getId(), DateTime::createFromFormat("Y-m-d", $userHoliday->getDate()));
-			$attendance = Attendance::findByUserIdAndDateString($userHoliday->getId(), DateTime::createFromFormat("Y-m-d", $userHoliday->getDate())->format("Y-m-d"));
-			if($attendance!= null){
-				$oldDayTimeSheete->setFirstPartFrom($attendance->getFirstPartFrom());
-				$oldDayTimeSheete->setFirstPartTo($attendance->getFirstPartTo());
-				$oldDayTimeSheete->setSecondPartFrom($attendance->getSecondPartFrom());
-				$oldDayTimeSheete->setSecondPartTo($attendance->getSecondPartTo());
-				$oldDayTimeSheete->setDayType(NULL);
-				DayTimeSheet::save($oldDayTimeSheete);
-			}
+        if ($oldUserHoliday->getDate() !== $userHoliday->getDate()) {
+            ///control if in new date have object UserHoliday
+            if (UserHoliday::findByUserIdAndDate($userHoliday->getUserId(), $userHoliday->getDate())->getDate() !== null) {
+                throw new Exception();
+            }
+            $oldDayTimeSheete = DayTimeSheet::findByUserIdAndDateString($userHoliday->getId(), DateTime::createFromFormat("Y-m-d", $userHoliday->getDate()));
+            $attendance = Attendance::findByUserIdAndDateString($userHoliday->getId(), DateTime::createFromFormat("Y-m-d", $userHoliday->getDate())->format("Y-m-d"));
+            if ($attendance != null) {
+                $oldDayTimeSheete->setFirstPartFrom($attendance->getFirstPartFrom());
+                $oldDayTimeSheete->setFirstPartTo($attendance->getFirstPartTo());
+                $oldDayTimeSheete->setSecondPartFrom($attendance->getSecondPartFrom());
+                $oldDayTimeSheete->setSecondPartTo($attendance->getSecondPartTo());
+                $oldDayTimeSheete->setDayType(NULL);
+                DayTimeSheet::save($oldDayTimeSheete);
+            }
 
-		}
-		UserHoliday::save($userHoliday);
+        }
+        UserHoliday::save($userHoliday);
 
         $simpleUser = SimpleUserService::findById($userHoliday->getUserId());
 
@@ -203,8 +210,8 @@ class UserHolidayService extends Service
 
         Notification::save($notifi);
 
-        TimeSheetService::reGenerateForHoliday($userHoliday->getUserId(),array($userHoliday));
-	}
+        TimeSheetService::reGenerateForHoliday($userHoliday->getUserId(), array($userHoliday));
+    }
 
 
     /***
@@ -212,25 +219,26 @@ class UserHolidayService extends Service
      * @throws PermissionException
      * @throws UnauthorizedException
      */
-	public static function deleteById($id){
+    public static function deleteById($id)
+    {
         $userHoliday = self::findById($id);
 
-		if(!Permission::hasPermission(self::getUserFromContext(), "USER_HOLIDAY.DELETE", $userHoliday->getUserId())){
-			throw new PermissionException();
-		}
+        if (!Permission::hasPermission(self::getUserFromContext(), "USER_HOLIDAY.DELETE", $userHoliday->getUserId())) {
+            throw new PermissionException();
+        }
 
-		$day = date("d", strtotime($userHoliday->getDate()));
-		$month = date('m', strtotime($userHoliday->getDate()));
-		$year = date('Y', strtotime($userHoliday->getDate()));
-		$dayTimeSheet =	DayTimeSheet::findByUserIdAndDate($userHoliday->getUserId(), $day, $month, $year);
+        $day = date("d", strtotime($userHoliday->getDate()));
+        $month = date('m', strtotime($userHoliday->getDate()));
+        $year = date('Y', strtotime($userHoliday->getDate()));
+        $dayTimeSheet = DayTimeSheet::findByUserIdAndDate($userHoliday->getUserId(), $day, $month, $year);
 
-		if($dayTimeSheet !== null){
-			$attendance = Attendance::findByUserIdAndDate($userHoliday->getUserId(), $day, $month, $year);
-			$dayTimeSheet->setFirstPartFrom($attendance->getFirstPartFrom());
-			$dayTimeSheet->setFirstPartTo($attendance->getFirstPartTo());
-			$dayTimeSheet->setSecondPartFrom($attendance->getSecondPartFrom());
-			$dayTimeSheet->setSecondPartTo($attendance->getSecondPartTo());
-			$dayTimeSheet->setDayType(NULL);
+        if ($dayTimeSheet !== null) {
+            $attendance = Attendance::findByUserIdAndDate($userHoliday->getUserId(), $day, $month, $year);
+            $dayTimeSheet->setFirstPartFrom($attendance->getFirstPartFrom());
+            $dayTimeSheet->setFirstPartTo($attendance->getFirstPartTo());
+            $dayTimeSheet->setSecondPartFrom($attendance->getSecondPartFrom());
+            $dayTimeSheet->setSecondPartTo($attendance->getSecondPartTo());
+            $dayTimeSheet->setDayType(NULL);
             DayTimeSheet::save($dayTimeSheet);
         }
 
@@ -243,25 +251,27 @@ class UserHolidayService extends Service
 
         Notification::save($notifi);
 
-		UserHoliday::deleteById($id);
-	}
+        UserHoliday::deleteById($id);
+    }
 
-	/**
-	 * @param $jsonUserHoliday string
-	 * @return UserHoliday|object
-	 * @throws JsonMapper_Exception
-	 */
-	public static function jsonUserHolidayDecode($jsonUserHoliday){
-		$mapper = new JsonMapper();
-		$userHoliday = $mapper->map(json_decode($jsonUserHoliday), new UserHoliday());
-		return $userHoliday;
-	}
+    /**
+     * @param $jsonUserHoliday string
+     * @return UserHoliday|object
+     * @throws JsonMapper_Exception
+     */
+    public static function jsonUserHolidayDecode($jsonUserHoliday)
+    {
+        $mapper = new JsonMapper();
+        $userHoliday = $mapper->map(json_decode($jsonUserHoliday), new UserHoliday());
+        return $userHoliday;
+    }
 
     /**
      * @param $jsonHoliday string
      * @return UserHoliday[]|object[]
      */
-    public static function jsonHolidayArrayDecode( $jsonHoliday){
+    public static function jsonHolidayArrayDecode($jsonHoliday)
+    {
         $mapper = new JsonMapper();
         $holidays = $mapper->mapArray(json_decode($jsonHoliday), array(), 'UserHoliday');
         return $holidays;

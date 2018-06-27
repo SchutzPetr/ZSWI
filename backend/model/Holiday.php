@@ -154,7 +154,7 @@ class Holiday extends BaseModel
         $preparedQuery->execute();
         $result = $preparedQuery->fetch();
 
-        if(empty($result)){
+        if (empty($result)) {
             return null;
         }
 

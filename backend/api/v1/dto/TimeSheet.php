@@ -18,9 +18,9 @@ class TimeSheet implements JsonSerializable
      */
     private $dayTimeSheets = [];
 
-	/**
-	 * @var ProjectAssign[]
-	 */
+    /**
+     * @var ProjectAssign[]
+     */
     private $projectAssign = [];
 
     /**
@@ -86,19 +86,21 @@ class TimeSheet implements JsonSerializable
         $this->month = $month;
     }
 
-	/**
-	 * @return ProjectAssign[]
-	 */
-	public function getProjectAssign() {
-		return $this->projectAssign;
-	}
+    /**
+     * @return ProjectAssign[]
+     */
+    public function getProjectAssign()
+    {
+        return $this->projectAssign;
+    }
 
-	/**
-	 * @param ProjectAssign[] $projectAssign
-	 */
-	public function setProjectAssign( $projectAssign ) {
-		$this->projectAssign = $projectAssign;
-	}
+    /**
+     * @param ProjectAssign[] $projectAssign
+     */
+    public function setProjectAssign($projectAssign)
+    {
+        $this->projectAssign = $projectAssign;
+    }
 
     /**
      * @return Holiday[]

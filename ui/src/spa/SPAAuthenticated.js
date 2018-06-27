@@ -41,7 +41,7 @@ import Calls from "../Calls";
 
 class SPAAuthenticated extends React.Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.state = {
@@ -51,22 +51,23 @@ class SPAAuthenticated extends React.Component {
         };
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this._fetch();
     }
 
-    _fetch(){
-
-        Calls.getAllNotification({
-            data: {}, //todo: year
-            done: (data) => {
-                this.setState({notifications: Notification.map(data.data), loadFeedback: "ready"});
-            },
-            fail: (data) => {
-                this.setState({loadFeedback: "error"});
-                //todo: error throw
-            }
-        });
+    _fetch() {
+        if(this.props.authenticatedUser.authority === "ADMIN" || this.props.authenticatedUser.authority === "SECRETARY"){
+            Calls.getAllNotification({
+                data: {}, //todo: year
+                done: (data) => {
+                    this.setState({notifications: Notification.map(data.data), loadFeedback: "ready"});
+                },
+                fail: (data) => {
+                    this.setState({loadFeedback: "error"});
+                    //todo: error throw
+                }
+            });
+        }
     }
 
     handleDrawerOpen = () => {
@@ -119,7 +120,8 @@ class SPAAuthenticated extends React.Component {
                 <Switch>
                     <Route path={"/"} exact={true}
                            render={props => (
-                               <Home authenticatedUser={this.props.authenticatedUser} match={props.match} menuOpen={this.state.open}/>
+                               <Home authenticatedUser={this.props.authenticatedUser} match={props.match}
+                                     menuOpen={this.state.open}/>
                            )}/>
                     <Route path={"/agenda/:userId?"} exact={true}
                            render={props => (
@@ -181,20 +183,21 @@ class SPAAuthenticated extends React.Component {
                         <Typography variant="title" color="inherit" className={classes.flex}>
                             Správce docházky
                         </Typography>
-                        <Tooltip title={"Zobrazit notifikace"}>
-                            <IconButton color="inherit"
-                                        className={classes.notifiButton}
-                                        buttonRef={node => {
-                                            this.notificationButtonRef = node;
-                                        }}
-                                        onClick={this.onNotificationPopoverOpen}>
-                                {this.state.notifications && this.state.notifications.length > 0 ?
-                                    <Badge color="secondary" badgeContent={this.state.notifications.length}>
-                                        <Notifications/>
-                                    </Badge> :
-                                    <Notifications/>}
-                            </IconButton>
-                        </Tooltip>
+                        {(this.props.authenticatedUser.authority === "ADMIN" || this.props.authenticatedUser.authority === "SECRETARY") ?
+                            <Tooltip title={"Zobrazit notifikace"}>
+                                <IconButton color="inherit"
+                                            className={classes.notifiButton}
+                                            buttonRef={node => {
+                                                this.notificationButtonRef = node;
+                                            }}
+                                            onClick={this.onNotificationPopoverOpen}>
+                                    {this.state.notifications && this.state.notifications.length > 0 ?
+                                        <Badge color="secondary" badgeContent={this.state.notifications.length}>
+                                            <Notifications/>
+                                        </Badge> :
+                                        <Notifications/>}
+                                </IconButton>
+                            </Tooltip> : null}
                         <Tooltip title={"Odhlásit"}>
                             <IconButton
                                 color={"inherit"}
@@ -207,8 +210,11 @@ class SPAAuthenticated extends React.Component {
                         </Tooltip>
                     </Toolbar>
                 </AppBar>
-                <NotificationPopover open={this.state.notificationPopoverOpen} buttonRef={this.notificationButtonRef}
-                                     onClose={this.onNotificationPopoverClose} notifications={this.state.notifications}/>
+                {(this.props.authenticatedUser.authority === "ADMIN" || this.props.authenticatedUser.authority === "SECRETARY") ?
+                    <NotificationPopover open={this.state.notificationPopoverOpen}
+                                         buttonRef={this.notificationButtonRef}
+                                         onClose={this.onNotificationPopoverClose}
+                                         notifications={this.state.notifications}/> : null}
                 <Hidden mdUp>
                     <Drawer
                         variant="temporary"

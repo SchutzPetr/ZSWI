@@ -1,3 +1,5 @@
 {
-  "API_URL": "http://localhost/backend/api/v1"
+  "API_URL": "http://localhost/backend/api/v1",
+  "VERSION": "0.0.1",
+  "APP_DIRECTORY": ""
 }

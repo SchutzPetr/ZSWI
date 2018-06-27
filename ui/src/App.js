@@ -12,6 +12,8 @@ import SPANotAuthenticated from "./spa/SPANotAuthenticated";
 import {Route} from "react-router-dom";
 import Calls from "./Calls";
 import User from "./entity/User";
+import LinearProgressCentered from "./components/LinearProgressCentered";
+import PropTypes from "prop-types";
 
 const theme = createMuiTheme();
 
@@ -23,39 +25,39 @@ class App extends React.Component {
         moment.locale('cs');
 
         axios.defaults.headers.post["Content-Type"] = "application/json";
+        axios.defaults.baseURL = props.config.API_URL;
+
+        Config.API_URL = props.config.API_URL;
+        Config.VERSION = props.config.VERSION;
+        Config.APP_DIRECTORY = props.config.APP_DIRECTORY;
 
         this.state = {
-            authenticatedUser: null
+            config: props.config,
+            authenticatedUser: null,
+            token: !!Authentication.getToken()
         };
     }
 
-    componentDidMount() {
-        fetch('./config.json').then(r => r.json()).then(json => {
-            axios.defaults.baseURL = json.API_URL;
-            if(Authentication.getToken()){
-                this.authUserByToken(Authentication.getToken());
-            }
-            Config.API_URL = json.API_URL;
-            Config.VERSION = json.VERSION;
-
-            this.setState({config: json});
-        });
+    componentDidMount(){
+        const token = Authentication.getSessionToken();
+        this.authUserByToken(token ? token : Authentication.getToken());
     }
 
-    onLoginDone(data, savePassworda) {
+    onLoginDone(data, savePasswords) {
         if (!data.token) {
             return;
         }
-        this.authUserByToken(data.token, savePassworda);
+        Authentication.saveSessionToken(data.token);
+        this.authUserByToken(data.token, savePasswords);
     }
 
-    onLogout(){
+    onLogout() {
         Authentication.user = null;
         Authentication.clearToken();
         this.setState({authenticatedUser: null});
     }
 
-    authUserByToken(token, savePassworda = false){
+    authUserByToken(token, savePasswords = false) {
         if (!token) {
             return;
         }
@@ -67,7 +69,7 @@ class App extends React.Component {
 
                     const user = User.map(userData.data);
                     Authentication.user = user;
-                    if(savePassworda){
+                    if (savePasswords) {
                         Authentication.saveToken(token);
                     }
 
@@ -77,36 +79,10 @@ class App extends React.Component {
                 });
             },
             fail: (userData) => {
-                this.setState({authenticatedUser: null});
+                Authentication.clearToken();
+                this.setState({authenticatedUser: null, token: !!Authentication.getToken()});
             }
         });
-    }
-
-    render4() {
-        return (
-            <MuiThemeProvider theme={theme}>
-                <MuiPickersUtilsProvider
-                    utils={MomentUtils}
-                    moment={moment}
-                    locale="cs"
-                >
-                    <Route path={"*"} exact={true}
-                           render={props => {
-                               if (!this.state.config) {
-                                   return null;
-                               } else {
-                                   if (Authentication.isAuthenticated()) {
-                                       return <SPAAuthenticated authenticatedUser={this.state.authenticatedUser}
-                                                                match={props.match} history={props.history}/>
-                                   } else {
-                                       return <SPAAuthenticated authenticatedUser={this.state.authenticatedUser}
-                                                                match={props.match} history={props.history}/>
-                                   }
-                               }
-                           }}/>
-                </MuiPickersUtilsProvider>
-            </MuiThemeProvider>
-        );
     }
 
     render() {
@@ -115,16 +91,17 @@ class App extends React.Component {
                 <MuiPickersUtilsProvider
                     utils={MomentUtils}
                     moment={moment}
-                    locale="cs"
+                    locale={"cs"}
                 >
                     <Route path={"*"} exact={true}
                            render={props => {
-                               if (!this.state.config) {
-                                   return null;
+                               if (!this.state.config || (this.state.token && this.state.authenticatedUser === null)) {
+                                   return <LinearProgressCentered fullPage={true}/>;
                                } else {
                                    if (Authentication.isAuthenticated()) {
                                        return <SPAAuthenticated authenticatedUser={this.state.authenticatedUser}
-                                                                match={props.match} history={props.history} onLogout={this.onLogout.bind(this)}/>
+                                                                match={props.match} history={props.history}
+                                                                onLogout={this.onLogout.bind(this)}/>
                                    } else {
                                        return <SPANotAuthenticated authenticatedUser={this.state.user}
                                                                    match={props.match}
@@ -138,5 +115,9 @@ class App extends React.Component {
         );
     }
 }
+
+SPAAuthenticated.propTypes = {
+    config: PropTypes.object.isRequired,
+};
 
 export default App;

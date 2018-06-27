@@ -7,13 +7,13 @@
  */
 
 
-include_once (__DIR__."/../exception/PermissionException.php");
-include_once (__DIR__."/../util/Permission.php");
-include_once (__DIR__."/Service.php");
-include_once (__DIR__."/AttendanceService.php");
-include_once (__DIR__."/../model/UserContract.php");
-include_once (__DIR__."/../vendor/netresearch/jsonmapper/src/JsonMapper.php");
-include_once (__DIR__."/../vendor/netresearch/jsonmapper/src/JsonMapper/Exception.php");
+include_once(__DIR__ . "/../exception/PermissionException.php");
+include_once(__DIR__ . "/../util/Permission.php");
+include_once(__DIR__ . "/Service.php");
+include_once(__DIR__ . "/AttendanceService.php");
+include_once(__DIR__ . "/../model/UserContract.php");
+include_once(__DIR__ . "/../vendor/netresearch/jsonmapper/src/JsonMapper.php");
+include_once(__DIR__ . "/../vendor/netresearch/jsonmapper/src/JsonMapper/Exception.php");
 
 class UserContractService extends Service
 {
@@ -23,8 +23,9 @@ class UserContractService extends Service
      * @throws PermissionException
      * @throws UnauthorizedException
      */
-    public static function create($userContract){
-        if(!Permission::hasPermission(self::getUserFromContext(), "USER_CONTRACT.CREATE")){
+    public static function create($userContract)
+    {
+        if (!Permission::hasPermission(self::getUserFromContext(), "USER_CONTRACT.CREATE")) {
             throw new PermissionException();
         }
 
@@ -36,8 +37,9 @@ class UserContractService extends Service
      * @throws PermissionException
      * @throws UnauthorizedException
      */
-    public static function update($userContract){
-        if(!Permission::hasPermission(self::getUserFromContext(), "USER_CONTRACT.UPDATE")){
+    public static function update($userContract)
+    {
+        if (!Permission::hasPermission(self::getUserFromContext(), "USER_CONTRACT.UPDATE")) {
             throw new PermissionException();
         }
 
@@ -51,8 +53,9 @@ class UserContractService extends Service
      * @throws PermissionException
      * @throws UnauthorizedException
      */
-    public static function findValidByDateAndUserId($userId, $date){
-        if(!Permission::hasPermission(self::getUserFromContext(), "USER_CONTRACT.FIND")){
+    public static function findValidByDateAndUserId($userId, $date)
+    {
+        if (!Permission::hasPermission(self::getUserFromContext(), "USER_CONTRACT.FIND")) {
             throw new PermissionException();
         }
 
@@ -64,7 +67,8 @@ class UserContractService extends Service
      * @return UserContract|object
      * @throws JsonMapper_Exception
      */
-    public static function jsonUserDecode($jsonUserContract){
+    public static function jsonUserDecode($jsonUserContract)
+    {
         $mapper = new JsonMapper();
         $userContract = $mapper->map(json_decode($jsonUserContract), new UserContract());
         return $userContract;

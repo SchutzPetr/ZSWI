@@ -16,6 +16,22 @@ class Authentication {
         this._user = value;
     }
 
+    saveSessionToken(token){
+        if (typeof(Storage) !== "undefined") {
+            sessionStorage.setItem("X-Auth-Token", token);
+        } else {
+            console.warn("Sorry! No Web Storage support..");
+        }
+    }
+
+    getSessionToken(){
+        if (typeof(Storage) !== "undefined") {
+            return sessionStorage.getItem("X-Auth-Token");
+        } else {
+            console.warn("Sorry! No Web Storage support..");
+        }
+    }
+
     saveToken(token){
         if (typeof(Storage) !== "undefined") {
             localStorage.setItem("X-Auth-Token", token);
@@ -36,6 +52,7 @@ class Authentication {
     clearToken() {
         if (typeof(Storage) !== "undefined") {
             localStorage.removeItem("X-Auth-Token");
+            sessionStorage.removeItem("X-Auth-Token");
         } else {
             console.warn("Sorry! No Web Storage support..");
         }

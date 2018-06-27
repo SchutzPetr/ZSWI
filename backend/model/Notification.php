@@ -6,8 +6,8 @@
  * Time: 11:32
  */
 
-include_once (__DIR__."/../database/Database.php");
-include_once (__DIR__."/BaseModel.php");
+include_once(__DIR__ . "/../database/Database.php");
+include_once(__DIR__ . "/BaseModel.php");
 
 class Notification extends BaseModel
 {
@@ -20,6 +20,11 @@ class Notification extends BaseModel
      * @var string
      */
     private $description = "";
+
+    /**
+     * @var string
+     */
+    private $date = "";
 
     /**
      * @var string
@@ -96,6 +101,23 @@ class Notification extends BaseModel
     }
 
     /**
+     * @return string
+     */
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+    /**
+     * @param string $date
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
+    }
+
+
+    /**
      * @param $row
      */
     private function fill($row)
@@ -105,6 +127,7 @@ class Notification extends BaseModel
         self::setDescription($row["description"]);
         self::setLink($row["link"]);
         self::setShown($row["shown"]);
+        self::setDate($row["date"]);
     }
 
     /**
@@ -126,13 +149,12 @@ class Notification extends BaseModel
     }
 
 
-
     /**
      * @return array
      */
     static function findAll()
     {
-        $query = "SELECT * FROM notification;";
+        $query = "SELECT * FROM notification ORDER BY date DESC;";
         $preparedQuery = Database::getConnection()->prepare($query);
         $preparedQuery->execute();
         $result = $preparedQuery->fetchAll();
@@ -148,25 +170,26 @@ class Notification extends BaseModel
         return $arrayOfNotifications;
     }
 
-	/**
-	 * @return array
-	 */
-	static function findAllUnread(){
-		$query = "SELECT * FROM notification WHERE shown=0;";
-		$preparedQuery = Database::getConnection()->prepare($query);
-		$preparedQuery->execute();
-		$result = $preparedQuery->fetchAll();
+    /**
+     * @return array
+     */
+    static function findAllUnread()
+    {
+        $query = "SELECT * FROM notification WHERE shown = 0 ORDER BY date DESC;";
+        $preparedQuery = Database::getConnection()->prepare($query);
+        $preparedQuery->execute();
+        $result = $preparedQuery->fetchAll();
 
-		$arrayOfNotifications = array();
+        $arrayOfNotifications = array();
 
-		foreach ($result as $var) {
-			$instance = new self();
-			$instance->fill($var);
-			$arrayOfNotifications[] = $instance;
+        foreach ($result as $var) {
+            $instance = new self();
+            $instance->fill($var);
+            $arrayOfNotifications[] = $instance;
 
-		}
-		return $arrayOfNotifications;
-	}
+        }
+        return $arrayOfNotifications;
+    }
 
     static function save($notification)
     {

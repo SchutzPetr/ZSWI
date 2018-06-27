@@ -9,11 +9,11 @@ class LinearProgressCentered extends React.Component {
     render() {
         if(this.props.paper){
             return (
-                <Paper className={this.props.classes.root}><LinearProgress className={this.props.classes.linearLoading}/></Paper>
+                <Paper className={this.props.fullPage ? this.props.classes.fullPage : this.props.classes.root}><LinearProgress className={this.props.classes.linearLoading}/></Paper>
             );
         }else{
             return (
-                <div className={this.props.classes.root}><LinearProgress className={this.props.classes.linearLoading}/></div>
+                <div className={this.props.fullPage ? this.props.classes.fullPage : this.props.classes.root}><LinearProgress className={this.props.classes.linearLoading}/></div>
             );
         }
     }
@@ -21,11 +21,13 @@ class LinearProgressCentered extends React.Component {
 
 LinearProgressCentered.propTypes = {
     classes: PropTypes.object.isRequired,
-    paper: PropTypes.bool
+    paper: PropTypes.bool,
+    fullPage: PropTypes.bool
 };
 
 LinearProgressCentered.defaultProps = {
     paper: true,
+    fullPage: false
 };
 
 export default withStyles(Styles, {withTheme: true})(LinearProgressCentered);

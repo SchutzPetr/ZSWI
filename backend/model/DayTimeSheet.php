@@ -6,7 +6,7 @@
  * Time: 23:18
  */
 
-include_once (__DIR__."/../database/Database.php");
+include_once(__DIR__ . "/../database/Database.php");
 
 class DayTimeSheet implements JsonSerializable
 {
@@ -156,15 +156,15 @@ class DayTimeSheet implements JsonSerializable
      */
     private function fill($row)
     {
-    	if($row["user_id"] != null){
-		    self::setUserId($row["user_id"]);
-		    self::setDate($row["date"]);
-		    self::setDayType($row["day_type"]);
-		    self::setFirstPartFrom($row["first_part_from"]);
-		    self::setFirstPartTo($row["first_part_to"]);
-		    self::setSecondPartFrom($row["second_part_from"]);
-		    self::setSecondPartTo($row["second_part_to"]);
-	    }
+        if ($row["user_id"] != null) {
+            self::setUserId($row["user_id"]);
+            self::setDate($row["date"]);
+            self::setDayType($row["day_type"]);
+            self::setFirstPartFrom($row["first_part_from"]);
+            self::setFirstPartTo($row["first_part_to"]);
+            self::setSecondPartFrom($row["second_part_from"]);
+            self::setSecondPartTo($row["second_part_to"]);
+        }
     }
 
     /**
@@ -215,41 +215,43 @@ class DayTimeSheet implements JsonSerializable
         return $arrayOfDayTimeSheets;
     }
 
-	/***
-	 * @param int $userId
-	 * @param int $day
-	 * @param int $month
-	 * @param int $year
-	 *
-	 * @return DayTimeSheet|null
-	 */
-    static function findByUserIdAndDate($userId, $day, $month, $year){
-    	$date = DateTime::createFromFormat("Y-m-d", $year."-".$month."-".$day);
-	    return self::findByUserIdAndDateString($userId, $date);
+    /***
+     * @param int $userId
+     * @param int $day
+     * @param int $month
+     * @param int $year
+     *
+     * @return DayTimeSheet|null
+     */
+    static function findByUserIdAndDate($userId, $day, $month, $year)
+    {
+        $date = DateTime::createFromFormat("Y-m-d", $year . "-" . $month . "-" . $day);
+        return self::findByUserIdAndDateString($userId, $date);
     }
 
-	/***
-	 * @param int $userId
-	 * @param DateTime $date
-	 *
-	 * @return DayTimeSheet|null
-	 */
-    static function findByUserIdAndDateString($userId, $date){
-	    $query = "SELECT * FROM day_time_sheet WHERE user_id = :user_id and date=:date;";
-	    $preparedQuery = Database::getConnection()->prepare($query);
-	    $preparedQuery->bindValue(":user_id", $userId);
-	    $preparedQuery->bindValue(":date", $date->format("Y-m-d"));
-	    $preparedQuery->execute();
-	    $result = $preparedQuery->fetch();
+    /***
+     * @param int $userId
+     * @param DateTime $date
+     *
+     * @return DayTimeSheet|null
+     */
+    static function findByUserIdAndDateString($userId, $date)
+    {
+        $query = "SELECT * FROM day_time_sheet WHERE user_id = :user_id and date=:date;";
+        $preparedQuery = Database::getConnection()->prepare($query);
+        $preparedQuery->bindValue(":user_id", $userId);
+        $preparedQuery->bindValue(":date", $date->format("Y-m-d"));
+        $preparedQuery->execute();
+        $result = $preparedQuery->fetch();
 
-	    if(empty($result)){
-		    return null;
-	    }
+        if (empty($result)) {
+            return null;
+        }
 
-	    $instance = new self();
-	    $instance->fill($result);
+        $instance = new self();
+        $instance->fill($result);
 
-	    return $instance;
+        return $instance;
     }
 
     /**

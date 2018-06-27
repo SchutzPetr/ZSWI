@@ -1,10 +1,18 @@
 class Config {
 
-    constructor(){
+    constructor() {
+        this._APP_DIRECTORY = "";
         this._API_URL = "";
         this._VERSION = "0.0.0";
     }
 
+    get APP_DIRECTORY() {
+        return this._APP_DIRECTORY;
+    }
+
+    set APP_DIRECTORY(value) {
+        this._APP_DIRECTORY = value;
+    }
 
     get API_URL() {
         return this._API_URL;

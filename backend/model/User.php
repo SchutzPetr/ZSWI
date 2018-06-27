@@ -370,6 +370,17 @@ class User extends BaseModel
 
     /**
      * @param User $user
+     */
+    static function delete($user)
+    {
+        $query = "DELETE FROM user WHERE id = :id;";
+        $preparedQuery = Database::getConnection()->prepare($query);
+        $preparedQuery->bindValue(":id", $user->getId());
+        $preparedQuery->execute();
+    }
+
+    /**
+     * @param User $user
      *
      * Funkce, která založí nového uživatele. Pokud však existuje uživatel se stejným id,
      * tak dojde k updatu.

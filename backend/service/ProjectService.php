@@ -6,16 +6,16 @@
  * Time: 0:13
  */
 
-include_once (__DIR__."/../exception/PermissionException.php");
-include_once (__DIR__."/../util/Permission.php");
-include_once (__DIR__."/../util/Utils.php");
-include_once (__DIR__."/Service.php");
-include_once (__DIR__."/UserContractService.php");
-include_once (__DIR__."/../model/Project.php");
-include_once (__DIR__ . "/../model/ProjectAssign.php");
-include_once (__DIR__ . "/../model/UserContract.php");
-include_once (__DIR__."./../vendor/netresearch/jsonmapper/src/JsonMapper.php");
-include_once (__DIR__."/../vendor/netresearch/jsonmapper/src/JsonMapper/Exception.php");
+include_once(__DIR__ . "/../exception/PermissionException.php");
+include_once(__DIR__ . "/../util/Permission.php");
+include_once(__DIR__ . "/../util/Utils.php");
+include_once(__DIR__ . "/Service.php");
+include_once(__DIR__ . "/UserContractService.php");
+include_once(__DIR__ . "/../model/Project.php");
+include_once(__DIR__ . "/../model/ProjectAssign.php");
+include_once(__DIR__ . "/../model/UserContract.php");
+include_once(__DIR__ . "./../vendor/netresearch/jsonmapper/src/JsonMapper.php");
+include_once(__DIR__ . "/../vendor/netresearch/jsonmapper/src/JsonMapper/Exception.php");
 
 class ProjectService extends Service
 {
@@ -25,8 +25,9 @@ class ProjectService extends Service
      * @throws PermissionException
      * @throws UnauthorizedException
      */
-    public static function findById($id){
-        if(!Permission::hasPermission(self::getUserFromContext(), "PROJECT.FIND")){
+    public static function findById($id)
+    {
+        if (!Permission::hasPermission(self::getUserFromContext(), "PROJECT.FIND")) {
             throw new PermissionException();
         }
 
@@ -38,8 +39,9 @@ class ProjectService extends Service
      * @throws PermissionException
      * @throws UnauthorizedException
      */
-    public static function findAll(){
-        if(!Permission::hasPermission(self::getUserFromContext(), "PROJECT.FIND")){
+    public static function findAll()
+    {
+        if (!Permission::hasPermission(self::getUserFromContext(), "PROJECT.FIND")) {
             throw new PermissionException();
         }
 
@@ -51,8 +53,9 @@ class ProjectService extends Service
      * @throws PermissionException
      * @throws UnauthorizedException
      */
-    public static function create($project){
-        if(!Permission::hasPermission(self::getUserFromContext(), "PROJECT.CREATE")){
+    public static function create($project)
+    {
+        if (!Permission::hasPermission(self::getUserFromContext(), "PROJECT.CREATE")) {
             throw new PermissionException();
         }
 
@@ -64,8 +67,9 @@ class ProjectService extends Service
      * @throws PermissionException
      * @throws UnauthorizedException
      */
-    public static function update($project){
-        if(!Permission::hasPermission(self::getUserFromContext(), "PROJECT.UPDATE")){
+    public static function update($project)
+    {
+        if (!Permission::hasPermission(self::getUserFromContext(), "PROJECT.UPDATE")) {
             throw new PermissionException();
         }
 
@@ -77,22 +81,23 @@ class ProjectService extends Service
      * @throws PermissionException
      * @throws Exception
      */
-    public static function assignUsers($projectAssign){
-        if(!Permission::hasPermission(self::getUserFromContext(), "PROJECT.ASSIGN")){
+    public static function assignUsers($projectAssign)
+    {
+        if (!Permission::hasPermission(self::getUserFromContext(), "PROJECT.ASSIGN")) {
             throw new PermissionException();
         }
         $userContract = UserContractService::findValidByDateAndUserId($projectAssign->getUserId(), $projectAssign->getActiveFrom());
 
-        if($userContract->getActiveTo() === null){
+        if ($userContract->getActiveTo() === null) {
             $isBetween = true;
-        }else {
-            if($projectAssign->getActiveTo() === null){
+        } else {
+            if ($projectAssign->getActiveTo() === null) {
                 $projectAssign->setActiveTo($userContract->getActiveTo());
             }
             $isBetween = Utils::isBetweenDate($projectAssign->getActiveFrom(), $projectAssign->getActiveTo(),
                 $userContract->getActiveFrom(), $userContract->getActiveTo());
         }
-        if(!$isBetween){
+        if (!$isBetween) {
             throw new Exception("Project assign date is not between date of contract");
         }
 
@@ -110,7 +115,8 @@ class ProjectService extends Service
      * @return Project|object
      * @throws JsonMapper_Exception
      */
-    public static function jsonProjectDecode($jsonProject){
+    public static function jsonProjectDecode($jsonProject)
+    {
         $mapper = new JsonMapper();
         $project = $mapper->map(json_decode($jsonProject), new Project());
         return $project;
@@ -121,7 +127,8 @@ class ProjectService extends Service
      * @return ProjectAssign|object
      * @throws JsonMapper_Exception
      */
-    public static function jsonProjectAssignDecode($jsonProject){
+    public static function jsonProjectAssignDecode($jsonProject)
+    {
         $mapper = new JsonMapper();
         return $mapper->map(json_decode($jsonProject), new ProjectAssign());
     }

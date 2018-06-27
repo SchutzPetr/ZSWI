@@ -13,7 +13,9 @@ header("Access-Control-Allow-Methods: GET");
 
 
 include_once(__DIR__ . "/../FatalErrorHandler.php");
+
 include_once(__DIR__ . "/../OptionSkipHandler.php");
+include_once(__DIR__ . "/../CheckTokenHandler.php");
 include_once(__DIR__ . "/../../../service/UserService.php");
 include_once(__DIR__ . "/../../../exception/PermissionException.php");
 

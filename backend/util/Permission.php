@@ -32,29 +32,30 @@ class Permission
      * @param integer $id
      * @return bool
      */
-    public static function hasPermission($user, $permission, $id = null){
-        if(is_null($user)){
+    public static function hasPermission($user, $permission, $id = null)
+    {
+        if (is_null($user)) {
             return false;
         }
-        if($user->getAuthority() === "USER"){
-            if(!is_null($id) && intval($id) === intval($user->getId())){
+        if ($user->getAuthority() === "USER") {
+            if (!is_null($id) && intval($id) === intval($user->getId())) {
                 return true;
             }
-            if(!is_null($id) && ($permission === "TIME_SHEET.FIND" || $permission === "TIME_SHEET.GENERATE" ||
-                    $permission === "USER.FIND" || $permission === "PROJECT_ASSIGN.FIND")){
+            if (!is_null($id) && ($permission === "TIME_SHEET.FIND" || $permission === "TIME_SHEET.GENERATE" ||
+                    $permission === "USER.FIND" || $permission === "PROJECT_ASSIGN.FIND")) {
                 $simple = ShareService::findShareByFromIdAndToId($id, $user->getId());
-                if($simple === null){
-                    return in_array($permission,  self::$userPermission);
-                }else{
+                if ($simple === null) {
+                    return in_array($permission, self::$userPermission);
+                } else {
                     return true;
                 }
             }
 
-            if(!is_null($id) && intval($id) === intval($user->getId())){
+            if (!is_null($id) && intval($id) === intval($user->getId())) {
                 return true;
             }
-            return in_array($permission,  self::$userPermission);
-        }else{
+            return in_array($permission, self::$userPermission);
+        } else {
             return true;
         }
     }

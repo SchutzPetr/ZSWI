@@ -289,33 +289,34 @@ class Attendance extends BaseModel
 
     }
 
-	/***
-	 * @param int $userId
-	 * @param string $date   sprintf("%'.04d-%'.02d-%'.02d", $year, $month, $day)
-	 *
-	 * @return Attendance|null
-	 */
-	public static function findByUserIdAndDateString($userId, $date){
-		$dayOfWeek = date('N', strtotime($date));
+    /***
+     * @param int $userId
+     * @param string $date sprintf("%'.04d-%'.02d-%'.02d", $year, $month, $day)
+     *
+     * @return Attendance|null
+     */
+    public static function findByUserIdAndDateString($userId, $date)
+    {
+        $dayOfWeek = date('N', strtotime($date));
 
-		$query = "SELECT * from attendance WHERE user_id = :user_id AND active_from <= :active_from  AND day_in_week = :day_in_week ORDER BY active_from DESC LIMIT 1;";
+        $query = "SELECT * from attendance WHERE user_id = :user_id AND active_from <= :active_from  AND day_in_week = :day_in_week ORDER BY active_from DESC LIMIT 1;";
 
-		$preparedQuery = Database::getConnection()->prepare($query);
-		$preparedQuery->bindValue(":user_id", $userId);
-		$preparedQuery->bindValue(":active_from", $date);
-		$preparedQuery->bindValue(":day_in_week", $dayOfWeek);
-		$preparedQuery->execute();
-		$result = $preparedQuery->fetch();
+        $preparedQuery = Database::getConnection()->prepare($query);
+        $preparedQuery->bindValue(":user_id", $userId);
+        $preparedQuery->bindValue(":active_from", $date);
+        $preparedQuery->bindValue(":day_in_week", $dayOfWeek);
+        $preparedQuery->execute();
+        $result = $preparedQuery->fetch();
 
-		if($result === false){
-			return null;
-		}
+        if ($result === false) {
+            return null;
+        }
 
-		$instance = new self();
-		$instance->fill($result);
+        $instance = new self();
+        $instance->fill($result);
 
-		return $instance;
-	}
+        return $instance;
+    }
 
     /**
      * @param Attendance $attendance
