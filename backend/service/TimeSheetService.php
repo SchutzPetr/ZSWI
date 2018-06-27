@@ -8,6 +8,7 @@
 
 include_once(__DIR__ . "/../exception/PermissionException.php");
 include_once(__DIR__ . "/../util/Permission.php");
+include_once(__DIR__ . "/../util/Utils.php");
 include_once(__DIR__ . "/Service.php");
 include_once(__DIR__ . "/UserHolidayService.php");
 include_once(__DIR__ . "/HolidayService.php");
@@ -217,9 +218,18 @@ class TimeSheetService extends Service
             && strpos($dayTimeSheet->getDayType(), "HOLIDAY") === false) {
             $userHoliday = UserHoliday::findByUserIdAndDate($dayTimeSheet->getUserId(), $dayTimeSheet->getDate());
             UserHolidayService::deleteById($userHoliday->getId());
+        } else if (Utils::startsWith($dayTimeSheet->getDayType(), "HOLIDAY")) {
+            $userHoliday = new UserHoliday();
+            $userHoliday->setDate($dayTimeSheet->getDate());
+            $userHoliday->setUserId($dayTimeSheet->getUserId());
+            $userHoliday->setType(substr($dayTimeSheet->getDayType(), 8));
+            UserHoliday::save($userHoliday);
+            TimeSheetService::reGenerateForHoliday($dayTimeSheet->getUserId(), array($userHoliday));
+        } else {
+            DayTimeSheet::save($dayTimeSheet);
         }
-        DayTimeSheet::save($dayTimeSheet);
     }
+
 
     /**
      * @param $data string
