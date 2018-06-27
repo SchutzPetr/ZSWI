@@ -5,16 +5,17 @@
  * Date: 11.10.2017
  * Time: 15:19
  */
+include_once ("DB_conf.php");
 
 class Database
 {
 
     // specify database credentials
-    private static $host = "localhost";
-    private static $port = 3306;
-    private static $db_name = "attendance_new";
-    private static $username = "root";
-    private static $password = "";
+//    private static $host = "localhost";
+//    private static $port = 3306;
+//    private static $db_name = "attendance_new";
+//    private static $username = "root";
+//    private static $password = "";
     public static $conn;
 
     // get the database connection
@@ -24,9 +25,11 @@ class Database
             return self::$conn;
         }
         try {
-            self::$conn = new PDO("mysql:host=" . self::$host . ";dbname=" . self::$db_name . ";port=" . self::$port,
-                self::$username, self::$password, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8",
-                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+//            self::$conn = new PDO("mysql:host=" . self::$host . ";dbname=" . self::$db_name . ";port=" . self::$port,
+//		        self::$username, self::$password, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8",
+	        self::$conn = new PDO("mysql:host=" . HOST . ";dbname=" . DB_NAME . ";port=" . PORT,
+		        USER_NAME, PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8",
+		                                                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
             //self::$conn->exec("SELECT 1;"); s tímto nefunguje!
         } catch (PDOException $exception) {
             echo "Connection error: " . $exception->getMessage();
