@@ -1,6 +1,5 @@
 const Styles = theme => ({
     root: {
-        width: '100%',
         margin: theme.spacing.unit,
     },
     empty:{

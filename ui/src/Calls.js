@@ -142,6 +142,10 @@ class Calls {
     static deleteUser(dataIn) {
         Calls._post("deleteUser", dataIn);
     }
+
+    static deleteProjectAssign(dataIn) {
+        Calls._post("deleteProjectAssign", dataIn);
+    }
 }
 
 const calls = new Calls();

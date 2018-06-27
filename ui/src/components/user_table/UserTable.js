@@ -26,7 +26,7 @@ class UserTable extends React.Component {
         this.state = {
             page: 0,
             rowsPerPage: props.rowsPerPage || 5,
-            penConfirmValue: null,
+            openConfirmValue: null,
             openConfirm: false
         };
     }

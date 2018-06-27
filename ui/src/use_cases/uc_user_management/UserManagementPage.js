@@ -17,7 +17,7 @@ class UserManagementPage extends React.Component {
         loadFeedback: "loading",
         modalOpen: false,
         modalData: null,
-        penConfirmValue: null,
+        openConfirmValue: null,
         openConfirm: false
     };
 

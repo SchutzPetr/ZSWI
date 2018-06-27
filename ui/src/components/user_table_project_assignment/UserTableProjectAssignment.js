@@ -15,6 +15,7 @@ import {
     Tooltip
 } from "@material-ui/core/index";
 import EditIcon from "@material-ui/icons/Edit";
+import Delete from "@material-ui/icons/Delete";
 import User from "../../entity/User";
 import Project from "../../entity/Project";
 import UserAssignProjectModal from "../user_assign_to_project_modal/UserAssignProjectModal";
@@ -23,6 +24,7 @@ import Calls from "../../Calls";
 import SimpleUser from "../../entity/SimpleUser";
 import ProjectAssign from "../../entity/ProjectAssign";
 import moment from "moment";
+import ConfirmationDialog from "../confirm/ConfirmationDialog";
 
 class UserTableProjectAssignment extends React.Component {
 
@@ -37,7 +39,9 @@ class UserTableProjectAssignment extends React.Component {
             loadFeedback: "ready",
             loadFeedback_1: "loading",
             loadFeedback_2: "loading",
-            assignUsers: []
+            assignUsers: [],
+            openConfirmValue: null,
+            openConfirm: false
         };
     }
 
@@ -94,6 +98,21 @@ class UserTableProjectAssignment extends React.Component {
         this.setState({modalOpen: false, rowData: null});
     };
 
+    onDeleteUserFromProject = value => {
+        Calls.deleteProjectAssign({
+            data: value,
+            done: (data) => {
+                this.setState({loadFeedback: "ready", openConfirm: false, openConfirmValue: null}, () => {
+                    this._fetchData()
+                });
+            },
+            fail: (data) => {
+                this.setState({loadFeedback: "error"});
+                //todo: error throw
+            }
+        });
+    };
+
     onSaveAssign = (project, update) => {
         if (update) {
             Calls.updateProjectAssign({
@@ -104,7 +123,7 @@ class UserTableProjectAssignment extends React.Component {
                     });
                 },
                 fail: (data) => {
-                    this.setState({loadFeedback_2: "error"});
+                    this.setState({loadFeedback: "error"});
                     //todo: error throw
                 }
             });
@@ -117,7 +136,7 @@ class UserTableProjectAssignment extends React.Component {
                     });
                 },
                 fail: (data) => {
-                    this.setState({loadFeedback_2: "error"});
+                    this.setState({loadFeedback: "error"});
                     //todo: error throw
                 }
             });
@@ -171,6 +190,16 @@ class UserTableProjectAssignment extends React.Component {
                                                 </IconButton>
                                             </Tooltip>
                                         </TableCell>
+                                        <TableCell>
+                                            <Tooltip title={"Odebrání uživatele z projektu"}>
+                                                <IconButton aria-label={"Odebrání uživatele z projektu"}
+                                                            onClick={()=>{
+                                                                this.setState({openConfirm: true, openConfirmValue: projectAssign});
+                                                            }}>
+                                                    <Delete/>
+                                                </IconButton>
+                                            </Tooltip>
+                                        </TableCell>
                                     </TableRow>
                                 })}
                                 {emptyRows > 0 && (
@@ -197,6 +226,16 @@ class UserTableProjectAssignment extends React.Component {
                                             open={this.state.modalOpen}
                                             project={this.props.project}
                                             onSave={this.onSaveAssign} onClose={this.handleCloseEdit}/>
+                    <ConfirmationDialog
+                        title={"Odebrání uživatele z projektu"}
+                        text={"Přejete si odebrat uživatele z projektu?"}
+                        open={this.state.openConfirm}
+                        onCancel={() => {
+                            this.setState({openConfirm: false, openConfirmValue: null});
+                        }}
+                        onConfirm={this.onDeleteUserFromProject}
+                        value={this.state.openConfirmValue}
+                    />
                 </Paper>
             );
         } else {

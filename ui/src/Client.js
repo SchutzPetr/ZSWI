@@ -85,6 +85,8 @@ const Client = {
                 return axios.post(PROJECT_ASSIGN_API + "create.php", data);
             case "updateProjectAssign":
                 return axios.post(PROJECT_ASSIGN_API + "update.php", data);
+            case "deleteProjectAssign":
+                return axios.post(PROJECT_ASSIGN_API + "delete.php", data);
             default:
                 throw `Url ${url} does not exists.`;
         }
