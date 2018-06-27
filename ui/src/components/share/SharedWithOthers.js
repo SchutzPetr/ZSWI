@@ -28,7 +28,6 @@ class SharedWithOthers extends React.Component {
         this.state = {
             openConfirmValue: null,
             openConfirm: false,
-
         };
     }
 
@@ -59,10 +58,12 @@ class SharedWithOthers extends React.Component {
                         text={"Přejete si smazat dovolenou?"}
                         open={this.state.openConfirm}
                         onCancel={() => {
-                            this.props.onDeleteShare(value);
                             this.setState({openConfirm: false, openConfirmValue: null});
                         }}
-                        onConfirm={this.onDeleteSelected}
+                        onConfirm={()=>{
+                            this.setState({openConfirm: false, openConfirmValue: null});
+                            this.props.onDeleteShare(value);
+                        }}
                         value={this.state.openConfirmValue}
                     />
                 </TableRow>
