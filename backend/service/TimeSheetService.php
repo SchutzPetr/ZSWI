@@ -190,11 +190,33 @@ class TimeSheetService extends Service
                     break;
             }
         } else {
-            $dayTimeSheet->setFirstPartFrom($attendance->getFirstPartFrom());
-            $dayTimeSheet->setFirstPartTo($attendance->getFirstPartTo());
 
-            $dayTimeSheet->setSecondPartFrom($attendance->getSecondPartFrom());
-            $dayTimeSheet->setSecondPartTo($attendance->getSecondPartTo());
+            switch ($holiday->getType()) {
+                case "SICKNESS":
+                    $dayTimeSheet->setFirstPartFrom(null);
+                    $dayTimeSheet->setFirstPartTo(null);
+
+                    $dayTimeSheet->setSecondPartFrom(null);
+                    $dayTimeSheet->setSecondPartTo(null);
+
+                    $dayTimeSheet->setDayType("HOLIDAY_ALL_DAY");
+                    break;
+                case "FAMILY_MEMBER_CARE":
+                    $dayTimeSheet->setFirstPartFrom(null);
+                    $dayTimeSheet->setFirstPartTo(null);
+
+                    $dayTimeSheet->setSecondPartFrom(null);
+                    $dayTimeSheet->setSecondPartTo(null);
+
+                    $dayTimeSheet->setDayType("HOLIDAY_ALL_DAY");
+                    break;
+                default:
+                    $dayTimeSheet->setFirstPartFrom($attendance->getFirstPartFrom());
+                    $dayTimeSheet->setFirstPartTo($attendance->getFirstPartTo());
+
+                    $dayTimeSheet->setSecondPartFrom($attendance->getSecondPartFrom());
+                    $dayTimeSheet->setSecondPartTo($attendance->getSecondPartTo());
+            }
         }
 
         DayTimeSheet::save($dayTimeSheet);
