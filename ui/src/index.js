@@ -21,6 +21,4 @@ function loadJSON(callback) {
 
 loadJSON((config) =>{
     ReactDOM.render(<Router basename={config.APP_DIRECTORY}><App config={config}/></Router>, document.getElementById("root"));
-
-    //ReactDOM.render(<Router basename={config.APP_DIRECTORY}><App config={config}/></Router>, document.getElementById("root"));
 });
