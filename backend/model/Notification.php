@@ -154,7 +154,7 @@ class Notification extends BaseModel
      */
     static function findAll()
     {
-        $query = "SELECT * FROM notification;";
+        $query = "SELECT * FROM notification ORDER BY date DESC;";
         $preparedQuery = Database::getConnection()->prepare($query);
         $preparedQuery->execute();
         $result = $preparedQuery->fetchAll();
@@ -175,7 +175,7 @@ class Notification extends BaseModel
      */
     static function findAllUnread()
     {
-        $query = "SELECT * FROM notification WHERE shown=0;";
+        $query = "SELECT * FROM notification WHERE shown = 0 ORDER BY date DESC;";
         $preparedQuery = Database::getConnection()->prepare($query);
         $preparedQuery->execute();
         $result = $preparedQuery->fetchAll();
