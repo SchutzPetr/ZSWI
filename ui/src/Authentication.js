@@ -26,7 +26,7 @@ class Authentication {
 
     getSessionToken(){
         if (typeof(Storage) !== "undefined") {
-            sessionStorage.getItem("X-Auth-Token");
+            return sessionStorage.getItem("X-Auth-Token");
         } else {
             console.warn("Sorry! No Web Storage support..");
         }
@@ -52,6 +52,7 @@ class Authentication {
     clearToken() {
         if (typeof(Storage) !== "undefined") {
             localStorage.removeItem("X-Auth-Token");
+            sessionStorage.removeItem("X-Auth-Token");
         } else {
             console.warn("Sorry! No Web Storage support..");
         }

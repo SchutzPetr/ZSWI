@@ -56,17 +56,18 @@ class SPAAuthenticated extends React.Component {
     }
 
     _fetch() {
-
-        Calls.getAllNotification({
-            data: {}, //todo: year
-            done: (data) => {
-                this.setState({notifications: Notification.map(data.data), loadFeedback: "ready"});
-            },
-            fail: (data) => {
-                this.setState({loadFeedback: "error"});
-                //todo: error throw
-            }
-        });
+        if(this.props.authenticatedUser.authority === "ADMIN" || this.props.authenticatedUser.authority === "SECRETARY"){
+            Calls.getAllNotification({
+                data: {}, //todo: year
+                done: (data) => {
+                    this.setState({notifications: Notification.map(data.data), loadFeedback: "ready"});
+                },
+                fail: (data) => {
+                    this.setState({loadFeedback: "error"});
+                    //todo: error throw
+                }
+            });
+        }
     }
 
     handleDrawerOpen = () => {
