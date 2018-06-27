@@ -25,4 +25,15 @@ class Utils
 
         return ($fromDate > $fromBorderDate) && ($toDate < $toBorderDate);
     }
+
+    /**
+     * @param string $haystack
+     * @param string $needle
+     * @return bool
+     */
+    public static function startsWith($haystack, $needle)
+    {
+        $length = strlen($needle);
+        return (substr($haystack, 0, $length) === $needle);
+    }
 }
