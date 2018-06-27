@@ -1,5 +1,5 @@
 const Styles = theme => ({
-    edit:{
+    edit: {
         width: 48
     }
 });

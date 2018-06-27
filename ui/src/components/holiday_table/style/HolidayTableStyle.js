@@ -3,7 +3,7 @@ const Styles = theme => ({
         width: '100%',
         margin: theme.spacing.unit,
     },
-    fullHeightRoot:{
+    fullHeightRoot: {
         overflow: "auto",
         display: "flex",
         flexDirection: "column",

@@ -232,8 +232,7 @@ class HolidayTable extends React.Component {
                     onChangeRowsPerPage={this.handleChangeRowsPerPage}
                 />
                 <ConfirmationDialog
-                    classes={{
-                    }}
+                    classes={{}}
                     title={"Smazání dovolené"}
                     text={"Přejete si smazat dovolenou?"}
                     open={this.state.openConfirm}

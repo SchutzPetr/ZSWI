@@ -1,13 +1,11 @@
 import BaseEntity from "./BaseEntity";
-import moment from "moment/moment";
 import DayTimeSheet from "./DayTimeSheet";
-import Utils from "../other/Utils";
 import ProjectAssign from "./ProjectAssign";
 import PublicHoliday from "./PublicHoliday";
 
-class TimeSheet extends BaseEntity{
+class TimeSheet extends BaseEntity {
 
-    constructor(month, isNTIS, dayTimeSheets){
+    constructor(month, isNTIS, dayTimeSheets) {
         super();
         /**
          *

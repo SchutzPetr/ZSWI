@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import PropTypes from "prop-types";
 
 class AboutTheApplication extends Component {
@@ -11,6 +11,7 @@ class AboutTheApplication extends Component {
         );
     }
 }
+
 AboutTheApplication.propTypes = {
     classes: PropTypes.object.isRequired,
     theme: PropTypes.object.isRequired,

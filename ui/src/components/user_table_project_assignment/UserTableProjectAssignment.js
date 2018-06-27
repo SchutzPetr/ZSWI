@@ -16,7 +16,6 @@ import {
 } from "@material-ui/core/index";
 import EditIcon from "@material-ui/icons/Edit";
 import Delete from "@material-ui/icons/Delete";
-import User from "../../entity/User";
 import Project from "../../entity/Project";
 import UserAssignProjectModal from "../user_assign_to_project_modal/UserAssignProjectModal";
 import LinearProgressCentered from "../LinearProgressCentered";
@@ -193,8 +192,11 @@ class UserTableProjectAssignment extends React.Component {
                                         <TableCell>
                                             <Tooltip title={"Odebrání uživatele z projektu"}>
                                                 <IconButton aria-label={"Odebrání uživatele z projektu"}
-                                                            onClick={()=>{
-                                                                this.setState({openConfirm: true, openConfirmValue: projectAssign});
+                                                            onClick={() => {
+                                                                this.setState({
+                                                                    openConfirm: true,
+                                                                    openConfirmValue: projectAssign
+                                                                });
                                                             }}>
                                                     <Delete/>
                                                 </IconButton>

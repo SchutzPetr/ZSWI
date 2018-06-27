@@ -14,7 +14,7 @@ class NotificationItem extends React.Component {
 
         let listItemProps;
 
-        if(this.props.notification.link){
+        if (this.props.notification.link) {
             listItemProps = {
                 button: true,
                 component: Link,
@@ -30,7 +30,7 @@ class NotificationItem extends React.Component {
                 />
                 <ListItemSecondaryAction>
                     <IconButton aria-label="Delete">
-                        <DeleteIcon />
+                        <DeleteIcon/>
                     </IconButton>
                 </ListItemSecondaryAction>
             </ListItem>

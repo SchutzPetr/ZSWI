@@ -59,7 +59,8 @@ class ProjectOverviewPage extends React.Component {
                                          onSaveOrEditProjectDone={this.handleSaveOrEditProjectDone}/>
                     </Grid>
                     <Grid item={true} xs={12} sm={9}>
-                        <UserTableProjectAssignment project={this.state.selectedProject} onEditClick={() => {}}/>
+                        <UserTableProjectAssignment project={this.state.selectedProject} onEditClick={() => {
+                        }}/>
                     </Grid>
                 </Grid>
             );

@@ -19,59 +19,59 @@ class Calls {
         );
     }
 
-    static _get(url, dataIn){
+    static _get(url, dataIn) {
         Calls._call("get", url, dataIn);
     }
 
-    static _post(url, dataIn){
+    static _post(url, dataIn) {
         Calls._call("post", url, dataIn);
     }
 
-    static createUser(dataIn){
+    static createUser(dataIn) {
         Calls._post("createUser", dataIn);
     }
 
-    static updateUser(dataIn){
+    static updateUser(dataIn) {
         Calls._post("updateUser", dataIn);
     }
 
-    static createProject(dataIn){
+    static createProject(dataIn) {
         Calls._post("createProject", dataIn);
     }
 
-    static updateProject(dataIn){
+    static updateProject(dataIn) {
         Calls._post("updateProject", dataIn);
     }
 
-    static updateDayTimeSheet(dataIn){
+    static updateDayTimeSheet(dataIn) {
         Calls._post("updateDayTimeSheet", dataIn);
     }
 
-    static getUsers(dataIn){
+    static getUsers(dataIn) {
         Calls._get("getUsers", dataIn);
     }
 
-    static getUser(dataIn){
+    static getUser(dataIn) {
         Calls._get("getUser", dataIn);
     }
 
-    static getUserTimeSheet(dataIn){
+    static getUserTimeSheet(dataIn) {
         Calls._get("getUserTimeSheet", dataIn);
     }
 
-    static getProjects(dataIn){
+    static getProjects(dataIn) {
         Calls._get("getProjects", dataIn);
     }
 
-    static getProject(dataIn){
+    static getProject(dataIn) {
         Calls._get("getProject", dataIn);
     }
 
-    static login(dataIn){
+    static login(dataIn) {
         Calls._get("login", dataIn);
     }
 
-    static getAssignUsersToProject(dataIn){
+    static getAssignUsersToProject(dataIn) {
         Calls._get("getAssignUsersToProject", dataIn)
     }
 
@@ -87,7 +87,7 @@ class Calls {
         Calls._get("deleteUserHoliday", dataIn);
     }
 
-    static getUserHolidayByUserIdAndYear(dataIn){
+    static getUserHolidayByUserIdAndYear(dataIn) {
         Calls._get("getUserHolidayByUserIdAndYear", dataIn);
     }
 

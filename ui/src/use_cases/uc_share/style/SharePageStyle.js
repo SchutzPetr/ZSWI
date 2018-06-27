@@ -4,7 +4,7 @@ const Styles = theme => ({
     mainContainer: {
         ...SharedStyles(theme).mainContainer,
     },
-    mainGrid:{
+    mainGrid: {
         padding: theme.spacing.unit * 1,
     },
     divider: {

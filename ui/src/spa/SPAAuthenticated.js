@@ -15,8 +15,8 @@ import {
     IconButton,
     List,
     Toolbar,
-    Typography,
-    Tooltip
+    Tooltip,
+    Typography
 } from "@material-ui/core/index";
 
 import Styles from "./style/SPAAuthenticatedStyle";
@@ -56,7 +56,7 @@ class SPAAuthenticated extends React.Component {
     }
 
     _fetch() {
-        if(this.props.authenticatedUser.authority === "ADMIN" || this.props.authenticatedUser.authority === "SECRETARY"){
+        if (this.props.authenticatedUser.authority === "ADMIN" || this.props.authenticatedUser.authority === "SECRETARY") {
             Calls.getAllNotification({
                 data: {}, //todo: year
                 done: (data) => {

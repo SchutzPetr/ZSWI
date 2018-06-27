@@ -22,7 +22,7 @@ const Styles = theme => ({
     switchEnable: {
         width: "100%"
     },
-    formControl:{
+    formControl: {
         width: "100%",
     }
 });

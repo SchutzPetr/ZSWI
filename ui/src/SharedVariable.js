@@ -1,6 +1,6 @@
 class SharedVariable {
 
-    constructor(){
+    constructor() {
         this._TIMESHEAT_MONTH = new Date().getMonth();
         this._TIMESHEAT_YEAR = new Date().getFullYear();
     }

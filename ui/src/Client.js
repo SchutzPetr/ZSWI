@@ -26,7 +26,10 @@ const Client = {
             case "getSimpleUser":
                 return axios.get(SIMPLE_USER_API + "findById.php", {params: data});
             case "authUserByToken":
-                return axios.get(AUTH_API + "authUserByToken.php", {params: data, headers: { 'X-Auth-Token': data.token}});
+                return axios.get(AUTH_API + "authUserByToken.php", {
+                    params: data,
+                    headers: {'X-Auth-Token': data.token}
+                });
             case "getAvailableUsers":
                 return axios.get(SHARE_API + "findAllAvailableUsers.php", {params: data});
             case "getSharedWithOthers":

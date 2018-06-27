@@ -51,16 +51,16 @@ class UserProject extends React.Component {
         return this.props.timeSheet.dayTimeSheets.filter(dayTimeSheet => dayTimeSheet.dayType === "SICKNESS" || dayTimeSheet.dayType === "FAMILY_MEMBER_CARE").length;
     }
 
-    countFond(){
+    countFond() {
         let days = this.props.timeSheet.dayTimeSheets.map(dayTimeSheet => {
             if (dayTimeSheet.dayType === "HOLIDAY_FIRST_PART_OF_DAY" || dayTimeSheet.dayType === "HOLIDAY_SECOND_PART_OF_DAY") {
                 return 0.5;
             } else if (UserProject.isWorkingDay(dayTimeSheet)) {
                 let x = 0;
-                if(dayTimeSheet.firstPartFrom !== null && dayTimeSheet.firstPartTo !== null){
+                if (dayTimeSheet.firstPartFrom !== null && dayTimeSheet.firstPartTo !== null) {
                     x += 0.5;
                 }
-                if(dayTimeSheet.secondPartFrom !== null && dayTimeSheet.secondPartTo !== null){
+                if (dayTimeSheet.secondPartFrom !== null && dayTimeSheet.secondPartTo !== null) {
                     x += 0.5;
                 }
                 return x;
@@ -81,7 +81,7 @@ class UserProject extends React.Component {
      WORK_OUTSIDE_WORKSPACE: "Práce mimo pracoviště",
      * @param {DayTimeSheet}dayTimeSheet
      */
-    static isWorkingDay(dayTimeSheet){
+    static isWorkingDay(dayTimeSheet) {
         return !(dayTimeSheet.date.getDay() === 6 ||
             dayTimeSheet.date.getDay() === 0 ||
             dayTimeSheet.dayType === "HOLIDAY_ALL_DAY" ||
@@ -120,74 +120,81 @@ class UserProject extends React.Component {
                             <TableRow>
                                 <TableCell
                                     className={this.props.classes.titleCell}>{"Celkem odpracováno hodin"}</TableCell>
-                                <TableCell className={this.props.classes.titleCell2}>{(Math.round((sum)* 100) / 100)}</TableCell>
+                                <TableCell
+                                    className={this.props.classes.titleCell2}>{(Math.round((sum) * 100) / 100)}</TableCell>
                                 {this.props.timeSheet.projectAssign.map((value) => {
                                     return <TableCell
-                                        className={this.props.classes.titleCell2}>{(Math.round((sum * Number(value.obligation))* 100) / 100)}</TableCell>
+                                        className={this.props.classes.titleCell2}>{(Math.round((sum * Number(value.obligation)) * 100) / 100)}</TableCell>
                                 })}
                             </TableRow>
                             <TableRow>
                                 <TableCell
                                     className={this.props.classes.titleCell}>{"Fond prac. doby za státní svátky"}</TableCell>
-                                <TableCell className={this.props.classes.titleCell2}>{(Math.round((sumPublicHoliday)* 100) / 100)}</TableCell>
+                                <TableCell
+                                    className={this.props.classes.titleCell2}>{(Math.round((sumPublicHoliday) * 100) / 100)}</TableCell>
                                 {this.props.timeSheet.projectAssign.map((value) => {
                                     return <TableCell
-                                        className={this.props.classes.titleCell2}>{(Math.round((sumPublicHoliday * Number(value.obligation))* 100) / 100)}</TableCell>
+                                        className={this.props.classes.titleCell2}>{(Math.round((sumPublicHoliday * Number(value.obligation)) * 100) / 100)}</TableCell>
                                 })}
                             </TableRow>
                             <TableRow>
                                 <TableCell
                                     className={this.props.classes.titleCell}>{"Celkem se státními svátky"}</TableCell>
                                 <TableCell
-                                    className={this.props.classes.titleCell2}>{(Math.round((sumPublicHoliday + sum)* 100) / 100)}</TableCell>
+                                    className={this.props.classes.titleCell2}>{(Math.round((sumPublicHoliday + sum) * 100) / 100)}</TableCell>
                                 {this.props.timeSheet.projectAssign.map((value) => {
                                     return <TableCell
-                                        className={this.props.classes.titleCell2}>{((Math.round((sumPublicHoliday + sum) * Number(value.obligation))* 100) / 100)}</TableCell>
+                                        className={this.props.classes.titleCell2}>{((Math.round((sumPublicHoliday + sum) * Number(value.obligation)) * 100) / 100)}</TableCell>
                                 })}
                             </TableRow>
                             <TableRow>
                                 <TableCell
                                     className={this.props.classes.titleCell}>{"Dovolená přepočtená na hodiny"}</TableCell>
-                                <TableCell className={this.props.classes.titleCell2}>{(Math.round((sumHoliday)* 100) / 100)}</TableCell>
+                                <TableCell
+                                    className={this.props.classes.titleCell2}>{(Math.round((sumHoliday) * 100) / 100)}</TableCell>
                                 {this.props.timeSheet.projectAssign.map((value) => {
                                     return <TableCell
-                                        className={this.props.classes.titleCell2}>{(Math.round((sumHoliday * Number(value.obligation))* 100) / 100)}</TableCell>
+                                        className={this.props.classes.titleCell2}>{(Math.round((sumHoliday * Number(value.obligation)) * 100) / 100)}</TableCell>
                                 })}
                             </TableRow>
                             <TableRow>
                                 <TableCell
                                     className={this.props.classes.titleCell}>{"Celkem se státními svátky i dovolenou"}</TableCell>
-                                <TableCell className={this.props.classes.titleCell2}>{(Math.round(((sumPublicHoliday + sumHoliday + sum))* 100) / 100)}</TableCell>
+                                <TableCell
+                                    className={this.props.classes.titleCell2}>{(Math.round(((sumPublicHoliday + sumHoliday + sum)) * 100) / 100)}</TableCell>
                                 {this.props.timeSheet.projectAssign.map((value) => {
                                     return <TableCell
-                                        className={this.props.classes.titleCell2}>{(Math.round(((sumPublicHoliday + sumHoliday + sum) * Number(value.obligation))* 100) / 100)}</TableCell>
+                                        className={this.props.classes.titleCell2}>{(Math.round(((sumPublicHoliday + sumHoliday + sum) * Number(value.obligation)) * 100) / 100)}</TableCell>
                                 })}
                             </TableRow>
                             <TableRow>
                                 <TableCell
                                     className={this.props.classes.titleCell}>{"Nemocenská, OČR (počet dnů)"}</TableCell>
-                                <TableCell className={this.props.classes.titleCell2}>{(Math.round((sumFamilyMemberCareAndSickness)* 100) / 100)}</TableCell>
+                                <TableCell
+                                    className={this.props.classes.titleCell2}>{(Math.round((sumFamilyMemberCareAndSickness) * 100) / 100)}</TableCell>
                                 {this.props.timeSheet.projectAssign.map((value) => {
                                     return <TableCell
-                                        className={this.props.classes.titleCell2}>{(Math.round((sumFamilyMemberCareAndSickness * Number(value.obligation))* 100) / 100)}</TableCell>
+                                        className={this.props.classes.titleCell2}>{(Math.round((sumFamilyMemberCareAndSickness * Number(value.obligation)) * 100) / 100)}</TableCell>
                                 })}
                             </TableRow>
                             <TableRow>
                                 <TableCell
                                     className={this.props.classes.titleCell}>{"Nemocenská, OČR (přepočteno na hodiny)"}</TableCell>
-                                <TableCell className={this.props.classes.titleCell2}>{(Math.round(((sumFamilyMemberCareAndSickness * userDay))* 100) / 100)}</TableCell>
+                                <TableCell
+                                    className={this.props.classes.titleCell2}>{(Math.round(((sumFamilyMemberCareAndSickness * userDay)) * 100) / 100)}</TableCell>
                                 {this.props.timeSheet.projectAssign.map((value) => {
                                     return <TableCell
-                                        className={this.props.classes.titleCell2}>{(Math.round(((sumFamilyMemberCareAndSickness * userDay) * Number(value.obligation))* 100) / 100)}</TableCell>
+                                        className={this.props.classes.titleCell2}>{(Math.round(((sumFamilyMemberCareAndSickness * userDay) * Number(value.obligation)) * 100) / 100)}</TableCell>
                                 })}
                             </TableRow>
                             <TableRow>
                                 <TableCell
                                     className={this.props.classes.titleCell}>{"Celkem disponibilní fond bez přestávek"}</TableCell>
-                                <TableCell className={this.props.classes.titleCell2}>{(Math.round((sumFond)* 100) / 100)}</TableCell>
+                                <TableCell
+                                    className={this.props.classes.titleCell2}>{(Math.round((sumFond) * 100) / 100)}</TableCell>
                                 {this.props.timeSheet.projectAssign.map((value) => {
                                     return <TableCell
-                                        className={this.props.classes.titleCell2}>{(Math.round((sumFond * Number(value.obligation))* 100) / 100)}</TableCell>
+                                        className={this.props.classes.titleCell2}>{(Math.round((sumFond * Number(value.obligation)) * 100) / 100)}</TableCell>
                                 })}
                             </TableRow>
                         </TableBody>

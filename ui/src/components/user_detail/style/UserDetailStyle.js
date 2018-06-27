@@ -3,7 +3,7 @@ const Styles = theme => ({
         display: 'flex',
         height: "100%",
         flexDirection: "column",
-        justifyContent:"center",
+        justifyContent: "center",
         alignItems: "center",
     },
     row: {
@@ -12,19 +12,19 @@ const Styles = theme => ({
         alignItems: "center",
         //padding: theme.spacing.unit,
     },
-    empty:{
+    empty: {
         height: 309
     },
-    emptyU:{
+    emptyU: {
         height: 248
     },
-    card:{
+    card: {
         height: 309
     },
-    cardU:{
+    cardU: {
         height: 248
     },
-    generateButton:{
+    generateButton: {
         width: "100%",
         marginTop: 25
     }

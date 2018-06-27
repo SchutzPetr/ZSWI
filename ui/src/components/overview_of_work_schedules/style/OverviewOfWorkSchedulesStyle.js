@@ -14,8 +14,8 @@ const Styles = theme => ({
     tableWrapper: {
         overflowX: 'auto',
     },
-    tableHeader:{
-      height: 100
+    tableHeader: {
+        height: 100
     },
     flex: {
         display: "flex",
@@ -32,7 +32,7 @@ const Styles = theme => ({
         mozTransform: "rotate(-90deg)", /* Firefox */
         oTransform: "rotate(-90deg)", /* Opera */
         msTransform: "rotate(-90deg)",
-}
+    }
 });
 
 export default Styles;

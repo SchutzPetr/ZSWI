@@ -1,6 +1,6 @@
 class Authentication {
 
-    constructor(user){
+    constructor(user) {
         this._user = user;
     }
 
@@ -16,7 +16,7 @@ class Authentication {
         this._user = value;
     }
 
-    saveSessionToken(token){
+    saveSessionToken(token) {
         if (typeof(Storage) !== "undefined") {
             sessionStorage.setItem("X-Auth-Token", token);
         } else {
@@ -24,7 +24,7 @@ class Authentication {
         }
     }
 
-    getSessionToken(){
+    getSessionToken() {
         if (typeof(Storage) !== "undefined") {
             return sessionStorage.getItem("X-Auth-Token");
         } else {
@@ -32,7 +32,7 @@ class Authentication {
         }
     }
 
-    saveToken(token){
+    saveToken(token) {
         if (typeof(Storage) !== "undefined") {
             localStorage.setItem("X-Auth-Token", token);
         } else {
@@ -40,7 +40,7 @@ class Authentication {
         }
     }
 
-    getToken(){
+    getToken() {
         if (typeof(Storage) !== "undefined") {
             return localStorage.getItem("X-Auth-Token");
         } else {

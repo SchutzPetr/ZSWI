@@ -8,7 +8,7 @@ import Notification from "../../entity/Notification";
 
 class NotificationPopover extends React.Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
     }
 

@@ -67,7 +67,7 @@ class UserDetail extends React.Component {
                 return 0.5;
             } else if (value.type === "ALL_DAY") {
                 return 1;
-            }else{
+            } else {
                 return 0;
             }
         });
@@ -75,10 +75,10 @@ class UserDetail extends React.Component {
         return x.reduce((a, b) => a + b, 0);
     }
 
-    canRenderHolidayContent(){
-        if(this.props.mode === "SECRETARY"){
+    canRenderHolidayContent() {
+        if (this.props.mode === "SECRETARY") {
             return true;
-        }else return Authentication.user.id === this.props.user.id;
+        } else return Authentication.user.id === this.props.user.id;
     }
 
 
@@ -93,7 +93,7 @@ class UserDetail extends React.Component {
         let ava = 0;
         let ex = 0;
 
-        if(this.canRenderHolidayContent()){
+        if (this.canRenderHolidayContent()) {
             ava = this.getHolidayDays();
             ex = this.getExhaustedHolidayDays();
         }

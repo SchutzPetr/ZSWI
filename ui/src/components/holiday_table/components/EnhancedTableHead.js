@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import {Checkbox, TableCell, TableHead, TableRow} from "@material-ui/core/index";
 import {withStyles} from "@material-ui/core/styles/index";
 import Styles from "./../style/EnhancedTableHeadStyle";
-import User from "../../../entity/User";
 
 const columnDataNew = [
     {id: 'date', disablePadding: true, label: "Datum"},

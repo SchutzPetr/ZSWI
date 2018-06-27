@@ -74,7 +74,7 @@ class HolidayCreateModal extends React.Component {
         } else {
             let holidays = [];
 
-            for (let day = new Date(new Date(this.state.holidayDateFrom).setHours(0, 0, 0, 0)); day <=  new Date(new Date(this.state.holidayDateTo).setHours(0, 0, 0, 0)); day.setDate(day.getDate() + 1)) {
+            for (let day = new Date(new Date(this.state.holidayDateFrom).setHours(0, 0, 0, 0)); day <= new Date(new Date(this.state.holidayDateTo).setHours(0, 0, 0, 0)); day.setDate(day.getDate() + 1)) {
                 if (day.getDay() === 6 || day.getDate() === 0) {
                     continue;
                 }

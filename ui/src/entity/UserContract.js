@@ -1,6 +1,5 @@
 import BaseEntity from "./BaseEntity";
 import moment from "moment/moment";
-import Attendance from "./Attendance";
 
 class UserContract extends BaseEntity {
 
@@ -74,9 +73,9 @@ class UserContract extends BaseEntity {
         let userContract = Object.assign(new UserContract(), userContractDTO);
 
         userContract.activeFrom = moment(userContractDTO.activeFrom, "YYYY-MM-DD HH:mm:ss").toDate();
-        if(userContractDTO.activeTo){
+        if (userContractDTO.activeTo) {
             userContract.activeTo = moment(userContractDTO.activeTo, "YYYY-MM-DD HH:mm:ss").toDate();
-        }else {
+        } else {
             userContract.activeTo = null;
         }
 
@@ -86,9 +85,9 @@ class UserContract extends BaseEntity {
     toJSON() {
         let userContractDTO = super.toJSON();
         userContractDTO.activeFrom = moment(this.activeFrom, "YYYY-MM-DD HH:mm:ss").format("YYYY-MM-DD HH:mm:ss");
-        if(this.activeTo){
+        if (this.activeTo) {
             userContractDTO.activeTo = moment(this.activeTo, "YYYY-MM-DD HH:mm:ss").format("YYYY-MM-DD HH:mm:ss");
-        }else {
+        } else {
             userContractDTO.activeTo = null;
         }
         return userContractDTO;

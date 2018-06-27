@@ -23,9 +23,9 @@ class UserList extends React.Component {
     }
 
     handleSelect = (value) => {
-        if(value){
+        if (value) {
             this.props.history.push(`/agenda/${value.data.id}`);
-        }else{
+        } else {
             this.props.history.push(`/agenda/`);
         }
     };
@@ -49,7 +49,8 @@ class UserList extends React.Component {
         return (
             <Paper>
                 <div className={this.props.classes.filterWrapper}>
-                    <Typography className={this.props.classes.typography} variant={"headline"}>{"Vyberte uživatele"}</Typography>
+                    <Typography className={this.props.classes.typography}
+                                variant={"headline"}>{"Vyberte uživatele"}</Typography>
                     <SingleSelect value={UserList.mapUserToSuggestion(this.props.user)}
                                   suggestions={UserList.mapUsersToSuggestion(this.props.users)}
                                   onSelect={this.handleSelect}/>

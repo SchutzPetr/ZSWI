@@ -17,7 +17,7 @@ const Styles = theme => ({
     spacer: {
         flex: '1 1 100%',
     },
-    wrapper:{
+    wrapper: {
         width: "100%",
         display: "flex",
     },
@@ -31,7 +31,7 @@ const Styles = theme => ({
     title: {
         flex: '0 0 auto',
     },
-    formControl:{
+    formControl: {
         width: 100,
         marginRight: 5 * theme.spacing.unit,
         marginLeft: 5 * theme.spacing.unit,

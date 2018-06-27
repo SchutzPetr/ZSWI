@@ -77,7 +77,7 @@ const Styles = theme => ({
     notifiButton: {
         margin: "0 10px"
     },
-    exitToAppButton:{
+    exitToAppButton: {
         margin: "0 48px 0 10px"
     }
 });

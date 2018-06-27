@@ -1,6 +1,6 @@
 import BaseEntity from "./BaseEntity";
 
-class Project extends BaseEntity{
+class Project extends BaseEntity {
 
     constructor() {
         super();

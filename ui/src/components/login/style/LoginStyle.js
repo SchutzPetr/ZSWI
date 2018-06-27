@@ -4,7 +4,7 @@ const Styles = theme => ({
         height: "100%",
         minHeight: 380,
         flexDirection: "column",
-        justifyContent:"center",
+        justifyContent: "center",
         alignItems: "center",
         margin: 50
     },
@@ -20,19 +20,19 @@ const Styles = theme => ({
     userIcon: {
         width: 48
     },
-    loginButton:{
+    loginButton: {
         width: 250,
-        marginTop: 6* theme.spacing.unit,
+        marginTop: 6 * theme.spacing.unit,
 
     },
-    rememberSwitchWrapper:{
+    rememberSwitchWrapper: {
         margin: theme.spacing.unit,
         minWidth: 250
     },
-    rememberSwitchLabel:{
+    rememberSwitchLabel: {
         marginTop: 0
     },
-    rememberSwitch:{
+    rememberSwitch: {
         //marginLeft: -theme.spacing.unit,
     },
 });

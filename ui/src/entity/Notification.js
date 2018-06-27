@@ -1,9 +1,9 @@
 import BaseEntity from "./BaseEntity";
 import moment from "moment/moment";
 
-class Notification extends BaseEntity{
+class Notification extends BaseEntity {
 
-    constructor(){
+    constructor() {
         super();
         this._id = -1;
         this._title = "";

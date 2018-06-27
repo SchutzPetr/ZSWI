@@ -36,7 +36,7 @@ const Styles = theme => ({
         transform: "translateX(-50%) translateY(-50%)",
         width: "80%"
     },
-    bottom:{
+    bottom: {
         display: "flex"
     }
 });

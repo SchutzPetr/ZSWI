@@ -1,9 +1,9 @@
 import BaseEntity from "./BaseEntity";
 import moment from "moment/moment";
 
-class UserHoliday extends BaseEntity{
+class UserHoliday extends BaseEntity {
 
-    constructor(id, userId, date, type){
+    constructor(id, userId, date, type) {
         super();
         this._id = id || -1;
         this._userId = userId || {};

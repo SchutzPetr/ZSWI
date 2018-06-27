@@ -1,15 +1,14 @@
-import UserTimeSheets from "../entity/UserTimeSheets";
 import TimeSheet from "../entity/TimeSheet";
 import DayTimeSheet from "../entity/DayTimeSheet";
 import moment from "moment/moment";
 
 class Utils {
 
-    static getDaysInMonth(month, year){
+    static getDaysInMonth(month, year) {
         let date = new Date(year, month, 1);
         const days = [];
 
-        while (date.getMonth() === month){
+        while (date.getMonth() === month) {
             days.push(new Date(date));
             date.setDate(date.getDate() + 1)
         }
@@ -17,7 +16,7 @@ class Utils {
         return days;
     }
 
-    static generateMockData(month, year, ntis){
+    static generateMockData(month, year, ntis) {
         const days = Utils.getDaysInMonth(month, year) || [];
 
         let dayTimeSheets = {};
@@ -62,9 +61,10 @@ class Utils {
      * @param {Date} secondPartFrom
      * @param {Date} secondPartTo
      */
-    static valideTimeSheatDates(firstPartFrom, firstPartTo, secondPartFrom, secondPartTo){
+    static valideTimeSheatDates(firstPartFrom, firstPartTo, secondPartFrom, secondPartTo) {
 
     }
 }
+
 export {Utils};
 export default Utils;

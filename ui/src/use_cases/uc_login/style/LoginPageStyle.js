@@ -10,8 +10,7 @@ const Styles = theme => ({
         height: "100%",
         padding: theme.spacing.unit * 1,
     },
-    secondGrid: {
-    }
+    secondGrid: {}
 });
 
 export default Styles;

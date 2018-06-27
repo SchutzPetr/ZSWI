@@ -52,7 +52,7 @@ const Styles = theme => ({
         paddingBottom: 2,
         borderBottom: "none",
     },
-    tableCellDate:{
+    tableCellDate: {
         padding: "2px 24px",
         borderBottom: "none",
         minHeight: rowHeight,

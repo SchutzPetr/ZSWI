@@ -36,7 +36,7 @@ class SharedAgendaOverviewPage extends React.Component {
     }
 
     _fetchData() {
-        if(!this.props.match || !this.props.match.params || !this.props.match.params.userId){
+        if (!this.props.match || !this.props.match.params || !this.props.match.params.userId) {
             this.setState({loadFeedback: "error"});
             return;
         }
@@ -70,7 +70,8 @@ class SharedAgendaOverviewPage extends React.Component {
                         <UserProject timeSheet={this.state.timeSheets} user={this.state.user}/>
                     </Grid>
                     <Grid item={true} xs={12} sm={9}>
-                        <AgendaTabs match={this.props.match} history={this.props.history} user={this.state.user} mode={"USER"} onTimeSheetChange={this.onTimeSheetChange}/>
+                        <AgendaTabs match={this.props.match} history={this.props.history} user={this.state.user}
+                                    mode={"USER"} onTimeSheetChange={this.onTimeSheetChange}/>
                     </Grid>
                 </Grid>
             );

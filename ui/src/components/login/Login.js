@@ -7,13 +7,13 @@ import {withStyles} from "@material-ui/core/styles/index";
 import {
     Button,
     FormControl,
+    FormControlLabel,
+    FormHelperText,
     IconButton,
     Input,
     InputAdornment,
     InputLabel,
     Paper,
-    FormHelperText,
-    FormControlLabel,
     Switch
 } from "@material-ui/core/index";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";

@@ -1,10 +1,10 @@
 class Observer {
 
-    constructor(){
+    constructor() {
         this.eventStore = {};
     }
 
-    registerListener(eventType, callback){
+    registerListener(eventType, callback) {
         let event = this.eventStore[eventType] || [];
 
         event.push(callback);
@@ -12,9 +12,9 @@ class Observer {
         this.eventStore[eventType] = event;
     }
 
-    removeListener(eventType, callback){
+    removeListener(eventType, callback) {
         let event = this.eventStore[eventType] || [];
-        if(!event){
+        if (!event) {
             return;
         }
 
@@ -27,10 +27,10 @@ class Observer {
         this.eventStore[eventType] = event;
     }
 
-    dispatch(eventType, data){
+    dispatch(eventType, data) {
         let event = this.eventStore[eventType];
 
-        if(!event){
+        if (!event) {
             return;
         }
 

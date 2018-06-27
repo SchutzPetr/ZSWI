@@ -6,16 +6,16 @@ const Styles = theme => ({
         //flexWrap: 'wrap',
         width: 500
     },
-    row:{
+    row: {
         margin: "20px 10px",
         width: 480
     },
-    datePicker:{
+    datePicker: {
         margin: "20px 10px",
         width: 230
     },
-    fullWidth:{
-      width: "100%"
+    fullWidth: {
+        width: "100%"
     },
     formRow: {
         display: "flex",

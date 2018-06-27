@@ -4,22 +4,22 @@ const Styles = theme => ({
         height: 462 - (8 * theme.spacing.unit),
         padding: 4 * theme.spacing.unit,
     },
-    projectDetail:{
-        marginTop: 2* theme.spacing.unit,
+    projectDetail: {
+        marginTop: 2 * theme.spacing.unit,
     },
     text: {
         marginTop: theme.spacing.unit,
         textOverflow: "ellipsis",
         wordBreak: "break-all",
     },
-    textScroll:{
+    textScroll: {
         marginTop: theme.spacing.unit,
         textOverflow: "ellipsis",
         wordBreak: "break-all",
         maxHeight: 160,
         overflowY: "auto",
     },
-    toolbar:{
+    toolbar: {
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
@@ -30,7 +30,7 @@ const Styles = theme => ({
     },
     projectSelect: {
         width: "100%",
-        marginTop: 2* theme.spacing.unit,
+        marginTop: 2 * theme.spacing.unit,
     },
     actions: {
         color: theme.palette.text.secondary,

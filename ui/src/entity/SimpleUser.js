@@ -1,6 +1,4 @@
-import Attendance from "./Attendance";
 import BaseEntity from "./BaseEntity";
-import UserContract from "./UserContract";
 
 class SimpleUser extends BaseEntity {
 

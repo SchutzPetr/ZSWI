@@ -5,7 +5,6 @@ import {Button, Dialog, DialogActions, DialogContent, DialogTitle, FormGroup, Te
 import Calls from "../../Calls";
 import Styles from "./style/UserAssignProjectModalStyle";
 import Project from "../../entity/Project";
-import MultipleSelect from "../autocomplete/MultipleSelect";
 import Suggestion from "../autocomplete/entity/Suggestion";
 import User from "../../entity/User";
 import {DatePicker} from "material-ui-pickers";

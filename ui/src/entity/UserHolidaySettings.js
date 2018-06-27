@@ -1,9 +1,8 @@
 import BaseEntity from "./BaseEntity";
-import moment from "moment/moment";
 
-class UserHolidaySettings extends BaseEntity{
+class UserHolidaySettings extends BaseEntity {
 
-    constructor(userId, year, days){
+    constructor(userId, year, days) {
         super();
         this._userId = userId || -1;
         this._year = year || new Date().getFullYear();

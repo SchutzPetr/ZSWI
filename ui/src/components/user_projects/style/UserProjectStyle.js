@@ -10,19 +10,19 @@ const Styles = theme => ({
         alignItems: "center",
         //padding: theme.spacing.unit,
     },
-    content:{
-      padding: "0 5px"
+    content: {
+        padding: "0 5px"
     },
-    titleCell:{
+    titleCell: {
         minWidth: 150,
         padding: "0 5px",
         border: "1px solid rgba(224, 224, 224, 1)"
     },
-    titleCell2Header:{
+    titleCell2Header: {
         padding: "0 5px",
         textAlign: "center"
     },
-    titleCell2:{
+    titleCell2: {
         minWidth: 25,
         maxWidth: 30,
         padding: "0 5px",

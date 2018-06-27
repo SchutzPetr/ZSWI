@@ -7,16 +7,16 @@ const Styles = theme => ({
         margin: theme.spacing.unit,
         maxWidth: 808
     },
-    expansionPanel:{
+    expansionPanel: {
         width: "100%",
     },
-    row:{
+    row: {
         display: "flex",
         width: "100%",
         flexWrap: "wrap",
         alignItems: "center",
     },
-    row2:{
+    row2: {
         display: "flex",
         width: "100%",
         flexWrap: "wrap",
@@ -24,7 +24,7 @@ const Styles = theme => ({
         boxShadow: "0px 1px 3px 0px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 2px 1px -1px rgba(0, 0, 0, 0.12)",
         margin: theme.spacing.unit,
     },
-    row2Wrapper:{
+    row2Wrapper: {
         display: "flex",
         flexDirection: "column",
     },
@@ -36,7 +36,7 @@ const Styles = theme => ({
         height: 60,
         margin: theme.spacing.unit,
     },
-    datePicker:{
+    datePicker: {
         width: 182,
         height: 60,
         margin: theme.spacing.unit,
@@ -46,7 +46,7 @@ const Styles = theme => ({
         height: 60,
         margin: theme.spacing.unit,
     },
-    datePicker2:{
+    datePicker2: {
         width: 160,
         height: 60,
         margin: theme.spacing.unit,

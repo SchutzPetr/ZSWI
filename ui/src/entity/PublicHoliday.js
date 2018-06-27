@@ -1,7 +1,5 @@
 import BaseEntity from "./BaseEntity";
 import moment from "moment";
-import Project from "./Project";
-import SimpleUser from "./SimpleUser";
 
 class PublicHoliday extends BaseEntity {
 

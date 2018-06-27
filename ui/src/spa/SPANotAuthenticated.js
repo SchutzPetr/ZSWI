@@ -10,12 +10,12 @@ import {AppBar, Button, Toolbar, Typography} from "@material-ui/core/index";
 
 class SPANotAuthenticated extends React.Component {
 
-    componentDidMount(){
+    componentDidMount() {
         this.props.history.push("/");
     }
 
     render() {
-        const { classes } = this.props;
+        const {classes} = this.props;
         return (
             <div className={classes.root}>
                 <AppBar position="static">
@@ -32,7 +32,8 @@ class SPANotAuthenticated extends React.Component {
                 <Switch>
                     <Route path={"/login"} exact={true}
                            render={props => (
-                               <LoginPage match={props.match} history={props.history} onLoginDone={this.props.onLoginDone}/>
+                               <LoginPage match={props.match} history={props.history}
+                                          onLoginDone={this.props.onLoginDone}/>
                            )}/>
                 </Switch>
             </div>

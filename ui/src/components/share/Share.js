@@ -26,7 +26,7 @@ class Share extends React.Component {
         return user.map(value => this.mapSimpleUserToSuggestion(value));
     }
 
-    onShareClick = event =>{
+    onShareClick = event => {
         this.props.onShareClick(this.state.selectedUser);
     };
 
@@ -44,7 +44,8 @@ class Share extends React.Component {
                     <SingleSelect value={Share.mapSimpleUserToSuggestion(this.state.selectedUser)}
                                   suggestions={Share.mapSimpleUsersToSuggestion(this.props.availableUsers)}
                                   onSelect={this.onSelectedUserChange}/>
-                    <Button className={this.props.classes.shareButton} variant="raised" onClick={this.onShareClick} disabled={!this.state.selectedUser}>
+                    <Button className={this.props.classes.shareButton} variant="raised" onClick={this.onShareClick}
+                            disabled={!this.state.selectedUser}>
                         <ShareIcon className={this.props.classes.shareIcon}/>
                         Sdílet
                     </Button>

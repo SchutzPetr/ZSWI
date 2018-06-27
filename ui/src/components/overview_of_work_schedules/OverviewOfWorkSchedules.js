@@ -31,7 +31,8 @@ class OverviewOfWorkSchedules extends React.Component {
     _tableHeader = () => {
         let headerColumns = [<TableCell>{`Zaměstnanec`}</TableCell>];
         for (let i = 0; i < 12; i++) {
-            headerColumns.push(<TableCell><p className={this.props.classes.vertical}>{moment().month(i).format("MMMM")}</p></TableCell>);
+            headerColumns.push(<TableCell><p
+                className={this.props.classes.vertical}>{moment().month(i).format("MMMM")}</p></TableCell>);
         }
 
         for (let i = 0; i < 12; i++) {

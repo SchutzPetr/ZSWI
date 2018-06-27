@@ -36,7 +36,8 @@ class Home extends React.Component {
                     </Grid>
                     <Grid item={true} xs={12} sm={9}>
                         <AgendaTabs match={this.props.match} history={this.props.history}
-                                    user={this.props.authenticatedUser} mode={"USER"} onTimeSheetChange={this.onTimeSheetChange}/>
+                                    user={this.props.authenticatedUser} mode={"USER"}
+                                    onTimeSheetChange={this.onTimeSheetChange}/>
                     </Grid>
                 </Grid>
             );

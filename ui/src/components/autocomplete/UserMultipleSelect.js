@@ -11,40 +11,40 @@ import Styles from "./style/UserMultipleSelectStyle";
 import {Chip, Input, MenuItem, Typography} from "@material-ui/core/index";
 
 const suggestions = [
-    { label: 'Afghanistan' },
-    { label: 'Aland Islands' },
-    { label: 'Albania' },
-    { label: 'Algeria' },
-    { label: 'American Samoa' },
-    { label: 'Andorra' },
-    { label: 'Angola' },
-    { label: 'Anguilla' },
-    { label: 'Antarctica' },
-    { label: 'Antigua and Barbuda' },
-    { label: 'Argentina' },
-    { label: 'Armenia' },
-    { label: 'Aruba' },
-    { label: 'Australia' },
-    { label: 'Austria' },
-    { label: 'Azerbaijan' },
-    { label: 'Bahamas' },
-    { label: 'Bahrain' },
-    { label: 'Bangladesh' },
-    { label: 'Barbados' },
-    { label: 'Belarus' },
-    { label: 'Belgium' },
-    { label: 'Belize' },
-    { label: 'Benin' },
-    { label: 'Bermuda' },
-    { label: 'Bhutan' },
-    { label: 'Bolivia, Plurinational State of' },
-    { label: 'Bonaire, Sint Eustatius and Saba' },
-    { label: 'Bosnia and Herzegovina' },
-    { label: 'Botswana' },
-    { label: 'Bouvet Island' },
-    { label: 'Brazil' },
-    { label: 'British Indian Ocean Territory' },
-    { label: 'Brunei Darussalam' },
+    {label: 'Afghanistan'},
+    {label: 'Aland Islands'},
+    {label: 'Albania'},
+    {label: 'Algeria'},
+    {label: 'American Samoa'},
+    {label: 'Andorra'},
+    {label: 'Angola'},
+    {label: 'Anguilla'},
+    {label: 'Antarctica'},
+    {label: 'Antigua and Barbuda'},
+    {label: 'Argentina'},
+    {label: 'Armenia'},
+    {label: 'Aruba'},
+    {label: 'Australia'},
+    {label: 'Austria'},
+    {label: 'Azerbaijan'},
+    {label: 'Bahamas'},
+    {label: 'Bahrain'},
+    {label: 'Bangladesh'},
+    {label: 'Barbados'},
+    {label: 'Belarus'},
+    {label: 'Belgium'},
+    {label: 'Belize'},
+    {label: 'Benin'},
+    {label: 'Bermuda'},
+    {label: 'Bhutan'},
+    {label: 'Bolivia, Plurinational State of'},
+    {label: 'Bonaire, Sint Eustatius and Saba'},
+    {label: 'Bosnia and Herzegovina'},
+    {label: 'Botswana'},
+    {label: 'Bouvet Island'},
+    {label: 'Brazil'},
+    {label: 'British Indian Ocean Territory'},
+    {label: 'Brunei Darussalam'},
 ].map(suggestion => ({
     value: suggestion.label,
     label: suggestion.label,
@@ -56,7 +56,7 @@ class Option extends React.Component {
     };
 
     render() {
-        const { children, isFocused, isSelected, onFocus } = this.props;
+        const {children, isFocused, isSelected, onFocus} = this.props;
 
         return (
             <MenuItem
@@ -75,18 +75,18 @@ class Option extends React.Component {
 }
 
 function SelectWrapped(props) {
-    const { classes, ...other } = props;
+    const {classes, ...other} = props;
 
     return (
         <Select
             optionComponent={Option}
             noResultsText={<Typography>{'No results found'}</Typography>}
             arrowRenderer={arrowProps => {
-                return arrowProps.isOpen ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />;
+                return arrowProps.isOpen ? <ArrowDropUpIcon/> : <ArrowDropDownIcon/>;
             }}
-            clearRenderer={() => <ClearIcon />}
+            clearRenderer={() => <ClearIcon/>}
             valueComponent={valueProps => {
-                const { value, children, onRemove } = valueProps;
+                const {value, children, onRemove} = valueProps;
 
                 const onDelete = event => {
                     event.preventDefault();
@@ -100,7 +100,7 @@ function SelectWrapped(props) {
                             tabIndex={-1}
                             label={children}
                             className={classes.chip}
-                            deleteIcon={<CancelIcon onTouchEnd={onDelete} />}
+                            deleteIcon={<CancelIcon onTouchEnd={onDelete}/>}
                             onDelete={onDelete}
                         />
                     );
@@ -120,7 +120,7 @@ class UserMultipleSelect extends React.Component {
     };
 
     render() {
-        const { classes } = this.props;
+        const {classes} = this.props;
 
         return (
             <div className={classes.root}>

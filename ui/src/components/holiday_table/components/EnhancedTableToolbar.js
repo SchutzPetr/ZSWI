@@ -3,16 +3,22 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import {withStyles} from '@material-ui/core/styles/index';
 import {withRouter} from 'react-router-dom'
-import {IconButton, Toolbar, Tooltip, Typography} from "@material-ui/core/index";
+import {
+    FormControl,
+    IconButton,
+    InputLabel,
+    MenuItem,
+    Select,
+    Toolbar,
+    Tooltip,
+    Typography
+} from "@material-ui/core/index";
 import Styles from "./../style/EnhancedTableToolbarStyle";
 import DeleteIcon from "@material-ui/icons/Delete";
 import AddIcon from "@material-ui/icons/Add";
-import HolidayCreateModal from "../../holiday_create_modal/HolidayCreateModal";
 import User from "../../../entity/User";
 import Suggestion from "../../autocomplete/entity/Suggestion";
 import SingleSelect from "../../autocomplete/SingleSelect";
-import Calls from "../../../Calls";
-import {FormControl, InputLabel, MenuItem, Select} from "@material-ui/core/index";
 
 class EnhancedTableToolbar extends React.Component {
 

@@ -10,7 +10,6 @@ import {
     FormControl,
     FormControlLabel,
     FormHelperText,
-    FormLabel,
     InputLabel,
     MenuItem,
     Select,
@@ -26,8 +25,6 @@ import UserContractContent from "./components/UserContractContent";
 
 import Styles from "./style/UserCreateModalStyle";
 import UserContract from "../../entity/UserContract";
-import moment from "moment/moment";
-import {DatePicker} from "material-ui-pickers";
 import UserHolidaySettingsContent from "./components/UserHolidaySettingsContent";
 import UserHolidaySettings from "../../entity/UserHolidaySettings";
 

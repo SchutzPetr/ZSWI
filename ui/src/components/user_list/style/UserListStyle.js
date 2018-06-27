@@ -14,7 +14,7 @@ const Styles = theme => ({
         backgroundColor: "inherit",
         padding: 0,
     },
-    typography:{
+    typography: {
         width: "100%",
     },
     input: {

@@ -12,7 +12,7 @@ const Styles = theme => ({
         flexWrap: "wrap",
         margin: theme.spacing.unit,
     },
-    formRow2:{
+    formRow2: {
         display: "flex",
         width: "100%",
         flexWrap: "wrap",
@@ -23,14 +23,14 @@ const Styles = theme => ({
         height: 60,
         margin: theme.spacing.unit,
     },
-    statusSwitchWrapper:{
+    statusSwitchWrapper: {
         margin: theme.spacing.unit,
         minWidth: 182
     },
-    statusSwitchLabel:{
+    statusSwitchLabel: {
         marginTop: 0
     },
-    statusSwitch:{
+    statusSwitch: {
         //marginLeft: -theme.spacing.unit,
     },
     formControl: {
@@ -41,11 +41,11 @@ const Styles = theme => ({
     select: {
         minWidth: 182
     },
-    timePickerTitle:{
+    timePickerTitle: {
         margin: theme.spacing.unit,
         alignSelf: "flex-start"
     },
-    datePicker:{
+    datePicker: {
         width: 182,
         height: 60,
         margin: theme.spacing.unit,

@@ -66,14 +66,17 @@ class AgendaOverview extends React.Component {
             return (
                 <Grid className={this.props.classes.mainGrid} container={true} spacing={16}>
                     <Grid item={true} xs={12} sm={3}>
-                        <UserList match={this.props.match} history={this.props.history} user={this.state.user} users={this.state.users}/>
+                        <UserList match={this.props.match} history={this.props.history} user={this.state.user}
+                                  users={this.state.users}/>
                         <div className={this.props.classes.divider}/>
                         <UserDetail user={this.state.user} mode={"SECRETARY"} timeSheet={this.state.timeSheets}/>
                         <div className={this.props.classes.divider}/>
-                        <UserProject timeSheet={this.state.timeSheets} user={this.state.user} rootClass={this.props.classes.projectRoot}/>
+                        <UserProject timeSheet={this.state.timeSheets} user={this.state.user}
+                                     rootClass={this.props.classes.projectRoot}/>
                     </Grid>
                     <Grid item={true} xs={12} sm={9}>
-                        <AgendaTabs match={this.props.match} history={this.props.history} user={this.state.user} mode={"SECRETARY"} onTimeSheetChange={this.onTimeSheetChange}/>
+                        <AgendaTabs match={this.props.match} history={this.props.history} user={this.state.user}
+                                    mode={"SECRETARY"} onTimeSheetChange={this.onTimeSheetChange}/>
                     </Grid>
                 </Grid>
             );

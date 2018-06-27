@@ -5,8 +5,8 @@ const Styles = theme => ({
         alignItems: "center",
         //flexWrap: 'wrap',
     },
-    fullWidth:{
-      width: "100%"
+    fullWidth: {
+        width: "100%"
     },
     formRow: {
         display: "flex",

@@ -3,7 +3,7 @@ const Styles = theme => ({
         width: '100%',
         margin: theme.spacing.unit,
     },
-    fullHeightRoot:{
+    fullHeightRoot: {
         overflow: "auto",
         maxHeight: `calc(100vh - 80px)`,
         height: `calc(100vh - 80px)`,

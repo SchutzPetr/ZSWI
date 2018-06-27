@@ -19,6 +19,7 @@ function loadJSON(callback) {
     xobj.send(null);
 }
 
-loadJSON((config) =>{
-    ReactDOM.render(<Router basename={config.APP_DIRECTORY}><App config={config}/></Router>, document.getElementById("root"));
+loadJSON((config) => {
+    ReactDOM.render(<Router basename={config.APP_DIRECTORY}><App
+        config={config}/></Router>, document.getElementById("root"));
 });

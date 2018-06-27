@@ -53,7 +53,7 @@ function SelectWrapped(props) {
                 const onDelete = event => {
                     event.preventDefault();
                     event.stopPropagation();
-                    if(disabled){
+                    if (disabled) {
                         return;
                     }
                     onRemove(value);

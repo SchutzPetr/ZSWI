@@ -3,7 +3,7 @@ import BaseEntity from "./BaseEntity";
 import UserContract from "./UserContract";
 import UserHolidaySettings from "./UserHolidaySettings";
 
-class User extends BaseEntity{
+class User extends BaseEntity {
 
     constructor() {
         super();
@@ -129,6 +129,7 @@ class User extends BaseEntity{
     get futureUserContract() {
         return this._futureUserContract;
     }
+
     /**
      * @param value {UserContract[]}
      */
@@ -187,9 +188,9 @@ class User extends BaseEntity{
             let obj = userDTO.attendanceSchedules[key];
             for (let prop in obj) {
                 // skip loop if the property is from prototype
-                if(!obj.hasOwnProperty(prop)) continue;
+                if (!obj.hasOwnProperty(prop)) continue;
 
-                user.attendanceSchedules[key] =  Attendance.map(userDTO.attendanceSchedules[key]);
+                user.attendanceSchedules[key] = Attendance.map(userDTO.attendanceSchedules[key]);
             }
         }
 

@@ -1,9 +1,9 @@
 import UserHoliday from "./UserHoliday";
 import moment from "moment/moment";
 
-class HolidayRowRecord extends UserHoliday{
+class HolidayRowRecord extends UserHoliday {
 
-    constructor(id, userId, date, type, isSelected){
+    constructor(id, userId, date, type, isSelected) {
         super(id, userId, date, type);
 
         this._isSelected = isSelected || false;
@@ -20,6 +20,7 @@ class HolidayRowRecord extends UserHoliday{
     clone() {
         return Object.assign(new HolidayRowRecord(), this);
     }
+
     static map(holidayRowRecord) {
         if (holidayRowRecord instanceof Array) {
             return holidayRowRecord.map(value => this.map(value)) || [];

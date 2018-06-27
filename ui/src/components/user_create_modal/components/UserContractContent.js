@@ -6,11 +6,11 @@ import UserContract from "../../../entity/UserContract";
 import {DatePicker} from "material-ui-pickers";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import {
-    TextField,
-    Typography,
     ExpansionPanel,
+    ExpansionPanelDetails,
     ExpansionPanelSummary,
-    ExpansionPanelDetails
+    TextField,
+    Typography
 } from "@material-ui/core/index";
 
 class UserContractContent extends React.PureComponent {

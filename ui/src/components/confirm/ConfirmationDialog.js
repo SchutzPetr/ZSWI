@@ -28,7 +28,9 @@ class ConfirmationDialog extends React.Component {
                     <Button onClick={this.props.onCancel} color={"primary"}>
                         Zrušit
                     </Button>
-                    <Button onClick={()=>{this.props.onConfirm(this.props.value)}} color={"primary"}>
+                    <Button onClick={() => {
+                        this.props.onConfirm(this.props.value)
+                    }} color={"primary"}>
                         Potvrdit
                     </Button>
                 </DialogActions>

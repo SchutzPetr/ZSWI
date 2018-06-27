@@ -15,15 +15,16 @@ class UserListItem extends React.Component {
                 </Avatar>
                 <ListItemText primary={this.props.user.givenName} secondary={this.props.user.email}/>
                 <ListItemSecondaryAction>
-                    <IconButton  aria-label="Menu"
-                                 onClick={this.props.onOpen}>
-                        <MoreVert />
+                    <IconButton aria-label="Menu"
+                                onClick={this.props.onOpen}>
+                        <MoreVert/>
                     </IconButton>
                 </ListItemSecondaryAction>
             </ListItem>
         );
     }
 }
+
 UserListItem.propTypes = {
     match: PropTypes.object.isRequired,
     onOpen: PropTypes.func.isRequired

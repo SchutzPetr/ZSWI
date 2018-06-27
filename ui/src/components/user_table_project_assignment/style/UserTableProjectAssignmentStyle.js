@@ -2,11 +2,11 @@ const Styles = theme => ({
     root: {
         margin: theme.spacing.unit,
     },
-    empty:{
+    empty: {
         maxHeight: 462,// - (8 * theme.spacing.unit),
         height: 462,// - (8 * theme.spacing.unit),
     },
-    fullHeightRoot:{
+    fullHeightRoot: {
         overflow: "auto",
         maxHeight: `calc(100vh - 80px)`,
         height: `calc(100vh - 80px)`,

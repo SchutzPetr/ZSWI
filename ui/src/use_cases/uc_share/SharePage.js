@@ -109,11 +109,12 @@ class SharePage extends React.Component {
                 <Grid className={this.props.classes.mainGrid} container={true} spacing={16}>
                     <Grid item={true} xs={12} sm={4}>
                         <SharedWithOthers authenticatedUser={this.props.authenticatedUser}
-                                      sharedWithUserId={this.state.sharedWithUserId} onDeleteShare={this.onDeleteShare}/>
+                                          sharedWithUserId={this.state.sharedWithUserId}
+                                          onDeleteShare={this.onDeleteShare}/>
                     </Grid>
                     <Grid item={true} xs={12} sm={4}>
                         <SharedWithMe authenticatedUser={this.props.authenticatedUser}
-                                          sharedWithOthers={this.state.sharedWithOthers}/>
+                                      sharedWithOthers={this.state.sharedWithOthers}/>
                     </Grid>
                     <Grid item={true} xs={12} sm={4}>
                         <Share authenticatedUser={this.props.authenticatedUser}

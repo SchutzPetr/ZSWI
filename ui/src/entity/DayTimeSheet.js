@@ -1,9 +1,9 @@
 import BaseEntity from "./BaseEntity";
 import moment from "moment/moment";
 
-class DayTimeSheet extends BaseEntity{
+class DayTimeSheet extends BaseEntity {
 
-    constructor(){
+    constructor() {
         super();
         /**
          * User id
@@ -185,7 +185,7 @@ class DayTimeSheet extends BaseEntity{
         return Object.assign(new DayTimeSheet(), this);
     }
 
-    merge(dayTimeSheet){
+    merge(dayTimeSheet) {
         return Object.assign(this, dayTimeSheet);
     }
 }

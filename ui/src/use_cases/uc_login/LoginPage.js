@@ -7,8 +7,6 @@ import Grid from "@material-ui/core/Grid/Grid";
 import Login from "../../components/login/Login";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Styles from "./style/LoginPageStyle";
-import Authentication from "./../../Authentication";
-import User from "../../entity/User";
 
 class LoginPage extends React.Component {
 

@@ -13,7 +13,8 @@ class EnhancedUserTableProjectAssignmentToolbar extends React.Component {
             <Toolbar
                 className={this.props.classes.root}>
                 <div className={this.props.classes.title}>
-                    <Typography variant="title">{`Uživatelé pracující na projektu: ${this.props.project.projectNameShort}`}</Typography>
+                    <Typography
+                        variant="title">{`Uživatelé pracující na projektu: ${this.props.project.projectNameShort}`}</Typography>
                 </div>
                 <div className={this.props.classes.spacer}/>
                 <div className={this.props.classes.actions}>
