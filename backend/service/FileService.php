@@ -147,6 +147,7 @@ class FileService extends Service
      * @throws PHPExcel_Reader_Exception
      * @throws PHPExcel_Writer_Exception
      * @throws PermissionException
+     * @throws UnauthorizedException
      */
 	public static function generateReportForOneMonth($month, $year, $arrayUsers){
 		///https://nicknixer.ru/programmirovanie/sozdanie-excel-dokumenta-na-php-generaciya-xls-fajlov/
@@ -210,8 +211,6 @@ class FileService extends Service
 				// Объединяем ячейки "J2:L2"
 				$document->getActiveSheet()->mergeCellsByColumnAndRow(array_search('J', $alphabet), $startLine, array_search('L', $alphabet), $startLine);
 //				$sheet->setCellValueByColumnAndRow(array_search('J', $alphabet), $startLine, 'Třetí část');
-				// Объединяем ячейки "M2:O2"
-//				$document->getActiveSheet()->mergeCellsByColumnAndRow(array_search('M', $alphabet), $startLine, array_search('O', $alphabet), $startLine);
 				$sheet->setCellValueByColumnAndRow(array_search('M', $alphabet), $startLine, 'Nemoc, OČR, Dovolená, Státní svátek');
 				$document->getActiveSheet()->mergeCellsByColumnAndRow(array_search('M', $alphabet), $startLine, array_search('M', $alphabet), $startLine+1);
 				$sheet->setCellValueByColumnAndRow(array_search('N', $alphabet), $startLine, 'Služ. cesta, Práce mimo pracoviště');
@@ -232,7 +231,7 @@ class FileService extends Service
 
 				for($day = 1; $day<$lastDayInMonth; $day++){
 					$d = mktime(0, 0, 0, $month, $day, $year);
-					if(date('w', strtotime($d))>0 && date('w', strtotime($d))<6){
+					if(date('w', ($d))>0 && date('w', ($d))<6){
 						$sheet->setCellValueByColumnAndRow(array_search('A', $alphabet), $startLine+$day, date("d.m.Y", $d));
 
 						$arrayForOneLine = DayTimeSheet::findByUserIdAndDate($user->getId(), $day, $month, $year);
@@ -400,8 +399,8 @@ class FileService extends Service
 				$sheet->setCellValueByColumnAndRow(array_search('K', $alphabet), 44, 'Vedouci');
 				$sheet->getStyle('K42:N44')->applyFromArray($border_style);
 
-				$border_style= array('borders' => array('allborders' => array('style' =>
-					                                                              PHPExcel_Style_Border::BORDER_THIN,'color' => array('argb' => '000000'),)));
+//				$border_style= array('borders' => array('allborders' => array('style' =>
+//					                                                              PHPExcel_Style_Border::BORDER_THIN,'color' => array('argb' => '000000'),)));
 
 				$sheet->getStyle("A4:N35")->applyFromArray($border_style);
 
