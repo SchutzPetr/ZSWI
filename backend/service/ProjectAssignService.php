@@ -37,6 +37,20 @@ class ProjectAssignService extends Service
      * @throws PermissionException
      * @throws UnauthorizedException
      */
+    public static function delete($projectAssign)
+    {
+        if (!Permission::hasPermission(self::getUserFromContext(), "PROJECT_ASSIGN.DELETE")) {
+            throw new PermissionException();
+        }
+
+        ProjectAssign::delete($projectAssign);
+    }
+
+    /**
+     * @param ProjectAssign $projectAssign
+     * @throws PermissionException
+     * @throws UnauthorizedException
+     */
     public static function update($projectAssign)
     {
         if (!Permission::hasPermission(self::getUserFromContext(), "PROJECT_ASSIGN.UPDATE")) {

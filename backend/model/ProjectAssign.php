@@ -313,6 +313,19 @@ OR (YEAR(active_to) >=:year AND MONTH(active_to) >=:month));';
     /**
      * @param ProjectAssign $projectAssign
      */
+    static function delete($projectAssign)
+    {
+        $query = "DELETE FROM user_assigned_to_project WHERE user_id = :user_id AND project_id = :project_id AND active_from = :active_from";
+        $preparedQuery = Database::getConnection()->prepare($query);
+        $preparedQuery->bindValue(":user_id", $projectAssign->getUserId());
+        $preparedQuery->bindValue(":project_id", $projectAssign->getProjectId());
+        $preparedQuery->bindValue(":active_from", $projectAssign->getActiveFrom());
+        $preparedQuery->execute();
+    }
+
+    /**
+     * @param ProjectAssign $projectAssign
+     */
     static function save($projectAssign)
     {
         $query = "insert into user_assigned_to_project (user_id, project_id, active_from, active_to, obligation)
