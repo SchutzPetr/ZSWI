@@ -31,6 +31,9 @@ const dayTypes = {
     FAMILY_MEMBER_CARE: "OČR",
     BUSINESS_TRIP: "Služební cesta",
     WORK_OUTSIDE_WORKSPACE: "Práce mimo pracoviště",
+    HOLIDAY_FIRST_PART_OF_DAY: "Dovolená první část dne",
+    HOLIDAY_SECOND_PART_OF_DAY: "Dovolená druhá část dne",
+    HOLIDAY_ALL_DAY: "Dovolená celý den",
 };
 
 class AgendaEditModal extends React.Component {
