@@ -28,7 +28,7 @@ if (substr($data, 0, 1) === "\"" && substr($data, strlen("\"") * -1) == "\"") {
 }
 try {
     $notification = NotificationService::jsonNotificationDecode($data);
-    UserHolidayService::update($notification);
+    NotificationService::update($notification);
 } catch (PermissionException $permissionException) {
     header("HTTP/1.1 401 Unauthorized");
     header('Content-Type: application/json; charset=UTF-8');
