@@ -40,7 +40,31 @@ class App extends React.Component {
 
     componentDidMount() {
         const token = Authentication.getSessionToken();
-        this.authUserByToken(token ? token : Authentication.getToken());
+        this.auth(token ? token : Authentication.getToken());
+    }
+
+    auth(token){
+        if(token){
+            this.authUserByToken(token);
+        }else{
+            Calls.checkOrionLogin({
+                data: {},
+                done: (token) => {
+                    this.setState((prevState) => {
+
+                        Authentication.saveSessionToken(token);
+
+                        return {
+                            token: token,
+                        }
+                    });
+                },
+                fail: (userData) => {
+                    Authentication.clearToken();
+                    this.setState({authenticatedUser: null, token: !!Authentication.getToken()});
+                }
+            })
+        }
     }
 
     onLoginDone(data, savePasswords) {

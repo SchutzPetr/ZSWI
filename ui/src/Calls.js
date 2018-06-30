@@ -146,6 +146,10 @@ class Calls {
     static deleteProjectAssign(dataIn) {
         Calls._post("deleteProjectAssign", dataIn);
     }
+
+    static checkOrionLogin(dataIn){
+        Calls._get("checkOrionLogin", dataIn);
+    }
 }
 
 const calls = new Calls();

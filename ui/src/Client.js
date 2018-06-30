@@ -46,6 +46,8 @@ const Client = {
                 return axios.get(USERHOLIDAY_API + "findAllByUserIdAndYear.php", {params: data});
             case "login":
                 return axios.get(AUTH_API + "authSimple.php", {params: data});
+            case "checkOrionLogin":
+                return axios.get(AUTH_API + "authOrion.php");
             case "getAssignUsersToProject":
                 return axios.get(PROJECT_ASSIGN_API + "findAllByProjectId.php", {params: data});
             case "getAllNotification":
