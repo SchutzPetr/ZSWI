@@ -26,6 +26,12 @@ import Calls from "../../Calls";
 import HolidayCreateModal from "../holiday_create_modal/HolidayCreateModal";
 import ConfirmationDialog from "../confirm/ConfirmationDialog";
 
+const holidayTypes = {
+    FIRST_PART_OF_DAY: "Dovolená první část dne",
+    SECOND_PART_OF_DAY: "Dovolená druhá část dne",
+    ALL_DAY: "Dovolená celý den",
+};
+
 class HolidayTable extends React.Component {
     constructor(props, context) {
         super(props, context);
@@ -98,53 +104,6 @@ class HolidayTable extends React.Component {
         }
     };
 
-    _tableBody(rowsPerPage, page, emptyRows, numSelected) {
-        if (this.state.loadFeedback === "loading") {
-            return <TableBody><LinearProgressCentered paper={true}/> </TableBody>
-        } else if (this.state.loadFeedback === "ready") {
-            return (
-                <TableBody>
-                    {this.props.data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(values => {
-                        return (
-                            <TableRow
-                                hover={true}
-                                role={"checkbox"}
-                                aria-checked={values.isSelected}
-                                tabIndex={-1}
-                                key={`holiday_row_${values.id}`}
-                                selected={values.isSelected}
-                            >
-                                <TableCell padding={"checkbox"}
-                                           onClick={event => this.onSelectChange(event, values, !values.isSelected)}>
-                                    <Checkbox checked={values.isSelected}/>
-                                </TableCell>
-                                <TableCell
-                                    onClick={event => this.onSelectChange(event, values, !values.isSelected)}
-                                    padding="none">{moment(values.date).format("LL")}</TableCell>
-                                <TableCell
-                                    onClick={event => this.onSelectChange(event, values, !values.isSelected)}>{values.type}</TableCell>
-                                <TableCell>
-                                    <Tooltip title="Editace">
-                                        <IconButton aria-label="Editace">
-                                            <EditIcon/>
-                                        </IconButton>
-                                    </Tooltip>
-                                </TableCell>
-                            </TableRow>
-                        );
-                    })}
-                    {emptyRows > 0 && (
-                        <TableRow style={{height: 57 * emptyRows}}>
-                            <TableCell colSpan={6}/>
-                        </TableRow>
-                    )}
-                </TableBody>)
-
-        } else {
-            return <TableBody><LinearProgressCentered paper={false}/> </TableBody>
-        }
-    }
-
     render() {
         const {classes} = this.props;
         const {rowsPerPage, page} = this.state;
@@ -188,7 +147,7 @@ class HolidayTable extends React.Component {
                                             onClick={event => this.onSelectChange(event, values, !values.isSelected)}
                                             padding="none">{moment(values.date).format("LL")}</TableCell>
                                         <TableCell
-                                            onClick={event => this.onSelectChange(event, values, !values.isSelected)}>{values.type}</TableCell>
+                                            onClick={event => this.onSelectChange(event, values, !values.isSelected)}>{holidayTypes[values.type]}</TableCell>
                                         <TableCell>
                                             <Tooltip title="Editace">
                                                 <IconButton aria-label="Editace" onClick={this.handleOpenEdit(values)}>
