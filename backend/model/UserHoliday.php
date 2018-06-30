@@ -93,7 +93,7 @@ class UserHoliday extends BaseModel
      */
     static function findById($id)
     {
-        $query = "SELECT * FROM user_holiday WHERE id = :id;";
+        $query = "SELECT * FROM user_holiday WHERE id = :id ORDER BY date;";
         $preparedQuery = Database::getConnection()->prepare($query);
         $preparedQuery->bindValue(":id", $id);
         $preparedQuery->execute();
@@ -113,7 +113,7 @@ class UserHoliday extends BaseModel
      */
     static function finByUserIdAndDate($id, $date)
     {
-        $query = "SELECT * FROM user_holiday WHERE user_id = :id AND date=:date;";
+        $query = "SELECT * FROM user_holiday WHERE user_id = :id AND date =: date ORDER BY date;";
         $preparedQuery = Database::getConnection()->prepare($query);
         $preparedQuery->bindValue(":id", $id);
         $preparedQuery->bindValue(":date", $date);
@@ -143,7 +143,7 @@ class UserHoliday extends BaseModel
      */
     static function findByUserId($id)
     {
-        $query = "SELECT * FROM user_holiday WHERE user_id = :id;";
+        $query = "SELECT * FROM user_holiday WHERE user_id = :id ORDER BY date;";
         $preparedQuery = Database::getConnection()->prepare($query);
         $preparedQuery->bindValue(":id", $id);
         $preparedQuery->execute();
@@ -168,7 +168,7 @@ class UserHoliday extends BaseModel
      */
     static function findAllByUserIdAndYear($id, $year)
     {
-        $query = "SELECT * FROM user_holiday WHERE user_id = :id AND YEAR(date) =:year;";
+        $query = "SELECT * FROM user_holiday WHERE user_id = :id AND YEAR(date) =:year ORDER BY date;";
         $preparedQuery = Database::getConnection()->prepare($query);
         $preparedQuery->bindValue(":id", $id);
         $preparedQuery->bindValue(":year", $year);
@@ -251,7 +251,7 @@ class UserHoliday extends BaseModel
 
     static function findByUserIdAndDate($id, $date)
     {
-        $query = "SELECT * FROM user_holiday WHERE user_id = :id AND date =:date;";
+        $query = "SELECT * FROM user_holiday WHERE user_id = :id AND date =: date ORDER BY date;";
         $preparedQuery = Database::getConnection()->prepare($query);
         $preparedQuery->bindValue(":id", $id);
         $preparedQuery->bindValue(":date", $date);

@@ -60,6 +60,48 @@ class AuthService extends Service
         }
     }
 
+
+
+    /**
+     * @param string $orionLogin
+     * @return string
+     * @throws UnauthorizedException
+     */
+    public static function orionLogin($orionLogin)
+    {
+        $query = "SELECT user_id, password, token, valid FROM user_authentication WHERE user_id = (SELECT id FROM user WHERE orion_login = :login) LIMIT 1;";
+
+        $preparedQuery = Database::getConnection()->prepare($query);
+        $preparedQuery->bindValue(":login", $orionLogin);
+        $preparedQuery->execute();
+        $result = $preparedQuery->fetch();
+
+        if (empty($result)) {
+            throw new UnauthorizedException();
+        }
+
+        $db_user_id = $result["user_id"];
+        $db_token = $result["token"];
+        $db_valid = $result["valid"];
+
+        if (is_null($db_token) || strtotime($db_valid) <= strtotime("now")) {
+            $token = urlencode(password_hash(self::generateUUID(), PASSWORD_DEFAULT));
+            $valid = date("Y-m-d", strtotime("+7 day"));
+
+            $query = "UPDATE user_authentication SET token = :token, valid = :valid WHERE user_id = :user_id;";
+            $preparedQuery = Database::getConnection()->prepare($query);
+            $preparedQuery->bindValue(":user_id", $db_user_id);
+            $preparedQuery->bindValue(":token", $token);
+            $preparedQuery->bindValue(":valid", $valid);
+
+            $preparedQuery->execute();
+
+            return $token;
+        } else {
+            return $db_token;
+        }
+    }
+
     /**
      * @param string $token
      * @return User
