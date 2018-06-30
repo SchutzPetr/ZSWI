@@ -1,7 +1,7 @@
 const Styles = theme => ({
     root: {
-        maxHeight: `calc(100vh - 335px)`,
-        height: `calc(100vh - 335px)`,
+        maxHeight: `calc(100vh - 359px)`,
+        height: `calc(100vh - 359px)`,
         overflow: "auto",
     },
     row: {

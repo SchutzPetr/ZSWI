@@ -11,8 +11,8 @@ const Styles = theme => ({
         height: 8,
     },
     projectRoot: {
-        maxHeight: `calc(100vh - 450px)`,
-        height: `calc(100vh - 450px)`,
+        maxHeight: `calc(100vh - 506px)`,
+        height: `calc(100vh - 506px)`,
         overflow: "auto",
     },
 });

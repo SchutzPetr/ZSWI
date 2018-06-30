@@ -5,7 +5,7 @@ import {withStyles} from "@material-ui/core/styles/index";
 import Styles from "./../style/EnhancedTableHeadStyle";
 
 const columnDataNew = [
-    {id: 'date', disablePadding: true, label: "Datum"},
+    {id: 'date', disablePadding: false, label: "Datum"},
     {id: 'typ', disablePadding: false, label: 'Typ'},
 ];
 
@@ -15,7 +15,7 @@ class EnhancedTableHead extends React.Component {
         return (
             <TableHead>
                 <TableRow>
-                    <TableCell padding="checkbox">
+                    {/*<TableCell padding="checkbox">
                         <Checkbox
                             indeterminate={this.props.numSelected > 0 && this.props.numSelected < this.props.rowCount}
                             checked={this.props.numSelected === this.props.rowCount && this.props.numSelected !== 0}
@@ -23,7 +23,7 @@ class EnhancedTableHead extends React.Component {
                                 this.props.onSelectAllChange(this.props.numSelected !== this.props.rowCount)
                             }}
                         />
-                    </TableCell>
+                    </TableCell>*/ /*multiple delete*/}
                     {columnDataNew.map(column => {
                         return (
                             <TableCell

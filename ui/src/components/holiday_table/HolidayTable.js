@@ -57,7 +57,7 @@ class HolidayTable extends React.Component {
     };
 
     onSelectChange = (event, item, value) => {
-        this.props.onSelectChange(item, value);
+        //this.props.onSelectChange(item, value); //multiple delete
     };
 
     onSelectAllChange = (value) => {
@@ -104,6 +104,14 @@ class HolidayTable extends React.Component {
         }
     };
 
+    isEditDeleteDisabled(holiday){
+        if(this.props.mode === "SECRETARY" || this.props.mode === "ADMIN"){
+            return false;
+        }else{
+            return (new Date() >= holiday.date);
+        }
+    }
+
     render() {
         const {classes} = this.props;
         const {rowsPerPage, page} = this.state;
@@ -139,33 +147,37 @@ class HolidayTable extends React.Component {
                                         key={`holiday_row_${values.id}`}
                                         selected={values.isSelected}
                                     >
-                                        <TableCell padding={"checkbox"}
+                                        {/*<TableCell padding={"checkbox"}
                                                    onClick={event => this.onSelectChange(event, values, !values.isSelected)}>
                                             <Checkbox checked={values.isSelected}/>
-                                        </TableCell>
+                                        </TableCell>*/ /*multiple delete*/}
                                         <TableCell
-                                            onClick={event => this.onSelectChange(event, values, !values.isSelected)}
-                                            padding="none">{moment(values.date).format("LL")}</TableCell>
+                                            onClick={event => this.onSelectChange(event, values, !values.isSelected)}>{moment(values.date).format("LL")}</TableCell>
                                         <TableCell
                                             onClick={event => this.onSelectChange(event, values, !values.isSelected)}>{holidayTypes[values.type]}</TableCell>
                                         <TableCell>
                                             <Tooltip title="Editace">
-                                                <IconButton aria-label="Editace" onClick={this.handleOpenEdit(values)}>
-                                                    <EditIcon/>
-                                                </IconButton>
+                                               <div>
+                                                   <IconButton aria-label="Editace" disabled={this.isEditDeleteDisabled(values)} onClick={this.handleOpenEdit(values)}>
+                                                       <EditIcon/>
+                                                   </IconButton>
+                                               </div>
                                             </Tooltip>
                                         </TableCell>
                                         <TableCell>
                                             <Tooltip title="Odstranění">
-                                                <IconButton aria-label="Odstranění"
-                                                            onClick={() => {
-                                                                this.setState({
-                                                                    openConfirm: true,
-                                                                    openConfirmValue: values
-                                                                });
-                                                            }}>
-                                                    <DeleteIcon/>
-                                                </IconButton>
+                                                <div>
+                                                    <IconButton aria-label="Odstranění"
+                                                                disabled={this.isEditDeleteDisabled(values)}
+                                                                onClick={() => {
+                                                                    this.setState({
+                                                                        openConfirm: true,
+                                                                        openConfirmValue: values
+                                                                    });
+                                                                }}>
+                                                        <DeleteIcon/>
+                                                    </IconButton>
+                                                </div>
                                             </Tooltip>
                                         </TableCell>
                                     </TableRow>
