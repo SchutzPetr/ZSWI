@@ -28,7 +28,7 @@ class HolidayRowRecord extends UserHoliday {
 
         let userHoliday = Object.assign(new HolidayRowRecord(), holidayRowRecord);
 
-        userHoliday.activeFrom = moment(holidayRowRecord.activeFrom, "YYYY-MM-DD HH:mm:ss").toDate();
+        userHoliday.date = moment(holidayRowRecord.date, "YYYY-MM-DD HH:mm:ss").toDate();
 
         return userHoliday;
     }

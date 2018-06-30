@@ -54,7 +54,7 @@ class UserHoliday extends BaseEntity {
 
         let userHoliday = Object.assign(new UserHoliday(), userHolidayDTO);
 
-        userHoliday.activeFrom = moment(userHolidayDTO.activeFrom, "YYYY-MM-DD HH:mm:ss").toDate();
+        userHoliday.date = moment(userHolidayDTO.date, "YYYY-MM-DD HH:mm:ss").toDate();
 
         return userHoliday;
     }

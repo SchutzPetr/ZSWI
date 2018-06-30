@@ -62,7 +62,32 @@ class UserDetail extends React.Component {
         if (!this.props.user) {
             return 0;
         }
+        const now = new Date();
         let x = this.state.userHolidays.map(value => {
+            if(value.date > now){
+                return 0;
+            }
+            if (value.type === "FIRST_PART_OF_DAY" || value.type === "SECOND_PART_OF_DAY") {
+                return 0.5;
+            } else if (value.type === "ALL_DAY") {
+                return 1;
+            } else {
+                return 0;
+            }
+        });
+
+        return x.reduce((a, b) => a + b, 0);
+    }
+
+    getPlanedHolidayDays() {
+        if (!this.props.user) {
+            return 0;
+        }
+        const now = new Date();
+        let x = this.state.userHolidays.map(value => {
+            if(value.date < now){
+                return 0;
+            }
             if (value.type === "FIRST_PART_OF_DAY" || value.type === "SECOND_PART_OF_DAY") {
                 return 0.5;
             } else if (value.type === "ALL_DAY") {
@@ -92,10 +117,12 @@ class UserDetail extends React.Component {
 
         let ava = 0;
         let ex = 0;
+        let pla = 0;
 
         if (this.canRenderHolidayContent()) {
             ava = this.getHolidayDays();
             ex = this.getExhaustedHolidayDays();
+            pla = this.getPlanedHolidayDays();
         }
 
         return (
@@ -122,6 +149,12 @@ class UserDetail extends React.Component {
                     }
                     {this.canRenderHolidayContent() ?
                         <div className={this.props.classes.row}>
+                            <Typography variant={"body2"}>Planovaná dovolená:</Typography>
+                            <Typography variant={"body1"}>{pla}</Typography>
+                        </div> : null
+                    }
+                    {this.canRenderHolidayContent() ?
+                        <div className={this.props.classes.row}>
                             <Typography variant={"body2"}>Vyčerpaná dovolená:</Typography>
                             <Typography variant={"body1"}>{ex}</Typography>
                         </div> : null
@@ -130,7 +163,7 @@ class UserDetail extends React.Component {
                         <div className={this.props.classes.row}>
                             <Typography variant={"body2"}>Zbývá dovolené:</Typography>
                             <Typography
-                                variant={"body1"}>{ava - ex}</Typography>
+                                variant={"body1"}>{ava - ex - pla}</Typography>
                         </div> : null
                     }
                     {this.props.mode === "SECRETARY" || this.props.mode === "ADMIN" ?
