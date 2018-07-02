@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles/index';
 import {
-    Checkbox,
     IconButton,
     Paper,
     Table,
@@ -17,14 +16,15 @@ import EnhancedTableToolbar from "./components/EnhancedTableToolbar";
 import EnhancedTableHead from "./components/EnhancedTableHead";
 import HolidayRowRecord from "../../entity/HolidayRowRecord";
 import moment from "moment/moment";
+import PrintIcon from "@material-ui/icons/Print";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 
 import User from "../../entity/User";
-import LinearProgressCentered from "../LinearProgressCentered";
 import Calls from "../../Calls";
 import HolidayCreateModal from "../holiday_create_modal/HolidayCreateModal";
 import ConfirmationDialog from "../confirm/ConfirmationDialog";
+import HolidayPrint from "../holiday_print/HolidayPrint";
 
 const holidayTypes = {
     FIRST_PART_OF_DAY: "Dovolená první část dne",
@@ -44,9 +44,19 @@ class HolidayTable extends React.Component {
             modalOpen: false,
             modalData: null,
             openConfirmValue: null,
-            openConfirm: false
+            openConfirm: false,
+            holidayPrintOpen: false,
+            holidayPrintValue: null
         };
     }
+
+    handleHolidayPrintOpen = holidayPrintValue => event => {
+        this.setState({holidayPrintOpen: true, holidayPrintValue: holidayPrintValue});
+    };
+
+    handleHolidayPrintClose = () => {
+        this.setState({holidayPrintOpen: false});
+    };
 
     handleChangePage = (event, page) => {
         this.setState({page});
@@ -104,10 +114,10 @@ class HolidayTable extends React.Component {
         }
     };
 
-    isEditDeleteDisabled(holiday){
-        if(this.props.mode === "SECRETARY" || this.props.mode === "ADMIN"){
+    isEditDeleteDisabled(holiday) {
+        if (this.props.mode === "SECRETARY" || this.props.mode === "ADMIN") {
             return false;
-        }else{
+        } else {
             return (new Date() >= holiday.date);
         }
     }
@@ -156,18 +166,30 @@ class HolidayTable extends React.Component {
                                         <TableCell
                                             onClick={event => this.onSelectChange(event, values, !values.isSelected)}>{holidayTypes[values.type]}</TableCell>
                                         <TableCell>
-                                            <Tooltip title="Editace">
-                                               <div>
-                                                   <IconButton aria-label="Editace" disabled={this.isEditDeleteDisabled(values)} onClick={this.handleOpenEdit(values)}>
-                                                       <EditIcon/>
-                                                   </IconButton>
-                                               </div>
+                                            <Tooltip title={"Tisk dovolenky"}>
+                                                <div>
+                                                    <IconButton aria-label={"Tisk dovolenky"}
+                                                                onClick={this.handleHolidayPrintOpen(values)}>
+                                                        <PrintIcon/>
+                                                    </IconButton>
+                                                </div>
                                             </Tooltip>
                                         </TableCell>
                                         <TableCell>
-                                            <Tooltip title="Odstranění">
+                                            <Tooltip title={"Editace"}>
                                                 <div>
-                                                    <IconButton aria-label="Odstranění"
+                                                    <IconButton aria-label={"Editace"}
+                                                                disabled={this.isEditDeleteDisabled(values)}
+                                                                onClick={this.handleOpenEdit(values)}>
+                                                        <EditIcon/>
+                                                    </IconButton>
+                                                </div>
+                                            </Tooltip>
+                                        </TableCell>
+                                        <TableCell>
+                                            <Tooltip title={"Odstranění"}>
+                                                <div>
+                                                    <IconButton aria-label={"Odstranění"}
                                                                 disabled={this.isEditDeleteDisabled(values)}
                                                                 onClick={() => {
                                                                     this.setState({
@@ -221,6 +243,7 @@ class HolidayTable extends React.Component {
                                         this._handleSaveHolidayCreateModal(userHoliday, edit);
                                         this.handleCloseHolidayCreateModal();
                                     }}/>
+                <HolidayPrint open={this.state.holidayPrintOpen} handleClose={this.handleHolidayPrintClose} user={this.props.user} holidayRowRecord={this.state.holidayPrintValue}/>
             </Paper>
         );
     }
@@ -233,7 +256,7 @@ HolidayTable.propTypes = {
     onSaveDone: PropTypes.func.isRequired,
     onSelectChange: PropTypes.func.isRequired,
     onSelectAllChange: PropTypes.func.isRequired,
-    onDeleteSelected: PropTypes.func.isRequired,
+    onDeleteSelected: PropTypes.func,
     data: PropTypes.arrayOf(HolidayRowRecord).isRequired,
     rowsPerPageOptions: PropTypes.array,
     user: PropTypes.instanceOf(User),
