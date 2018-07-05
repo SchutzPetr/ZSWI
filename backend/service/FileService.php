@@ -17,6 +17,7 @@ include_once(__DIR__ . "/../vendor/netresearch/jsonmapper/src/JsonMapper.php");
 include_once (__DIR__."/../vendor/netresearch/jsonmapper/src/JsonMapper/Exception.php");
 include_once(__DIR__ . "/../api/v1/dto/TimeSheet.php");
 include_once (__DIR__."/../vendor/autoload.php");
+include_once (__DIR__."../file_constant.php");
 
 
 
@@ -427,7 +428,7 @@ class FileService extends Service
 		 */
 
 		$objWriter = \PHPExcel_IOFactory::createWriter($document, 'Excel5');
-		$fileName = (__DIR__."/files/").date('d-m-Y').".xls";
+		$fileName = (__DIR__.DIRECTORY).date('d-m-Y').".xls";
 		$objWriter->save($fileName);
 		chmod($fileName, 0777);
 
