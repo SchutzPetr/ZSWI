@@ -191,7 +191,7 @@ class TimeSheetService extends Service
             }
         } else {
 
-            switch ($holiday->getType()) {
+            switch ($dayTimeSheet->getDayType()) {
                 case "SICKNESS":
                     $dayTimeSheet->setFirstPartFrom(null);
                     $dayTimeSheet->setFirstPartTo(null);
@@ -199,7 +199,6 @@ class TimeSheetService extends Service
                     $dayTimeSheet->setSecondPartFrom(null);
                     $dayTimeSheet->setSecondPartTo(null);
 
-                    $dayTimeSheet->setDayType("HOLIDAY_ALL_DAY");
                     break;
                 case "FAMILY_MEMBER_CARE":
                     $dayTimeSheet->setFirstPartFrom(null);
@@ -208,7 +207,6 @@ class TimeSheetService extends Service
                     $dayTimeSheet->setSecondPartFrom(null);
                     $dayTimeSheet->setSecondPartTo(null);
 
-                    $dayTimeSheet->setDayType("HOLIDAY_ALL_DAY");
                     break;
                 default:
                     $dayTimeSheet->setFirstPartFrom($attendance->getFirstPartFrom());
