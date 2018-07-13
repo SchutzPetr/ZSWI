@@ -154,7 +154,7 @@ class Notification extends BaseModel
      */
     static function findAll()
     {
-        $query = "SELECT * FROM notification ORDER BY date DESC;";
+        $query = "SELECT * FROM notification ORDER BY shown, date DESC LIMIT 150;";
         $preparedQuery = Database::getConnection()->prepare($query);
         $preparedQuery->execute();
         $result = $preparedQuery->fetchAll();

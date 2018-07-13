@@ -133,7 +133,7 @@ class UserHolidayService extends Service
 
                 $notifi = new Notification();
                 $notifi->setTitle("Vytvoření dovolené");
-                $notifi->setDescription($simpleUser->displayFullName() . " si vytvořil dovolenou na" .
+                $notifi->setDescription($simpleUser->displayFullName() . " si vytvořil dovolenou na " .
                     $userHolidays[0]->getDate() . ".");
             }
             foreach ($userHolidays as $holiday) {
@@ -157,7 +157,7 @@ class UserHolidayService extends Service
 
             $notifi = new Notification();
             $notifi->setTitle("Vytvoření dovolené");
-            $notifi->setDescription($simpleUser->displayFullName() . " si vytvořil dovolenou na" .
+            $notifi->setDescription($simpleUser->displayFullName() . " si vytvořil dovolenou na " .
                 $userHolidays->getDate() . ".");
 
             UserHoliday::save($userHolidays);

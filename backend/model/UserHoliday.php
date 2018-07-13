@@ -251,7 +251,7 @@ class UserHoliday extends BaseModel
 
     static function findByUserIdAndDate($id, $date)
     {
-        $query = "SELECT * FROM user_holiday WHERE user_id = :id AND date =: date ORDER BY date;";
+        $query = "SELECT * FROM user_holiday WHERE user_id = :id AND date = :date ORDER BY date;";
         $preparedQuery = Database::getConnection()->prepare($query);
         $preparedQuery->bindValue(":id", $id);
         $preparedQuery->bindValue(":date", $date);
