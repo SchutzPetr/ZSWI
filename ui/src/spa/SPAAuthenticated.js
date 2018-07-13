@@ -53,7 +53,42 @@ class SPAAuthenticated extends React.Component {
 
     componentDidMount() {
         this._fetch();
-    }
+
+        setInterval (() => {
+                Calls.getAllNotification({
+                    data: {}, //todo: year
+                    done: (data) => {
+                        this.setState({notifications: Notification.map(data.data), loadFeedback: "ready"});
+                    },
+                    fail: (data) => {
+                        this.setState({loadFeedback: "error"});
+                        //todo: error throw
+                    }
+                });
+            }, 30*1000
+        );
+    };
+
+    onNotificationUpdate = (notification) => event => {
+        this.setState((prevState) => {
+
+            let notifications = Notification.map(prevState.notifications);
+            let index = notifications.findIndex(value => value.id === notification.id);
+            notifications[index].shown = !notification.shown;
+
+            return {
+                notifications: notifications
+            }
+        }, ()=>{
+            notification.shown = !notification.shown;
+
+            Calls.updateNotification({
+                data: notification, //todo: year
+                done: (data) => {},
+                fail: (data) => {}
+            });
+        });
+    };
 
     _fetch() {
         if (this.props.authenticatedUser.authority === "ADMIN" || this.props.authenticatedUser.authority === "SECRETARY") {
@@ -165,6 +200,12 @@ class SPAAuthenticated extends React.Component {
     render() {
         const {classes, theme} = this.props;
 
+        let notificationLength = 0;
+
+        if(this.state.notifications){
+            notificationLength = this.state.notifications.filter(value => value.shown === false).length;
+        }
+
         return (
             <div className={classes.root + " layout-root"}>
                 <AppBar
@@ -191,8 +232,8 @@ class SPAAuthenticated extends React.Component {
                                                 this.notificationButtonRef = node;
                                             }}
                                             onClick={this.onNotificationPopoverOpen}>
-                                    {this.state.notifications && this.state.notifications.length > 0 ?
-                                        <Badge color="secondary" badgeContent={this.state.notifications.length}>
+                                    {this.state.notifications && notificationLength > 0 ?
+                                        <Badge color="secondary" badgeContent={notificationLength}>
                                             <Notifications/>
                                         </Badge> :
                                         <Notifications/>}
@@ -214,6 +255,7 @@ class SPAAuthenticated extends React.Component {
                     <NotificationPopover open={this.state.notificationPopoverOpen}
                                          buttonRef={this.notificationButtonRef}
                                          onClose={this.onNotificationPopoverClose}
+                                         onNotificationUpdate={this.onNotificationUpdate}
                                          notifications={this.state.notifications}/> : null}
                 <Hidden mdUp>
                     <Drawer

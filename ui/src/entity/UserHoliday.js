@@ -62,7 +62,7 @@ class UserHoliday extends BaseEntity {
     toJSON() {
         let userHolidayDTO = super.toJSON();
 
-        userHolidayDTO.date = moment(this.date, "YYYY-MM-DD HH:mm:ss").format("YYYY-MM-DD HH:mm:ss");
+        userHolidayDTO.date = moment(this.date, "YYYY-MM-DD").format("YYYY-MM-DD");
 
         return userHolidayDTO;
     }

@@ -130,8 +130,8 @@ class Agenda extends React.Component {
                                     <TableRow key={`${index}-${value}`}
                                               className={this.getRowBackgroundColor(value, holiday)}>
                                         <TableCell
-                                            className={classes.tableCell}>{moment(value).format("LL")}</TableCell>
-                                        <TableCell className={classes.tableCellDate}/>
+                                            className={classes.tableCellDate}>{moment(value).format("LL")}</TableCell>
+                                        <TableCell className={classes.tableCell}/>
                                         <TableCell className={classes.tableCell}/>
                                         <TableCell className={classes.tableCell}/>
                                         <TableCell className={classes.tableCell}/>

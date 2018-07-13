@@ -150,6 +150,10 @@ class Calls {
     static checkOrionLogin(dataIn){
         Calls._get("checkOrionLogin", dataIn);
     }
+
+    static updateNotification(dataIn){
+        Calls._post("updateNotification", dataIn);
+    }
 }
 
 const calls = new Calls();

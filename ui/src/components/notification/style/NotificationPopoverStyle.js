@@ -5,7 +5,8 @@ const Styles = theme => ({
     header: {
         display: 'flex',
         height: 48,
-        backgroundColor: "#EEEEEE"
+        backgroundColor: "#EEEEEE",
+        justifyContent: "space-between"
     },
     content: {
         height: 380,
@@ -14,6 +15,8 @@ const Styles = theme => ({
     typography: {
         margin: theme.spacing.unit * 2,
     },
+    iconButton: {
+    }
 });
 
 export default Styles;
