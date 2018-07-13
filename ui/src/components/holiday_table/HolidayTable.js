@@ -4,12 +4,13 @@ import {withStyles} from '@material-ui/core/styles/index';
 import {
     IconButton,
     Paper,
+    Snackbar,
     Table,
     TableBody,
     TableCell,
     TablePagination,
     TableRow,
-    Tooltip,
+    Tooltip
 } from '@material-ui/core/index';
 import Styles from "./style/HolidayTableStyle";
 import EnhancedTableToolbar from "./components/EnhancedTableToolbar";
@@ -19,6 +20,7 @@ import moment from "moment/moment";
 import PrintIcon from "@material-ui/icons/Print";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
+import CloseIcon from "@material-ui/icons/Close";
 
 import User from "../../entity/User";
 import Calls from "../../Calls";
@@ -46,7 +48,8 @@ class HolidayTable extends React.Component {
             openConfirmValue: null,
             openConfirm: false,
             holidayPrintOpen: false,
-            holidayPrintValue: null
+            holidayPrintValue: null,
+            openSnackbar: false
         };
     }
 
@@ -103,13 +106,21 @@ class HolidayTable extends React.Component {
             Calls.updateUserHoliday({
                 data: userHolidays,
                 done: this.props.onSaveDone,
-                fail: this.props.onSaveDone,
+                fail: () => {
+                    this.setState({openSnackbar: true}, ()=>{
+                        this.props.onSaveDone();
+                    });
+                },
             });
         } else {
             Calls.createUserHoliday({
                 data: userHolidays,
                 done: this.props.onSaveDone,
-                fail: this.props.onSaveDone,
+                fail: () => {
+                    this.setState({openSnackbar: true}, ()=>{
+                        this.props.onSaveDone();
+                    });
+                },
             });
         }
     };
@@ -243,7 +254,33 @@ class HolidayTable extends React.Component {
                                         this._handleSaveHolidayCreateModal(userHoliday, edit);
                                         this.handleCloseHolidayCreateModal();
                                     }}/>
-                <HolidayPrint open={this.state.holidayPrintOpen} handleClose={this.handleHolidayPrintClose} user={this.props.user} holidayRowRecord={this.state.holidayPrintValue}/>
+                <HolidayPrint open={this.state.holidayPrintOpen} handleClose={this.handleHolidayPrintClose}
+                              user={this.props.user} holidayRowRecord={this.state.holidayPrintValue}/>
+                <Snackbar
+                    anchorOrigin={{vertical: 'top', horizontal: 'center'}}
+                    open={this.state.openSnackbar}
+                    onClose={() => {
+                        this.setState({openSnackbar: false});
+                    }}
+                    ContentProps={{
+                        'aria-describedby': 'message-id',
+                    }}
+                    autoHideDuration={6000}
+                    message={<span id={"message-id"}>Dovolenou nebylo možné vytvořit!</span>}
+                    action={[
+                        <IconButton
+                            key={"close"}
+                            aria-label={"Close"}
+                            color={"inherit"}
+                            className={classes.close}
+                            onClick={() => {
+                                this.setState({openSnackbar: false});
+                            }}
+                        >
+                            <CloseIcon/>
+                        </IconButton>,
+                    ]}
+                />
             </Paper>
         );
     }

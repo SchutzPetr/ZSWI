@@ -14,7 +14,11 @@ const Styles = theme => ({
     },
     tableWrapper: {
         overflowX: 'auto',
-    }
+    },
+    close: {
+        width: theme.spacing.unit * 4,
+        height: theme.spacing.unit * 4,
+    },
 });
 
 export default Styles;
