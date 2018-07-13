@@ -72,6 +72,7 @@ class Notification extends BaseEntity {
 
         let notification = Object.assign(new Notification(), dto);
 
+        notification.shown = Boolean(Number(dto.shown));
         notification.date = moment(dto.date, "YYYY-MM-DD HH:mm:ss").toDate();
 
         return notification;

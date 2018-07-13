@@ -63,7 +63,6 @@ class HolidayCreateModal extends React.Component {
     };
 
     handleSave = () => {
-        debugger;
         if (this.props.edit) {
             let userHoliday = this.props.edit;
             userHoliday.userId = this.props.user.id;
